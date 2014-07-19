@@ -32,15 +32,15 @@ public class UsersFixture extends FixtureScript {
     protected void execute(ExecutionContext executionContext) {
 
         // create
-        create("Johan", new LocalDate(1962,7,16));
-        create("Jeroen", new LocalDate(1969,6,4));
-        create("Henk", new LocalDate(1980,1,1));
+        create("Johan", "", "Doornenbal", new LocalDate(1962,7,16));
+        create("Jeroen", "van der", "Wal", new LocalDate(1969,6,4));
+        create("Henk", "", "Stormvogel", new LocalDate(1980,1,1));
     }
 
     // //////////////////////////////////////
 
-    private User create(final String name, LocalDate dateOfBirth) {
-        return users.newUser(name, dateOfBirth);
+    private User create(final String firstName, String middleName, String lastName, LocalDate dateOfBirth) {
+        return users.newUser(firstName, middleName, lastName, dateOfBirth);
     }
 
     // //////////////////////////////////////

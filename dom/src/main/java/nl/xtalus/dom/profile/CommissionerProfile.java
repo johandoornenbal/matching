@@ -8,4 +8,5 @@ import javax.jdo.annotations.PersistenceCapable;
 @PersistenceCapable()
 public class CommissionerProfile extends Profile {
 
+    
 }

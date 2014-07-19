@@ -32,26 +32,52 @@ import nl.xtalus.dom.profile.ProfileType;
 public class User extends AbstractDomainObject implements Comparable<User>{
 
     public String title() {
-        return String.format("%s (%s)", getName(), getDateOfBirth().toString("dd-MM-yyyy"));
+        return String.format("%s (%s)", getFirstName(), getDateOfBirth().toString("dd-MM-yyyy"));
     }
 
-    private String name;
+    private String firstName;
 
     @Named("Naam")
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "1")
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
+    
+    private String middleName;
+    
+    @Named("tussen")
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @MemberOrder(sequence = "2")
+    public String getMiddleName() {
+        return middleName;
+    }
+    
+    public void setMiddleName(String name) {
+        this.middleName = name;
+    }    
 
+    private String lastName;
+    
+    @Named("Achternaam")
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "3")
+    public String getLastName() {
+        return lastName;
+    }
+    
+    public void setLastName(String name) {
+        this.lastName = name;
+    }    
+    
     private LocalDate dateOfBirth;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @MemberOrder(sequence = "2")
+    @MemberOrder(sequence = "4")
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -73,7 +99,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
         this.joinedOn = created;
     }
 
-    @MemberOrder(sequence = "3")
+    @MemberOrder(sequence = "5")
     @Named("Aangemeld op")
     public LocalDate getDateJoined() {
         return getJoinedOn().toLocalDate();
@@ -96,7 +122,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     @Override
     public int compareTo(User o) {
         return ComparisonChain.start()
-        .compare(this.getName(), o.getName())
+        .compare(this.getFirstName(), o.getFirstName())
         .compare(this.getDateOfBirth(), o.getDateOfBirth())
         .result();
     }
