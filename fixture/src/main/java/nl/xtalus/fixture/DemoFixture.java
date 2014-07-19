@@ -27,7 +27,7 @@ public class DemoFixture extends FixtureScript {
     protected void execute(ExecutionContext executionContext) {
 
         // prereqs
-        execute(new TearDownFixture(), executionContext);
+//        execute(new TearDownFixture(), executionContext);
         execute(new ProfileFixture(), executionContext);
 
     }

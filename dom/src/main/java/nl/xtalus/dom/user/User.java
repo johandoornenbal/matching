@@ -17,6 +17,7 @@ import org.apache.isis.applib.annotation.Bookmarkable;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 
 import nl.xtalus.dom.profile.Profile;
 import nl.xtalus.dom.profile.ProfileType;
@@ -50,6 +51,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     
     private String middleName;
     
+    @Optional
     @Named("tussen")
     @javax.jdo.annotations.Column(allowsNull = "true")
     @MemberOrder(sequence = "2")
