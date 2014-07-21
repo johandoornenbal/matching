@@ -14,6 +14,7 @@ import org.joda.time.LocalDateTime;
 
 import org.apache.isis.applib.AbstractDomainObject;
 import org.apache.isis.applib.annotation.Bookmarkable;
+import org.apache.isis.applib.annotation.Bounded;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
@@ -51,7 +52,6 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     
     private String middleName;
     
-    @Optional
     @Named("tussen")
     @javax.jdo.annotations.Column(allowsNull = "true")
     @MemberOrder(sequence = "2")
@@ -59,8 +59,8 @@ public class User extends AbstractDomainObject implements Comparable<User>{
         return middleName;
     }
     
-    public void setMiddleName(String name) {
-        this.middleName = name;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }    
 
     private String lastName;
@@ -87,6 +87,18 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+    
+    private Sex sex;
+    @Named("Geslacht")
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "5")
+    public Sex getSex() {
+        return sex;
+    }
+    
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }    
 
     private LocalDateTime joinedOn;
 
@@ -133,6 +145,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     public Profile addProfile(ProfileType profileType){
         Profile profile = newTransientInstance(profileType.cls());
         profile.setOwner(this);
+        persist(profile);
         return profile;
     }
 

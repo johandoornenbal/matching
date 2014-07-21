@@ -22,9 +22,10 @@ public class Users extends AbstractFactoryAndRepository {
 
     public User newUser(
             @Named("Voornaam") String firstName,
-            @Named("tussen") String middleName,
+            @Optional @Named("tussen") String middleName,
             @Named("Achternaam") String lastName,
-            @Named("Geboortedatum") LocalDate dateOfBirth
+            @Named("Geboortedatum") LocalDate dateOfBirth,
+            @Named("Geslacht") Sex sex
             ) {
         // create transient object (not persistent)
         User user = newTransientInstance(User.class);
@@ -33,6 +34,7 @@ public class Users extends AbstractFactoryAndRepository {
         user.setMiddleName(middleName);
         user.setLastName(lastName);
         user.setDateOfBirth(dateOfBirth);
+        user.setSex(sex);
         user.setJoinedOn(clockService.nowAsLocalDateTime());
         // save object to database
         persist(user);
