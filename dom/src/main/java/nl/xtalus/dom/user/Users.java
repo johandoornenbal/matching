@@ -12,6 +12,7 @@ import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.services.clock.ClockService;
+import org.apache.isis.applib.value.Blob;
 
 public class Users extends AbstractFactoryAndRepository {
 
@@ -25,7 +26,8 @@ public class Users extends AbstractFactoryAndRepository {
             @Optional @Named("tussen") String middleName,
             @Named("Achternaam") String lastName,
             @Named("Geboortedatum") LocalDate dateOfBirth,
-            @Named("Geslacht") Sex sex
+            @Named("Geslacht") Sex sex,
+            @Optional @Named("Foto") Blob picture
             ) {
         // create transient object (not persistent)
         User user = newTransientInstance(User.class);
@@ -35,6 +37,7 @@ public class Users extends AbstractFactoryAndRepository {
         user.setLastName(lastName);
         user.setDateOfBirth(dateOfBirth);
         user.setSex(sex);
+        user.setPicture(picture);
         user.setJoinedOn(clockService.nowAsLocalDateTime());
         // save object to database
         persist(user);

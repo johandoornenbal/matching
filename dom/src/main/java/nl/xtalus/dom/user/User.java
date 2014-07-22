@@ -19,6 +19,8 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.value.Blob;
 
 import nl.xtalus.dom.profile.Profile;
 import nl.xtalus.dom.profile.ProfileType;
@@ -98,8 +100,31 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     
     public void setSex(Sex sex) {
         this.sex = sex;
-    }    
+    } 
+    
+    //region > foto (property)
+    // //////////////////////////////////////////////////////////////////////////
+    @javax.jdo.annotations.Persistent(defaultFetchGroup = "false", columns = {
+            @javax.jdo.annotations.Column(name = "picture_name"),
+            @javax.jdo.annotations.Column(name = "picture_mimetype"),
+            @javax.jdo.annotations.Column(name = "picture_bytes", jdbcType = "BLOB", sqlType = "BLOB")
+            })
+    private Blob picture;
 
+    @Named("Foto")
+    @MemberOrder(sequence = "6")
+//    @javax.jdo.annotations.Column(allowsNull = "true")
+//    @Hidden(where=Where.ALL_TABLES)
+    @Optional
+    public Blob getPicture() {
+        return picture;
+    }
+
+    public void setPicture(final Blob picture) {
+        this.picture = picture;
+    }
+    //endregion
+    
     private LocalDateTime joinedOn;
 
     @Hidden
@@ -118,6 +143,8 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     public LocalDate getDateJoined() {
         return getJoinedOn().toLocalDate();
     }
+    
+    
     
     // {{ Profiles (Collection)
     @Persistent(mappedBy = "owner", dependentElement = "false")
