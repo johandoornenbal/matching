@@ -2,6 +2,7 @@ package nl.xtalus.dom.profile;
 
 public enum ProfileType {
     COMMISSIONER("Opdrachtgever", CommissionerProfile.class),
+    BUSINESS("MKB", BusinessProfile.class),
     STUDENT("Student", StudentProfile.class);
 
     private String title;

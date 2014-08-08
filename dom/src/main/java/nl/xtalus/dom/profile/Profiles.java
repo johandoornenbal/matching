@@ -6,6 +6,7 @@ import org.apache.isis.applib.AbstractFactoryAndRepository;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
 
+
 public class Profiles extends AbstractFactoryAndRepository {
 
     @ActionSemantics(Of.SAFE)
