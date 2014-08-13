@@ -14,12 +14,12 @@ import org.joda.time.LocalDateTime;
 
 import org.apache.isis.applib.AbstractDomainObject;
 import org.apache.isis.applib.annotation.Bookmarkable;
-import org.apache.isis.applib.annotation.Bounded;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
-import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.annotation.Render;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.value.Blob;
 
 import nl.xtalus.dom.profile.Profile;
@@ -102,6 +102,19 @@ public class User extends AbstractDomainObject implements Comparable<User>{
         this.sex = sex;
     } 
     
+    private String eyes;
+    
+    @Named("Kleur ogen")
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public String getEyes() {
+        return eyes;
+    }
+    
+    public void setEyes(String eyes) {
+        this.eyes = eyes;
+    }
+    
+    
     //region > foto (property)
     // //////////////////////////////////////////////////////////////////////////
     @javax.jdo.annotations.Persistent(defaultFetchGroup = "false", columns = {
@@ -151,6 +164,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     private SortedSet<Profile> profiles = new TreeSet<Profile>();
 
     @MemberOrder(sequence = "1")
+    @Render(Type.EAGERLY)
     public SortedSet<Profile> getProfiles() {
         return profiles;
     }

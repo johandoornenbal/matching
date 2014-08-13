@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+<title>Simple app</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"
+	type="text/javascript">
+</script>
+<script src="js/app.js"></script>
+</head>
+<body>
+<input ng-model="name" type="text" placeholder="Your name">
+<h1>Hello {{ name }}</h1>
+<hr></hr>
+<div ng-controller="Hello">
+			<p>{{ greeting }}</p>
+			<p>The ID is {{greeting.id}}</p>
+			<p>The content is {{greeting.content}}</p>
+</div>
+<hr></hr>
+<div ng-controller="ISISfile">
+	<p></p>
+	<p>{{ isisdata.value[0].href }}</p>
+	<p>{{ isisdata.value[1].href }}</p>
+	<p>{{ isisdata.value[2].href }}</p>
+</div>
+<hr></hr>
+<div ng-controller="ISISrel">
+	<p></p>
+	<p>{{ isisdata.value[0].href }}</p>
+	<p>{{ isisdata.value[1].href }}</p>
+	<p>{{ isisdata.value[2].href }}</p>
+</div>
+<hr></hr>
+<div ng-controller="ISISrelnoauth">
+	<p></p>
+	<p>{{ isisdata.value[0].href }}</p>
+	<p>{{ isisdata.value[1].href }}</p>
+	<p>{{ isisdata.value[2].href }}</p>
+</div>
+<hr></hr>
+<div ng-controller="ISISwww">
+	<p></p>
+	<p>{{ isisdata.value[0].href }}</p>
+	<p>{{ isisdata.value[1].href }}</p>
+	<p>{{ isisdata.value[2].href }}</p>
+</div>
+<hr></hr>
+</body>
+</html>

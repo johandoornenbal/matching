@@ -27,6 +27,7 @@ public class Users extends AbstractFactoryAndRepository {
             @Named("Achternaam") String lastName,
             @Named("Geboortedatum") LocalDate dateOfBirth,
             @Named("Geslacht") Sex sex,
+            @Named("Kleur ogen") String eyes,
             @Optional @Named("Foto") Blob picture
             ) {
         // create transient object (not persistent)
@@ -37,6 +38,7 @@ public class Users extends AbstractFactoryAndRepository {
         user.setLastName(lastName);
         user.setDateOfBirth(dateOfBirth);
         user.setSex(sex);
+        user.setEyes(eyes);
         user.setPicture(picture);
         user.setJoinedOn(clockService.nowAsLocalDateTime());
         // save object to database

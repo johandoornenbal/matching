@@ -34,16 +34,16 @@ public class UsersFixture extends FixtureScript {
     protected void execute(ExecutionContext executionContext) {
 
         // create
-        create("Johan", "", "Doornenbal", new LocalDate(1962,7,16), Sex.MALE, null);
-        create("Jeroen", "van der", "Wal", new LocalDate(1969,6,4), Sex.MALE, null);
-        create("Henk", "", "Stormvogel", new LocalDate(1980,1,1), Sex.MALE, null);
-        create("Inez", "", "Rippen", new LocalDate(1962,7,18), Sex.FEMALE, null);
+        create("Johan", "", "Doornenbal", new LocalDate(1962,7,16), Sex.MALE, "blauw", null);
+        create("Jeroen", "van der", "Wal", new LocalDate(1969,6,4), Sex.MALE, "blauw", null);
+        create("Henk", "", "Stormvogel", new LocalDate(1980,1,1), Sex.MALE, "groen", null);
+        create("Inez", "", "Rippen", new LocalDate(1962,7,18), Sex.FEMALE, "rood", null);
     }
 
     // //////////////////////////////////////
 
-    private User create(final String firstName, final String middleName, final String lastName, LocalDate dateOfBirth, final Sex sex, final Blob picture) {
-        return users.newUser(firstName, middleName, lastName, dateOfBirth, sex, picture);
+    private User create(final String firstName, final String middleName, final String lastName, LocalDate dateOfBirth, final Sex sex, String eyes, final Blob picture) {
+        return users.newUser(firstName, middleName, lastName, dateOfBirth, sex, eyes, picture);
     }
 
     // //////////////////////////////////////
