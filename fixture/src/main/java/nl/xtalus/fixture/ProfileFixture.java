@@ -23,8 +23,7 @@ import javax.inject.Inject;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
-import nl.xtalus.dom.profile.ProfileType;
-import nl.xtalus.dom.profile.StudentProfile;
+import nl.xtalus.dom.profile.Profiles;
 import nl.xtalus.dom.user.User;
 import nl.xtalus.dom.user.Users;
 
@@ -38,12 +37,13 @@ public class ProfileFixture extends FixtureScript {
 
         User user = users.allUsers().get(0);
 
-        StudentProfile profile = (StudentProfile) user.addProfile(ProfileType.STUDENT);
-
-        profile.setSchool("Basisschool");
+        profiles.addStudentProfile(user, "Basisschool");
 
     }
 
     @Inject
     Users users;
+
+    @Inject
+    Profiles profiles;
 }

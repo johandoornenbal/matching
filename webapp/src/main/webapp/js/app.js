@@ -52,8 +52,7 @@ function ISISrelnoauth($scope, $http) {
 function ISISwww($scope, $http) {
 	$http({
 			method: "GET",
-			url: 'http://localhost\\:8080/restful/services',
-			headers: {'Authorization': 'Basic c3ZlbjpwYXNz'}
+			url: 'http://isisprutsapp.johandoornenbal.eu.cloudbees.net/restful/'
 	}).
     success(function(isisdata) {
         $scope.isisdata = isisdata;

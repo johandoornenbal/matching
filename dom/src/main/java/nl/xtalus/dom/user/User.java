@@ -182,13 +182,5 @@ public class User extends AbstractDomainObject implements Comparable<User>{
         .result();
     }
     
-    @Named("Voeg profiel toe")
-    public Profile addProfile(ProfileType profileType){
-        Profile profile = newTransientInstance(profileType.cls());
-        profile.setOwner(this);
-        persist(profile);
-        return profile;
-    }
-
 
 }
