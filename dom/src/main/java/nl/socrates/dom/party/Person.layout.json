@@ -1,0 +1,66 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Algemeen": {
+          "members": {
+            "reference": {}
+          }
+        },
+        "Naam": {
+          "members": {
+            "name": {},
+            "firstName": {},
+            "initials": {},
+            "middleName": {},
+            "lastName": {},
+            "gender": {}
+          }
+        },
+        "Info" : {
+        	"members": {
+        		"baptismalName" : {},
+        		"dateOfBirth" : {},
+        		"placeOfBirth" : {},
+        		"nationality" : {}
+        	}
+        },
+        "Kindje" : {
+        	"members" : {
+        		"child" : {}
+        	}
+        } 
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {
+        "personprofiles": {
+            "actions": {}
+        },
+        "communicationChannels": {
+          "actions": {}
+        },     
+        "financialAccounts": {
+          "actions": {}
+        },
+        "registrations": {
+          "actions": {
+            "newRegistration": {}
+          }
+        }
+      }
+    }
+  ],
+  "actions": {
+  }
+}

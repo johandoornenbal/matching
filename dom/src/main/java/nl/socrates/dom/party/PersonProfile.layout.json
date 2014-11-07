@@ -1,0 +1,56 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Owner": {
+        	"members": {
+        		"person" :{}
+        	}
+        }
+       }
+    },
+    {
+      "span": 4,
+      "memberGroups": {
+      	 	"Naam": {
+          "members": {
+            "profilename": {
+              "named": {
+                "value": "Profiel naam"
+              },
+              "typicalLength": {
+                "value": 25
+              }
+            }
+          }
+        },
+      	
+      	"Details": {
+      		"members": {
+      			"picture": {
+      				"named": {
+      					"value": "Foto"
+      				}
+      			}
+      		}
+      	} 
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {}
+    }
+  ],
+  "actions": {
+    "downloadLayout": {
+      "named": {
+        "value": "Download Layout"
+      }
+    }
+  }
+}

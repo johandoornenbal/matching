@@ -1,0 +1,49 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Owner": {
+          "members": {
+            "owner": {},
+            "description": {}
+          }
+        }
+      }
+    },
+    {
+      "span": 4,
+      "memberGroups": {
+        "Email": {
+          "members": {
+            "emailAddress": {}
+          }
+        }
+      }
+    },
+    {
+      "span": 4,
+      "memberGroups": {
+        "Status": {
+          "members": {
+            "legal": {},
+            "type": {},
+            "reference": {}
+          }
+        }
+      }
+    },
+    {
+      "span": 12,
+      "collections": {
+        "agreements": {
+            "render": {
+                "value": "EAGERLY"
+            }
+        }
+      }
+    }
+  ],
+  "actions": {
+  }
+}

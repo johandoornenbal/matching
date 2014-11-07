@@ -1,0 +1,15 @@
+{
+  "name": "front_app",
+  "version": "0.0.0",
+  "description": "socrates front_app prototype",
+  "main": "app.js",
+  "dependencies": {
+    "ng-resource": "^1.2.18-2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Johan Doornenbal",
+  "license": "ISC"
+}

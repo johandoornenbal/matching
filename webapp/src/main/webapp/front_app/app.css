@@ -1,0 +1,57 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+.small {
+	font-size: 10px;
+}
+li {
+	list-style: none;
+}
+input {
+	margin-bottom: 5px;
+}
+.ng-valid.ng-dirty {
+	border-color:#78FA89;
+}
+#div_allepersonen {
+	float:left; 
+	margin: 20px; 
+	width: 30%;
+}
+#div_details {
+	float:left; 
+	margin: 20px; 
+	width: 35%;	
+}
+#div_nieuwepersoon {
+	float:left; 
+	margin: 20px; 
+	width: 25%;	
+}

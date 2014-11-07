@@ -1,0 +1,20 @@
+<h1>RESTANGULAR TO LOCALHOST (fixed token)</h1>
+
+<p>HOME</p>
+<div ng-init="restobject = isistest">
+<ul>
+<li ng-repeat="items in restobject">
+<a href="{{items.href}}">{{items.href}}</a>
+</li>
+</ul>
+</div>
+
+<p>TOTAL RESPONSE</p>
+<p>{{isistest}}</p>
+
+
+<!-- <p>
+  Showing of 'interpolate' filter:
+  {{ 'Current version is v%VERSION%.' | interpolate }}
+</p>
+ -->

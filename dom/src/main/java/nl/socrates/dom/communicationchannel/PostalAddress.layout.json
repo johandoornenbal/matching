@@ -1,0 +1,64 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Owner": {
+          "members": {
+            "owner": {},
+            "description": {}
+          }
+        }
+      }
+    },
+    {
+      "span": 4,
+      "memberGroups": {
+        "Postal Address": {
+          "members": {
+            "name": {},
+            "address1": {},
+            "address2": {},
+            "address3": {},
+            "city": {},
+            "postalCode": {}
+          }
+        },
+        "Country": {
+          "members": {
+            "state": {},
+            "country": {
+                "actions": {
+                    "updateCountryAndState": {}
+                }
+            }
+          }
+        }
+      }
+    },
+    {
+      "span": 4,
+      "memberGroups": {
+        "Status": {
+          "members": {
+            "legal": {},
+            "type": {},
+            "reference": {}
+          }
+        }
+      }
+    },
+    {
+      "span": 12,
+      "collections": {
+        "agreements": {
+          "render": {
+              "value": "EAGERLY"
+          }
+        }
+      }
+    }
+  ],
+  "actions": {
+  }
+}
