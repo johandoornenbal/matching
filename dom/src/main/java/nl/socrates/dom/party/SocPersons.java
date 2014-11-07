@@ -37,12 +37,12 @@ import org.apache.isis.applib.annotation.Prototype;
 import org.apache.isis.applib.annotation.RegEx;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
 
-@DomainService(menuOrder = "20", repositoryFor = Person.class)
-@Named("Personen")
-public class Persons extends SocratesDomainService<Person> {
+@DomainService(menuOrder = "20", repositoryFor = SocPerson.class)
+@Named("Socrates Personen")
+public class SocPersons extends SocratesDomainService<SocPerson> {
 
-    public Persons() {
-        super(Persons.class, Person.class);
+    public SocPersons() {
+        super(SocPersons.class, SocPerson.class);
     }
 
     // //////////////////////////////////////
@@ -50,7 +50,7 @@ public class Persons extends SocratesDomainService<Person> {
     @ActionSemantics(Of.NON_IDEMPOTENT)
     @MemberOrder(name = "Contacten", sequence = "1")
     @Named("Nieuw persoon")
-    public Person newPerson(
+    public SocPerson newPerson(
             final @Named("Referentie") @Optional @RegEx(validation=RegexValidation.Person.REFERENCE) String reference,
             final @Named("Voorletter(s)") @RegEx(validation=RegexValidation.Person.INITIALS) String initials,
             final @Named("Voornaam") String firstName,
@@ -61,7 +61,7 @@ public class Persons extends SocratesDomainService<Person> {
             final @Named("Geboortedatum") LocalDate dateOfBirth,
             final @Named("Geboorteplaats") String placeOfBirth,
             final @Named("Nationaliteit") String Nationality) {
-        final Person person = newTransientInstance(Person.class);
+        final SocPerson person = newTransientInstance(SocPerson.class);
         person.setReference(reference);
         person.setInitials(initials);
         person.setLastName(lastName);
@@ -84,11 +84,11 @@ public class Persons extends SocratesDomainService<Person> {
     @ActionSemantics(Of.SAFE)
     @MemberOrder(name = "Contacten", sequence = "99.2")
     @Named("Alle personen")
-    public List<Person> allPersons() {
+    public List<SocPerson> allPersons() {
         return allInstances();
     }
     
-    public List<Person> findPersons(final String lastname) {
+    public List<SocPerson> findPersons(final String lastname) {
         return allMatches("matchByLastName", "lastName", StringUtils.wildcardToCaseInsensitiveRegex(lastname));
     }
     
@@ -101,7 +101,7 @@ public class Persons extends SocratesDomainService<Person> {
     }
     
     @Programmatic
-    public Person findContact(final Person contact) {
+    public SocPerson findContact(final SocPerson contact) {
         int index = this.allPersons().indexOf(contact);
         return this.allPersons().get(index);
     }

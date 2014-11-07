@@ -19,4 +19,4 @@
  *
  * @version $Rev$ $Date$
  */
-package nl.yodo.fixture.party;
+package info.matchingservice.dom;

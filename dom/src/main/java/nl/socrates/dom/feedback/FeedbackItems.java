@@ -13,9 +13,9 @@ import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.services.clock.ClockService;
 
 import nl.socrates.dom.SocratesDomainService;
-import nl.socrates.dom.party.Person;
+import nl.socrates.dom.party.SocPerson;
 import nl.socrates.dom.party.PersonContact;
-import nl.socrates.dom.party.Persons;
+import nl.socrates.dom.party.SocPersons;
 
 @DomainService(menuOrder = "40", repositoryFor = FeedbackItem.class)
 public class FeedbackItems extends SocratesDomainService<FeedbackItem> {
@@ -29,8 +29,8 @@ public class FeedbackItems extends SocratesDomainService<FeedbackItem> {
     @NotInServiceMenu
     @Hidden
     public FeedbackItem createFeedbackItem(
-            final Person owner,
-            final Person receiver,
+            final SocPerson owner,
+            final SocPerson receiver,
             final String testfeedback,
             final PersonContact personcontact){
         final FeedbackItem feedback = container.newTransientInstance(FeedbackItem.class);
@@ -43,7 +43,7 @@ public class FeedbackItems extends SocratesDomainService<FeedbackItem> {
         return feedback;
     }
     
-    public List<Person> autoComplete1CreateFeedbackItem(final String search) {
+    public List<SocPerson> autoComplete1CreateFeedbackItem(final String search) {
         return persons.findPersons(search);
     }
     
@@ -57,7 +57,7 @@ public class FeedbackItems extends SocratesDomainService<FeedbackItem> {
     DomainObjectContainer container;
     
     @Inject
-    Persons persons;
+    SocPersons persons;
     
     @Inject
     private ClockService clockService;

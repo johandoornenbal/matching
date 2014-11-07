@@ -75,37 +75,37 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
         this.owner=owner;
     }
     
-    private Person ownerPerson;
+    private SocPerson ownerPerson;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "50")
     @Named("Eigenaar")
     @Hidden(where = Where.PARENTED_TABLES)
     @Disabled
-    public Person getOwnerPerson() {
+    public SocPerson getOwnerPerson() {
         return ownerPerson;
     }
     
-    public void setOwnerPerson (final Person owner) {
+    public void setOwnerPerson (final SocPerson owner) {
         this.ownerPerson = owner;
     }
     
-    private Person contact;
+    private SocPerson contact;
    
     @Title
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "10")
     @Named("Contact")
     @Disabled
-    public Person getContact() {
+    public SocPerson getContact() {
         return contact;
     }
     
-    public void setContact(final Person contact) {
+    public void setContact(final SocPerson contact) {
         this.contact = contact;
     }
     
-    public List<Person> autoCompleteContact(String search) {
+    public List<SocPerson> autoCompleteContact(String search) {
         return persons.findPersons(search);
     }
     
@@ -228,7 +228,7 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     }
     
     @Inject
-    Persons persons;
+    SocPersons persons;
     
     @Inject
     FeedbackItems fbItems;

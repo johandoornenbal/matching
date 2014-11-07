@@ -23,7 +23,7 @@ import org.apache.isis.applib.query.QueryDefault;
 
 import nl.socrates.dom.SocratesMutableObject;
 import nl.socrates.dom.Titled;
-import nl.socrates.dom.party.Party;
+import nl.socrates.dom.party.SocParty;
 import nl.socrates.dom.party.PersonContact;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -51,31 +51,31 @@ public class FeedbackItem extends SocratesMutableObject<FeedbackItem> implements
     }
 
     
-    private Party owner;
+    private SocParty owner;
     
     @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Named("Feedback van")
     @Hidden(where = Where.PARENTED_TABLES)
-    public Party getOwner() {
+    public SocParty getOwner() {
         return owner;
     }
     
-    public void setOwner(final Party owner) {
+    public void setOwner(final SocParty owner) {
         this.owner = owner;
     }
     
-    private Party feedbackReceiver;
+    private SocParty feedbackReceiver;
     
     @Disabled
     @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Named("Feedback aan")
-    public Party getFeedbackReceiver() {
+    public SocParty getFeedbackReceiver() {
         return feedbackReceiver;
     }
     
-    public void setFeedbackReceiver(final Party subject) {
+    public void setFeedbackReceiver(final SocParty subject) {
         this.feedbackReceiver = subject;
     }
     

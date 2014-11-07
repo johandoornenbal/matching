@@ -16,7 +16,7 @@ import nl.socrates.dom.SocratesDomainService;
 
 @DomainService(menuOrder = "30", repositoryFor = PersonContact.class)
 @Named("Persoonlijke contacten")
-@AutoComplete(repository=Persons.class,  action="findPersons")
+@AutoComplete(repository=SocPersons.class,  action="findPersons")
 public class PersonContacts extends SocratesDomainService<PersonContact>{
     
     public PersonContacts() {
@@ -27,8 +27,8 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
     @Named("Voeg contact toe")
     @NotInServiceMenu
     public PersonContact createContact(
-        final Person ownerperson,
-        @Named("Contact") final Person contact
+        final SocPerson ownerperson,
+        @Named("Contact") final SocPerson contact
         ) {
         final PersonContact pc = container.newTransientInstance(PersonContact.class);
         pc.setOwner(container.getUser().getName());
@@ -42,7 +42,7 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
         return pc;
     }
     
-    public List<Person> autoComplete1CreateContact(final String search) {
+    public List<SocPerson> autoComplete1CreateContact(final String search) {
         return persons.findPersons(search);
     }
     
@@ -56,7 +56,7 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
     DomainObjectContainer container;
     
     @Inject
-    Persons persons;
+    SocPersons persons;
     
     @Inject
     private ClockService clockService;

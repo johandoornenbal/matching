@@ -65,21 +65,21 @@ import nl.socrates.dom.communicationchannel.CommunicationChannelOwner;
     @javax.jdo.annotations.Query(
             name = "matchByReferenceOrName", language = "JDOQL",
             value = "SELECT "
-                    + "FROM nl.socrates.dom.party.Party "
+                    + "FROM nl.socrates.dom.party.SocParty "
                     + "WHERE reference.matches(:referenceOrName) "
                     + "   || name.matches(:referenceOrName)"),
     @javax.jdo.annotations.Query(
             name = "findByReference", language = "JDOQL",
             value = "SELECT "
-                    + "FROM nl.socrates.dom.party.Party "
+                    + "FROM nl.socrates.dom.party.SocParty "
                     + "WHERE reference == :reference") })
-@AutoComplete(repository = Parties.class, action = "autoComplete")
+@AutoComplete(repository = SocParties.class, action = "autoComplete")
 @Bookmarkable
-public abstract class Party
-        extends SocratesMutableObject<Party>
-        implements WithNameComparable<Party>, WithReferenceUnique, CommunicationChannelOwner {
+public abstract class SocParty
+        extends SocratesMutableObject<SocParty>
+        implements WithNameComparable<SocParty>, WithReferenceUnique, CommunicationChannelOwner {
 
-    public Party() {
+    public SocParty() {
         super("name");
     }
 

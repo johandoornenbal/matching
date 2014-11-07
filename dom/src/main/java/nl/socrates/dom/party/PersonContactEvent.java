@@ -2,7 +2,7 @@ package nl.socrates.dom.party;
 
 public class PersonContactEvent {
     
-    PersonContactEvent(String testString, Person owner, Person contact){
+    PersonContactEvent(String testString, SocPerson owner, SocPerson contact){
         this.testString = testString;
         this.contactOwner = owner;
         this.contact = contact;
@@ -18,23 +18,23 @@ public class PersonContactEvent {
         this.testString = teststring;
     }
     
-    private Person contactOwner;
+    private SocPerson contactOwner;
     
-    public Person getContactOwner() {
+    public SocPerson getContactOwner() {
         return contactOwner;
     }
 
-    public void setContactOwner(final Person contact) {
+    public void setContactOwner(final SocPerson contact) {
         this.contactOwner = contact;
     }
     
-    private Person contact;
+    private SocPerson contact;
     
-    public Person getContact() {
+    public SocPerson getContact() {
         return contact;
     }
     
-    public void setContact(final Person contact) {
+    public void setContact(final SocPerson contact) {
         this.contact = contact;
     }
 }

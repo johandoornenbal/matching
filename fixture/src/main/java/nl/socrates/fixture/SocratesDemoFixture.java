@@ -4,9 +4,9 @@ import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
-import nl.socrates.dom.party.Person;
+import nl.socrates.dom.party.SocPerson;
 import nl.socrates.dom.party.PersonGenderType;
-import nl.socrates.dom.party.Persons;
+import nl.socrates.dom.party.SocPersons;
 import nl.socrates.fixture.geography.refdata.CountriesAndStatesRefData;
 import nl.socrates.fixture.party.PersonForInezDo;
 import nl.socrates.fixture.party.PersonForJohanDo;
@@ -32,13 +32,13 @@ public class SocratesDemoFixture extends FixtureScript {
     
     // //////////////////////////////////////
 
-    private Person create(String reference, String initials, String firstName, String middleName, String lastName, String baptismalName, PersonGenderType gender, LocalDate dateOfBirth, String placeOfBirth, String Nationality, ExecutionContext executionContext) {
+    private SocPerson create(String reference, String initials, String firstName, String middleName, String lastName, String baptismalName, PersonGenderType gender, LocalDate dateOfBirth, String placeOfBirth, String Nationality, ExecutionContext executionContext) {
         return persons.newPerson(reference, initials, firstName, middleName,lastName, baptismalName, gender, dateOfBirth, placeOfBirth, Nationality);
     }
 
     // //////////////////////////////////////
 
     @javax.inject.Inject
-    private Persons persons;
+    private SocPersons persons;
 
 }

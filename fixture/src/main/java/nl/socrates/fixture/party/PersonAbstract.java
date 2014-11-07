@@ -10,9 +10,9 @@ import nl.socrates.dom.geography.Countries;
 import nl.socrates.dom.geography.Country;
 import nl.socrates.dom.geography.State;
 import nl.socrates.dom.geography.States;
-import nl.socrates.dom.party.Party;
+import nl.socrates.dom.party.SocParty;
 import nl.socrates.dom.party.PersonGenderType;
-import nl.socrates.dom.party.Persons;
+import nl.socrates.dom.party.SocPersons;
 import nl.socrates.fixture.SocratesFixtureScript;
 
 public abstract class PersonAbstract extends SocratesFixtureScript {
@@ -20,7 +20,7 @@ public abstract class PersonAbstract extends SocratesFixtureScript {
     @Override
     protected abstract void execute(ExecutionContext executionContext);
 
-    protected Party createPerson(
+    protected SocParty createPerson(
             String reference, 
             String initials, 
             String firstName, 
@@ -42,7 +42,7 @@ public abstract class PersonAbstract extends SocratesFixtureScript {
             String emailAddress,            
             ExecutionContext executionContext) {
 
-        Party party = persons.newPerson(reference, initials, firstName, middleName,lastName, baptismalName, Gender, dateOfBirth, placeOfBirth, Nationality);
+        SocParty party = persons.newPerson(reference, initials, firstName, middleName,lastName, baptismalName, Gender, dateOfBirth, placeOfBirth, Nationality);
         
         createCommunicationChannels(party, address1, address2, postalCode, city, stateReference, countryReference, phone, fax, emailAddress, executionContext);
         
@@ -51,8 +51,8 @@ public abstract class PersonAbstract extends SocratesFixtureScript {
         
     }
     
-    protected Party createCommunicationChannels(
-            Party party,
+    protected SocParty createCommunicationChannels(
+            SocParty party,
             String address1,
             String address2,
             String postalCode,
@@ -109,7 +109,7 @@ public abstract class PersonAbstract extends SocratesFixtureScript {
  
 
     @Inject
-    protected Persons persons;
+    protected SocPersons persons;
     
     @Inject
     protected Countries countries;

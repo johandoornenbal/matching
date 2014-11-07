@@ -35,11 +35,11 @@ import org.apache.isis.applib.annotation.ActionSemantics.Of;
 
 import nl.socrates.dom.SocratesDomainService;
 
-@DomainService(menuOrder = "20", repositoryFor = Party.class)
+@DomainService(menuOrder = "20", repositoryFor = SocParty.class)
 @Named("Contacten")
-public class Parties extends SocratesDomainService<Party>{
-    public Parties() {
-        super(Parties.class, Party.class);
+public class SocParties extends SocratesDomainService<SocParty>{
+    public SocParties() {
+        super(SocParties.class, SocParty.class);
     }
     
     // //////////////////////////////////////
@@ -47,7 +47,7 @@ public class Parties extends SocratesDomainService<Party>{
     @ActionSemantics(Of.SAFE)
     @MemberOrder(sequence = "6")
     @Named("Vind contacten")
-    public List<Party> findParties(
+    public List<SocParty> findParties(
             final @Named("Referentie of Naam") @DescribedAs("Je kunt wildcards '*' and '?' gebruiken.") 
             String referenceOrName) {
         return allMatches("matchByReferenceOrName", 
@@ -56,30 +56,30 @@ public class Parties extends SocratesDomainService<Party>{
 
     @Hidden
     @ActionSemantics(Of.SAFE)
-    public Party matchPartyByReferenceOrName(final String referenceOrName) {
+    public SocParty matchPartyByReferenceOrName(final String referenceOrName) {
         return firstMatch("matchByReferenceOrName", 
                 "referenceOrName", StringUtils.wildcardToCaseInsensitiveRegex(referenceOrName));
     }
 
     @Hidden
     @ActionSemantics(Of.SAFE)
-    public Party findPartyByReference(final String reference) {
+    public SocParty findPartyByReference(final String reference) {
         return mustMatch("findByReference", "reference", reference);
     }
 
     @Hidden
     @ActionSemantics(Of.SAFE)
-    public Party findPartyByReferenceOrNull(final String reference) {
+    public SocParty findPartyByReferenceOrNull(final String reference) {
         return firstMatch("findByReference", "reference", reference);
     }
 
     // //////////////////////////////////////
 
     @Hidden
-    public List<Party> autoComplete(final String searchPhrase) {
+    public List<SocParty> autoComplete(final String searchPhrase) {
         return searchPhrase.length() > 2
                 ? findParties("*" + searchPhrase + "*")
-                : Lists.<Party> newArrayList();
+                : Lists.<SocParty> newArrayList();
     }
 
     // //////////////////////////////////////
@@ -88,7 +88,7 @@ public class Parties extends SocratesDomainService<Party>{
     @ActionSemantics(Of.SAFE)
     @MemberOrder(name = "Contacten", sequence = "99")
     @Named("Alle Contacten")
-    public List<Party> allParties() {
+    public List<SocParty> allParties() {
         return allInstances();
     }
 }

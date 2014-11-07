@@ -34,7 +34,7 @@ import org.apache.isis.applib.annotation.Prototype;
 import nl.socrates.dom.SocratesDomainService;
 import nl.socrates.dom.geography.Country;
 import nl.socrates.dom.geography.State;
-import nl.socrates.dom.party.Party;
+import nl.socrates.dom.party.SocParty;
 
 
 @DomainService(menuOrder = "70", repositoryFor = CommunicationChannel.class)
@@ -121,7 +121,7 @@ public class CommunicationChannels extends SocratesDomainService<CommunicationCh
     
     @NotInServiceMenu
     @Programmatic
-    public List<CommunicationChannel> findCommunicationChannel(final Party party) {
+    public List<CommunicationChannel> findCommunicationChannel(final SocParty party) {
        
         return allMatches("findByOwner","owner", party);
        

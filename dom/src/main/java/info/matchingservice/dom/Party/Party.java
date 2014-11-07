@@ -1,4 +1,4 @@
-package nl.yodo.dom.Party;
+package info.matchingservice.dom.Party;
 
 import javax.jdo.annotations.InheritanceStrategy;
 
@@ -10,11 +10,11 @@ import nl.yodo.dom.YodoSecureMutableObject;
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.Uniques({
     @javax.jdo.annotations.Unique(
-            name = "YodoParty_ID_UNQ", members = "uniqueYodoPartyId")
+            name = "Party_ID_UNQ", members = "uniquePartyId")
 })
-public abstract class YodoParty extends YodoSecureMutableObject<YodoParty> {
+public abstract class Party extends YodoSecureMutableObject<Party> {
     
-    public YodoParty() {
+    public Party() {
         super("ownedBy");
     }
     

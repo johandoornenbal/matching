@@ -28,7 +28,7 @@ public class PersonProfiles extends AbstractFactoryAndRepository {
     @NotInServiceMenu
     public PersonProfile createProfile(
         @Named("Profiel naam") final String profilename,
-        final Person person,
+        final SocPerson person,
         final TrustLevel level,
         @Optional @Named("Foto") Blob picture ) {
         final PersonProfile pf = container.newTransientInstance(PersonProfile.class);
@@ -52,7 +52,7 @@ public class PersonProfiles extends AbstractFactoryAndRepository {
     
     public String validateCreateProfile(
             final String profilename,
-            final Person person,
+            final SocPerson person,
             final TrustLevel level,
             final Blob picture) {
                 QueryDefault<PersonProfile> query = 

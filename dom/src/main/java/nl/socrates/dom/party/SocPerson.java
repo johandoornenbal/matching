@@ -56,11 +56,11 @@ import nl.socrates.dom.JdoColumnLength;
     @javax.jdo.annotations.Query(
             name = "matchByLastName", language = "JDOQL",
             value = "SELECT "
-                    + "FROM nl.socrates.dom.person.Person "
+                    + "FROM nl.socrates.dom.party.SocPerson "
                     + "WHERE lastName.matches(:lastName)")
     })
-@AutoComplete(repository=Persons.class,  action="autoComplete")
-public class Person extends Party {
+@AutoComplete(repository=SocPersons.class,  action="autoComplete")
+public class SocPerson extends SocParty {
     
     // /////// Security ////////////////////////////////////////////////
     
@@ -280,17 +280,17 @@ public class Person extends Party {
     
     // //////////////////////////////////////
     
-    private Person lastContact;
+    private SocPerson lastContact;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Named("Laatste die mij als contact toegevoegd heeft")
     @Disabled
     @Hidden(where=Where.ALL_TABLES)
-    public Person getLastContact() {
+    public SocPerson getLastContact() {
         return lastContact;
     }
     
-    public void setLastContact(final Person lastcontact) {
+    public void setLastContact(final SocPerson lastcontact) {
         this.lastContact = lastcontact;
     }
     

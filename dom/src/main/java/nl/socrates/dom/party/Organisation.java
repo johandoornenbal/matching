@@ -10,7 +10,7 @@ import nl.socrates.dom.JdoColumnLength;
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @AutoComplete(repository=Organisations.class,  action="autoComplete")
-public class Organisation extends Party {
+public class Organisation extends SocParty {
     private String organisationName;
     
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.NAME)

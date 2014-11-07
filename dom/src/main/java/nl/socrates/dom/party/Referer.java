@@ -16,16 +16,16 @@ import nl.yodo.dom.TrustLevel;
 @Immutable
 public class Referer extends AbstractDomainObject implements Comparable<Referer>{
     
-    private Person owner;
+    private SocPerson owner;
     
     @Hidden(where = Where.OBJECT_FORMS)
     @MemberOrder(sequence = "10")
     @Named("Verwijzer")
-    public Person getOwner() {
+    public SocPerson getOwner() {
         return owner;
     }
     
-    public void setOwner(final Person owner) {
+    public void setOwner(final SocPerson owner) {
         this.owner = owner;
     }
     

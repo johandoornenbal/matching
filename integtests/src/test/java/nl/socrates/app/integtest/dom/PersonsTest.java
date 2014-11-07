@@ -6,9 +6,9 @@ import static org.junit.Assert.assertThat;
 import javax.inject.Inject;
 
 import nl.socrates.app.integtest.SocratesIntegrationTest;
-import nl.socrates.dom.party.Person;
+import nl.socrates.dom.party.SocPerson;
 import nl.socrates.dom.party.PersonGenderType;
-import nl.socrates.dom.party.Persons;
+import nl.socrates.dom.party.SocPersons;
 import nl.socrates.fixture.SocratesDemoFixture;
 
 import org.joda.time.LocalDate;
@@ -19,7 +19,7 @@ import org.junit.Test;
 public class PersonsTest extends SocratesIntegrationTest {
 
     @Inject
-    Persons persons;
+    SocPersons persons;
 
     @BeforeClass
     public static void setupTransactionalData() {
@@ -39,7 +39,7 @@ public class PersonsTest extends SocratesIntegrationTest {
         private static final String INITIALS = "JMC";
         private static final String REFERENCE = "reference";
 
-        Person p;
+        SocPerson p;
 
         @Before
         public void setUp() throws Exception {

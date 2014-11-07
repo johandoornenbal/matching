@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import javax.inject.Inject;
 
 import nl.socrates.app.integtest.SocratesIntegrationTest;
-import nl.socrates.dom.party.Parties;
+import nl.socrates.dom.party.SocParties;
 import nl.socrates.fixture.SocratesDemoFixture;
 
 import org.junit.BeforeClass;
@@ -15,7 +15,7 @@ import org.junit.Test;
 public class PartiesTest extends SocratesIntegrationTest {
 
     @Inject
-    Parties parties;
+    SocParties parties;
 
     @BeforeClass
     public static void setupTransactionalData() {

@@ -94,7 +94,7 @@ public abstract class CommunicationChannel
                             value = "per-implementation"),
                     @Extension(vendorName = "datanucleus",
                             key = "implementation-classes",
-                            value = "nl.socrates.dom.party.Party") //TODO: Asset eruit gehaald hier moet ik wat mee
+                            value = "nl.socrates.dom.party.SocParty") //TODO: Asset eruit gehaald hier moet ik wat mee
             })
     @javax.jdo.annotations.Columns({
             @javax.jdo.annotations.Column(name = "ownerPartyId"),

@@ -113,16 +113,16 @@ public class PersonProfile extends AbstractDomainObject implements Comparable<Pe
         this.profilename = profile;
     }
     
-    private Person person;
+    private SocPerson person;
     
     @Hidden(where = Where.PARENTED_TABLES)
     @javax.jdo.annotations.Column(allowsNull="false")
-    public Person getPerson()
+    public SocPerson getPerson()
     {
         return person;
     }
     
-    public void setPerson(Person person){
+    public void setPerson(SocPerson person){
         this.person = person;
     }
 
