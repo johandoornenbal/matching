@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/yodo_matching_app-webapp"/>
+<listEntry value="/matchingservice-webapp"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
@@ -25,7 +25,7 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.apache.isis.WebServer"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--port 8080 --type PROTOTYPE"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="yodo_matching_app-webapp"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="matchingservice-webapp"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${jrebel_args} -Drebel.log=false -Drebel.check_class_hash=true -Drebel.packages_exclude=org.apache.isis -Dproject.root=${project_loc}/.. -Dtarget.dir=target-ide -Drebel.plugins=C:/github/danhaywood/isis-jrebel-plugin/target/danhaywood-isis-jrebel-plugin-1.0.0-SNAPSHOT.jar -Disis-jrebel-plugin.packagePrefix=dom.simple,org.apache.isis.objectstore.jdo.applib -Disis-jrebel-plugin.loggingLevel=warn -XX:MaxPermSize=128m"/>
 </launchConfiguration>
