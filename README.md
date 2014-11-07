@@ -1,4 +1,4 @@
-socrates
+MatchingService
 ========
 
-Setup for memberregistration Socrates
+Setup for matchingservice
