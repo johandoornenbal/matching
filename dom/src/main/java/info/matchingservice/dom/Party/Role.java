@@ -1,6 +1,13 @@
 package info.matchingservice.dom.Party;
 
+import java.util.List;
+
 import javax.jdo.annotations.InheritanceStrategy;
+
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.query.QueryDefault;
 
 import info.matchingservice.dom.MatchingDomainObject;
 
@@ -45,5 +52,25 @@ public class Role extends MatchingDomainObject<Role> {
     public void setRole(final RoleType role) {
         this.role=role;
     }
+    
+    // Region //// Delete action //////////////////////////////
+    public List<Role> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+        container.removeIfNotAlready(this);
+        container.informUser("Rol verwijderd");
+        QueryDefault<Role> query =
+                QueryDefault.create(
+                        Role.class,
+                        "findMyRoles",
+                        "ownedBy", this.getOwnedBy());
+        return container.allMatches(query);
+    }
+    
+    public String validateDelete(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+    
+    // Region //// injections ///////////////////////////////////
+    @javax.inject.Inject
+    private DomainObjectContainer container;
 
 }
