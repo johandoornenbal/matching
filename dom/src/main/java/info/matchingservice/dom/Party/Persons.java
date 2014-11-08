@@ -1,5 +1,8 @@
 package info.matchingservice.dom.Party;
 
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.utils.StringUtils;
+
 import java.util.List;
 
 import com.google.common.base.Predicate;
@@ -21,12 +24,10 @@ import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 
-import nl.socrates.dom.utils.StringUtils;
-import nl.yodo.dom.YodoDomainService;
 
 @DomainService(menuOrder = "10", repositoryFor = Person.class)
 @Named("Personen")
-public class Persons extends YodoDomainService<Person> {
+public class Persons extends MatchingDomainService<Person> {
     
     public Persons() {
         super(Persons.class, Person.class);
@@ -59,12 +60,7 @@ public class Persons extends YodoDomainService<Person> {
     
     @MemberOrder(sequence="5")
     public List<Person> thisIsYou() {
-        QueryDefault<Person> query = 
-                QueryDefault.create(
-                        Person.class, 
-                    "findPersonUnique", 
-                    "ownedBy", currentUserName());          
-        return allMatches(query);
+        return thisIsYou(currentUserName());
     }
     
     @MemberOrder(sequence="10")
@@ -158,6 +154,16 @@ public class Persons extends YodoDomainService<Person> {
         "Je hebt jezelf al aangemaakt. Pas je gegevens eventueel aan in plaats van hier een nieuwe te maken."        
         :null;
         
+    }
+    
+    @Programmatic //userName can now also be set by fixtures
+    public List<Person> thisIsYou(final String userName) {
+        QueryDefault<Person> query = 
+                QueryDefault.create(
+                        Person.class, 
+                    "findPersonUnique", 
+                    "ownedBy", userName);          
+        return allMatches(query);
     }
     
     

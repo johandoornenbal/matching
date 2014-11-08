@@ -144,5 +144,37 @@ public class PersonTest extends MatchingIntegrationTest {
         }        
         
     }
+    
+    public static class thisIsYouTest extends PersonTest {
+        
+        @Test
+        public void shouldBeYou() throws Exception {
+          assertThat(persons.thisIsYou("frans").get(0).getUniquePartyId(), is("111"));  
+        }
+        
+        @Test
+        public void onlyOneYou() throws Exception {
+            assertThat(persons.thisIsYou("frans").size(), is(1));
+        }
+        
+        @Test
+        public void notAYou() throws Exception {
+            assertThat(persons.thisIsYou("xyz").size(), is(0));
+        }
+    }
+    
+    public static class allPersonTest extends PersonTest {
+        
+        @Test
+        public void allPersons() throws Exception {
+            assertThat(persons.allPersons().size(), is(5));
+        }
+        
+        @Test
+        public void allOtherPersons() throws Exception {
+            Person thisIsMe = persons.thisIsYou("frans").get(0);
+            assertThat(persons.AllOtherPersons(thisIsMe).size(), is(4));
+        }
+    }
       
 }
