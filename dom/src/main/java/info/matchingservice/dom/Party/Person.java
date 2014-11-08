@@ -272,6 +272,7 @@ public class Person extends Party {
     
     //END Region> testobjects /////////////////////////////////////////////////////////////
     
+    
     // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;

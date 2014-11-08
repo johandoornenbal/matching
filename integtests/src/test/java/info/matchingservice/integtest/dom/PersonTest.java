@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import info.matchingservice.dom.Party.Person;
 import info.matchingservice.dom.Party.Persons;
-import info.matchingservice.dom.Party.RoleType;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
@@ -21,6 +20,7 @@ public class PersonTest extends MatchingIntegrationTest {
     
     @Inject
     Persons persons;
+    
     
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
@@ -46,7 +46,9 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
             assertThat(p1.getUniquePartyId(), is(UNIQUE_ID));
             assertThat(p1.getOwnedBy(), is(OWNED_BY));
-            
+            assertThat(p1.getIsStudent(), is(true));
+            assertThat(p1.getIsProfessional(), is(true));
+            assertThat(p1.getIsPrincipal(), is(false));
         }
         
     }
@@ -177,5 +179,22 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(persons.AllOtherPersons(thisIsMe).size(), is(4));
         }
     }
+//TODO: This test does not work. How to test?    
+//    public static class addRole extends PersonTest {
+//        
+//        Person p1;
+//        
+//        @Before
+//        public void setUp() throws Exception {
+//            p1 = persons.allPersons().get(0);
+//            p1.addRolePrincipal();
+//        }
+//        
+//        @Test
+//        public void hasRolePrincipal() throws Exception {
+//            assertThat(p1.getIsPrincipal(), is(true));
+//        }
+//        
+//    }
       
 }
