@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import info.matchingservice.dom.Party.Person;
 import info.matchingservice.dom.Party.Persons;
+import info.matchingservice.dom.Party.RoleType;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
@@ -32,6 +33,7 @@ public class PersonTest extends MatchingIntegrationTest {
         private static final String MIDDLE_NAME = "";
         private static final String FIRST_NAME = "Frans";
         private static final String UNIQUE_ID = "111";
+        private static final RoleType ROLE = RoleType.STUDENT;
         private static final String OWNED_BY = "frans";
         
         Person p1;
@@ -43,7 +45,8 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p1.getFirstName(), is(FIRST_NAME));
             assertThat(p1.getLastName(), is(LAST_NAME));
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
-            assertThat(p1.getUniquePartyId(), is(UNIQUE_ID));            
+            assertThat(p1.getUniquePartyId(), is(UNIQUE_ID));
+            assertThat(p1.getRole(), is(ROLE));
             assertThat(p1.getOwnedBy(), is(OWNED_BY));
             
         }
@@ -97,6 +100,7 @@ public class PersonTest extends MatchingIntegrationTest {
         private static final String MIDDLE_NAME = "van der";
         private static final String FIRST_NAME = "T.";
         private static final String UNIQUE_ID = "321";
+        private static final RoleType ROLE = RoleType.STUDENT;
         private static final String OWNED_BY = "test1";
         
         Person p1;
@@ -105,7 +109,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, ROLE, OWNED_BY);
         }
         
         @Test
@@ -135,12 +139,12 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void shouldNotBeValidNewPerson() throws Exception {
-            assertThat(persons.validateNewPerson("333", "Frans", "van", "Oldenbarneveld", "frans").isEmpty(), is(false));
+            assertThat(persons.validateNewPerson("333", "Frans", "van", "Oldenbarneveld", RoleType.STUDENT ,"frans").isEmpty(), is(false));
         }
         
         @Test
         public void shouldBeValidNewPerson() throws Exception {
-            assertTrue(persons.validateNewPerson("333", "Johan", "van", "Oldenbarneveld", "johan") == null);
+            assertTrue(persons.validateNewPerson("333", "Johan", "van", "Oldenbarneveld", RoleType.STUDENT, "johan") == null);
         }        
         
     }

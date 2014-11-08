@@ -1,5 +1,7 @@
 package info.matchingservice.fixture.party;
 
+import info.matchingservice.dom.Party.RoleType;
+
 public class PersonForAntoni extends PersonAbstract {
 
     @Override
@@ -9,6 +11,7 @@ public class PersonForAntoni extends PersonAbstract {
                 "Antoni", 
                 "van", 
                 "Leeuwenhoek",
+                RoleType.STUDENT,
                 "antoni",
                 executionContext);
     }

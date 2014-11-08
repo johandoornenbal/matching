@@ -16,7 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package info.matchingservice.dom.utils;
+package info.matchingservice.dom.Utils;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;

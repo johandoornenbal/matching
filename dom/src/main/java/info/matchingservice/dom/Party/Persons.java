@@ -1,7 +1,7 @@
 package info.matchingservice.dom.Party;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.utils.StringUtils;
+import info.matchingservice.dom.Utils.StringUtils;
 
 import java.util.List;
 
@@ -38,8 +38,10 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Uniek ID") String uniquePartyId,
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
-            final @Named("Achternaam") String lastName) {
-        return newPerson(uniquePartyId, firstName, lastName, middleName, currentUserName()); // see region>helpers
+            final @Named("Achternaam") String lastName,
+            final @Named("Rol") RoleType role
+            ) {
+        return newPerson(uniquePartyId, firstName, lastName, middleName, role, currentUserName()); // see region>helpers
     }
     
     public boolean hideNewPerson() {
@@ -54,8 +56,9 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Uniek ID") String uniquePartyId,
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
-            final @Named("Achternaam") String lastName) {
-        return validateNewPerson(uniquePartyId, firstName, middleName, lastName, currentUserName());
+            final @Named("Achternaam") String lastName,
+            final RoleType role) {
+        return validateNewPerson(uniquePartyId, firstName, middleName, lastName, role, currentUserName());
     }
     
     @MemberOrder(sequence="5")
@@ -114,12 +117,14 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
             final @Named("Achternaam") String lastName,
+            final @Named("Rol") RoleType role,
             final String userName) {
         final Person person = newTransientInstance(Person.class);
         person.setUniquePartyId(uniquePartyId);
         person.setFirstName(firstName);
         person.setMiddleName(middleName);
         person.setLastName(lastName);
+        person.setRole(role);
         person.setOwnedBy(userName);
         persist(person);
         return person;
@@ -143,6 +148,7 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
             final @Named("Achternaam") String lastName,
+            final RoleType role,
             final String userName) {
         
         QueryDefault<Person> query = 
