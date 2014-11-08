@@ -11,7 +11,6 @@ public class PersonForRembrandt extends PersonAbstract {
                 "Rembrandt", 
                 "van", 
                 "Rijn",
-                RoleType.STUDENT,
                 "rembrandt",
                 executionContext);
     }

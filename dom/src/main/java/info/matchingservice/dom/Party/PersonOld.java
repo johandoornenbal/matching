@@ -39,7 +39,7 @@ import org.apache.isis.applib.query.QueryDefault;
                     + "WHERE lastName.indexOf(:lastName) >= 0")                    
 })
 @AutoComplete(repository=Persons.class,  action="autoComplete")
-public class Person extends Party {
+public class PersonOld extends Party {
     
     public String title() {
         return this.getLastName() + ", " + this.getFirstName() + " " + this.getMiddleName();
@@ -86,7 +86,98 @@ public class Person extends Party {
     }
 
     //Region> ROLES /////////////////////////////////////////////////
+    // At this moment a person can have 3 roles at most
+    // Having a attrib role is obligated; second and third are optional
+    // Roles are only displayed when having them
+    // Roles can only be set/unset by actions
+    // The first Role can also be set by methods like newStudent etc in Persons...
     
+    private RoleType role;
+    
+    @MemberOrder(sequence = "40")
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    public RoleType getRole() {
+        return role;
+    }
+    
+    public void setRole(final RoleType role) {
+        this.role = role;
+    }
+    
+    public boolean hideRole() {
+        return this.getRole() == null;
+    }
+    
+    private RoleType secondRole;
+    
+    @MemberOrder(sequence = "50")
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Disabled
+    public RoleType getSecondRole() {
+        return secondRole;
+    }
+    
+    public void setSecondRole(final RoleType role) {
+        this.secondRole = role;
+    }
+    
+    public boolean hideSecondRole() {
+        return this.getSecondRole() == null;
+    }
+    
+    public PersonOld addSecondRole(final RoleType role) {
+        setSecondRole(role);
+        return this;
+    }
+    
+    public boolean hideAddSecondRole(final RoleType role){
+        return this.getSecondRole() != null;
+    }
+    
+    public PersonOld deleteSecondRole(){
+        setSecondRole(null);
+        return this;
+    }
+    
+    public boolean hideDeleteSecondRole(){
+        return this.getSecondRole() == null;
+    }
+    
+    private RoleType thirdRole;
+    
+    @MemberOrder(sequence = "60")
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Disabled
+    public RoleType getThirdRole() {
+        return thirdRole;
+    }
+    
+    public void setThirdRole(final RoleType role) {
+        this.thirdRole = role;
+    }
+    
+    public boolean hideThirdRole() {
+        return this.getThirdRole() == null;
+    }
+    
+    public PersonOld addThirdRole(final RoleType role) {
+        setThirdRole(role);
+        return this;
+    }
+    
+    public boolean hideAddThirdRole(final RoleType role){
+        return this.getSecondRole() == null || (this.getSecondRole() != null && this.getThirdRole() !=null);
+    }
+    
+    public PersonOld deleteThirdRole(){
+        setThirdRole(null);
+        return this;
+    }
+    
+    public boolean hideDeleteThirdRole(){
+        return this.getThirdRole() == null;
+    }
     
     public Boolean getIsStudent() {
         QueryDefault<Role> query =

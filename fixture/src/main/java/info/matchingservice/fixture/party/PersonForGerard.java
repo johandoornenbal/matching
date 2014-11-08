@@ -11,7 +11,6 @@ public class PersonForGerard extends PersonAbstract {
                 "Gerard", 
                 "", 
                 "Dou",
-                RoleType.STUDENT,
                 "gerard",
                 executionContext);
     }

@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Party;
 
+import java.util.List;
+
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
@@ -18,7 +20,12 @@ public class Roles extends MatchingDomainService<Role> {
         Role newrole = newTransientInstance(Role.class);
         newrole.setRole(role);
         newrole.setOwnedBy(currentUserName());
+        persist(newrole);
         return newrole;
+    }
+    
+    public List<Role> allRoles() {
+        return container.allInstances(Role.class);
     }
     
     private String currentUserName() {

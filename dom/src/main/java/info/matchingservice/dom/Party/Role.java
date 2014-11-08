@@ -6,6 +6,18 @@ import info.matchingservice.dom.MatchingDomainObject;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findMyRoles", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Party.Role "
+                    + "WHERE ownedBy == :ownedBy"),
+    @javax.jdo.annotations.Query(
+            name = "findSpecificRole", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Party.Role "
+                    + "WHERE ownedBy == :ownedBy && role == :role"),
+})
 public class Role extends MatchingDomainObject<Role> {
 
     public Role() {
