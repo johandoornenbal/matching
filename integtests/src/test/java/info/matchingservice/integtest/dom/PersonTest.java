@@ -1,8 +1,7 @@
 package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import info.matchingservice.dom.Party.Person;
 import info.matchingservice.dom.Party.Persons;
 import info.matchingservice.fixture.MatchingTestsFixture;
@@ -20,7 +19,6 @@ public class PersonTest extends MatchingIntegrationTest {
     
     @Inject
     Persons persons;
-    
     
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
@@ -179,22 +177,146 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(persons.AllOtherPersons(thisIsMe).size(), is(4));
         }
     }
-//TODO: This test does not work. How to test?    
-//    public static class addRole extends PersonTest {
-//        
-//        Person p1;
-//        
-//        @Before
-//        public void setUp() throws Exception {
-//            p1 = persons.allPersons().get(0);
-//            p1.addRolePrincipal();
-//        }
-//        
-//        @Test
-//        public void hasRolePrincipal() throws Exception {
-//            assertThat(p1.getIsPrincipal(), is(true));
-//        }
-//        
-//    }
-      
+   
+    public static class addRole extends PersonTest {
+        
+        private static final String LAST_NAME = "Test1";
+        private static final String MIDDLE_NAME = "van der";
+        private static final String FIRST_NAME = "T.";
+        private static final String UNIQUE_ID = "321";
+        private static final String OWNED_BY = "test1";
+        
+        Person p1; // new person with all roles
+        Person p2; // new person with no roles
+        Person p3; // "FRANS HALS" - first testuser
+        
+        @Before
+        public void setUp() throws Exception {
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p2=persons.newPerson("3210", FIRST_NAME, MIDDLE_NAME, LAST_NAME, "different_owner");
+            p3=persons.allPersons().get(0);
+            p1.addRoleStudent(OWNED_BY);
+            p1.addRoleProfessional(OWNED_BY);
+            p1.addRolePrincipal(OWNED_BY);
+        }
+        
+        @Test
+        public void hasRoleStudent() throws Exception {
+            assertThat(p1.getIsStudent(), is(true));
+            assertThat(p1.getIsProfessional(), is(true));
+            assertThat(p1.getIsPrincipal(), is(true));
+            assertThat(p2.getIsStudent(), is(false));
+            assertThat(p2.getIsProfessional(), is(false));
+            assertThat(p2.getIsPrincipal(), is(false));
+            assertThat(p3.getIsStudent(), is(true));
+            assertThat(p3.getIsProfessional(), is(true));
+            assertThat(p3.getIsPrincipal(), is(false));
+        }
+        
+    }
+    
+    public static class deleteRole extends PersonTest {
+        
+        private static final String LAST_NAME = "Test1";
+        private static final String MIDDLE_NAME = "van der";
+        private static final String FIRST_NAME = "T.";
+        private static final String UNIQUE_ID = "321";
+        private static final String OWNED_BY = "test1";
+        
+        Person p1; // new person with all roles
+        
+        @Before
+        public void setUp() throws Exception {
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p1.addRoleStudent(OWNED_BY);
+            p1.addRoleProfessional(OWNED_BY);
+            p1.addRolePrincipal(OWNED_BY);
+        }
+        
+        @Test
+        public void hasNotRoleAnymore() throws Exception {
+            assertThat(p1.getIsStudent(), is(true));
+            p1.deleteRoleStudent(OWNED_BY);
+            assertThat(p1.getIsStudent(), is(false));
+            assertThat(p1.getIsProfessional(), is(true));
+            p1.deleteRoleProfessional(OWNED_BY);
+            assertThat(p1.getIsProfessional(), is(false));
+            assertThat(p1.getIsPrincipal(), is(true));
+            p1.deleteRolePrincipal(OWNED_BY);
+            assertThat(p1.getIsPrincipal(), is(false));
+        }
+        
+    }
+
+    public static class hideAddAndDeleteRole extends PersonTest {
+        
+        private static final String LAST_NAME = "Test1";
+        private static final String MIDDLE_NAME = "van der";
+        private static final String FIRST_NAME = "T.";
+        private static final String UNIQUE_ID = "321";
+        private static final String OWNED_BY = "test1";
+        
+        Person p1; // new person with all roles
+        
+        @Before
+        public void setUp() throws Exception {
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p1.addRoleStudent(OWNED_BY);
+            p1.addRoleProfessional(OWNED_BY);
+            p1.addRolePrincipal(OWNED_BY);
+        }
+        
+        @Test
+        public void addRoleShouldBeHiddenFirst() throws Exception {
+            assertThat(p1.hideAddRoleStudent(p1, OWNED_BY), is(true));
+            assertThat(p1.hideDeleteRoleStudent(p1, OWNED_BY), is(false));
+            p1.deleteRoleStudent(OWNED_BY);
+            assertThat(p1.hideAddRoleStudent(p1, OWNED_BY), is(false));
+            assertThat(p1.hideDeleteRoleStudent(p1, OWNED_BY), is(true));
+            
+            assertThat(p1.hideAddRoleProfessional(p1, OWNED_BY), is(true));
+            assertThat(p1.hideDeleteRoleProfessional(p1, OWNED_BY), is(false));
+            p1.deleteRoleProfessional(OWNED_BY);
+            assertThat(p1.hideAddRoleProfessional(p1, OWNED_BY), is(false));
+            assertThat(p1.hideDeleteRoleProfessional(p1, OWNED_BY), is(true));
+ 
+            assertThat(p1.hideAddRolePrincipal(p1, OWNED_BY), is(true));
+            assertThat(p1.hideDeleteRolePrincipal(p1, OWNED_BY), is(false));           
+            p1.deleteRolePrincipal(OWNED_BY);
+            assertThat(p1.hideAddRolePrincipal(p1, OWNED_BY), is(false));
+            assertThat(p1.hideDeleteRolePrincipal(p1, OWNED_BY), is(true));   
+        }
+        
+    }
+    
+    public static class makeProfile extends PersonTest {
+        
+        private static final String LAST_NAME = "Test1";
+        private static final String MIDDLE_NAME = "van der";
+        private static final String FIRST_NAME = "T.";
+        private static final String UNIQUE_ID = "321";
+        private static final String OWNED_BY = "test1";
+        
+        Person p1;
+        Person p2;
+        
+        @Before
+        public void setUp() throws Exception {
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p1.makeProfile("This is my profile", p1, OWNED_BY);
+            p2 = persons.allPersons().get(0); // FRANS HALS
+        }
+        
+        @Test
+        public void hasProfile() throws Exception {
+            assertThat(p1.hideMakeProfile("", p1, OWNED_BY), is(true));
+            assertThat(p1.validateMakeProfile("", p1, OWNED_BY), is("You already have a profile"));
+//            assertThat(p1.getProfile().size(), is(1)); TODO: THIS ONE DOES NOT WORK; REQUIERS WRAPPING?
+            assertThat(p2.hideMakeProfile("", p2, p2.getOwnedBy()), is(true));
+            assertThat(p2.validateMakeProfile("", p2, p2.getOwnedBy()), is("You already have a profile"));
+            assertThat(p2.getProfile().size(), is(1)); // This one works; was already set up with fixtures
+            assertThat(p2.getProfile().first().getTestField(), is("Profile of Frans Hals"));
+        }
+        
+    }
 }

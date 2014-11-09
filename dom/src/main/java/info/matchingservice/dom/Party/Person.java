@@ -92,7 +92,7 @@ public class Person extends Party {
 
     //Region> ROLES /////////////////////////////////////////////////
     
-    // Role STUDENT
+    // Role STUDENT 'Clean' code. Makes use of helpers in Helpers region
     
     public Person addRoleStudent() {
         addRoleStudent(currentUserName());
@@ -103,25 +103,13 @@ public class Person extends Party {
         return hideAddRoleStudent(this, currentUserName());
     }
     
-    //TODO: 'outfacture to helpers
     public Person deleteRoleStudent() {
-        QueryDefault<Role> query =
-                QueryDefault.create(
-                        Role.class,
-                        "findSpecificRole",
-                        "ownedBy", this.getOwnedBy(),
-                        "role", RoleType.STUDENT);
-        Role roleToDelete = container.firstMatch(query);
-        roleToDelete.delete(true);
+        deleteRoleStudent(currentUserName());;
         return this;
     }
     
     public boolean hideDeleteRoleStudent() {
-        // if you are not the owner
-        if (!this.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        return !getIsStudent();
+        return hideDeleteRoleStudent(this, currentUserName());
     }
     
     @Hidden
@@ -129,96 +117,54 @@ public class Person extends Party {
         return getIsStudent(this);
     }
 
-    // Role PROFESSIONAL
+    // Role PROFESSIONAL 'Clean' code. Makes use of helpers in Helpers region
     
     public Person addRoleProfessional() {
-        roles.newRole(RoleType.PROFESSIONAL);
+        addRoleProfessional(currentUserName());
         return this;
     }
     
     public boolean hideAddRoleProfessional() {
-        // if you are not the owner
-        if (!this.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        return getIsProfessional();
+        return hideAddRoleProfessional(this, currentUserName());
     }
     
     public Person deleteRoleProfessional() {
-        QueryDefault<Role> query =
-                QueryDefault.create(
-                        Role.class,
-                        "findSpecificRole",
-                        "ownedBy", this.getOwnedBy(),
-                        "role", RoleType.PROFESSIONAL);
-        Role roleToDelete = container.firstMatch(query);
-        roleToDelete.delete(true);
+        deleteRoleProfessional(currentUserName());
         return this;
     }
     
     public boolean hideDeleteRoleProfessional() {
-        // if you are not the owner
-        if (!this.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        return !getIsProfessional();
+        return hideDeleteRoleProfessional(this, currentUserName());
     }
     
     @Hidden
     public Boolean getIsProfessional() {
-        QueryDefault<Role> query =
-                QueryDefault.create(
-                        Role.class,
-                        "findSpecificRole",
-                        "ownedBy", this.getOwnedBy(),
-                        "role", RoleType.PROFESSIONAL);
-        return !container.allMatches(query).isEmpty();
+        return getIsProfessional(this);
     }
     
-    // Role PRINCIPAL
+    // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region
     
     public Person addRolePrincipal() {
-        roles.newRole(RoleType.PRINCIPAL);
+        addRolePrincipal(currentUserName());
         return this;
     }
     
     public boolean hideAddRolePrincipal() {
-        // if you are not the owner
-        if (!this.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        return getIsPrincipal();
+        return hideAddRolePrincipal(this, currentUserName());
     }
     
     public Person deleteRolePrincipal() {
-        QueryDefault<Role> query =
-                QueryDefault.create(
-                        Role.class,
-                        "findSpecificRole",
-                        "ownedBy", this.getOwnedBy(),
-                        "role", RoleType.PRINCIPAL);
-        Role roleToDelete = container.firstMatch(query);
-        roleToDelete.delete(true);
+        deleteRolePrincipal(currentUserName());
         return this;
     }
     
     public boolean hideDeleteRolePrincipal() {
-        // if you are not the owner
-        if (!this.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        return !getIsPrincipal();
+        return hideDeleteRolePrincipal(this, currentUserName());
     }
     
     @Hidden
     public Boolean getIsPrincipal() {
-        QueryDefault<Role> query =
-                QueryDefault.create(
-                        Role.class,
-                        "findSpecificRole",
-                        "ownedBy", this.getOwnedBy(),
-                        "role", RoleType.PRINCIPAL);
-        return !container.allMatches(query).isEmpty();
+        return getIsPrincipal(this);
     }
     
     // ALL My Roles
@@ -235,7 +181,7 @@ public class Person extends Party {
         return container.allMatches(query);
     }
     
-   @MultiLine(numberOfLines=2)
+    @MultiLine(numberOfLines=2)
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsStudent()) {
@@ -261,30 +207,30 @@ public class Person extends Party {
 
     //Region> PROFILE /////////////////////////////////////////////////////////////
    
-   private SortedSet<Profile> profile = new TreeSet<Profile>();
+    private SortedSet<Profile> profile = new TreeSet<Profile>();
    
-   @Render(Type.EAGERLY)
-   @Persistent(mappedBy = "profileOwner", dependentElement = "true")
-   public SortedSet<Profile> getProfile() {
-       return profile;
-   }
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "profileOwner", dependentElement = "true")
+    public SortedSet<Profile> getProfile() {
+        return profile;
+    }
    
-   public void setProfile(final SortedSet<Profile> profile) {
-       this.profile = profile;
-   }
+    public void setProfile(final SortedSet<Profile> profile) {
+        this.profile = profile;
+    }
    
-   public Person makeProfile(final String testfield) {
-       makeProfile(testfield, this, getOwnedBy());
-       return this;
-   }
+    public Person makeProfile(final String testfield) {
+        makeProfile(testfield, this, getOwnedBy());
+        return this;
+    }
    
-   public boolean hideMakeProfile(final String testfield) {
-       return hideMakeProfile(testfield, this, getOwnedBy());
-   }
+    public boolean hideMakeProfile(final String testfield) {
+        return hideMakeProfile(testfield, this, getOwnedBy());
+    }
    
-   public String validateMakeProfile(final String testfield) {
-       return validateMakeProfile(testfield, this, getOwnedBy());
-   }
+    public String validateMakeProfile(final String testfield) {
+        return validateMakeProfile(testfield, this, getOwnedBy());
+    }
 
     //Region> testobjects /////////////////////////////////////////////////////////////
     
@@ -316,11 +262,13 @@ public class Person extends Party {
     
     //END Region> testobjects /////////////////////////////////////////////////////////////
     
-    // Region>helpers ////////////////////////////
+    // Region>HELPERS ////////////////////////////
     
     private String currentUserName() {
         return container.getUser().getName();
     }
+    
+    // HELPERS Role STUDENT
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsStudent(Person ownerPerson) {
@@ -344,8 +292,133 @@ public class Person extends Party {
         if (!ownerPerson.getOwnedBy().equals(ownedBy)){
             return true;
         }
+        //if person already has role Student
         return getIsStudent(ownerPerson); 
     }
+    
+    @Programmatic // now values can be set by fixtures
+    public void deleteRoleStudent(String ownedBy) {
+        QueryDefault<Role> query =
+                QueryDefault.create(
+                        Role.class,
+                        "findSpecificRole",
+                        "ownedBy", ownedBy,
+                        "role", RoleType.STUDENT);
+        Role roleToDelete = container.firstMatch(query);
+        roleToDelete.delete(true);
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public boolean hideDeleteRoleStudent(Person ownerPerson, String ownedBy) {
+        // if you are not the owner of person
+        if (!ownerPerson.getOwnedBy().equals(ownedBy)){
+            return true;
+        }
+        //if person has not role Student
+        return !getIsStudent(ownerPerson);
+    }
+    
+    // HELPERS Role PROFESSIONAL
+    
+    @Programmatic // now values can be set by fixtures
+    public Boolean getIsProfessional(Person ownerPerson) {
+        QueryDefault<Role> query =
+                QueryDefault.create(
+                        Role.class,
+                        "findSpecificRole",
+                        "ownedBy", ownerPerson.getOwnedBy(),
+                        "role", RoleType.PROFESSIONAL);
+        return !container.allMatches(query).isEmpty();
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public void addRoleProfessional(String ownedBy) {
+        roles.newRole(RoleType.PROFESSIONAL, ownedBy);
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public boolean hideAddRoleProfessional(Person ownerPerson, String ownedBy) {
+        // if you are not the owner
+        if (!ownerPerson.getOwnedBy().equals(ownedBy)){
+            return true;
+        }
+        //if person already has role Professional
+        return getIsProfessional(ownerPerson); 
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public void deleteRoleProfessional(String ownedBy) {
+        QueryDefault<Role> query =
+                QueryDefault.create(
+                        Role.class,
+                        "findSpecificRole",
+                        "ownedBy", ownedBy,
+                        "role", RoleType.PROFESSIONAL);
+        Role roleToDelete = container.firstMatch(query);
+        roleToDelete.delete(true);
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public boolean hideDeleteRoleProfessional(Person ownerPerson, String ownedBy) {
+        // if you are not the owner of person
+        if (!ownerPerson.getOwnedBy().equals(ownedBy)){
+            return true;
+        }
+        //if person has not role Professional
+        return !getIsProfessional(ownerPerson);
+    }    
+    
+    // HELPERS Role PRINCIPAL
+    
+    @Programmatic // now values can be set by fixtures
+    public Boolean getIsPrincipal(Person ownerPerson) {
+        QueryDefault<Role> query =
+                QueryDefault.create(
+                        Role.class,
+                        "findSpecificRole",
+                        "ownedBy", ownerPerson.getOwnedBy(),
+                        "role", RoleType.PRINCIPAL);
+        return !container.allMatches(query).isEmpty();
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public void addRolePrincipal(String ownedBy) {
+        roles.newRole(RoleType.PRINCIPAL, ownedBy);
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public boolean hideAddRolePrincipal(Person ownerPerson, String ownedBy) {
+        // if you are not the owner
+        if (!ownerPerson.getOwnedBy().equals(ownedBy)){
+            return true;
+        }
+        //if person already has role Principal
+        return getIsPrincipal(ownerPerson); 
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public void deleteRolePrincipal(String ownedBy) {
+        QueryDefault<Role> query =
+                QueryDefault.create(
+                        Role.class,
+                        "findSpecificRole",
+                        "ownedBy", ownedBy,
+                        "role", RoleType.PRINCIPAL);
+        Role roleToDelete = container.firstMatch(query);
+        roleToDelete.delete(true);
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public boolean hideDeleteRolePrincipal(Person ownerPerson, String ownedBy) {
+        // if you are not the owner of person
+        if (!ownerPerson.getOwnedBy().equals(ownedBy)){
+            return true;
+        }
+        //if person has not role Principal
+        return !getIsPrincipal(ownerPerson);
+    }  
+    
+    // HELPERS Profile
     
     @Programmatic // now values can be set by fixtures
     public void makeProfile(final String testfield, final Person person, final String ownedBy) {

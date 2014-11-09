@@ -39,6 +39,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         this.testField = test;
     }
     
+    
     private Party profileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")

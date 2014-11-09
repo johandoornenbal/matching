@@ -6,7 +6,9 @@ import org.apache.isis.objectstore.jdo.applib.service.support.IsisJdoSupport;
 public class PersonsTeardown extends FixtureScript {
 
     @Override
-    protected void execute(ExecutionContext executionContext) {    
+    protected void execute(ExecutionContext executionContext) { 
+        isisJdoSupport.executeUpdate("delete from \"Role\"");
+        isisJdoSupport.executeUpdate("delete from \"Profile\"");
         isisJdoSupport.executeUpdate("delete from \"Person\"");
         isisJdoSupport.executeUpdate("delete from \"Party\"");
     }
