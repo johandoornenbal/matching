@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Party;
 
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.Testobjects.TestRelatedObject;
 import info.matchingservice.dom.Testobjects.TestSecRelatedObject;
 
@@ -16,6 +18,7 @@ import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
@@ -92,14 +95,15 @@ public class Person extends Party {
     // Role STUDENT
     
     public Person addRoleStudent() {
-        roles.newRole(RoleType.STUDENT);
+        addRoleStudent(currentUserName());
         return this;
     }
     
     public boolean hideAddRoleStudent() {
-        return getIsStudent();
+        return hideAddRoleStudent(this, currentUserName());
     }
     
+    //TODO: 'outfacture to helpers
     public Person deleteRoleStudent() {
         QueryDefault<Role> query =
                 QueryDefault.create(
@@ -113,18 +117,16 @@ public class Person extends Party {
     }
     
     public boolean hideDeleteRoleStudent() {
+        // if you are not the owner
+        if (!this.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
         return !getIsStudent();
     }
     
     @Hidden
     public Boolean getIsStudent() {
-        QueryDefault<Role> query =
-                QueryDefault.create(
-                        Role.class,
-                        "findSpecificRole",
-                        "ownedBy", this.getOwnedBy(),
-                        "role", RoleType.STUDENT);
-        return !container.allMatches(query).isEmpty();
+        return getIsStudent(this);
     }
 
     // Role PROFESSIONAL
@@ -135,6 +137,10 @@ public class Person extends Party {
     }
     
     public boolean hideAddRoleProfessional() {
+        // if you are not the owner
+        if (!this.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
         return getIsProfessional();
     }
     
@@ -151,6 +157,10 @@ public class Person extends Party {
     }
     
     public boolean hideDeleteRoleProfessional() {
+        // if you are not the owner
+        if (!this.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
         return !getIsProfessional();
     }
     
@@ -173,6 +183,10 @@ public class Person extends Party {
     }
     
     public boolean hideAddRolePrincipal() {
+        // if you are not the owner
+        if (!this.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
         return getIsPrincipal();
     }
     
@@ -189,6 +203,10 @@ public class Person extends Party {
     }
     
     public boolean hideDeleteRolePrincipal() {
+        // if you are not the owner
+        if (!this.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
         return !getIsPrincipal();
     }
     
@@ -241,6 +259,32 @@ public class Person extends Party {
     
     //END Region> ROLES /////////////////////////////////////////////////
 
+    //Region> PROFILE /////////////////////////////////////////////////////////////
+   
+   private SortedSet<Profile> profile = new TreeSet<Profile>();
+   
+   @Render(Type.EAGERLY)
+   @Persistent(mappedBy = "profileOwner", dependentElement = "true")
+   public SortedSet<Profile> getProfile() {
+       return profile;
+   }
+   
+   public void setProfile(final SortedSet<Profile> profile) {
+       this.profile = profile;
+   }
+   
+   public Person makeProfile(final String testfield) {
+       makeProfile(testfield, this, getOwnedBy());
+       return this;
+   }
+   
+   public boolean hideMakeProfile(final String testfield) {
+       return hideMakeProfile(testfield, this, getOwnedBy());
+   }
+   
+   public String validateMakeProfile(final String testfield) {
+       return validateMakeProfile(testfield, this, getOwnedBy());
+   }
 
     //Region> testobjects /////////////////////////////////////////////////////////////
     
@@ -272,6 +316,70 @@ public class Person extends Party {
     
     //END Region> testobjects /////////////////////////////////////////////////////////////
     
+    // Region>helpers ////////////////////////////
+    
+    private String currentUserName() {
+        return container.getUser().getName();
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public Boolean getIsStudent(Person ownerPerson) {
+        QueryDefault<Role> query =
+                QueryDefault.create(
+                        Role.class,
+                        "findSpecificRole",
+                        "ownedBy", ownerPerson.getOwnedBy(),
+                        "role", RoleType.STUDENT);
+        return !container.allMatches(query).isEmpty();
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public void addRoleStudent(String ownedBy) {
+        roles.newRole(RoleType.STUDENT, ownedBy);
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public boolean hideAddRoleStudent(Person ownerPerson, String ownedBy) {
+        // if you are not the owner
+        if (!ownerPerson.getOwnedBy().equals(ownedBy)){
+            return true;
+        }
+        return getIsStudent(ownerPerson); 
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public void makeProfile(final String testfield, final Person person, final String ownedBy) {
+        profiles.newProfile(testfield, person, ownedBy);
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public boolean hideMakeProfile(final String testfield, final Person person, final String ownedBy) {
+        // if you are not the owner
+        if (!this.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        // if you have already profile
+        QueryDefault<Profile> query = 
+                QueryDefault.create(
+                        Profile.class, 
+                    "findProfileByOwner", 
+                    "ownedBy", ownedBy);
+        return container.firstMatch(query) != null?
+                true        
+                :false;
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public String validateMakeProfile(final String testfield, final Person person, final String ownedBy) {
+        QueryDefault<Profile> query = 
+                QueryDefault.create(
+                        Profile.class, 
+                    "findProfileByOwner", 
+                    "ownedBy", ownedBy);
+        return container.firstMatch(query) != null?
+                "You already have a profile"        
+                :null;
+    }
     
     // Region>injections ////////////////////////////
     @javax.inject.Inject
@@ -279,5 +387,7 @@ public class Person extends Party {
     
     @Inject
     private Roles roles;
-    
+
+    @Inject
+    private Profiles profiles;
 }

@@ -6,6 +6,9 @@ import info.matchingservice.fixture.party.PersonForGerard;
 import info.matchingservice.fixture.party.PersonForMichiel;
 import info.matchingservice.fixture.party.PersonForRembrandt;
 import info.matchingservice.fixture.party.PersonsTeardown;
+import info.matchingservice.fixture.party.ProfileForFrans;
+import info.matchingservice.fixture.party.ProfileForGerard;
+import info.matchingservice.fixture.party.ProfileForRembrandt;
 import info.matchingservice.fixture.party.RolesForAntoni;
 import info.matchingservice.fixture.party.RolesForFrans;
 import info.matchingservice.fixture.party.RolesForGerard;
@@ -36,6 +39,9 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new RolesForAntoni(), executionContext);
         executeChild(new RolesForMichiel(), executionContext);
         executeChild(new RolesForRembrandt(), executionContext);
+        executeChild(new ProfileForFrans(), executionContext);
+        executeChild(new ProfileForRembrandt(), executionContext);
+        executeChild(new ProfileForGerard(), executionContext);
     }
 
 }

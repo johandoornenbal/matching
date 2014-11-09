@@ -15,6 +15,13 @@ import info.matchingservice.dom.Party.Party;
     @javax.jdo.annotations.Unique(
             name = "Profile_ID_UNQ", members = "uniqueProfileId")
 })
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findProfileByOwner", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE ownedBy == :ownedBy")
+})
 public class Profile extends MatchingSecureMutableObject<Profile> {
 
     public Profile() {
