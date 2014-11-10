@@ -24,11 +24,13 @@ public class Needs extends MatchingDomainService<Need> {
     @Programmatic
     public Need newNeed(
             final String needDescription,
-            final Person needOwner
+            final Person needOwner,
+            final String ownedBy
             ){
         final Need newNeed = newTransientInstance(Need.class);
         newNeed.setNeedDescription(needDescription);
         newNeed.setNeedOwner(needOwner);
+        newNeed.setOwnedBy(ownedBy);
         persist(newNeed);
         return newNeed;
     }

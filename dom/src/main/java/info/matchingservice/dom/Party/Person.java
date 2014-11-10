@@ -294,7 +294,7 @@ public class Person extends Party {
     }
     
     public Person newNeed(final String needDescription) {
-        newNeed(needDescription, this);
+        newNeed(needDescription, this, currentUserName());
         return this;
     }
     
@@ -306,8 +306,8 @@ public class Person extends Party {
     
     //helpers
     @Programmatic
-    public void newNeed(final String needDescription, final Person needOwner){
-        needs.newNeed(needDescription, needOwner);
+    public void newNeed(final String needDescription, final Person needOwner, final String ownedBy){
+        needs.newNeed(needDescription, needOwner, ownedBy);
     }
     
     @Programmatic

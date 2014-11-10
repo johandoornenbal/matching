@@ -17,7 +17,7 @@ public class SocratesDemoFixture extends FixtureScript {
     @Override
     protected void execute(ExecutionContext executionContext) {
         // prereqs
-        execute(new TearDownFixture(), executionContext);
+//        execute(new TearDownFixture(), executionContext);
         
         // create
         execute(new PersonForJohanDo(), executionContext);

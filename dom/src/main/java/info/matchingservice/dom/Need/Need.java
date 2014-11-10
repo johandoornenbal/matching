@@ -1,10 +1,10 @@
 package info.matchingservice.dom.Need;
 
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Party.Person;
+
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.Party.Person;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -12,7 +12,9 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -24,10 +26,24 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class Need extends MatchingDomainObject<Need> {
+public class Need extends MatchingSecureMutableObject<Need> {
 
     public Need() {
-        super("needDescription");
+        super("ownedBy, needDescription");
+    }
+    
+    private String ownedBy;
+    
+    @Override
+    @Hidden
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
     }
     
     private String needDescription;
@@ -68,19 +84,27 @@ public class Need extends MatchingDomainObject<Need> {
     }
     
     public Need newVacancy(final String vacancyDescription) {
-        newVacancy(vacancyDescription, this);
+        newVacancy(vacancyDescription, this, currentUserName());
         return this;
     }
     
-    // helper
+    // helpers
+    
+    private String currentUserName() {
+        return container.getUser().getName();
+    }
+    
     @Programmatic
-    public void newVacancy(final String vacancyDescription, final Need vacancyOwner) {
-        allvacancies.newVacancy(vacancyDescription, vacancyOwner);
+    public void newVacancy(final String vacancyDescription, final Need vacancyOwner, final String ownedBy) {
+        allvacancies.newVacancy(vacancyDescription, vacancyOwner, ownedBy);
     }
     
     //Injection
     
     @Inject
     Vacancies allvacancies;
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
 
 }
