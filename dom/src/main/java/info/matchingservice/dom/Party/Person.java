@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Party;
 
+import info.matchingservice.dom.Need.Need;
+import info.matchingservice.dom.Need.Needs;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.Testobjects.TestRelatedObject;
@@ -231,6 +233,54 @@ public class Person extends Party {
     public String validateMakeProfile(final String testfield) {
         return validateMakeProfile(testfield, this, getOwnedBy());
     }
+    
+    //END Region> PROFILE /////////////////////////////////////////////////////////////
+    
+    //Region> NEED /////////////////////////////////////////////////////////////
+    
+    private SortedSet<Need> myNeeds = new TreeSet<Need>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "needOwner", dependentElement = "true")
+    public SortedSet<Need> getMyNeeds() {
+        return myNeeds;
+    }
+   
+    public void setMyNeeds(final SortedSet<Need> need) {
+        this.myNeeds = need;
+    }
+    
+    public Person newNeed(final String needDescription) {
+        newNeed(needDescription, this);
+        return this;
+    }
+    
+    public boolean hideNewNeed(final String needDescription) {
+        return hideNewNeed(needDescription, this);
+    }
+    
+    
+    
+    //helpers
+    @Programmatic
+    public void newNeed(final String needDescription, final Person needOwner){
+        needs.newNeed(needDescription, needOwner);
+    }
+    
+    @Programmatic
+    public boolean hideNewNeed(final String needDescription, final Person needOwner){
+        // if you are not the owner
+        if (!needOwner.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        // if you have not Principal Role
+        if (!needOwner.getIsPrincipal()){
+            return true;
+        }
+        return false;
+    }
+    
+    //END Region> NEED /////////////////////////////////////////////////////////////
 
     //Region> testobjects /////////////////////////////////////////////////////////////
     
@@ -463,4 +513,9 @@ public class Person extends Party {
 
     @Inject
     private Profiles profiles;
+    
+    @Inject
+    private Needs needs;
+
+    
 }

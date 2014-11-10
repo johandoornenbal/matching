@@ -19,7 +19,7 @@ import org.apache.isis.applib.annotation.Disabled;
 public abstract class Party extends MatchingSecureMutableObject<Party> {
     
     public Party() {
-        super("uniquePartyId, ownedBy");
+        super("uniquePartyId");
     }
     
     private String uniquePartyId;

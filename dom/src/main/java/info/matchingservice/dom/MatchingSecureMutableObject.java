@@ -23,8 +23,7 @@ import org.apache.isis.applib.annotation.Hidden;
  * <pre>
  * @javax.jdo.annotations.DatastoreIdentity(
  *     strategy = IdGeneratorStrategy.NATIVE,
- *     column = "id")
- * BUT NOT WITH (See reason..)    
+ *     column = "id")  
  * @javax.jdo.annotations.Version(
  *     strategy=VersionStrategy.VERSION_NUMBER, 
  *     column="version")

@@ -1,20 +1,16 @@
 package info.matchingservice.dom.Profile;
 
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.VersionStrategy;
-
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Party.Party;
+
+import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.VersionStrategy;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.Version(
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
-@javax.jdo.annotations.Uniques({
-    @javax.jdo.annotations.Unique(
-            name = "Profile_ID_UNQ", members = "uniqueProfileId")
-})
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findProfileByOwner", language = "JDOQL",
@@ -25,7 +21,7 @@ import info.matchingservice.dom.Party.Party;
 public class Profile extends MatchingSecureMutableObject<Profile> {
 
     public Profile() {
-        super("ownedBy");
+        super("testField");
     }
     
     private String testField;
