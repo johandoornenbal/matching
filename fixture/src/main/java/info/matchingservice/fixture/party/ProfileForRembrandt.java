@@ -12,7 +12,7 @@ public class ProfileForRembrandt extends ProfileAbstract {
         createProfile(
                 "Profile of Rembrandt",
                 persons.allPersons().get(1),
-                "rembrant",
+                "rembrandt",
                 executionContext
                 );
     }

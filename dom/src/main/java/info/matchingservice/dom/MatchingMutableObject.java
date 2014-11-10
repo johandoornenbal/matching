@@ -47,8 +47,7 @@ public abstract class MatchingMutableObject<T extends MatchingDomainObject<T>>
         final String id = objectIdStr.split("\\[OID\\]")[0];
         return id;
     }
-    
-    
+        
     // //////////////////////////////////////
 
     @Hidden

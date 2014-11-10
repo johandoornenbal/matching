@@ -2,12 +2,16 @@ package info.matchingservice.dom;
 
 import java.util.List;
 
+import javax.jdo.annotations.DiscriminatorStrategy;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import com.google.common.base.Objects;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Bookmarkable;
+import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
@@ -26,8 +30,13 @@ import org.apache.isis.applib.query.QueryDefault;
  *
  * @version $Rev$ $Date$
  */
-@javax.jdo.annotations.PersistenceCapable
-@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.DatastoreIdentity(
+        strategy = IdGeneratorStrategy.NATIVE,
+        column = "id")
+@javax.jdo.annotations.Discriminator(
+        strategy = DiscriminatorStrategy.CLASS_NAME,
+        column = "discriminator")
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findMatchingTrustedContact", language = "JDOQL",
@@ -44,6 +53,20 @@ import org.apache.isis.applib.query.QueryDefault;
 public class MatchingTrustedContact extends MatchingSecureMutableObject<MatchingTrustedContact> {
     public MatchingTrustedContact() {
         super("ownedBy");
+    }
+    
+    private String ownedBy;
+    
+    @Override
+    @Hidden
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
     }
     
     /**

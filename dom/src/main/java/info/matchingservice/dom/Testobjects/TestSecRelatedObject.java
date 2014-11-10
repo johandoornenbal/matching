@@ -3,6 +3,9 @@ package info.matchingservice.dom.Testobjects;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.VersionStrategy;
 
+import org.apache.isis.applib.annotation.Disabled;
+import org.apache.isis.applib.annotation.Hidden;
+
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Party.Person;
 
@@ -18,6 +21,21 @@ public class TestSecRelatedObject extends MatchingSecureMutableObject<TestSecRel
     public TestSecRelatedObject() {
         super("testVeld");
     }
+    
+    private String ownedBy;
+    
+    @Override
+    @Hidden
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
+    }
+    
     
     private String testVeld;
     

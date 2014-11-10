@@ -1,8 +1,5 @@
 package info.matchingservice.dom;
 
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import com.google.common.base.Objects;
 
 import org.apache.isis.applib.DomainObjectContainer;
@@ -39,15 +36,9 @@ import org.apache.isis.applib.annotation.Hidden;
  * will end up putting a <tt>version</tt> column in both tables, and they are
  * not kept in sync).
  */
-@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
 public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject<T>>
-        extends MatchingMutableObject<T> {
+        extends MatchingMutableObject<T>
+        implements GetOwnedBy {
 
     public MatchingSecureMutableObject(final String keyProperties) {
         super(keyProperties);
@@ -77,7 +68,6 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
     private String ownedBy;
 
     @Hidden
-    @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     public String getOwnedBy() {
         return ownedBy;

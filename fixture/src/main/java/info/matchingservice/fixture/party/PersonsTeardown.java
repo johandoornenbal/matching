@@ -9,8 +9,7 @@ public class PersonsTeardown extends FixtureScript {
     protected void execute(ExecutionContext executionContext) { 
         isisJdoSupport.executeUpdate("delete from \"Role\"");
         isisJdoSupport.executeUpdate("delete from \"Profile\"");
-        isisJdoSupport.executeUpdate("delete from \"Person\"");
-        isisJdoSupport.executeUpdate("delete from \"Party\"");
+        isisJdoSupport.executeUpdate("delete from \"Person\"");     
     }
     
     @javax.inject.Inject

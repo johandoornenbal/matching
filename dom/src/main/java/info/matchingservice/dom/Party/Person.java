@@ -12,11 +12,15 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
-import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.DiscriminatorStrategy;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
+import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
@@ -26,8 +30,20 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 
-@javax.jdo.annotations.PersistenceCapable
-@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.DatastoreIdentity(
+        strategy = IdGeneratorStrategy.NATIVE,
+        column = "id")
+@javax.jdo.annotations.Discriminator(
+        strategy = DiscriminatorStrategy.CLASS_NAME,
+        column = "discriminator")
+@javax.jdo.annotations.Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
+@javax.jdo.annotations.Uniques({
+    @javax.jdo.annotations.Unique(
+            name = "Party_ID_UNQ", members = "uniquePartyId")
+})
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findPersonUnique", language = "JDOQL",
@@ -47,6 +63,33 @@ import org.apache.isis.applib.util.TitleBuffer;
 })
 @AutoComplete(repository=Persons.class,  action="autoComplete")
 public class Person extends Party {
+    
+    private String ownedBy;
+    
+    @Override
+    @Hidden
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
+    }
+    
+    private String uniquePartyId;
+    
+    @Override
+    @Disabled
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public String getUniquePartyId() {
+        return uniquePartyId;
+    }
+    
+    public void setUniquePartyId(final String id) {
+        this.uniquePartyId = id;
+    }
     
     public String title() {
         return this.getLastName() + ", " + this.getFirstName() + " " + this.getMiddleName();

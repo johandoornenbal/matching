@@ -26,7 +26,7 @@ public class MatchingDemoFixture extends FixtureScript {
     @Override
     protected void execute(ExecutionContext executionContext) {
         // prereqs
-        executeChild(new PersonsTeardown(), executionContext);
+//        executeChild(new PersonsTeardown(), executionContext);
         
         // create
         executeChild(new PersonForFrans(), executionContext);

@@ -1,7 +1,7 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Party.Party;
+import info.matchingservice.dom.Party.Person;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class Profiles extends MatchingDomainService<Profile> {
     @Programmatic //newProfile can now be made by fixtures
     public Profile newProfile(
             final String testfield,
-            final Party profileowner,
+            final Person profileowner,
             final String ownedBy
             ){
         final Profile newProfile = newTransientInstance(Profile.class);
