@@ -14,7 +14,7 @@ public class RolesForFrans extends RoleAbstract {
                 );
         
         createRole(
-                RoleType.PROFESSIONAL, 
+                RoleType.PRINCIPAL, 
                 "frans",
                 executionContext
                 );

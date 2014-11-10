@@ -1,11 +1,16 @@
 package info.matchingservice.fixture;
 
+import info.matchingservice.fixture.need.NeedForFrans;
+import info.matchingservice.fixture.need.NeedForRembrandt;
+import info.matchingservice.fixture.need.VacanciesForFrans;
+import info.matchingservice.fixture.need.VacanciesForRembrandt;
+import info.matchingservice.fixture.need.VacancyProfilesForFrans;
+import info.matchingservice.fixture.need.VacancyProfilesForRembrandt;
 import info.matchingservice.fixture.party.PersonForAntoni;
 import info.matchingservice.fixture.party.PersonForFrans;
 import info.matchingservice.fixture.party.PersonForGerard;
 import info.matchingservice.fixture.party.PersonForMichiel;
 import info.matchingservice.fixture.party.PersonForRembrandt;
-import info.matchingservice.fixture.party.PersonsTeardown;
 import info.matchingservice.fixture.party.ProfileForFrans;
 import info.matchingservice.fixture.party.ProfileForGerard;
 import info.matchingservice.fixture.party.ProfileForRembrandt;
@@ -26,7 +31,7 @@ public class MatchingDemoFixture extends FixtureScript {
     @Override
     protected void execute(ExecutionContext executionContext) {
         // prereqs
-//        executeChild(new PersonsTeardown(), executionContext);
+//        executeChild(new TeardownFixture(), executionContext);
         
         // create
         executeChild(new PersonForFrans(), executionContext);
@@ -42,6 +47,12 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new ProfileForFrans(), executionContext);
         executeChild(new ProfileForRembrandt(), executionContext);
         executeChild(new ProfileForGerard(), executionContext);
+        executeChild(new NeedForFrans(), executionContext);
+        executeChild(new NeedForRembrandt(), executionContext);
+        executeChild(new VacanciesForFrans(), executionContext);
+        executeChild(new VacanciesForRembrandt(), executionContext);
+        executeChild(new VacancyProfilesForFrans(), executionContext);
+        executeChild(new VacancyProfilesForRembrandt(), executionContext);
     }
 
 }

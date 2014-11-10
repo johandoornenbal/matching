@@ -42,7 +42,7 @@ public class RoleTest extends MatchingIntegrationTest {
     
     public static class NewRole extends RoleTest {
         
-        private static final RoleType ROLE = RoleType.PRINCIPAL;
+        private static final RoleType ROLE = RoleType.PROFESSIONAL;
         private static final String USERNAME = "frans";
         
         Role r1;
@@ -66,7 +66,7 @@ public class RoleTest extends MatchingIntegrationTest {
     
     public static class ExistingRole extends RoleTest {
         
-        private static final RoleType ROLE = RoleType.PRINCIPAL;
+        private static final RoleType ROLE = RoleType.PROFESSIONAL;
         private static final String USERNAME = "frans";
         
         Role r1;
