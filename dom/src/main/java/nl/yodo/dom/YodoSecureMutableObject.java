@@ -42,16 +42,16 @@ import org.apache.isis.applib.annotation.Hidden;
  * will end up putting a <tt>version</tt> column in both tables, and they are
  * not kept in sync).
  */
-@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
-@javax.jdo.annotations.Version(
-        strategy = VersionStrategy.VERSION_NUMBER,
-        column = "version")
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
+//@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+//@javax.jdo.annotations.DatastoreIdentity(
+//        strategy = IdGeneratorStrategy.NATIVE,
+//        column = "id")
+//@javax.jdo.annotations.Version(
+//        strategy = VersionStrategy.VERSION_NUMBER,
+//        column = "version")
+//@javax.jdo.annotations.Discriminator(
+//        strategy = DiscriminatorStrategy.CLASS_NAME,
+//        column = "discriminator")
 public abstract class YodoSecureMutableObject<T extends YodoDomainObject<T>>
         extends YodoMutableObject<T> {
 
@@ -86,7 +86,7 @@ public abstract class YodoSecureMutableObject<T extends YodoDomainObject<T>>
     private String ownedBy;
 
     @Hidden
-    @javax.jdo.annotations.Column(allowsNull = "false")
+//    @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     public String getOwnedBy() {
         return ownedBy;
