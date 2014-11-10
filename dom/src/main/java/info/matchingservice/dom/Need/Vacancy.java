@@ -106,7 +106,7 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
     
     @Programmatic
     public void newVacancyProfile(final String vacancyProfileDescription, final Vacancy vacancyProfileOwner, final String ownedBy) {
-        vacancyprofiles.newVacancyProfile(vacancyDescription, vacancyProfileOwner, ownedBy);
+        vacancyprofiles.newVacancyProfile(vacancyProfileDescription, vacancyProfileOwner, ownedBy);
     }
     
     @Programmatic
