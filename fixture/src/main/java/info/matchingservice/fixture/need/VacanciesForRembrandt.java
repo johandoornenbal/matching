@@ -10,19 +10,19 @@ public class VacanciesForRembrandt extends VacancyAbstract {
     protected void execute(ExecutionContext executionContext) {
 
         createVacancy(
-                "Een gezette corporaal in het bezit van goudkleurig uniform",
+                "Een gezette corporaal",
                 needs.allNeeds().get(2),
                 "rembrandt",
                 executionContext
                 );
         createVacancy(
-                "Een lansdrager in het bezit van lans",
+                "Een lansdrager",
                 needs.allNeeds().get(2),
                 "rembrandt",
                 executionContext
                 );
         createVacancy(
-                "Hond die goed stil kan zitten",
+                "Hond",
                 needs.allNeeds().get(2),
                 "rembrandt",
                 executionContext

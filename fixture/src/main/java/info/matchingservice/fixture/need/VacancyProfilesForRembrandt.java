@@ -16,13 +16,13 @@ public class VacancyProfilesForRembrandt extends VacancyProfileAbstract {
                 executionContext
                 );
         createVacancyProfile(
-                "Man met lans. Leeftijd niet van belang.",
+                "Man met lans. Leeftijd niet van belang. Kan goed stilstaan",
                 vacs.allVacancies().get(4),
                 "rembrandt",
                 executionContext
                 );
         createVacancyProfile(
-                "Bruin; middelgroot; geen poedel.",
+                "Bruin; middelgroot; geen poedel; kan goed stilzitten.",
                 vacs.allVacancies().get(5),
                 "rembrandt",
                 executionContext

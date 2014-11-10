@@ -14,6 +14,7 @@ import javax.jdo.annotations.Persistent;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -49,6 +50,7 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
     private String vacancyDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MultiLine
     public String getVacancyDescription(){
         return vacancyDescription;
     }

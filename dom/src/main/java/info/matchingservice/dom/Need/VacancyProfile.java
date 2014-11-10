@@ -8,6 +8,7 @@ import javax.jdo.annotations.IdentityType;
 
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.MultiLine;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(
@@ -46,6 +47,7 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
     private String vacancyProfileDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MultiLine
     public String getVacancyProfileDescription(){
         return vacancyProfileDescription;
     }

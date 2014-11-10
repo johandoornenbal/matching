@@ -2,6 +2,7 @@ package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import info.matchingservice.dom.Need.Needs;
 import info.matchingservice.dom.Party.Person;
 import info.matchingservice.dom.Party.Persons;
 import info.matchingservice.fixture.MatchingTestsFixture;
@@ -319,4 +320,38 @@ public class PersonTest extends MatchingIntegrationTest {
         }
         
     }
+    
+    public static class makeNeeds extends PersonTest {
+        
+        private static final String LAST_NAME = "Test1";
+        private static final String MIDDLE_NAME = "van der";
+        private static final String FIRST_NAME = "T.";
+        private static final String UNIQUE_ID = "321";
+        private static final String OWNED_BY = "test1";
+        
+        Person p1;
+        Person p2;
+        
+        @Before
+        public void setUp() throws Exception {
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p1.newNeed("Ik zoek iemand", p1, OWNED_BY);
+            p2 = persons.allPersons().get(0); // FRANS HALS
+        }
+        
+        @Test
+        public void hasNeeds() throws Exception {
+            Integer maxindex = needs.allNeeds().size() - 1;
+            assertThat(needs.allNeeds().get(maxindex).getNeedDescription(), is("Ik zoek iemand"));
+            assertThat(needs.allNeeds().get(maxindex).getNeedOwner(), is(p1));
+            assertThat(needs.allNeeds().get(maxindex).getOwnedBy(), is(OWNED_BY));
+            assertThat(p1.getMyNeeds().size(), is(1));
+            assertThat(p2.getMyNeeds().size(), is(2));
+        }
+        
+        @Inject
+        Needs needs;
+        
+    }
+    
 }
