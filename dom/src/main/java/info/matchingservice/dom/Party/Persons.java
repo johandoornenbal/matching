@@ -40,7 +40,7 @@ public class Persons extends MatchingDomainService<Person> {
             final @Optional  @Named("tussen") String middleName,
             final @Named("Achternaam") String lastName
             ) {
-        return newPerson(uniquePartyId, firstName, lastName, middleName, currentUserName()); // see region>helpers
+        return newPerson(uniquePartyId, firstName, middleName, lastName, currentUserName()); // see region>helpers
     }
     
     public boolean hideNewPerson() {

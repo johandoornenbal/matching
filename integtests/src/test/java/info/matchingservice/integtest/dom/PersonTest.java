@@ -316,7 +316,7 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p2.hideMakeProfile("", p2, p2.getOwnedBy()), is(true));
             assertThat(p2.validateMakeProfile("", p2, p2.getOwnedBy()), is("You already have a profile"));
             assertThat(p2.getProfile().size(), is(1)); // This one works; was already set up with fixtures
-            assertThat(p2.getProfile().first().getTestField(), is("Profile of Frans Hals"));
+            assertThat(p2.getProfile().first().getProfileName(), is("Profile of Frans Hals"));
         }
         
     }

@@ -59,7 +59,7 @@ public class NeedTest extends MatchingIntegrationTest {
         @Before
         public void setUp() throws Exception {
             n1 = needs.allNeeds().get(0);
-            n1.newVacancy("Test vacancy", "", n1, USERNAME);
+            n1.newVacancy("Test vacancy", "", 1, n1, USERNAME);
         }
         
         @Test
@@ -87,7 +87,7 @@ public class NeedTest extends MatchingIntegrationTest {
             v1 = n1.getVacancies().last();
             assertThat(v1.getVacancyDescription(), is(VACANCYDESCRIPTION));
             assertThat(v1.getOwnedBy(), is(USERNAME));
-            assertThat(v1.getVacancyProfile().size(), is(1));
+            assertThat(v1.getVacancyProfileElement().size(), is(1));
         }
     }
     
@@ -108,7 +108,7 @@ public class NeedTest extends MatchingIntegrationTest {
             Frans = persons.allPersons().get(0);
             n1 = needs.allNeeds().get(0);
             v2 = n1.getVacancies().last();
-            n1.newVacancy(TEST_VACANCY_DECRIPTION, TEST_VACANCY_MATCHINGTEXT, n1, USERNAME);
+            n1.newVacancy(TEST_VACANCY_DECRIPTION, TEST_VACANCY_MATCHINGTEXT, 2, n1, USERNAME);
             n1 = needs.allNeeds().get(0); // get n1 again
             v1 = n1.getVacancies().last(); // new vacancy
             v1.newVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1, USERNAME);
@@ -122,9 +122,9 @@ public class NeedTest extends MatchingIntegrationTest {
             assertThat(n1.getVacancies().last().getVacancyDescription(), is(TEST_VACANCY_DECRIPTION));
             assertThat(n1.getVacancies().last().getTestFieldForMatching(), is(TEST_VACANCY_MATCHINGTEXT));
             assertThat(n1.getVacancies().last().getOwnedBy(), is(USERNAME));
-            assertThat(v1.getVacancyProfile().size(), is(1));
-            assertThat(v1.getVacancyProfile().last().getVacancyProfileElementDescription(), is(TEST_VACANCYPROFILEELEMENT_DESCR));
-            assertThat(v1.getVacancyProfile().last().getOwnedBy(), is(USERNAME));
+            assertThat(v1.getVacancyProfileElement().size(), is(1));
+            assertThat(v1.getVacancyProfileElement().last().getVacancyProfileElementDescription(), is(TEST_VACANCYPROFILEELEMENT_DESCR));
+            assertThat(v1.getVacancyProfileElement().last().getOwnedBy(), is(USERNAME));
             // tests if action addProfileElement will be hidden. This may alter because some elements may be repeated...
             assertThat(v1.hideNewVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1), is(true));
             assertThat(v1.validateNewVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1), is("This vacancy has this element already!"));

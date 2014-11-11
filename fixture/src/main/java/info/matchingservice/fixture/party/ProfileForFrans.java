@@ -11,6 +11,8 @@ public class ProfileForFrans extends ProfileAbstract {
 
         createProfile(
                 "Profile of Frans Hals",
+                "Jonge man met ruime penseelvoorraad",
+                5,
                 persons.allPersons().get(0),
                 "frans",
                 executionContext

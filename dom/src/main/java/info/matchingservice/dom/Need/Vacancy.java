@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Need;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Match.Match;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -12,6 +13,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
@@ -27,6 +29,7 @@ import org.apache.isis.applib.query.QueryDefault;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
+@AutoComplete(repository=Vacancies.class,  action="autoComplete")
 public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
 
     public Vacancy() {
@@ -71,6 +74,17 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
         this.testFieldForMatching = testtext;
     }
     
+    private Integer testFigureForMatching;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getTestFigureForMatching(){
+        return testFigureForMatching;
+    }
+    
+    public void setTestFigureForMatching(final Integer testfigure) {
+        this.testFigureForMatching = testfigure;
+    }
+    
     private Need vacancyOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -83,18 +97,19 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
         this.vacancyOwner = vacancyOwner;
     }
     
-    // Region> VacanciesProfiles
+    // Region> VacanciesProfileElements
         
-    private SortedSet<VacancyProfileElement> vacancyprofile = new TreeSet<VacancyProfileElement>();
+    private SortedSet<VacancyProfileElement> vacancyProfileElement = new TreeSet<VacancyProfileElement>();
     
+    @Hidden
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "vacancyProfileElementOwner", dependentElement = "true")
-    public SortedSet<VacancyProfileElement> getVacancyProfile() {
-        return vacancyprofile;
+    public SortedSet<VacancyProfileElement> getVacancyProfileElement() {
+        return vacancyProfileElement;
     }
     
-    public void setVacancyProfile(final SortedSet<VacancyProfileElement> vac){
-        this.vacancyprofile = vac;
+    public void setVacancyProfileElement(final SortedSet<VacancyProfileElement> vac){
+        this.vacancyProfileElement = vac;
     }
     
     public Vacancy newVacancyProfileElement(final String vacancyProfileElementDescription) {
@@ -110,10 +125,28 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
         return validateNewVacancyProfileElement(vacancyProfileElementDescription, this);
     }
     
+    //Region Matches
+    
+    private SortedSet<Match> matches = new TreeSet<Match>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "matchInitiator", dependentElement = "true")
+    public SortedSet<Match> getMatches() {
+        return matches;
+    }
+    
+    public void setMatches(final SortedSet<Match> match) {
+        this.matches = match;
+    }
+    
     // helpers
     
     private String currentUserName() {
         return container.getUser().getName();
+    }
+    
+    public String toString() {
+        return "Vacancy: " + this.vacancyDescription;
     }
     
     @Programmatic

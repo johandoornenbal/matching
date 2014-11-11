@@ -14,11 +14,12 @@ public abstract class VacancyAbstract extends FixtureScript {
     protected Vacancy createVacancy(
             String vacancyDescription,
             String testTextForMatching,
+            Integer testfigure,
             Need vacancyOwner,
             String user,
             ExecutionContext executionContext
             ) {
-        Vacancy newVac = vacs.newVacancy(vacancyDescription, testTextForMatching, vacancyOwner, user);
+        Vacancy newVac = vacs.newVacancy(vacancyDescription, testTextForMatching, testfigure, vacancyOwner, user);
         return executionContext.add(this,newVac);
     }
     

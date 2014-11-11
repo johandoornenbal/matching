@@ -33,7 +33,25 @@ public class Profiles extends MatchingDomainService<Profile> {
             final String ownedBy
             ){
         final Profile newProfile = newTransientInstance(Profile.class);
-        newProfile.setTestField(testfield);
+        newProfile.setProfileName(testfield);
+        newProfile.setProfileOwner(profileowner);
+        newProfile.setOwnedBy(ownedBy);
+        persist(newProfile);
+        return newProfile;
+    }
+    
+    @Programmatic //newProfile can now be made by fixtures
+    public Profile newProfile(
+            final String testfield,
+            final String testFieldForMatching,
+            final Integer testfigure,
+            final Person profileowner,
+            final String ownedBy
+            ){
+        final Profile newProfile = newTransientInstance(Profile.class);
+        newProfile.setProfileName(testfield);
+        newProfile.setTestFieldForMatching(testFieldForMatching);
+        newProfile.setTestFigureForMatching(testfigure);
         newProfile.setProfileOwner(profileowner);
         newProfile.setOwnedBy(ownedBy);
         persist(newProfile);

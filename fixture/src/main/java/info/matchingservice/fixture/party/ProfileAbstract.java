@@ -12,12 +12,14 @@ public abstract class ProfileAbstract extends FixtureScript {
     protected abstract void execute(ExecutionContext executionContext);
     
     protected Profile createProfile(
-            String testString,
+            String testProfileName,
+            String testStringForMatching,
+            Integer testfigure,
             Person profileOwner,
             String user,
             ExecutionContext executionContext
             ) {
-        Profile newProfile = profiles.newProfile(testString, profileOwner, user);
+        Profile newProfile = profiles.newProfile(testProfileName, testStringForMatching, testfigure, profileOwner, user);
         return executionContext.add(this,newProfile);
     }
     

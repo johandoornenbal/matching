@@ -264,8 +264,8 @@ public class Person extends Party {
         this.profile = profile;
     }
    
-    public Person makeProfile(final String testfield) {
-        makeProfile(testfield, this, getOwnedBy());
+    public Person makeProfile(final String profileName) {
+        makeProfile(profileName, this, getOwnedBy());
         return this;
     }
    
