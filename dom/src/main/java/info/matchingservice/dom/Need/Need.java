@@ -85,8 +85,8 @@ public class Need extends MatchingSecureMutableObject<Need> {
         this.vacancies = vac;
     }
     
-    public Need newVacancy(final String vacancyDescription) {
-        newVacancy(vacancyDescription, this, currentUserName());
+    public Need newVacancy(final String vacancyDescription, final String testTextForMatching) {
+        newVacancy(vacancyDescription, testTextForMatching, this, currentUserName());
         return this;
     }
     
@@ -97,8 +97,8 @@ public class Need extends MatchingSecureMutableObject<Need> {
     }
     
     @Programmatic
-    public void newVacancy(final String vacancyDescription, final Need vacancyOwner, final String ownedBy) {
-        allvacancies.newVacancy(vacancyDescription, vacancyOwner, ownedBy);
+    public void newVacancy(final String vacancyDescription, final String testTextForMatching, final Need vacancyOwner, final String ownedBy) {
+        allvacancies.newVacancy(vacancyDescription, testTextForMatching, vacancyOwner, ownedBy);
     }
     
     //Injection

@@ -23,11 +23,13 @@ public class Vacancies extends MatchingDomainService<Vacancy> {
     @Programmatic
     public Vacancy newVacancy(
             final String vacancyDescription,
+            final String testTextForMatching,
             final Need vacancyOwner,
             final String ownedBy
             ){
         final Vacancy newVac = newTransientInstance(Vacancy.class);
         newVac.setVacancyDescription(vacancyDescription);
+        newVac.setTestFieldForMatching(testTextForMatching);
         newVac.setVacancyOwner(vacancyOwner);
         newVac.setOwnedBy(ownedBy);
         persist(newVac);

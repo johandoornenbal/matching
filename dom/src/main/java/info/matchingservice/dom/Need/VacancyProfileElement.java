@@ -19,15 +19,15 @@ import org.apache.isis.applib.annotation.MultiLine;
         column = "discriminator")
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
-            name = "findVacancyProfileByOwnerVacancy", language = "JDOQL",
+            name = "findVacancyProfileElementByOwnerVacancy", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Need.VacancyProfile "
-                    + "WHERE vacancyProfileOwner == :vacancyProfileOwner")
+                    + "WHERE vacancyProfileElementOwner == :vacancyProfileElementOwner")
 })
-public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> {
+public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyProfileElement> {
 
-    public VacancyProfile() {
-        super("ownedBy, vacancyProfileDescription");
+    public VacancyProfileElement() {
+        super("ownedBy, vacancyProfileElementDescription");
     }
     
     private String ownedBy;
@@ -44,28 +44,28 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
         this.ownedBy = owner;
     }
     
-    private String vacancyProfileDescription;
+    private String vacancyProfileElementDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MultiLine
-    public String getVacancyProfileDescription(){
-        return vacancyProfileDescription;
+    public String getVacancyProfileElementDescription(){
+        return vacancyProfileElementDescription;
     }
     
-    public void setVacancyProfileDescription(final String description) {
-        this.vacancyProfileDescription = description;
+    public void setVacancyProfileElementDescription(final String description) {
+        this.vacancyProfileElementDescription = description;
     }
     
-    private Vacancy vacancyProfileOwner;
+    private Vacancy vacancyProfileElementOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    public Vacancy getVacancyProfileOwner() {
-        return vacancyProfileOwner;
+    public Vacancy getVacancyProfileElementOwner() {
+        return vacancyProfileElementOwner;
     }
     
-    public void setVacancyProfileOwner(final Vacancy vacancyProfileOwner) {
-        this.vacancyProfileOwner = vacancyProfileOwner;
+    public void setVacancyProfileElementOwner(final Vacancy vacancyProfileOwner) {
+        this.vacancyProfileElementOwner = vacancyProfileOwner;
     }
 
 }

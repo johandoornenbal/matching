@@ -59,6 +59,18 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
         this.vacancyDescription = description;
     }
     
+    private String testFieldForMatching;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @MultiLine
+    public String getTestFieldForMatching(){
+        return testFieldForMatching;
+    }
+    
+    public void setTestFieldForMatching(final String testtext) {
+        this.testFieldForMatching = testtext;
+    }
+    
     private Need vacancyOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -71,31 +83,31 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
         this.vacancyOwner = vacancyOwner;
     }
     
-    // Region> Vacancies
-    
-    private SortedSet<VacancyProfile> vacancyprofile = new TreeSet<VacancyProfile>();
+    // Region> VacanciesProfiles
+        
+    private SortedSet<VacancyProfileElement> vacancyprofile = new TreeSet<VacancyProfileElement>();
     
     @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "vacancyProfileOwner", dependentElement = "true")
-    public SortedSet<VacancyProfile> getVacancyProfile() {
+    @Persistent(mappedBy = "vacancyProfileElementOwner", dependentElement = "true")
+    public SortedSet<VacancyProfileElement> getVacancyProfile() {
         return vacancyprofile;
     }
     
-    public void setVacancyProfile(final SortedSet<VacancyProfile> vac){
+    public void setVacancyProfile(final SortedSet<VacancyProfileElement> vac){
         this.vacancyprofile = vac;
     }
     
-    public Vacancy newVacancyProfile(final String vacancyProfileDescription) {
-        newVacancyProfile(vacancyProfileDescription, this, currentUserName());
+    public Vacancy newVacancyProfileElement(final String vacancyProfileElementDescription) {
+        newVacancyProfileElement(vacancyProfileElementDescription, this, currentUserName());
         return this;
     }
     
-    public boolean hideNewVacancyProfile(final String vacancyProfileDescription){
-        return hideNewVacancyProfile(vacancyProfileDescription, this);
+    public boolean hideNewVacancyProfileElement(final String vacancyProfileElementDescription){
+        return hideNewVacancyProfileElement(vacancyProfileElementDescription, this);
     }
     
-    public String validateNewVacancyProfile(final String vacancyProfileDescription){
-        return validateNewVacancyProfile(vacancyProfileDescription, this);
+    public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription){
+        return validateNewVacancyProfileElement(vacancyProfileElementDescription, this);
     }
     
     // helpers
@@ -105,40 +117,40 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
     }
     
     @Programmatic
-    public void newVacancyProfile(final String vacancyProfileDescription, final Vacancy vacancyProfileOwner, final String ownedBy) {
-        vacancyprofiles.newVacancyProfile(vacancyProfileDescription, vacancyProfileOwner, ownedBy);
+    public void newVacancyProfileElement(final String vacancyProfileElementDescription, final Vacancy vacancyProfileOwner, final String ownedBy) {
+        vacancyprofiles.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy);
     }
     
     @Programmatic
-    public boolean hideNewVacancyProfile(final String vacancyProfileDescription, final Vacancy vacancyProfileOwner){
+    public boolean hideNewVacancyProfileElement(final String vacancyProfileElementDescription, final Vacancy vacancyProfileElementOwner){
         // if you have already profile
-        QueryDefault<VacancyProfile> query = 
+        QueryDefault<VacancyProfileElement> query = 
                 QueryDefault.create(
-                        VacancyProfile.class, 
-                    "findVacancyProfileByOwnerVacancy", 
-                    "vacancyProfileOwner", vacancyProfileOwner);
+                        VacancyProfileElement.class, 
+                    "findVacancyProfileElementByOwnerVacancy", 
+                    "vacancyProfileElementOwner", vacancyProfileElementOwner);
         return container.firstMatch(query) != null?
                 true        
                 :false;
     }
     
     @Programmatic
-    public String validateNewVacancyProfile(final String vacancyProfileDescription, final Vacancy vacancyProfileOwner){
+    public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription, final Vacancy vacancyProfileElementOwner){
         // if you have already profile
-        QueryDefault<VacancyProfile> query = 
+        QueryDefault<VacancyProfileElement> query = 
                 QueryDefault.create(
-                        VacancyProfile.class, 
-                    "findVacancyProfileByOwnerVacancy", 
-                    "vacancyProfileOwner", vacancyProfileOwner);
+                        VacancyProfileElement.class, 
+                    "findVacancyProfileElementByOwnerVacancy", 
+                    "vacancyProfileElementOwner", vacancyProfileElementOwner);
         return container.firstMatch(query) != null?
-                "This vacancy has a profile already!"        
+                "This vacancy has this element already!"        
                 :null;
     }
     
     //Injects
     
     @Inject
-    VacancyProfiles vacancyprofiles;
+    VacancyProfileElements vacancyprofiles;
         
     @javax.inject.Inject
     private DomainObjectContainer container;

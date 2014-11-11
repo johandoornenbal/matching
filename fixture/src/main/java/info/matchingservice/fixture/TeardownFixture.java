@@ -9,7 +9,7 @@ public class TeardownFixture extends FixtureScript {
     protected void execute(ExecutionContext executionContext) { 
         isisJdoSupport.executeUpdate("delete from \"Role\"");
         isisJdoSupport.executeUpdate("delete from \"Profile\"");
-        isisJdoSupport.executeUpdate("delete from \"VacancyProfile\"");
+        isisJdoSupport.executeUpdate("delete from \"VacancyProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"Vacancy\"");
         isisJdoSupport.executeUpdate("delete from \"Need\"");
         isisJdoSupport.executeUpdate("delete from \"Person\"");     

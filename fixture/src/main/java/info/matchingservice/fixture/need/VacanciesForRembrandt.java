@@ -11,18 +11,21 @@ public class VacanciesForRembrandt extends VacancyAbstract {
 
         createVacancy(
                 "Een gezette corporaal",
+                "man van middelbare leeftijd; gezet of ronduit dik; in het bezit van gouden uniform; kan goed stilstaan; onderkin is pre",
                 needs.allNeeds().get(2),
                 "rembrandt",
                 executionContext
                 );
         createVacancy(
                 "Een lansdrager",
+                "Man in het bezit van lans. Leeftijd niet van belang. Kan goed stilstaan. Lengte groter dan 1.80 is pre.",
                 needs.allNeeds().get(2),
                 "rembrandt",
                 executionContext
                 );
         createVacancy(
                 "Hond",
+                "Woef. Geen chihuahua en/of poedel.",
                 needs.allNeeds().get(2),
                 "rembrandt",
                 executionContext
