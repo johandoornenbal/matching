@@ -48,6 +48,26 @@ public class Match {
         this.calculatedMatchingValue = matchingvalue;
     }
     
+    private String matchedTextDiffs;
+    
+    public String getMatchedTextDiffs() {
+        return matchedTextDiffs;
+    }
+    
+    public void setMatchedTextDiffs(final String difs) {
+        this.matchedTextDiffs = difs;
+    }
+
+    private Integer matchedTextMeasure;
+    
+    public Integer getmatchedTextMeasure() {
+        return matchedTextMeasure;
+    }
+    
+    public void setmatchedTextMeasure(final Integer difs) {
+        this.matchedTextMeasure = difs;
+    }   
+    
     //helpers
     
     public String toString() {
