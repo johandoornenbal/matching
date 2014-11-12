@@ -30,7 +30,9 @@ public class MatchingService {
         List<Match> matches = new ArrayList<Match>();
             for (Profile e : container.allInstances(Profile.class)) {
                 Integer matchValue = 100 - 10*Math.abs(vacancy.getTestFigureForMatching() - e.getTestFigureForMatching());
-                if (matchValue >= 70) {
+                // uitsluiten van dezelfde owner
+                // drempelwaarde is 70
+                if (matchValue >= 70 && !e.getOwnedBy().equals(vacancy.getOwnedBy())) {
                     matches.add(new Match(vacancy, e, matchValue));
                 }
             }
