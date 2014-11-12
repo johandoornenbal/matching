@@ -8,27 +8,27 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "50", repositoryFor = Vacancy.class)
-@Named("Vacancies")
-public class Vacancies extends MatchingDomainService<Vacancy> {
+@DomainService(menuOrder = "50", repositoryFor = VacancyProfile.class)
+@Named("Vacancy Profiles")
+public class VacancyProfiles extends MatchingDomainService<VacancyProfile> {
 
-    public Vacancies() {
-        super(Vacancies.class, Vacancy.class);
+    public VacancyProfiles() {
+        super(VacancyProfiles.class, VacancyProfile.class);
     }
     
-    public List<Vacancy> allVacancies() {
+    public List<VacancyProfile> allVacancyProfiles() {
         return allInstances();
     }
     
     @Programmatic
-    public Vacancy newVacancy(
+    public VacancyProfile newVacancy(
             final String vacancyDescription,
             final String testTextForMatching,
             final Integer testfigure,
             final Need vacancyOwner,
             final String ownedBy
             ){
-        final Vacancy newVac = newTransientInstance(Vacancy.class);
+        final VacancyProfile newVac = newTransientInstance(VacancyProfile.class);
         newVac.setVacancyDescription(vacancyDescription);
         newVac.setTestFieldForMatching(testTextForMatching);
         newVac.setTestFigureForMatching(testfigure);

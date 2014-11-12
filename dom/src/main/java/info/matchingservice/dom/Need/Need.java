@@ -73,15 +73,15 @@ public class Need extends MatchingSecureMutableObject<Need> {
     
     // Region> Vacancies
     
-    private SortedSet<Vacancy> vacancies = new TreeSet<Vacancy>();
+    private SortedSet<VacancyProfile> vacancies = new TreeSet<VacancyProfile>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "vacancyOwner", dependentElement = "true")
-    public SortedSet<Vacancy> getVacancies() {
+    public SortedSet<VacancyProfile> getVacancies() {
         return vacancies;
     }
     
-    public void setVacancies(final SortedSet<Vacancy> vac){
+    public void setVacancies(final SortedSet<VacancyProfile> vac){
         this.vacancies = vac;
     }
     
@@ -108,7 +108,7 @@ public class Need extends MatchingSecureMutableObject<Need> {
     //Injection
     
     @Inject
-    Vacancies allvacancies;
+    VacancyProfiles allvacancies;
     
     @javax.inject.Inject
     private DomainObjectContainer container;

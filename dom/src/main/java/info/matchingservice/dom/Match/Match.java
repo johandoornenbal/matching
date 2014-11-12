@@ -1,6 +1,6 @@
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.Need.Vacancy;
+import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Party.Person;
 import info.matchingservice.dom.Profile.Profile;
 
@@ -11,20 +11,20 @@ import org.apache.isis.applib.annotation.ViewModel;
 @ViewModel
 public class Match {
 
-    public Match(Vacancy matchInitiator, Profile matchingProfile, Integer value) {
+    public Match(VacancyProfile matchInitiator, Profile matchingProfile, Integer value) {
         this.matchInitiator = matchInitiator;
         this.matchingProfile = matchingProfile;
         this.calculatedMatchingValue = value;
     }
     
-    private Vacancy matchInitiator;
+    private VacancyProfile matchInitiator;
     
     @Hidden
-    public Vacancy getMatchInitiator() {
+    public VacancyProfile getMatchInitiator() {
         return matchInitiator;
     }
     
-    public void setMatchInitiator(final Vacancy vac) {
+    public void setMatchInitiator(final VacancyProfile vac) {
         this.matchInitiator = vac;
     }
     

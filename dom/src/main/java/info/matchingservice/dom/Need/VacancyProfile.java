@@ -15,6 +15,7 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
@@ -28,10 +29,11 @@ import org.apache.isis.applib.query.QueryDefault;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-@AutoComplete(repository=Vacancies.class,  action="autoComplete")
-public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
+@AutoComplete(repository=VacancyProfiles.class,  action="autoComplete")
+@Immutable
+public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> {
 
-    public Vacancy() {
+    public VacancyProfile() {
         super("ownedBy, vacancyDescription");
     }
     
@@ -96,6 +98,20 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
         this.vacancyOwner = vacancyOwner;
     }
     
+    // Region actions
+    
+    public VacancyProfile EditTestField(String newString){
+        this.setTestFieldForMatching(newString);
+        return this;
+    }
+    
+    public VacancyProfile EditTestValue(Integer newInteger){
+        this.setTestFigureForMatching(newInteger);
+        return this;
+    }
+    
+    
+    
     // Region> VacanciesProfileElements
         
     private SortedSet<VacancyProfileElement> vacancyProfileElement = new TreeSet<VacancyProfileElement>();
@@ -111,7 +127,7 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
         this.vacancyProfileElement = vac;
     }
     
-    public Vacancy newVacancyProfileElement(final String vacancyProfileElementDescription) {
+    public VacancyProfile newVacancyProfileElement(final String vacancyProfileElementDescription) {
         newVacancyProfileElement(vacancyProfileElementDescription, this, currentUserName());
         return this;
     }
@@ -131,16 +147,16 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
     }
     
     public String toString() {
-        return "Vacancy: " + this.vacancyDescription;
+        return "Vacancy profile: " + this.vacancyDescription;
     }
     
     @Programmatic
-    public void newVacancyProfileElement(final String vacancyProfileElementDescription, final Vacancy vacancyProfileOwner, final String ownedBy) {
+    public void newVacancyProfileElement(final String vacancyProfileElementDescription, final VacancyProfile vacancyProfileOwner, final String ownedBy) {
         vacancyProfileElements.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy);
     }
     
     @Programmatic
-    public boolean hideNewVacancyProfileElement(final String vacancyProfileElementDescription, final Vacancy vacancyProfileElementOwner){
+    public boolean hideNewVacancyProfileElement(final String vacancyProfileElementDescription, final VacancyProfile vacancyProfileElementOwner){
         // if you have already profile
         QueryDefault<VacancyProfileElement> query = 
                 QueryDefault.create(
@@ -153,7 +169,7 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
     }
     
     @Programmatic
-    public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription, final Vacancy vacancyProfileElementOwner){
+    public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription, final VacancyProfile vacancyProfileElementOwner){
         // if you have already profile
         QueryDefault<VacancyProfileElement> query = 
                 QueryDefault.create(

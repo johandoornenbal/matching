@@ -26,7 +26,7 @@ public class VacancyProfileElements extends MatchingDomainService<VacancyProfile
     
     public VacancyProfileElement newVacancyProfileElement(
             final String vacancyProfileElementDescription,
-            final Vacancy vacancyProfileElementOwner,
+            final VacancyProfile vacancyProfileElementOwner,
             final String ownedBy
             ){
         final VacancyProfileElement newVacProf = newTransientInstance(VacancyProfileElement.class);

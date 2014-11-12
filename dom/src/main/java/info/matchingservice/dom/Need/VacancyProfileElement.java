@@ -56,15 +56,15 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
         this.vacancyProfileElementDescription = description;
     }
     
-    private Vacancy vacancyProfileElementOwner;
+    private VacancyProfile vacancyProfileElementOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    public Vacancy getVacancyProfileElementOwner() {
+    public VacancyProfile getVacancyProfileElementOwner() {
         return vacancyProfileElementOwner;
     }
     
-    public void setVacancyProfileElementOwner(final Vacancy vacancyProfileOwner) {
+    public void setVacancyProfileElementOwner(final VacancyProfile vacancyProfileOwner) {
         this.vacancyProfileElementOwner = vacancyProfileOwner;
     }
 

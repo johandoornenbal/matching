@@ -1,7 +1,7 @@
 package info.matchingservice.dom.Match;
 
 import info.matchingservice.dom.Match.diff_match_patch.Diff;
-import info.matchingservice.dom.Need.Vacancy;
+import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Profile.Profile;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class MatchingService {
     @NotContributed(As.ACTION)
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
-    public List<Match> getMatches(Vacancy vacancy) {
+    public List<Match> getMatches(VacancyProfile vacancy) {
         List<Match> matches = new ArrayList<Match>();
             for (Profile e : container.allInstances(Profile.class)) {
                 //matching testFieldForMatching

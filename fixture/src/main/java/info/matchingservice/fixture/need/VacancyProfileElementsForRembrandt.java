@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.need;
 
-import info.matchingservice.dom.Need.Vacancies;
+import info.matchingservice.dom.Need.VacancyProfiles;
 
 import javax.inject.Inject;
 
@@ -11,24 +11,24 @@ public class VacancyProfileElementsForRembrandt extends VacancyProfileElementAbs
 
         createVacancyProfileElement(
                 "Man; Middelbare leeftijd; Dik; in het bezit van gouden uniform; kan goed stilstaan",
-                vacs.allVacancies().get(3),
+                vacs.allVacancyProfiles().get(3),
                 "rembrandt",
                 executionContext
                 );
         createVacancyProfileElement(
                 "Man met lans. Leeftijd niet van belang. Kan goed stilstaan",
-                vacs.allVacancies().get(4),
+                vacs.allVacancyProfiles().get(4),
                 "rembrandt",
                 executionContext
                 );
         createVacancyProfileElement(
                 "Bruin; middelgroot; geen poedel; kan goed stilzitten.",
-                vacs.allVacancies().get(5),
+                vacs.allVacancyProfiles().get(5),
                 "rembrandt",
                 executionContext
                 );
     }
     
     @Inject
-    Vacancies vacs;
+    VacancyProfiles vacs;
 }

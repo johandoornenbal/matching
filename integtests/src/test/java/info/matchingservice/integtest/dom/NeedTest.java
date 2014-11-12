@@ -4,8 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import info.matchingservice.dom.Need.Need;
 import info.matchingservice.dom.Need.Needs;
-import info.matchingservice.dom.Need.Vacancies;
-import info.matchingservice.dom.Need.Vacancy;
+import info.matchingservice.dom.Need.VacancyProfiles;
+import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Need.VacancyProfileElement;
 import info.matchingservice.dom.Party.Person;
 import info.matchingservice.dom.Party.Persons;
@@ -79,7 +79,7 @@ public class NeedTest extends MatchingIntegrationTest {
         private static final String USERNAME = "frans";
         
         Need n1;
-        Vacancy v1;
+        VacancyProfile v1;
         
         @Test
         public void valuesSet() throws Exception {
@@ -99,8 +99,8 @@ public class NeedTest extends MatchingIntegrationTest {
         private static final String TEST_VACANCYPROFILEELEMENT_DESCR = "test element";
         Person Frans;
         Need n1;
-        Vacancy v1; // new vacancy without vacancyprofile
-        Vacancy v2; // has already vacancyprofile
+        VacancyProfile v1; // new vacancy without vacancyprofile
+        VacancyProfile v2; // has already vacancyprofile
         VacancyProfileElement pe1;
         
         @Before
@@ -131,7 +131,7 @@ public class NeedTest extends MatchingIntegrationTest {
         }
         
         @Inject
-        Vacancies vacancies;
+        VacancyProfiles vacancies;
         
     }
         
