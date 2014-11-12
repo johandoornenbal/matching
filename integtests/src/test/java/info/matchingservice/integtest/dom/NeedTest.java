@@ -46,7 +46,7 @@ public class NeedTest extends MatchingIntegrationTest {
             assertThat(n1.getNeedDescription(), is(NEEDDESCRIPTION));
             assertThat(n1.getNeedOwner(), is(Frans));
             assertThat(n1.getOwnedBy(), is(USERNAME));
-            assertThat(n1.getVacancies().size(), is(2));
+            assertThat(n1.getVacancyProfiles().size(), is(2));
         }
     }
     
@@ -65,10 +65,10 @@ public class NeedTest extends MatchingIntegrationTest {
         @Test
         public void valuesSet() throws Exception {
             n1 = needs.allNeeds().get(0);
-            assertThat(n1.getVacancies().size(), is(3));
-            assertThat(n1.getVacancies().last().getVacancyDescription(), is("Test vacancy"));
-            assertThat(n1.getVacancies().last().getVacancyOwner(), is(n1));
-            assertThat(n1.getVacancies().last().getOwnedBy(), is(USERNAME));
+            assertThat(n1.getVacancyProfiles().size(), is(3));
+            assertThat(n1.getVacancyProfiles().last().getVacancyDescription(), is("Test vacancy"));
+            assertThat(n1.getVacancyProfiles().last().getVacancyOwner(), is(n1));
+            assertThat(n1.getVacancyProfiles().last().getOwnedBy(), is(USERNAME));
         }
         
     }
@@ -84,7 +84,7 @@ public class NeedTest extends MatchingIntegrationTest {
         @Test
         public void valuesSet() throws Exception {
             n1 = needs.allNeeds().get(0);
-            v1 = n1.getVacancies().last();
+            v1 = n1.getVacancyProfiles().last();
             assertThat(v1.getVacancyDescription(), is(VACANCYDESCRIPTION));
             assertThat(v1.getOwnedBy(), is(USERNAME));
             assertThat(v1.getVacancyProfileElement().size(), is(1));
@@ -107,21 +107,21 @@ public class NeedTest extends MatchingIntegrationTest {
         public void setUp() throws Exception {
             Frans = persons.allPersons().get(0);
             n1 = needs.allNeeds().get(0);
-            v2 = n1.getVacancies().last();
+            v2 = n1.getVacancyProfiles().last();
             n1.newVacancy(TEST_VACANCY_DECRIPTION, TEST_VACANCY_MATCHINGTEXT, 2, n1, USERNAME);
             n1 = needs.allNeeds().get(0); // get n1 again
-            v1 = n1.getVacancies().last(); // new vacancy
+            v1 = n1.getVacancyProfiles().last(); // new vacancy
             v1.newVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1, USERNAME);
             n1 = needs.allNeeds().get(0); // get n1 again
-            v1 = n1.getVacancies().last(); // new last vacancy with element
+            v1 = n1.getVacancyProfiles().last(); // new last vacancy with element
         }
         
         @Test
         public void valuesSet() throws Exception {
-            assertThat(n1.getVacancies().size(), is(3));
-            assertThat(n1.getVacancies().last().getVacancyDescription(), is(TEST_VACANCY_DECRIPTION));
-            assertThat(n1.getVacancies().last().getTestFieldForMatching(), is(TEST_VACANCY_MATCHINGTEXT));
-            assertThat(n1.getVacancies().last().getOwnedBy(), is(USERNAME));
+            assertThat(n1.getVacancyProfiles().size(), is(3));
+            assertThat(n1.getVacancyProfiles().last().getVacancyDescription(), is(TEST_VACANCY_DECRIPTION));
+            assertThat(n1.getVacancyProfiles().last().getTestFieldForMatching(), is(TEST_VACANCY_MATCHINGTEXT));
+            assertThat(n1.getVacancyProfiles().last().getOwnedBy(), is(USERNAME));
             assertThat(v1.getVacancyProfileElement().size(), is(1));
             assertThat(v1.getVacancyProfileElement().last().getVacancyProfileElementDescription(), is(TEST_VACANCYPROFILEELEMENT_DESCR));
             assertThat(v1.getVacancyProfileElement().last().getOwnedBy(), is(USERNAME));

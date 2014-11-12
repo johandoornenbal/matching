@@ -16,6 +16,7 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -49,8 +50,9 @@ public class Need extends MatchingSecureMutableObject<Need> {
     
     private String needDescription;
     
-    @MultiLine
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MultiLine
+    @Named("Opdracht omschrijving op tafel")
     public String getNeedDescription(){
         return needDescription;
     }
@@ -63,6 +65,7 @@ public class Need extends MatchingSecureMutableObject<Need> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
+    @Named("Opdrachtgever")
     public Person getNeedOwner() {
         return needOwner;
     }
@@ -73,19 +76,21 @@ public class Need extends MatchingSecureMutableObject<Need> {
     
     // Region> Vacancies
     
-    private SortedSet<VacancyProfile> vacancies = new TreeSet<VacancyProfile>();
+    private SortedSet<VacancyProfile> vacancyProfiles = new TreeSet<VacancyProfile>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "vacancyOwner", dependentElement = "true")
-    public SortedSet<VacancyProfile> getVacancies() {
-        return vacancies;
+    @Named("Mijn stoelen")
+    public SortedSet<VacancyProfile> getVacancyProfiles() {
+        return vacancyProfiles;
     }
     
-    public void setVacancies(final SortedSet<VacancyProfile> vac){
-        this.vacancies = vac;
+    public void setVacancyProfiles(final SortedSet<VacancyProfile> vac){
+        this.vacancyProfiles = vac;
     }
     
-    public Need newVacancy(final String vacancyDescription, final String testTextForMatching, final Integer testfigure) {
+    @Named("Nieuwe stoel")
+    public Need newVacancy(final  String vacancyDescription, final String testTextForMatching, final Integer testfigure) {
         newVacancy(vacancyDescription, testTextForMatching, testfigure, this, currentUserName());
         return this;
     }

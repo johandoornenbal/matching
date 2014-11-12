@@ -17,6 +17,7 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
+import org.apache.isis.applib.annotation.Named;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
@@ -92,7 +93,11 @@ public class Person extends Party {
     }
     
     public String title() {
-        return this.getLastName() + ", " + this.getFirstName() + " " + this.getMiddleName();
+        if (getMiddleName()==null) {
+            return this.getFirstName() + " " + this.getLastName();
+        } else {
+            return this.getFirstName() + " " + this.getMiddleName() + " " + this.getLastName();
+        }
     }
     
     
@@ -101,6 +106,7 @@ public class Person extends Party {
     
     @MemberOrder(sequence = "10")
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @Named("Voornaam")
     public String getFirstName() {
         return firstName;
     }
@@ -114,6 +120,7 @@ public class Person extends Party {
     
     @MemberOrder(sequence = "20")
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @Named("Tussen")
     public String getMiddleName() {
         return middleName;
     }
@@ -127,6 +134,7 @@ public class Person extends Party {
     
     @MemberOrder(sequence = "30")
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @Named("Achternaam")
     public String getLastName() {
         return lastName;
     }
@@ -139,6 +147,8 @@ public class Person extends Party {
     
     // Role STUDENT 'Clean' code. Makes use of helpers in Helpers region
     
+    @Named("Rol Student")
+    @MemberOrder(sequence = "40")
     public Person addRoleStudent() {
         addRoleStudent(currentUserName());
         return this;
@@ -148,6 +158,8 @@ public class Person extends Party {
         return hideAddRoleStudent(this, currentUserName());
     }
     
+    @Named("Geen student meer")
+    @MemberOrder(sequence = "41")
     public Person deleteRoleStudent() {
         deleteRoleStudent(currentUserName());;
         return this;
@@ -164,6 +176,8 @@ public class Person extends Party {
 
     // Role PROFESSIONAL 'Clean' code. Makes use of helpers in Helpers region
     
+    @Named("Rol ZP-er")
+    @MemberOrder(sequence = "50")
     public Person addRoleProfessional() {
         addRoleProfessional(currentUserName());
         return this;
@@ -173,6 +187,8 @@ public class Person extends Party {
         return hideAddRoleProfessional(this, currentUserName());
     }
     
+    @Named("Geen ZP-er meer")
+    @MemberOrder(sequence = "51")
     public Person deleteRoleProfessional() {
         deleteRoleProfessional(currentUserName());
         return this;
@@ -189,6 +205,8 @@ public class Person extends Party {
     
     // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region
     
+    @Named("Rol Opdrachtgever")
+    @MemberOrder(sequence = "60")
     public Person addRolePrincipal() {
         addRolePrincipal(currentUserName());
         return this;
@@ -198,6 +216,8 @@ public class Person extends Party {
         return hideAddRolePrincipal(this, currentUserName());
     }
     
+    @Named("Geen opdrachtgever meer")
+    @MemberOrder(sequence = "61")
     public Person deleteRolePrincipal() {
         deleteRolePrincipal(currentUserName());
         return this;
@@ -227,6 +247,7 @@ public class Person extends Party {
     }
     
     @MultiLine(numberOfLines=2)
+    @Named("Rollen")
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsStudent()) {
@@ -256,6 +277,7 @@ public class Person extends Party {
    
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "profileOwner", dependentElement = "true")
+    @Named("Mijn profiel")
     public SortedSet<Profile> getProfile() {
         return profile;
     }
@@ -264,6 +286,7 @@ public class Person extends Party {
         this.profile = profile;
     }
    
+    @Named("Maak een profiel")
     public Person makeProfile(final String profileName) {
         makeProfile(profileName, this, getOwnedBy());
         return this;
@@ -285,6 +308,7 @@ public class Person extends Party {
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "needOwner", dependentElement = "true")
+    @Named("Mijn uitstaande opdrachten (tafels)")
     public SortedSet<Need> getMyNeeds() {
         return myNeeds;
     }
@@ -293,9 +317,13 @@ public class Person extends Party {
         this.myNeeds = need;
     }
     
-    public Person newNeed(final String needDescription) {
-        newNeed(needDescription, this, currentUserName());
-        return this;
+    @Named("Plaats nieuwe opdracht")
+    public Need newNeed(
+            @Named("Korte opdrachtomschrijving voor tafel")
+            @MultiLine
+            final String needDescription
+            ) {
+        return newNeed(needDescription, this, currentUserName());
     }
     
     public boolean hideNewNeed(final String needDescription) {
@@ -306,8 +334,13 @@ public class Person extends Party {
     
     //helpers
     @Programmatic
-    public void newNeed(final String needDescription, final Person needOwner, final String ownedBy){
-        needs.newNeed(needDescription, needOwner, ownedBy);
+    @Named("Plaats nieuwe opdracht")
+    public Need newNeed(
+            @Named("Korte opdrachtomschrijving") 
+            @MultiLine 
+            final String needDescription, 
+            final Person needOwner, final String ownedBy){
+        return needs.newNeed(needDescription, needOwner, ownedBy);
     }
     
     @Programmatic

@@ -17,6 +17,7 @@ import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -55,6 +56,7 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MultiLine
+    @Named("Omschrijving van 'stoel'")
     public String getVacancyDescription(){
         return vacancyDescription;
     }
@@ -67,6 +69,7 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @MultiLine
+    @Named("Tekst om te matchen")
     public String getTestFieldForMatching(){
         return testFieldForMatching;
     }
@@ -78,6 +81,7 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
     private Integer testFigureForMatching;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @Named("Cijfer om te matchen")
     public Integer getTestFigureForMatching(){
         return testFigureForMatching;
     }
@@ -90,6 +94,7 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
+    @Named("Opdracht")
     public Need getVacancyOwner() {
         return vacancyOwner;
     }
@@ -99,18 +104,46 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
     }
     
     // Region actions
+    @Named("Bewerk omschrijving stoel")
+    public VacancyProfile EditVacancyDescription(
+            @Named("Omschrijving van 'stoel'")
+            @MultiLine
+            String newString
+            ){
+        this.setVacancyDescription(newString);
+        return this;
+    }
     
-    public VacancyProfile EditTestField(String newString){
+    public String default0EditVacancyDescription() {
+        return getVacancyDescription();
+    }
+    
+    @Named("Bewerk tekst")
+    public VacancyProfile EditTestField(
+            @Named("Tekst om te matchen")
+            @MultiLine
+            String newString
+            ){
         this.setTestFieldForMatching(newString);
         return this;
     }
     
-    public VacancyProfile EditTestValue(Integer newInteger){
+    public String default0EditTestField() {
+        return getTestFieldForMatching();
+    }    
+    
+    @Named("Bewerk cijfer")
+    public VacancyProfile EditTestValue(
+            @Named("Cijfer om te matchen")
+            Integer newInteger
+            ){
         this.setTestFigureForMatching(newInteger);
         return this;
     }
     
-    
+    public Integer default0EditTestValue() {
+        return getTestFigureForMatching();
+    }  
     
     // Region> VacanciesProfileElements
         
