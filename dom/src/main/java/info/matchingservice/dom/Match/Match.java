@@ -1,33 +1,25 @@
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Need.Vacancy;
 import info.matchingservice.dom.Party.Person;
 import info.matchingservice.dom.Profile.Profile;
 
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
+import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.ViewModel;
 
-import org.apache.isis.applib.annotation.Disabled;
 
-@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
-public class Match extends MatchingDomainObject<Match> {
+@ViewModel
+public class Match {
 
-    public Match() {
-        super("calculatedMatchingValue, matchingProfile, matchInitiator");
+    public Match(Vacancy matchInitiator, Profile matchingProfile, Integer value) {
+        this.matchInitiator = matchInitiator;
+        this.matchingProfile = matchingProfile;
+        this.calculatedMatchingValue = value;
     }
     
     private Vacancy matchInitiator;
     
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Hidden
     public Vacancy getMatchInitiator() {
         return matchInitiator;
     }
@@ -38,8 +30,6 @@ public class Match extends MatchingDomainObject<Match> {
     
     private Profile matchingProfile;
     
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
     public Profile getMatchingProfile() {
         return matchingProfile;
     }
@@ -50,8 +40,6 @@ public class Match extends MatchingDomainObject<Match> {
     
     private Integer calculatedMatchingValue;
     
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
     public Integer getCalculatedMatchingValue() {
         return calculatedMatchingValue;
     }

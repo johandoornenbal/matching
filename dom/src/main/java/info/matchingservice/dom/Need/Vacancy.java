@@ -1,7 +1,6 @@
 package info.matchingservice.dom.Need;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Match.Match;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -125,20 +124,6 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
         return validateNewVacancyProfileElement(vacancyProfileElementDescription, this);
     }
     
-    //Region Matches
-    
-    private SortedSet<Match> matches = new TreeSet<Match>();
-    
-    @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "matchInitiator", dependentElement = "true")
-    public SortedSet<Match> getMatches() {
-        return matches;
-    }
-    
-    public void setMatches(final SortedSet<Match> match) {
-        this.matches = match;
-    }
-    
     // helpers
     
     private String currentUserName() {
@@ -151,7 +136,7 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
     
     @Programmatic
     public void newVacancyProfileElement(final String vacancyProfileElementDescription, final Vacancy vacancyProfileOwner, final String ownedBy) {
-        vacancyprofiles.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy);
+        vacancyProfileElements.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy);
     }
     
     @Programmatic
@@ -183,7 +168,7 @@ public class Vacancy extends MatchingSecureMutableObject<Vacancy> {
     //Injects
     
     @Inject
-    VacancyProfileElements vacancyprofiles;
+    VacancyProfileElements vacancyProfileElements;
         
     @javax.inject.Inject
     private DomainObjectContainer container;

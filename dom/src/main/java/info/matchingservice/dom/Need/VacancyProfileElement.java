@@ -21,7 +21,7 @@ import org.apache.isis.applib.annotation.MultiLine;
     @javax.jdo.annotations.Query(
             name = "findVacancyProfileElementByOwnerVacancy", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Need.VacancyProfile "
+                    + "FROM info.matchingservice.dom.Need.VacancyProfileElement "
                     + "WHERE vacancyProfileElementOwner == :vacancyProfileElementOwner")
 })
 public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyProfileElement> {
