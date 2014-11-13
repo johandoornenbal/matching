@@ -17,7 +17,7 @@ public class Needs extends MatchingDomainService<Need> {
         super(Needs.class, Need.class);
     }
     
-    @Named("Alle opdrachten ('tafels'")
+    @Named("Alle 'tafels'")
     public List<Need> allNeeds() {
         return allInstances();
     }
