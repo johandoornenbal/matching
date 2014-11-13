@@ -33,7 +33,7 @@ public class NeedTest extends MatchingIntegrationTest {
     
     public static class testNeeds extends NeedTest {
         
-        private static final String NEEDDESCRIPTION = "Een behoefte van Frans Hals: Ik zoek hulpschilders";
+        private static final String NEEDDESCRIPTION = "Gezocht: hulpschilders (M/V)";
         private static final String USERNAME = "frans";
         
         Person Frans;
@@ -59,7 +59,7 @@ public class NeedTest extends MatchingIntegrationTest {
         @Before
         public void setUp() throws Exception {
             n1 = needs.allNeeds().get(0);
-            n1.newVacancy("Test vacancy", "", 1, n1, USERNAME);
+            n1.newVacancyProfile("Test vacancy", "", 1, n1, USERNAME);
         }
         
         @Test
@@ -108,7 +108,7 @@ public class NeedTest extends MatchingIntegrationTest {
             Frans = persons.allPersons().get(0);
             n1 = needs.allNeeds().get(0);
             v2 = n1.getVacancyProfiles().last();
-            n1.newVacancy(TEST_VACANCY_DECRIPTION, TEST_VACANCY_MATCHINGTEXT, 2, n1, USERNAME);
+            n1.newVacancyProfile(TEST_VACANCY_DECRIPTION, TEST_VACANCY_MATCHINGTEXT, 2, n1, USERNAME);
             n1 = needs.allNeeds().get(0); // get n1 again
             v1 = n1.getVacancyProfiles().last(); // new vacancy
             v1.newVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1, USERNAME);

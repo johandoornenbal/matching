@@ -11,6 +11,7 @@ import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Named;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(
@@ -50,6 +51,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private String profileName;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @Named("Profiel naam")
     public String getProfileName() {
         return profileName;
     }
@@ -61,6 +63,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private Integer testFigureForMatching;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @Named("Cijfer voor matching")
     public Integer getTestFigureForMatching(){
         return testFigureForMatching;
     }
@@ -73,6 +76,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @MultiLine
+    @Named("Tekst voor matching")
     public String getTestFieldForMatching(){
         return testFieldForMatching;
     }
@@ -85,6 +89,8 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private Person profileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @Named("Eigenaar profiel")
+    @Disabled
     public Person getProfileOwner() {
         return profileOwner;
     }
@@ -94,7 +100,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     
     public String toString() {
-        return "Profile: " + this.profileName;
+        return "Profiel: " + this.profileName;
     }
 
 }

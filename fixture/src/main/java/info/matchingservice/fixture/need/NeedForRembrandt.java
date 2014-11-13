@@ -10,7 +10,7 @@ public class NeedForRembrandt extends NeedAbstract {
     protected void execute(ExecutionContext executionContext) {
 
         createNeed(
-                "Een behoefte van Rembrandt: Ik zoek figuranten voor de Nachtwacht",
+                "Opdracht van Rembrandt: Ik zoek figuranten voor de Nachtwacht",
                 persons.allPersons().get(1),
                 "rembrandt",
                 executionContext

@@ -34,6 +34,7 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @ActionSemantics(Of.NON_IDEMPOTENT)
+    @Named("Maak jezelf aan als persoon in het systeem")
     public Person newPerson(
             final @Named("Uniek ID") String uniquePartyId,
             final @Named("Voornaam") String firstName,
@@ -60,11 +61,13 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @MemberOrder(sequence="5")
+    @Named("Dit ben jij ...")
     public List<Person> thisIsYou() {
         return thisIsYou(currentUserName());
     }
     
     @MemberOrder(sequence="10")
+    @Named("Alle personen")
     public List<Person> allPersons() {
         return allInstances();
     }
@@ -95,12 +98,20 @@ public class Persons extends MatchingDomainService<Person> {
    
     
     @MemberOrder(sequence="100")
-    public List<Person> findPersons(final String lastname) {
+    @Named("Vind op achternaam")
+    public List<Person> findPersons(
+            @Named("Achternaam (wildcards * toegestaan)")
+            final String lastname
+            ) {
         return allMatches("matchPersonByLastName", "lastName", StringUtils.wildcardToCaseInsensitiveRegex(lastname));
     }
     
     @MemberOrder(sequence="105")
-    public List<Person> findPersonsContains(final String lastname) {
+    @Named("Vind op overeenkomst achternaam")
+    public List<Person> findPersonsContains(
+            @Named("Achternaam (wildcards * toegestaan)")
+            final String lastname
+            ) {
         return allMatches("matchPersonByLastNameContains", "lastName", lastname);
     }
     

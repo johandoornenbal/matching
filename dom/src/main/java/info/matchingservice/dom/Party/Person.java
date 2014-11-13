@@ -287,9 +287,11 @@ public class Person extends Party {
     }
    
     @Named("Maak een profiel")
-    public Person makeProfile(final String profileName) {
-        makeProfile(profileName, this, getOwnedBy());
-        return this;
+    public Profile makeProfile(
+            @Named("Naam van je profiel")
+            final String profileName
+            ) {
+        return makeProfile(profileName, this, getOwnedBy());
     }
    
     public boolean hideMakeProfile(final String testfield) {
@@ -315,6 +317,10 @@ public class Person extends Party {
    
     public void setMyNeeds(final SortedSet<Need> need) {
         this.myNeeds = need;
+    }
+    
+    public boolean hideMyNeeds() {
+        return !getIsPrincipal();
     }
     
     @Named("Plaats nieuwe opdracht")
@@ -547,8 +553,12 @@ public class Person extends Party {
     // HELPERS Profile
     
     @Programmatic // now values can be set by fixtures
-    public void makeProfile(final String testfield, final Person person, final String ownedBy) {
-        profiles.newProfile(testfield, person, ownedBy);
+    public Profile makeProfile(
+            @Named("Naam van je profiel")
+            final String profileName, 
+            final Person person, 
+            final String ownedBy) {
+        return profiles.newProfile(profileName, person, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures

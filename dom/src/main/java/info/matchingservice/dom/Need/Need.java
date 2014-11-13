@@ -90,9 +90,16 @@ public class Need extends MatchingSecureMutableObject<Need> {
     }
     
     @Named("Nieuwe stoel")
-    public Need newVacancy(final  String vacancyDescription, final String testTextForMatching, final Integer testfigure) {
-        newVacancy(vacancyDescription, testTextForMatching, testfigure, this, currentUserName());
-        return this;
+    public VacancyProfile newVacancyProfile(
+            @Named("Omschrijving van 'stoel'")
+            final  String vacancyDescription,
+            @MultiLine
+            @Named("Tekst om te matchen")
+            final String testTextForMatching,
+            @Named("Cijfer om te matchen")
+            final Integer testfigure
+            ) {
+        return newVacancyProfile(vacancyDescription, testTextForMatching, testfigure, this, currentUserName());
     }
     
     // helpers
@@ -106,8 +113,8 @@ public class Need extends MatchingSecureMutableObject<Need> {
     }
     
     @Programmatic
-    public void newVacancy(final String vacancyDescription, final String testTextForMatching, final Integer testfigure, final Need vacancyOwner, final String ownedBy) {
-        allvacancies.newVacancy(vacancyDescription, testTextForMatching, testfigure, vacancyOwner, ownedBy);
+    public VacancyProfile newVacancyProfile(final String vacancyDescription, final String testTextForMatching, final Integer testfigure, final Need vacancyOwner, final String ownedBy) {
+        return allvacancies.newVacancy(vacancyDescription, testTextForMatching, testfigure, vacancyOwner, ownedBy);
     }
     
     //Injection

@@ -10,13 +10,13 @@ public class NeedForFrans extends NeedAbstract {
     protected void execute(ExecutionContext executionContext) {
 
         createNeed(
-                "Een behoefte van Frans Hals: Ik zoek hulpschilders",
+                "Gezocht: hulpschilders (M/V)",
                 persons.allPersons().get(0),
                 "frans",
                 executionContext
                 );
         createNeed(
-                "Nog behoefte van Frans Hals: Ik zoek schoonmakers",
+                "Nog een opdracht van Frans: Ik zoek schoonmakers",
                 persons.allPersons().get(0),
                 "frans",
                 executionContext

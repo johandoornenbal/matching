@@ -16,6 +16,7 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.Render;
@@ -30,6 +31,7 @@ public class MatchingService {
     @NotContributed(As.ACTION)
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
+    @Named("Gevonden kandidaten")
     public List<Match> getMatches(VacancyProfile vacancy) {
         List<Match> matches = new ArrayList<Match>();
             for (Profile e : container.allInstances(Profile.class)) {
