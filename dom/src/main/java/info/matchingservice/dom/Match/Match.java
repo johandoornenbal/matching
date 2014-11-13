@@ -50,6 +50,7 @@ public class Match {
     
     private String matchedTextDiffs;
     
+    @Hidden
     public String getMatchedTextDiffs() {
         return matchedTextDiffs;
     }

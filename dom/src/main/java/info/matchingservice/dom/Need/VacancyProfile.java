@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Need;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.ProfileElementNature;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -149,9 +150,10 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
         
     private SortedSet<VacancyProfileElement> vacancyProfileElement = new TreeSet<VacancyProfileElement>();
     
-    @Hidden
+   
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "vacancyProfileElementOwner", dependentElement = "true")
+    @Named("Profiel elementen")
     public SortedSet<VacancyProfileElement> getVacancyProfileElement() {
         return vacancyProfileElement;
     }
@@ -160,7 +162,11 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
         this.vacancyProfileElement = vac;
     }
     
-    public VacancyProfile newVacancyProfileElement(final String vacancyProfileElementDescription) {
+    @Named("Nieuw (single) profiel element")
+    public VacancyProfile newVacancyProfileElement(
+            @Named("Profiel element beschrijving")
+            final String vacancyProfileElementDescription
+            ) {
         newVacancyProfileElement(vacancyProfileElementDescription, this, currentUserName());
         return this;
     }
@@ -180,12 +186,12 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
     }
     
     public String toString() {
-        return "Vacancy profile: " + this.vacancyDescription;
+        return "Stoel : " + this.vacancyDescription;
     }
     
     @Programmatic
     public void newVacancyProfileElement(final String vacancyProfileElementDescription, final VacancyProfile vacancyProfileOwner, final String ownedBy) {
-        vacancyProfileElements.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy);
+        vacancyProfileElements.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
     }
     
     @Programmatic
@@ -194,9 +200,10 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
         QueryDefault<VacancyProfileElement> query = 
                 QueryDefault.create(
                         VacancyProfileElement.class, 
-                    "findVacancyProfileElementByOwnerVacancy", 
-                    "vacancyProfileElementOwner", vacancyProfileElementOwner);
-        return container.firstMatch(query) != null?
+                    "findVacancyProfileElementByOwnerVacancyAndNature", 
+                    "vacancyProfileElementOwner", vacancyProfileElementOwner,
+                    "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
+        return container.firstMatch(query) != null ?
                 true        
                 :false;
     }
@@ -207,10 +214,11 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> 
         QueryDefault<VacancyProfileElement> query = 
                 QueryDefault.create(
                         VacancyProfileElement.class, 
-                    "findVacancyProfileElementByOwnerVacancy", 
-                    "vacancyProfileElementOwner", vacancyProfileElementOwner);
+                    "findVacancyProfileElementByOwnerVacancyAndNature", 
+                    "vacancyProfileElementOwner", vacancyProfileElementOwner,
+                    "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
         return container.firstMatch(query) != null?
-                "This vacancy has this element already!"        
+                "This VacancyProfile has this single element already!"        
                 :null;
     }
     

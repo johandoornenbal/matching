@@ -127,7 +127,7 @@ public class NeedTest extends MatchingIntegrationTest {
             assertThat(v1.getVacancyProfileElement().last().getOwnedBy(), is(USERNAME));
             // tests if action addProfileElement will be hidden. This may alter because some elements may be repeated...
             assertThat(v1.hideNewVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1), is(true));
-            assertThat(v1.validateNewVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1), is("This vacancy has this element already!"));
+            assertThat(v1.validateNewVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1), is("This VacancyProfile has this single element already!"));
         }
         
         @Inject

@@ -1,4 +1,4 @@
-package info.matchingservice.dom.Need;
+package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
@@ -10,7 +10,6 @@ import javax.jdo.annotations.IdentityType;
 
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Where;
 
@@ -23,20 +22,20 @@ import org.apache.isis.applib.annotation.Where;
         column = "discriminator")
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
-            name = "findVacancyProfileElementByOwnerVacancy", language = "JDOQL",
+            name = "findProfileElementByOwnerProfile", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Need.VacancyProfileElement "
-                    + "WHERE vacancyProfileElementOwner == :vacancyProfileElementOwner"),
+                    + "FROM info.matchingservice.dom.Profile.ProfileElement "
+                    + "WHERE profileElementOwner == :profileElementOwner"),
     @javax.jdo.annotations.Query(
-            name = "findVacancyProfileElementByOwnerVacancyAndNature", language = "JDOQL",
+            name = "findProfileElementByOwnerProfileAndNature", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Need.VacancyProfileElement "
-                    + "WHERE vacancyProfileElementOwner == :vacancyProfileElementOwner && profileElementNature == :profileElementNature")
+                    + "FROM info.matchingservice.dom.Profile.ProfileElement "
+                    + "WHERE profileElementOwner == :profileElementOwner && profileElementNature == :profileElementNature")
 })
-public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyProfileElement> {
+public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
-    public VacancyProfileElement() {
-        super("ownedBy, vacancyProfileElementDescription");
+    public ProfileElement() {
+        super("ownedBy, profileElementDescription");
     }
     
     private String ownedBy;
@@ -79,33 +78,33 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
         this.profileElementType = type;
     }
     
+    
     ///////////////////////////////////////////////////////////////////////////////////////
     
-    private String vacancyProfileElementDescription;
+    private String profileElementDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @MultiLine
     @Named("Profiel element beschrijving")
-    public String getVacancyProfileElementDescription(){
-        return vacancyProfileElementDescription;
+    public String getProfileElementDescription(){
+        return profileElementDescription;
     }
     
-    public void setVacancyProfileElementDescription(final String description) {
-        this.vacancyProfileElementDescription = description;
+    public void setProfileElementDescription(final String description) {
+        this.profileElementDescription = description;
     }
     
-    private VacancyProfile vacancyProfileElementOwner;
+    private Profile profileElementOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    @Named("'Stoel'")
+    @Named("Profiel")
     @Hidden(where=Where.PARENTED_TABLES)
-    public VacancyProfile getVacancyProfileElementOwner() {
-        return vacancyProfileElementOwner;
+    public Profile getProfileElementOwner() {
+        return profileElementOwner;
     }
     
-    public void setVacancyProfileElementOwner(final VacancyProfile vacancyProfileOwner) {
-        this.vacancyProfileElementOwner = vacancyProfileOwner;
+    public void setProfileElementOwner(final Profile vacancyProfileOwner) {
+        this.profileElementOwner = vacancyProfileOwner;
     }
 
 }
