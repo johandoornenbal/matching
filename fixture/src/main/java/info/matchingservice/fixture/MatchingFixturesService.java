@@ -21,7 +21,10 @@ package info.matchingservice.fixture;
 import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Prototype;
+import org.apache.isis.applib.fixturescripts.FixtureResult;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.apache.isis.applib.fixturescripts.FixtureScripts;
 import org.apache.isis.applib.fixturescripts.SimpleFixtureScript;
@@ -29,7 +32,7 @@ import org.apache.isis.applib.fixturescripts.SimpleFixtureScript;
 /**
  * Enables fixtures to be installed from the application.
  */
-@Named("Prototyping")
+@Named("Prototyping (M-app)")
 @DomainService(menuOrder = "20")
 public class MatchingFixturesService extends FixtureScripts {
 
@@ -49,6 +52,13 @@ public class MatchingFixturesService extends FixtureScripts {
     @Override
     public List<FixtureScript> choices0RunFixtureScript() {
         return super.choices0RunFixtureScript();
+    }
+    
+    @Prototype
+    @MemberOrder(sequence="90")
+    public List<FixtureResult> installDemoFixtures() {
+        return runFixtureScript(new MatchingDemoFixture(), null);
+        // return "Demo fixtures successfully installed";
     }
 
 }

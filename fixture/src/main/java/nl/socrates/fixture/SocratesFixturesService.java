@@ -20,7 +20,6 @@ package nl.socrates.fixture;
 
 import java.util.List;
 
-import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Prototype;
@@ -32,8 +31,8 @@ import org.apache.isis.applib.fixturescripts.SimpleFixtureScript;
 /**
  * Enables fixtures to be installed from the application.
  */
-@Named("Prototyping")
-@DomainService(menuOrder = "20")
+@Named("PrototypingSocrates")
+//@DomainService(menuOrder = "20")
 public class SocratesFixturesService extends FixtureScripts {
 
     public SocratesFixturesService() {
