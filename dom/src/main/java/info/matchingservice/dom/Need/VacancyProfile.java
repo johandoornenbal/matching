@@ -2,6 +2,7 @@ package info.matchingservice.dom.Need;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
+import info.matchingservice.dom.VacancyProfileElementOwner;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -33,7 +34,8 @@ import org.apache.isis.applib.query.QueryDefault;
         column = "discriminator")
 @AutoComplete(repository=VacancyProfiles.class,  action="autoComplete")
 @Immutable
-public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile> {
+public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile>
+implements VacancyProfileElementOwner {
 
     public VacancyProfile() {
         super("ownedBy, vacancyDescription");
