@@ -93,16 +93,16 @@ implements VacancyProfileElementOwner {
         this.testFigureForMatching = testfigure;
     }
     
-    private Need vacancyOwner;
+    private PersonNeed vacancyOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     @Named("Opdracht")
-    public Need getVacancyOwner() {
+    public PersonNeed getVacancyOwner() {
         return vacancyOwner;
     }
     
-    public void setVacancyOwner(final Need vacancyOwner) {
+    public void setVacancyOwner(final PersonNeed vacancyOwner) {
         this.vacancyOwner = vacancyOwner;
     }
     

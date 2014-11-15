@@ -4,7 +4,7 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.VersionStrategy;
 
 import info.matchingservice.dom.MatchingMutableObject;
-import info.matchingservice.dom.Party.Person;
+import info.matchingservice.dom.Actor.Person;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.DatastoreIdentity(

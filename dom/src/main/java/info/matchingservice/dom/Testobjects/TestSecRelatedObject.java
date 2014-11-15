@@ -7,7 +7,7 @@ import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Party.Person;
+import info.matchingservice.dom.Actor.Person;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.DatastoreIdentity(

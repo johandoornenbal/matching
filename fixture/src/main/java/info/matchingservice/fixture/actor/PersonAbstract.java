@@ -1,7 +1,7 @@
-package info.matchingservice.fixture.party;
+package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Party.Party;
-import info.matchingservice.dom.Party.Persons;
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Persons;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -10,7 +10,7 @@ public abstract class PersonAbstract extends FixtureScript {
     @Override
     protected abstract void execute(ExecutionContext executionContext);
     
-    protected Party createPerson (
+    protected Actor createPerson (
             String uniquePartyId,
             String firstName,
             String middleName,
@@ -18,7 +18,7 @@ public abstract class PersonAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext
             ) {
-        Party newPerson = persons.newPerson(uniquePartyId, firstName, middleName, lastName, user);
+        Actor newPerson = persons.newPerson(uniquePartyId, firstName, middleName, lastName, user);
         return executionContext.add(this, newPerson);
     }
     

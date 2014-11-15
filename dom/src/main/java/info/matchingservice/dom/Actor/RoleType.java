@@ -1,4 +1,4 @@
-package info.matchingservice.dom.Party;
+package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.TitledEnum;
 

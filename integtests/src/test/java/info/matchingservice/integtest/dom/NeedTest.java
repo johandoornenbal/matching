@@ -2,13 +2,13 @@ package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import info.matchingservice.dom.Need.Need;
-import info.matchingservice.dom.Need.Needs;
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.Need.PersonNeed;
+import info.matchingservice.dom.Need.PersonNeeds;
 import info.matchingservice.dom.Need.VacancyProfiles;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Need.VacancyProfileElement;
-import info.matchingservice.dom.Party.Person;
-import info.matchingservice.dom.Party.Persons;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
@@ -21,7 +21,7 @@ import org.junit.Test;
 public class NeedTest extends MatchingIntegrationTest {
     
     @Inject 
-    Needs needs;
+    PersonNeeds needs;
     
     @Inject 
     Persons persons;
@@ -37,7 +37,7 @@ public class NeedTest extends MatchingIntegrationTest {
         private static final String USERNAME = "frans";
         
         Person Frans;
-        Need n1;
+        PersonNeed n1;
         
         @Test
         public void valuesSet() throws Exception {
@@ -54,7 +54,7 @@ public class NeedTest extends MatchingIntegrationTest {
         
         private static final String USERNAME = "frans";
         
-        Need n1;
+        PersonNeed n1;
         
         @Before
         public void setUp() throws Exception {
@@ -78,7 +78,7 @@ public class NeedTest extends MatchingIntegrationTest {
         private static final String VACANCYDESCRIPTION = "Junior hulpschilder";
         private static final String USERNAME = "frans";
         
-        Need n1;
+        PersonNeed n1;
         VacancyProfile v1;
         
         @Test
@@ -98,7 +98,7 @@ public class NeedTest extends MatchingIntegrationTest {
         private static final String TEST_VACANCY_MATCHINGTEXT = "testtekst";
         private static final String TEST_VACANCYPROFILEELEMENT_DESCR = "test element";
         Person Frans;
-        Need n1;
+        PersonNeed n1;
         VacancyProfile v1; // new vacancy without vacancyprofile
         VacancyProfile v2; // has already vacancyprofile
         VacancyProfileElement pe1;

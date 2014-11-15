@@ -1,24 +1,24 @@
 package info.matchingservice.fixture;
 
+import info.matchingservice.fixture.actor.PersonForAntoni;
+import info.matchingservice.fixture.actor.PersonForFrans;
+import info.matchingservice.fixture.actor.PersonForGerard;
+import info.matchingservice.fixture.actor.PersonForMichiel;
+import info.matchingservice.fixture.actor.PersonForRembrandt;
+import info.matchingservice.fixture.actor.ProfileForFrans;
+import info.matchingservice.fixture.actor.ProfileForGerard;
+import info.matchingservice.fixture.actor.ProfileForRembrandt;
+import info.matchingservice.fixture.actor.RolesForAntoni;
+import info.matchingservice.fixture.actor.RolesForFrans;
+import info.matchingservice.fixture.actor.RolesForGerard;
+import info.matchingservice.fixture.actor.RolesForMichiel;
+import info.matchingservice.fixture.actor.RolesForRembrandt;
 import info.matchingservice.fixture.need.NeedForFrans;
 import info.matchingservice.fixture.need.NeedForRembrandt;
 import info.matchingservice.fixture.need.VacanciesForFrans;
 import info.matchingservice.fixture.need.VacanciesForRembrandt;
 import info.matchingservice.fixture.need.VacancyProfileElementsForFrans;
 import info.matchingservice.fixture.need.VacancyProfileElementsForRembrandt;
-import info.matchingservice.fixture.party.PersonForAntoni;
-import info.matchingservice.fixture.party.PersonForFrans;
-import info.matchingservice.fixture.party.PersonForGerard;
-import info.matchingservice.fixture.party.PersonForMichiel;
-import info.matchingservice.fixture.party.PersonForRembrandt;
-import info.matchingservice.fixture.party.ProfileForFrans;
-import info.matchingservice.fixture.party.ProfileForGerard;
-import info.matchingservice.fixture.party.ProfileForRembrandt;
-import info.matchingservice.fixture.party.RolesForAntoni;
-import info.matchingservice.fixture.party.RolesForFrans;
-import info.matchingservice.fixture.party.RolesForGerard;
-import info.matchingservice.fixture.party.RolesForMichiel;
-import info.matchingservice.fixture.party.RolesForRembrandt;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 

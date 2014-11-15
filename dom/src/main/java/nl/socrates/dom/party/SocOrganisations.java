@@ -14,23 +14,23 @@ import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import nl.socrates.dom.RegexValidation;
 import nl.socrates.dom.SocratesDomainService;
 
-@DomainService(menuOrder = "30", repositoryFor = Organisation.class)
+@DomainService(menuOrder = "30", repositoryFor = SocOrganisation.class)
 @Named("Organisaties")
-public class Organisations extends SocratesDomainService<Organisation> {
+public class SocOrganisations extends SocratesDomainService<SocOrganisation> {
     
-    public Organisations() {
-        super(Organisations.class, Organisation.class);
+    public SocOrganisations() {
+        super(SocOrganisations.class, SocOrganisation.class);
     }
 
     @ActionSemantics(Of.NON_IDEMPOTENT)
     @MemberOrder(name = "Contacten", sequence = "1")
     @Named("Nieuwe organisatie")    
-    public Organisation newOrganisation (
+    public SocOrganisation newOrganisation (
             final @Named("Referentie") @Optional @RegEx(validation=RegexValidation.REFERENCE) String reference,
             final @Named("Naam organisatie") String organisationName,
             final @Named("Naam contactpersoon") @Optional String contactpersoon
             ) {
-        final Organisation organisation = newTransientInstance(Organisation.class);
+        final SocOrganisation organisation = newTransientInstance(SocOrganisation.class);
         organisation.setReference(reference);
         organisation.setOrganisationName(organisationName);
         organisation.setContactpersoon(contactpersoon);
@@ -45,7 +45,7 @@ public class Organisations extends SocratesDomainService<Organisation> {
     @ActionSemantics(Of.SAFE)
     @MemberOrder(name = "Contacten", sequence = "99.2")
     @Named("Alle organisaties")
-    public List<Organisation> allOrganisations() {
+    public List<SocOrganisation> allOrganisations() {
         return allInstances();
     }   
 

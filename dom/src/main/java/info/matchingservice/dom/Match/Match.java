@@ -1,7 +1,7 @@
 package info.matchingservice.dom.Match;
 
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Need.VacancyProfile;
-import info.matchingservice.dom.Party.Person;
 import info.matchingservice.dom.Profile.Profile;
 
 import org.apache.isis.applib.annotation.Hidden;

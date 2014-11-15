@@ -1,7 +1,7 @@
-package info.matchingservice.dom.Party;
+package info.matchingservice.dom.Actor;
 
-import info.matchingservice.dom.Need.Need;
-import info.matchingservice.dom.Need.Needs;
+import info.matchingservice.dom.Need.PersonNeed;
+import info.matchingservice.dom.Need.PersonNeeds;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.Testobjects.TestRelatedObject;
@@ -43,27 +43,27 @@ import org.apache.isis.applib.util.TitleBuffer;
         column = "version")
 @javax.jdo.annotations.Uniques({
     @javax.jdo.annotations.Unique(
-            name = "Party_ID_UNQ", members = "uniquePartyId")
+            name = "Actor_ID_UNQ", members = "uniqueActorId")
 })
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findPersonUnique", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Party.Person "
+                    + "FROM info.matchingservice.dom.Actor.Person "
                     + "WHERE ownedBy == :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "matchPersonByLastName", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Party.Person "
+                    + "FROM info.matchingservice.dom.Actor.Person "
                     + "WHERE lastName.matches(:lastName)"),
     @javax.jdo.annotations.Query(
             name = "matchPersonByLastNameContains", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Party.Person "
+                    + "FROM info.matchingservice.dom.Actor.Person "
                     + "WHERE lastName.indexOf(:lastName) >= 0")                    
 })
 @AutoComplete(repository=Persons.class,  action="autoComplete")
-public class Person extends Party {
+public class Person extends Actor {
     
     private String ownedBy;
     
@@ -79,17 +79,17 @@ public class Person extends Party {
         this.ownedBy = owner;
     }
     
-    private String uniquePartyId;
+    private String uniqueActorId;
     
     @Override
     @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getUniquePartyId() {
-        return uniquePartyId;
+    public String getUniqueActorId() {
+        return uniqueActorId;
     }
     
-    public void setUniquePartyId(final String id) {
-        this.uniquePartyId = id;
+    public void setUniqueActorId(final String id) {
+        this.uniqueActorId = id;
     }
     
     public String title() {
@@ -237,10 +237,10 @@ public class Person extends Party {
     @Hidden
     @MemberOrder(sequence = "100")
     @Render(Type.EAGERLY)
-    public List<Role> getAllMyRoles() {
-        QueryDefault<Role> query =
+    public List<SystemRole> getAllMyRoles() {
+        QueryDefault<SystemRole> query =
                 QueryDefault.create(
-                        Role.class,
+                        SystemRole.class,
                         "findMyRoles",
                         "ownedBy", this.getOwnedBy());
         return container.allMatches(query);
@@ -306,16 +306,16 @@ public class Person extends Party {
     
     //Region> NEED /////////////////////////////////////////////////////////////
     
-    private SortedSet<Need> myNeeds = new TreeSet<Need>();
+    private SortedSet<PersonNeed> myNeeds = new TreeSet<PersonNeed>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "needOwner", dependentElement = "true")
     @Named("Mijn uitstaande opdrachten (tafels)")
-    public SortedSet<Need> getMyNeeds() {
+    public SortedSet<PersonNeed> getMyNeeds() {
         return myNeeds;
     }
    
-    public void setMyNeeds(final SortedSet<Need> need) {
+    public void setMyNeeds(final SortedSet<PersonNeed> need) {
         this.myNeeds = need;
     }
     
@@ -324,7 +324,7 @@ public class Person extends Party {
     }
     
     @Named("Plaats nieuwe opdracht")
-    public Need newNeed(
+    public PersonNeed newNeed(
             @Named("Korte opdrachtomschrijving voor tafel")
             @MultiLine
             final String needDescription
@@ -341,7 +341,7 @@ public class Person extends Party {
     //helpers
     @Programmatic
     @Named("Plaats nieuwe opdracht")
-    public Need newNeed(
+    public PersonNeed newNeed(
             @Named("Korte opdrachtomschrijving") 
             @MultiLine 
             final String needDescription, 
@@ -404,9 +404,9 @@ public class Person extends Party {
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsStudent(Person ownerPerson) {
-        QueryDefault<Role> query =
+        QueryDefault<SystemRole> query =
                 QueryDefault.create(
-                        Role.class,
+                        SystemRole.class,
                         "findSpecificRole",
                         "ownedBy", ownerPerson.getOwnedBy(),
                         "role", RoleType.STUDENT);
@@ -430,13 +430,13 @@ public class Person extends Party {
     
     @Programmatic // now values can be set by fixtures
     public void deleteRoleStudent(String ownedBy) {
-        QueryDefault<Role> query =
+        QueryDefault<SystemRole> query =
                 QueryDefault.create(
-                        Role.class,
+                        SystemRole.class,
                         "findSpecificRole",
                         "ownedBy", ownedBy,
                         "role", RoleType.STUDENT);
-        Role roleToDelete = container.firstMatch(query);
+        SystemRole roleToDelete = container.firstMatch(query);
         roleToDelete.delete(true);
     }
     
@@ -454,9 +454,9 @@ public class Person extends Party {
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsProfessional(Person ownerPerson) {
-        QueryDefault<Role> query =
+        QueryDefault<SystemRole> query =
                 QueryDefault.create(
-                        Role.class,
+                        SystemRole.class,
                         "findSpecificRole",
                         "ownedBy", ownerPerson.getOwnedBy(),
                         "role", RoleType.PROFESSIONAL);
@@ -480,13 +480,13 @@ public class Person extends Party {
     
     @Programmatic // now values can be set by fixtures
     public void deleteRoleProfessional(String ownedBy) {
-        QueryDefault<Role> query =
+        QueryDefault<SystemRole> query =
                 QueryDefault.create(
-                        Role.class,
+                        SystemRole.class,
                         "findSpecificRole",
                         "ownedBy", ownedBy,
                         "role", RoleType.PROFESSIONAL);
-        Role roleToDelete = container.firstMatch(query);
+        SystemRole roleToDelete = container.firstMatch(query);
         roleToDelete.delete(true);
     }
     
@@ -504,9 +504,9 @@ public class Person extends Party {
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsPrincipal(Person ownerPerson) {
-        QueryDefault<Role> query =
+        QueryDefault<SystemRole> query =
                 QueryDefault.create(
-                        Role.class,
+                        SystemRole.class,
                         "findSpecificRole",
                         "ownedBy", ownerPerson.getOwnedBy(),
                         "role", RoleType.PRINCIPAL);
@@ -530,13 +530,13 @@ public class Person extends Party {
     
     @Programmatic // now values can be set by fixtures
     public void deleteRolePrincipal(String ownedBy) {
-        QueryDefault<Role> query =
+        QueryDefault<SystemRole> query =
                 QueryDefault.create(
-                        Role.class,
+                        SystemRole.class,
                         "findSpecificRole",
                         "ownedBy", ownedBy,
                         "role", RoleType.PRINCIPAL);
-        Role roleToDelete = container.firstMatch(query);
+        SystemRole roleToDelete = container.firstMatch(query);
         roleToDelete.delete(true);
     }
     
@@ -595,13 +595,13 @@ public class Person extends Party {
     private DomainObjectContainer container;
     
     @Inject
-    private Roles roles;
+    private SystemRoles roles;
 
     @Inject
     private Profiles profiles;
     
     @Inject
-    private Needs needs;
+    private PersonNeeds needs;
 
     
 }

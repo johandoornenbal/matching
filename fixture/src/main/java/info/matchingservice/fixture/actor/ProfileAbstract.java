@@ -1,6 +1,6 @@
-package info.matchingservice.fixture.party;
+package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Party.Person;
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.Profiles;
 

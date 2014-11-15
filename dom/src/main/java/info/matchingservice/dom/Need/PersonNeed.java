@@ -1,7 +1,6 @@
 package info.matchingservice.dom.Need;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Person;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -17,6 +16,7 @@ import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 
@@ -27,49 +27,47 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class Need extends MatchingSecureMutableObject<Need> {
+public class PersonNeed extends Need {
 
-    public Need() {
-        super("ownedBy, needDescription");
-    }
     
-    private String ownedBy;
+//    private String ownedBy;
+//    
+//    @Override
+//    @Hidden
+//    @javax.jdo.annotations.Column(allowsNull = "false")
+//    @Disabled
+//    public String getOwnedBy() {
+//        return ownedBy;
+//    }
+//
+//    public void setOwnedBy(final String owner) {
+//        this.ownedBy = owner;
+//    }
+    
+//    private String needDescription;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "false")
+//    @MultiLine
+//    @Named("Opdracht omschrijving op tafel")
+//    public String getNeedDescription(){
+//        return needDescription;
+//    }
+//    
+//    public void setNeedDescription(final String description) {
+//        this.needDescription = description;
+//    }
+    
+    private Person needOwner;
     
     @Override
-    @Hidden
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(final String owner) {
-        this.ownedBy = owner;
-    }
-    
-    private String needDescription;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @MultiLine
-    @Named("Opdracht omschrijving op tafel")
-    public String getNeedDescription(){
-        return needDescription;
-    }
-    
-    public void setNeedDescription(final String description) {
-        this.needDescription = description;
-    }
-    
-    private Actor needOwner;
-    
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     @Named("Opdrachtgever")
-    public Actor getNeedOwner() {
+    public Person getNeedOwner() {
         return needOwner;
     }
     
-    public void setNeedOwner(final Actor needOwner) {
+    public void setNeedOwner(final Person needOwner) {
         this.needOwner = needOwner;
     }
     
@@ -88,18 +86,18 @@ public class Need extends MatchingSecureMutableObject<Need> {
         this.vacancyProfiles = vac;
     }
     
-//    @Named("Nieuwe stoel")
-//    public VacancyProfile newVacancyProfile(
-//            @Named("Omschrijving van 'stoel'")
-//            final  String vacancyDescription,
-//            @MultiLine
-//            @Named("Tekst om te matchen")
-//            final String testTextForMatching,
-//            @Named("Cijfer om te matchen")
-//            final Integer testfigure
-//            ) {
-//        return newVacancyProfile(vacancyDescription, testTextForMatching, testfigure, this, currentUserName());
-//    }
+    @Named("Nieuwe stoel")
+    public VacancyProfile newVacancyProfile(
+            @Named("Omschrijving van 'stoel'")
+            final  String vacancyDescription,
+            @MultiLine
+            @Named("Tekst om te matchen")
+            final String testTextForMatching,
+            @Named("Cijfer om te matchen")
+            final Integer testfigure
+            ) {
+        return newVacancyProfile(vacancyDescription, testTextForMatching, testfigure, this, currentUserName());
+    }
     
     // helpers
     
@@ -111,10 +109,10 @@ public class Need extends MatchingSecureMutableObject<Need> {
         return getNeedDescription() + " - " + getNeedOwner().title();
     }
     
-//    @Programmatic
-//    public VacancyProfile newVacancyProfile(final String vacancyDescription, final String testTextForMatching, final Integer testfigure, final Need vacancyOwner, final String ownedBy) {
-//        return allvacancies.newVacancy(vacancyDescription, testTextForMatching, testfigure, vacancyOwner, ownedBy);
-//    }
+    @Programmatic
+    public VacancyProfile newVacancyProfile(final String vacancyDescription, final String testTextForMatching, final Integer testfigure, final PersonNeed vacancyOwner, final String ownedBy) {
+        return allvacancies.newVacancy(vacancyDescription, testTextForMatching, testfigure, vacancyOwner, ownedBy);
+    }
     
     //Injection
     

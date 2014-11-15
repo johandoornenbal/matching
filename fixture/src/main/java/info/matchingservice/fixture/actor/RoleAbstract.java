@@ -1,8 +1,8 @@
-package info.matchingservice.fixture.party;
+package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Party.Role;
-import info.matchingservice.dom.Party.RoleType;
-import info.matchingservice.dom.Party.Roles;
+import info.matchingservice.dom.Actor.SystemRole;
+import info.matchingservice.dom.Actor.RoleType;
+import info.matchingservice.dom.Actor.SystemRoles;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -11,16 +11,16 @@ public abstract class RoleAbstract extends FixtureScript {
     @Override
     protected abstract void execute(ExecutionContext executionContext);
     
-    protected Role createRole(
+    protected SystemRole createRole(
             RoleType role,
             String user,
             ExecutionContext executionContext
             ) {
-        Role newRole = roles.newRole(role, user);
+        SystemRole newRole = roles.newRole(role, user);
         return executionContext.add(this,newRole);
     }
     
     //region > injected services
     @javax.inject.Inject
-    Roles roles;
+    SystemRoles roles;
 }

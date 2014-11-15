@@ -1,4 +1,4 @@
-package info.matchingservice.dom.Party;
+package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Utils.StringUtils;
@@ -129,7 +129,7 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Achternaam") String lastName,
             final String userName) {
         final Person person = newTransientInstance(Person.class);
-        person.setUniquePartyId(uniquePartyId);
+        person.setUniqueActorId(uniquePartyId);
         person.setFirstName(firstName);
         person.setMiddleName(middleName);
         person.setLastName(lastName);

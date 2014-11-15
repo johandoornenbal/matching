@@ -1,7 +1,7 @@
 package info.matchingservice.dom.Need;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Party.Person;
+import info.matchingservice.dom.Actor.Person;
 
 import java.util.List;
 
@@ -9,26 +9,26 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "40", repositoryFor = Need.class)
+@DomainService(menuOrder = "40", repositoryFor = PersonNeed.class)
 @Named("Opdrachten ('tafels')")
-public class Needs extends MatchingDomainService<Need> {
+public class PersonNeeds extends MatchingDomainService<PersonNeed> {
 
-    public Needs() {
-        super(Needs.class, Need.class);
+    public PersonNeeds() {
+        super(PersonNeeds.class, PersonNeed.class);
     }
     
     @Named("Alle 'tafels'")
-    public List<Need> allNeeds() {
+    public List<PersonNeed> allNeeds() {
         return allInstances();
     }
     
     @Programmatic
-    public Need newNeed(
+    public PersonNeed newNeed(
             final @Named("Opdracht samenvatting") String needDescription,
             final Person needOwner,
             final String ownedBy
             ){
-        final Need newNeed = newTransientInstance(Need.class);
+        final PersonNeed newNeed = newTransientInstance(PersonNeed.class);
         newNeed.setNeedDescription(needDescription);
         newNeed.setNeedOwner(needOwner);
         newNeed.setOwnedBy(ownedBy);

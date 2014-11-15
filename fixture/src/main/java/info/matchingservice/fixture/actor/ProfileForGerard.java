@@ -1,6 +1,6 @@
-package info.matchingservice.fixture.party;
+package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Party.Persons;
+import info.matchingservice.dom.Actor.Persons;
 
 import javax.inject.Inject;
 

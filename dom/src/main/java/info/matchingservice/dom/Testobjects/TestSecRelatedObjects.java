@@ -5,7 +5,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Hidden;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Party.Person;
+import info.matchingservice.dom.Actor.Person;
 @DomainService(menuOrder = "10", repositoryFor = TestSecRelatedObject.class)
 public class TestSecRelatedObjects extends MatchingDomainService<TestSecRelatedObject> {
 

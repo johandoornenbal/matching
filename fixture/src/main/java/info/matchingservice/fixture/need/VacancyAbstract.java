@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.need;
 
-import info.matchingservice.dom.Need.Need;
+import info.matchingservice.dom.Need.PersonNeed;
 import info.matchingservice.dom.Need.VacancyProfiles;
 import info.matchingservice.dom.Need.VacancyProfile;
 
@@ -15,7 +15,7 @@ public abstract class VacancyAbstract extends FixtureScript {
             String vacancyDescription,
             String testTextForMatching,
             Integer testfigure,
-            Need vacancyOwner,
+            PersonNeed vacancyOwner,
             String user,
             ExecutionContext executionContext
             ) {

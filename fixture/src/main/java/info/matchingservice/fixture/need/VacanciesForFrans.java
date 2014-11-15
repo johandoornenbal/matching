@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.need;
 
-import info.matchingservice.dom.Need.Needs;
+import info.matchingservice.dom.Need.PersonNeeds;
 
 import javax.inject.Inject;
 
@@ -36,5 +36,5 @@ public class VacanciesForFrans extends VacancyAbstract {
     }
     
     @Inject
-    Needs needs;
+    PersonNeeds needs;
 }

@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import info.matchingservice.dom.Party.Role;
-import info.matchingservice.dom.Party.RoleType;
-import info.matchingservice.dom.Party.Roles;
+import info.matchingservice.dom.Actor.SystemRole;
+import info.matchingservice.dom.Actor.RoleType;
+import info.matchingservice.dom.Actor.SystemRoles;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 import static org.junit.Assert.assertThat;
@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class RoleTest extends MatchingIntegrationTest {
     
     @Inject 
-    Roles roles;
+    SystemRoles roles;
     
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
@@ -30,7 +30,7 @@ public class RoleTest extends MatchingIntegrationTest {
         private static final RoleType ROLE = RoleType.STUDENT;
         private static final String USERNAME = "frans";
         
-        Role r1;
+        SystemRole r1;
         
         @Test
         public void valuesSet() throws Exception {
@@ -45,8 +45,8 @@ public class RoleTest extends MatchingIntegrationTest {
         private static final RoleType ROLE = RoleType.PROFESSIONAL;
         private static final String USERNAME = "frans";
         
-        Role r1;
-        Role r2;
+        SystemRole r1;
+        SystemRole r2;
         
         @Before
         public void setUp() throws Exception {
@@ -69,7 +69,7 @@ public class RoleTest extends MatchingIntegrationTest {
         private static final RoleType ROLE = RoleType.PROFESSIONAL;
         private static final String USERNAME = "frans";
         
-        Role r1;
+        SystemRole r1;
         
         @Before
         public void setUp() throws Exception {

@@ -2,7 +2,7 @@ package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
-import info.matchingservice.dom.Party.Person;
+import info.matchingservice.dom.Actor.Person;
 
 import java.util.SortedSet;
 import java.util.TreeSet;

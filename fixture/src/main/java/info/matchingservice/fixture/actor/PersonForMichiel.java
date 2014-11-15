@@ -1,6 +1,6 @@
-package info.matchingservice.fixture.party;
+package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Party.RoleType;
+import info.matchingservice.dom.Actor.RoleType;
 
 public class PersonForMichiel extends PersonAbstract {
 

@@ -1,4 +1,4 @@
-package info.matchingservice.dom.Party;
+package info.matchingservice.dom.Actor;
 
 import java.util.List;
 
@@ -11,16 +11,16 @@ import org.apache.isis.applib.query.QueryDefault;
 
 import info.matchingservice.dom.MatchingDomainService;
 
-@DomainService(menuOrder = "20", repositoryFor = Role.class)
+@DomainService(menuOrder = "20", repositoryFor = SystemRole.class)
 @Named("Rollen")
 @Hidden
-public class Roles extends MatchingDomainService<Role> {
+public class SystemRoles extends MatchingDomainService<SystemRole> {
 
-    public Roles() {
-        super(Roles.class, Role.class);
+    public SystemRoles() {
+        super(SystemRoles.class, SystemRole.class);
     }
     
-    public Role newRole(final RoleType role){
+    public SystemRole newRole(final RoleType role){
         return newRole(role, currentUserName());
     }
     
@@ -28,8 +28,8 @@ public class Roles extends MatchingDomainService<Role> {
         return validateNewRole(role, currentUserName());
     }
     
-    public List<Role> allRoles() {
-        return container.allInstances(Role.class);
+    public List<SystemRole> allRoles() {
+        return container.allInstances(SystemRole.class);
     }
     
     // Region>helpers ////////////////////////////
@@ -39,8 +39,8 @@ public class Roles extends MatchingDomainService<Role> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public Role newRole(final RoleType role, final String userName) {
-        Role newrole = newTransientInstance(Role.class);
+    public SystemRole newRole(final RoleType role, final String userName) {
+        SystemRole newrole = newTransientInstance(SystemRole.class);
         newrole.setRole(role);
         newrole.setOwnedBy(userName);
         persist(newrole);
@@ -49,9 +49,9 @@ public class Roles extends MatchingDomainService<Role> {
     
     @Programmatic //userName can now also be set by fixtures
     public String validateNewRole(final RoleType role, final String userName){
-        QueryDefault<Role> query = 
+        QueryDefault<SystemRole> query = 
                 QueryDefault.create(
-                        Role.class, 
+                        SystemRole.class, 
                     "findSpecificRole", 
                     "ownedBy", userName,
                     "role", role);        

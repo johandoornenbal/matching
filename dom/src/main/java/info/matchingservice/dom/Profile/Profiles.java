@@ -1,7 +1,7 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Party.Person;
+import info.matchingservice.dom.Actor.Person;
 
 import java.util.List;
 

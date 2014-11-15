@@ -1,4 +1,4 @@
-package info.matchingservice.dom.Party;
+package info.matchingservice.dom.Actor;
 
 import java.util.List;
 
@@ -17,17 +17,17 @@ import info.matchingservice.dom.MatchingDomainObject;
     @javax.jdo.annotations.Query(
             name = "findMyRoles", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Party.Role "
+                    + "FROM info.matchingservice.dom.Actor.SystemRole "
                     + "WHERE ownedBy == :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "findSpecificRole", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Party.Role "
+                    + "FROM info.matchingservice.dom.Actor.SystemRole "
                     + "WHERE ownedBy == :ownedBy && role == :role"),
 })
-public class Role extends MatchingDomainObject<Role> {
+public class SystemRole extends MatchingDomainObject<SystemRole> {
 
-    public Role() {
+    public SystemRole() {
         super("role");
     }
     
@@ -54,12 +54,12 @@ public class Role extends MatchingDomainObject<Role> {
     }
     
     // Region //// Delete action //////////////////////////////
-    public List<Role> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+    public List<SystemRole> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");
-        QueryDefault<Role> query =
+        QueryDefault<SystemRole> query =
                 QueryDefault.create(
-                        Role.class,
+                        SystemRole.class,
                         "findMyRoles",
                         "ownedBy", this.getOwnedBy());
         return container.allMatches(query);

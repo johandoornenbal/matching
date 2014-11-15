@@ -2,9 +2,9 @@ package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import info.matchingservice.dom.Need.Needs;
-import info.matchingservice.dom.Party.Person;
-import info.matchingservice.dom.Party.Persons;
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.Need.PersonNeeds;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
@@ -43,7 +43,7 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p1.getFirstName(), is(FIRST_NAME));
             assertThat(p1.getLastName(), is(LAST_NAME));
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
-            assertThat(p1.getUniquePartyId(), is(UNIQUE_ID));
+            assertThat(p1.getUniqueActorId(), is(UNIQUE_ID));
             assertThat(p1.getOwnedBy(), is(OWNED_BY));
             assertThat(p1.getIsStudent(), is(true));
             assertThat(p1.getIsProfessional(), is(false));
@@ -120,11 +120,11 @@ public class PersonTest extends MatchingIntegrationTest {
 
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
             
-            assertThat(p1.getUniquePartyId(), is(UNIQUE_ID));
+            assertThat(p1.getUniqueActorId(), is(UNIQUE_ID));
             
             assertThat(p1.getOwnedBy(), is(OWNED_BY));
             
-            assertThat(p2.getUniquePartyId(), is(UNIQUE_ID));
+            assertThat(p2.getUniqueActorId(), is(UNIQUE_ID));
             assertThat(p2.getOwnedBy(), is(OWNED_BY));
             
             assertThat(p1,is(p2));
@@ -151,7 +151,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void shouldBeYou() throws Exception {
-          assertThat(persons.thisIsYou("frans").get(0).getUniquePartyId(), is("111"));  
+          assertThat(persons.thisIsYou("frans").get(0).getUniqueActorId(), is("111"));  
         }
         
         @Test
@@ -350,7 +350,7 @@ public class PersonTest extends MatchingIntegrationTest {
         }
         
         @Inject
-        Needs needs;
+        PersonNeeds needs;
         
     }
     
