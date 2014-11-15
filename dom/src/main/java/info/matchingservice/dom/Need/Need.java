@@ -3,30 +3,21 @@ package info.matchingservice.dom.Need;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Actor.Actor;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import javax.inject.Inject;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
 
-@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
+//@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+//@javax.jdo.annotations.DatastoreIdentity(
+//        strategy = IdGeneratorStrategy.NATIVE,
+//        column = "id")
+//@javax.jdo.annotations.Discriminator(
+//        strategy = DiscriminatorStrategy.CLASS_NAME,
+//        column = "discriminator")
 public class Need extends MatchingSecureMutableObject<Need> {
 
     public Need() {
@@ -75,18 +66,18 @@ public class Need extends MatchingSecureMutableObject<Need> {
     
     // Region> Vacancies
     
-    private SortedSet<VacancyProfile> vacancyProfiles = new TreeSet<VacancyProfile>();
-    
-    @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "vacancyOwner", dependentElement = "true")
-    @Named("Mijn stoelen")
-    public SortedSet<VacancyProfile> getVacancyProfiles() {
-        return vacancyProfiles;
-    }
-    
-    public void setVacancyProfiles(final SortedSet<VacancyProfile> vac){
-        this.vacancyProfiles = vac;
-    }
+//    private SortedSet<VacancyProfile> vacancyProfiles = new TreeSet<VacancyProfile>();
+//    
+//    @Render(Type.EAGERLY)
+//    @Persistent(mappedBy = "vacancyOwner", dependentElement = "true")
+//    @Named("Mijn stoelen")
+//    public SortedSet<VacancyProfile> getVacancyProfiles() {
+//        return vacancyProfiles;
+//    }
+//    
+//    public void setVacancyProfiles(final SortedSet<VacancyProfile> vac){
+//        this.vacancyProfiles = vac;
+//    }
     
 //    @Named("Nieuwe stoel")
 //    public VacancyProfile newVacancyProfile(

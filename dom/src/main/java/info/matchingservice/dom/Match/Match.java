@@ -1,6 +1,6 @@
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Profile.Profile;
 
@@ -75,7 +75,7 @@ public class Match {
         return getMatchInitiator().toString() + " vs. " + getMatchingProfile().toString();
     }
     
-    public Person getProposedPerson() {
+    public Actor getProposedPerson() {
         return getMatchingProfile().getProfileOwner();
     }
 

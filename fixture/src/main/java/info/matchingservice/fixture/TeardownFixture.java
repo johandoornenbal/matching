@@ -14,9 +14,10 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"Profile\"");
         isisJdoSupport.executeUpdate("delete from \"VacancyProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"VacancyProfile\"");
-//        isisJdoSupport.executeUpdate("delete from \"PersonNeed\"");
-        isisJdoSupport.executeUpdate("delete from \"Need\"");
-        isisJdoSupport.executeUpdate("delete from \"Person\"");     
+        isisJdoSupport.executeUpdate("delete from \"PersonNeed\"");
+        isisJdoSupport.executeUpdate("delete from \"Person\"");
+        isisJdoSupport.executeUpdate("delete from \"Organisation\""); 
+        isisJdoSupport.executeUpdate("delete from \"System\"");  
     }
     
     @javax.inject.Inject

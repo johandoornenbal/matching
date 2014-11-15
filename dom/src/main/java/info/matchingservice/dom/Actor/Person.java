@@ -43,7 +43,7 @@ import org.apache.isis.applib.util.TitleBuffer;
         column = "version")
 @javax.jdo.annotations.Uniques({
     @javax.jdo.annotations.Unique(
-            name = "Actor_ID_UNQ", members = "uniqueActorId")
+            name = "PERS_ID_UNQ", members = "uniqueActorId")
 })
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
