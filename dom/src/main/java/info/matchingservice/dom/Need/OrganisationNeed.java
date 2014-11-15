@@ -70,6 +70,17 @@ public class OrganisationNeed extends Need {
         this.needOwner = needOwner;
     }
     
+    private Integer weight;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight) {
+        this.weight = weight;
+    }
+    
     // Region> Vacancies
     
     private SortedSet<VacancyProfile> vacancyProfiles = new TreeSet<VacancyProfile>();

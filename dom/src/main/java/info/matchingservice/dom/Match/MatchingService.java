@@ -32,9 +32,9 @@ public class MatchingService {
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
     @Named("Gevonden kandidaten")
-    public List<Match> getMatches(VacancyProfile vacancy) {
+    public List<ProfileComparison> getMatches(VacancyProfile vacancy) {
         
-        List<Match> matches = new ArrayList<Match>();
+        List<ProfileComparison> matches = new ArrayList<ProfileComparison>();
         
         //Init Test: Only if there are any Profiles
         if (container.allInstances(Profile.class).isEmpty()) {

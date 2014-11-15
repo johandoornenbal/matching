@@ -9,9 +9,9 @@ import org.apache.isis.applib.annotation.ViewModel;
 
 
 @ViewModel
-public class Match {
+public class ProfileComparison {
 
-    public Match(VacancyProfile matchInitiator, Profile matchingProfile, Integer value) {
+    public ProfileComparison(VacancyProfile matchInitiator, Profile matchingProfile, Integer value) {
         this.matchInitiator = matchInitiator;
         this.matchingProfile = matchingProfile;
         this.calculatedMatchingValue = value;

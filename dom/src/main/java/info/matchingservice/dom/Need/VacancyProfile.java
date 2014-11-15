@@ -106,6 +106,17 @@ implements VacancyProfileElementOwner {
         this.vacancyOwner = vacancyOwner;
     }
     
+    private Integer weight;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight) {
+        this.weight = weight;
+    }
+    
     // Region actions
     @Named("Bewerk omschrijving stoel")
     public VacancyProfile EditVacancyDescription(
