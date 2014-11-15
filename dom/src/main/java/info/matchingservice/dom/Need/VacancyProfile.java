@@ -68,30 +68,30 @@ implements VacancyProfileElementOwner {
         this.vacancyDescription = description;
     }
     
-    private String testFieldForMatching;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @MultiLine
-    @Named("Tekst om te matchen")
-    public String getTestFieldForMatching(){
-        return testFieldForMatching;
-    }
-    
-    public void setTestFieldForMatching(final String testtext) {
-        this.testFieldForMatching = testtext;
-    }
-    
-    private Integer testFigureForMatching;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @Named("Cijfer om te matchen")
-    public Integer getTestFigureForMatching(){
-        return testFigureForMatching;
-    }
-    
-    public void setTestFigureForMatching(final Integer testfigure) {
-        this.testFigureForMatching = testfigure;
-    }
+//    private String testFieldForMatching;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "true")
+//    @MultiLine
+//    @Named("Tekst om te matchen")
+//    public String getTestFieldForMatching(){
+//        return testFieldForMatching;
+//    }
+//    
+//    public void setTestFieldForMatching(final String testtext) {
+//        this.testFieldForMatching = testtext;
+//    }
+//    
+//    private Integer testFigureForMatching;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "true")
+//    @Named("Cijfer om te matchen")
+//    public Integer getTestFigureForMatching(){
+//        return testFigureForMatching;
+//    }
+//    
+//    public void setTestFigureForMatching(final Integer testfigure) {
+//        this.testFigureForMatching = testfigure;
+//    }
     
     private PersonNeed vacancyOwner;
     
@@ -121,33 +121,33 @@ implements VacancyProfileElementOwner {
         return getVacancyDescription();
     }
     
-    @Named("Bewerk tekst")
-    public VacancyProfile EditTestField(
-            @Named("Tekst om te matchen")
-            @MultiLine
-            String newString
-            ){
-        this.setTestFieldForMatching(newString);
-        return this;
-    }
-    
-    public String default0EditTestField() {
-        return getTestFieldForMatching();
-    }    
-    
-    @Named("Bewerk cijfer")
-    public VacancyProfile EditTestValue(
-            @Named("Cijfer om te matchen")
-            Integer newInteger
-            ){
-        this.setTestFigureForMatching(newInteger);
-        return this;
-    }
-    
-    public Integer default0EditTestValue() {
-        return getTestFigureForMatching();
-    }  
-    
+//    @Named("Bewerk tekst")
+//    public VacancyProfile EditTestField(
+//            @Named("Tekst om te matchen")
+//            @MultiLine
+//            String newString
+//            ){
+//        this.setTestFieldForMatching(newString);
+//        return this;
+//    }
+//    
+//    public String default0EditTestField() {
+//        return getTestFieldForMatching();
+//    }    
+//    
+//    @Named("Bewerk cijfer")
+//    public VacancyProfile EditTestValue(
+//            @Named("Cijfer om te matchen")
+//            Integer newInteger
+//            ){
+//        this.setTestFigureForMatching(newInteger);
+//        return this;
+//    }
+//    
+//    public Integer default0EditTestValue() {
+//        return getTestFigureForMatching();
+//    }  
+//    
     // Region> VacanciesProfileElements
         
     private SortedSet<VacancyProfileElement> vacancyProfileElement = new TreeSet<VacancyProfileElement>();
@@ -180,6 +180,29 @@ implements VacancyProfileElementOwner {
     public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription){
         return validateNewVacancyProfileElement(vacancyProfileElementDescription, this);
     }
+    
+    @Named("Nieuw steekwoorden element")
+    public VacancyProfile newKeyWordElement(
+            @Named("Profiel element beschrijving")
+            final String profileElementDescription,
+            @Named("Keywords")
+            @MultiLine
+            final String keywords
+            ) {
+        newKeyWordElement(profileElementDescription, keywords, this, currentUserName());
+        return this;
+    }    
+    
+    @Named("Nieuw getal element")
+    public VacancyProfile newFigureElement(
+            @Named("Profiel element beschrijving")
+            final String profileElementDescription,
+            @Named("Getal")
+            final Integer figure
+            ) {
+        newFigureElement(profileElementDescription, figure, this, currentUserName());
+        return this;
+    } 
     
     // helpers
     
@@ -224,10 +247,33 @@ implements VacancyProfileElementOwner {
                 :null;
     }
     
+    @Programmatic
+    public void newKeyWordElement(
+            final String profileElementDescription,
+            final String keywords,
+            final VacancyProfile profileElementOwner, 
+            final String ownedBy) {
+        pe_keywords.newProfileElement(profileElementDescription, keywords, profileElementOwner, ownedBy);
+    }
+    
+    @Programmatic
+    public void newFigureElement(
+            final String profileElementDescription,
+            final Integer figure,
+            final VacancyProfile profileElementOwner, 
+            final String ownedBy) {
+        pe_figures.newProfileElement(profileElementDescription, figure, profileElementOwner, ownedBy);
+    }
     //Injects
     
     @Inject
     VacancyProfileElements vacancyProfileElements;
+    
+    @Inject
+    Vpe_Keywords pe_keywords;
+    
+    @Inject
+    Vpe_Figures pe_figures;
         
     @javax.inject.Inject
     private DomainObjectContainer container;

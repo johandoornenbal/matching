@@ -46,28 +46,28 @@ public class Profiles extends MatchingDomainService<Profile> {
         return newProfile;
     }
     
-    @Programmatic //newProfile can now be made by fixtures
-    @Named("Nieuw profiel")
-    public Profile newProfile(
-            @Named("Profiel naam")
-            final String profileName,
-            @Named("Tekst voor matching")
-            @MultiLine
-            final String testFieldForMatching,
-            @Named("Getal voor matching")
-            final Integer testfigure,
-            final Person profileowner,
-            final String ownedBy
-            ){
-        final Profile newProfile = newTransientInstance(Profile.class);
-        newProfile.setProfileName(profileName);
-        newProfile.setTestFieldForMatching(testFieldForMatching);
-        newProfile.setTestFigureForMatching(testfigure);
-        newProfile.setProfileOwner(profileowner);
-        newProfile.setOwnedBy(ownedBy);
-        persist(newProfile);
-        return newProfile;
-    }
+//    @Programmatic //newProfile can now be made by fixtures
+//    @Named("Nieuw profiel")
+//    public Profile newProfile(
+//            @Named("Profiel naam")
+//            final String profileName,
+//            @Named("Tekst voor matching")
+//            @MultiLine
+//            final String testFieldForMatching,
+//            @Named("Getal voor matching")
+//            final Integer testfigure,
+//            final Person profileowner,
+//            final String ownedBy
+//            ){
+//        final Profile newProfile = newTransientInstance(Profile.class);
+//        newProfile.setProfileName(profileName);
+//        newProfile.setTestFieldForMatching(testFieldForMatching);
+//        newProfile.setTestFigureForMatching(testfigure);
+//        newProfile.setProfileOwner(profileowner);
+//        newProfile.setOwnedBy(ownedBy);
+//        persist(newProfile);
+//        return newProfile;
+//    }
     
     
 

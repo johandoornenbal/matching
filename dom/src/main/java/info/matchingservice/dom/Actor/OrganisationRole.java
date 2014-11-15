@@ -15,15 +15,15 @@ import org.apache.isis.applib.query.QueryDefault;
     @javax.jdo.annotations.Query(
             name = "findMyRoles", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Actor.SystemRole "
+                    + "FROM info.matchingservice.dom.Actor.OrganisationRole "
                     + "WHERE ownedBy == :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "findSpecificRole", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Actor.SystemRole "
+                    + "FROM info.matchingservice.dom.Actor.OrganisationRole "
                     + "WHERE ownedBy == :ownedBy && role == :role"),
 })
-public class SystemRole extends Role {
+public class OrganisationRole extends Role {
     
     private String ownedBy;
     
@@ -36,24 +36,24 @@ public class SystemRole extends Role {
         this.ownedBy=owner;
     }
     
-    private SystemRoleType role;
+    private OrganisationRoleType role;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public SystemRoleType getRole(){
+    public OrganisationRoleType getRole(){
         return role;
     }
     
-    public void setRole(final SystemRoleType role) {
+    public void setRole(final OrganisationRoleType role) {
         this.role=role;
     }
     
     // Region //// Delete action //////////////////////////////
-    public List<SystemRole> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+    public List<OrganisationRole> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");
-        QueryDefault<SystemRole> query =
+        QueryDefault<OrganisationRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        OrganisationRole.class,
                         "findMyRoles",
                         "ownedBy", this.getOwnedBy());
         return container.allMatches(query);

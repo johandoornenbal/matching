@@ -13,13 +13,13 @@ public abstract class VacancyAbstract extends FixtureScript {
     
     protected VacancyProfile createVacancy(
             String vacancyDescription,
-            String testTextForMatching,
-            Integer testfigure,
+//            String testTextForMatching,
+//            Integer testfigure,
             PersonNeed vacancyOwner,
             String user,
             ExecutionContext executionContext
             ) {
-        VacancyProfile newVac = vacs.newVacancy(vacancyDescription, testTextForMatching, testfigure, vacancyOwner, user);
+        VacancyProfile newVac = vacs.newVacancy(vacancyDescription, vacancyOwner, user);
         return executionContext.add(this,newVac);
     }
     

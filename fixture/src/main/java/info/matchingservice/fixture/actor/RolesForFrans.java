@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Actor.RoleType;
+import info.matchingservice.dom.Actor.PersonRoleType;
 
 public class RolesForFrans extends RoleAbstract {
 
@@ -8,13 +8,13 @@ public class RolesForFrans extends RoleAbstract {
     protected void execute(ExecutionContext executionContext) {
 
         createRole(
-                RoleType.STUDENT, 
+                PersonRoleType.STUDENT, 
                 "frans",
                 executionContext
                 );
         
         createRole(
-                RoleType.PRINCIPAL, 
+                PersonRoleType.PRINCIPAL, 
                 "frans",
                 executionContext
                 );

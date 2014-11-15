@@ -11,8 +11,8 @@ public class ProfileForRembrandt extends ProfileAbstract {
 
         createProfile(
                 "Profile of Rembrandt",
-                "Ervaren senior allround schilder",
-                7,
+//                "Ervaren senior allround schilder",
+//                7,
                 persons.allPersons().get(1),
                 "rembrandt",
                 executionContext

@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Actor.RoleType;
+import info.matchingservice.dom.Actor.PersonRoleType;
 
 public class PersonForGerard extends PersonAbstract {
 

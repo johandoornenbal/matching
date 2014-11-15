@@ -15,15 +15,15 @@ import org.apache.isis.applib.query.QueryDefault;
     @javax.jdo.annotations.Query(
             name = "findMyRoles", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Actor.SystemRole "
+                    + "FROM info.matchingservice.dom.Actor.PersonRole "
                     + "WHERE ownedBy == :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "findSpecificRole", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Actor.SystemRole "
+                    + "FROM info.matchingservice.dom.Actor.PersonRole "
                     + "WHERE ownedBy == :ownedBy && role == :role"),
 })
-public class SystemRole extends Role {
+public class PersonRole extends Role {
     
     private String ownedBy;
     
@@ -36,24 +36,24 @@ public class SystemRole extends Role {
         this.ownedBy=owner;
     }
     
-    private SystemRoleType role;
+    private PersonRoleType role;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public SystemRoleType getRole(){
+    public PersonRoleType getRole(){
         return role;
     }
     
-    public void setRole(final SystemRoleType role) {
+    public void setRole(final PersonRoleType role) {
         this.role=role;
     }
     
     // Region //// Delete action //////////////////////////////
-    public List<SystemRole> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+    public List<PersonRole> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");
-        QueryDefault<SystemRole> query =
+        QueryDefault<PersonRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        PersonRole.class,
                         "findMyRoles",
                         "ownedBy", this.getOwnedBy());
         return container.allMatches(query);

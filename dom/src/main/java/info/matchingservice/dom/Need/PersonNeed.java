@@ -89,14 +89,14 @@ public class PersonNeed extends Need {
     @Named("Nieuwe stoel")
     public VacancyProfile newVacancyProfile(
             @Named("Omschrijving van 'stoel'")
-            final  String vacancyDescription,
-            @MultiLine
-            @Named("Tekst om te matchen")
-            final String testTextForMatching,
-            @Named("Cijfer om te matchen")
-            final Integer testfigure
+            final  String vacancyDescription
+//            @MultiLine
+//            @Named("Tekst om te matchen")
+//            final String testTextForMatching,
+//            @Named("Cijfer om te matchen")
+//            final Integer testfigure
             ) {
-        return newVacancyProfile(vacancyDescription, testTextForMatching, testfigure, this, currentUserName());
+        return newVacancyProfile(vacancyDescription, this, currentUserName());
     }
     
     // helpers
@@ -110,8 +110,13 @@ public class PersonNeed extends Need {
     }
     
     @Programmatic
-    public VacancyProfile newVacancyProfile(final String vacancyDescription, final String testTextForMatching, final Integer testfigure, final PersonNeed vacancyOwner, final String ownedBy) {
-        return allvacancies.newVacancy(vacancyDescription, testTextForMatching, testfigure, vacancyOwner, ownedBy);
+    public VacancyProfile newVacancyProfile(
+            final String vacancyDescription, 
+//            final String testTextForMatching, 
+//            final Integer testfigure, 
+            final PersonNeed vacancyOwner, 
+            final String ownedBy) {
+        return allvacancies.newVacancy(vacancyDescription, vacancyOwner, ownedBy);
     }
     
     //Injection

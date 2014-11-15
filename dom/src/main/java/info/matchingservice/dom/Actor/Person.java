@@ -17,7 +17,6 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
-import org.apache.isis.applib.annotation.Named;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
@@ -25,6 +24,7 @@ import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -43,7 +43,7 @@ import org.apache.isis.applib.util.TitleBuffer;
         column = "version")
 @javax.jdo.annotations.Uniques({
     @javax.jdo.annotations.Unique(
-            name = "PERS_ID_UNQ", members = "uniqueActorId")
+            name = "PERSON_ID_UNQ", members = "uniqueActorId")
 })
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
@@ -237,10 +237,10 @@ public class Person extends Actor {
     @Hidden
     @MemberOrder(sequence = "100")
     @Render(Type.EAGERLY)
-    public List<SystemRole> getAllMyRoles() {
-        QueryDefault<SystemRole> query =
+    public List<PersonRole> getAllMyRoles() {
+        QueryDefault<PersonRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        PersonRole.class,
                         "findMyRoles",
                         "ownedBy", this.getOwnedBy());
         return container.allMatches(query);
@@ -251,19 +251,19 @@ public class Person extends Actor {
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsStudent()) {
-            tb.append(RoleType.STUDENT.title());
+            tb.append(PersonRoleType.STUDENT.title());
         }
         if (getIsProfessional()) {
             if (!tb.toString().equals("")){
                 tb.append(",");
             }
-            tb.append(RoleType.PROFESSIONAL.title());
+            tb.append(PersonRoleType.PROFESSIONAL.title());
         }
         if (getIsPrincipal()) {
             if (!tb.toString().equals("")){
                 tb.append(",");
             }
-            tb.append(RoleType.PRINCIPAL.title());
+            tb.append(PersonRoleType.PRINCIPAL.title());
         }
         return tb.toString();
     }
@@ -404,18 +404,18 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsStudent(Person ownerPerson) {
-        QueryDefault<SystemRole> query =
+        QueryDefault<PersonRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        PersonRole.class,
                         "findSpecificRole",
                         "ownedBy", ownerPerson.getOwnedBy(),
-                        "role", RoleType.STUDENT);
+                        "role", PersonRoleType.STUDENT);
         return !container.allMatches(query).isEmpty();
     }
     
     @Programmatic // now values can be set by fixtures
     public void addRoleStudent(String ownedBy) {
-        roles.newRole(RoleType.STUDENT, ownedBy);
+        roles.newRole(PersonRoleType.STUDENT, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -430,13 +430,13 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void deleteRoleStudent(String ownedBy) {
-        QueryDefault<SystemRole> query =
+        QueryDefault<PersonRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        PersonRole.class,
                         "findSpecificRole",
                         "ownedBy", ownedBy,
-                        "role", RoleType.STUDENT);
-        SystemRole roleToDelete = container.firstMatch(query);
+                        "role", PersonRoleType.STUDENT);
+        PersonRole roleToDelete = container.firstMatch(query);
         roleToDelete.delete(true);
     }
     
@@ -454,18 +454,18 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsProfessional(Person ownerPerson) {
-        QueryDefault<SystemRole> query =
+        QueryDefault<PersonRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        PersonRole.class,
                         "findSpecificRole",
                         "ownedBy", ownerPerson.getOwnedBy(),
-                        "role", RoleType.PROFESSIONAL);
+                        "role", PersonRoleType.PROFESSIONAL);
         return !container.allMatches(query).isEmpty();
     }
     
     @Programmatic // now values can be set by fixtures
     public void addRoleProfessional(String ownedBy) {
-        roles.newRole(RoleType.PROFESSIONAL, ownedBy);
+        roles.newRole(PersonRoleType.PROFESSIONAL, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -480,13 +480,13 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void deleteRoleProfessional(String ownedBy) {
-        QueryDefault<SystemRole> query =
+        QueryDefault<PersonRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        PersonRole.class,
                         "findSpecificRole",
                         "ownedBy", ownedBy,
-                        "role", RoleType.PROFESSIONAL);
-        SystemRole roleToDelete = container.firstMatch(query);
+                        "role", PersonRoleType.PROFESSIONAL);
+        PersonRole roleToDelete = container.firstMatch(query);
         roleToDelete.delete(true);
     }
     
@@ -504,18 +504,18 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsPrincipal(Person ownerPerson) {
-        QueryDefault<SystemRole> query =
+        QueryDefault<PersonRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        PersonRole.class,
                         "findSpecificRole",
                         "ownedBy", ownerPerson.getOwnedBy(),
-                        "role", RoleType.PRINCIPAL);
+                        "role", PersonRoleType.PRINCIPAL);
         return !container.allMatches(query).isEmpty();
     }
     
     @Programmatic // now values can be set by fixtures
     public void addRolePrincipal(String ownedBy) {
-        roles.newRole(RoleType.PRINCIPAL, ownedBy);
+        roles.newRole(PersonRoleType.PRINCIPAL, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -530,13 +530,13 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void deleteRolePrincipal(String ownedBy) {
-        QueryDefault<SystemRole> query =
+        QueryDefault<PersonRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        PersonRole.class,
                         "findSpecificRole",
                         "ownedBy", ownedBy,
-                        "role", RoleType.PRINCIPAL);
-        SystemRole roleToDelete = container.firstMatch(query);
+                        "role", PersonRoleType.PRINCIPAL);
+        PersonRole roleToDelete = container.firstMatch(query);
         roleToDelete.delete(true);
     }
     
@@ -595,7 +595,7 @@ public class Person extends Actor {
     private DomainObjectContainer container;
     
     @Inject
-    private SystemRoles roles;
+    private PersonRoles roles;
 
     @Inject
     private Profiles profiles;

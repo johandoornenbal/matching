@@ -59,7 +59,7 @@ public class NeedTest extends MatchingIntegrationTest {
         @Before
         public void setUp() throws Exception {
             n1 = needs.allNeeds().get(0);
-            n1.newVacancyProfile("Test vacancy", "", 1, n1, USERNAME);
+            n1.newVacancyProfile("Test vacancy", n1, USERNAME);
         }
         
         @Test
@@ -108,7 +108,7 @@ public class NeedTest extends MatchingIntegrationTest {
             Frans = persons.allPersons().get(0);
             n1 = needs.allNeeds().get(0);
             v2 = n1.getVacancyProfiles().last();
-            n1.newVacancyProfile(TEST_VACANCY_DECRIPTION, TEST_VACANCY_MATCHINGTEXT, 2, n1, USERNAME);
+            n1.newVacancyProfile(TEST_VACANCY_DECRIPTION, n1, USERNAME);
             n1 = needs.allNeeds().get(0); // get n1 again
             v1 = n1.getVacancyProfiles().last(); // new vacancy
             v1.newVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1, USERNAME);
@@ -120,7 +120,7 @@ public class NeedTest extends MatchingIntegrationTest {
         public void valuesSet() throws Exception {
             assertThat(n1.getVacancyProfiles().size(), is(3));
             assertThat(n1.getVacancyProfiles().last().getVacancyDescription(), is(TEST_VACANCY_DECRIPTION));
-            assertThat(n1.getVacancyProfiles().last().getTestFieldForMatching(), is(TEST_VACANCY_MATCHINGTEXT));
+//            assertThat(n1.getVacancyProfiles().last().getTestFieldForMatching(), is(TEST_VACANCY_MATCHINGTEXT));
             assertThat(n1.getVacancyProfiles().last().getOwnedBy(), is(USERNAME));
             assertThat(v1.getVacancyProfileElement().size(), is(1));
             assertThat(v1.getVacancyProfileElement().last().getVacancyProfileElementDescription(), is(TEST_VACANCYPROFILEELEMENT_DESCR));

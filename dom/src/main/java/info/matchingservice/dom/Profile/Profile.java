@@ -2,7 +2,6 @@ package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
-import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
 
 import java.util.SortedSet;
@@ -71,31 +70,33 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public void setProfileName(final String test) {
         this.profileName = test;
     }
-
-    private Integer testFigureForMatching;
     
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @Named("Cijfer voor matching")
-    public Integer getTestFigureForMatching(){
-        return testFigureForMatching;
-    }
+/////////////////////////////////////////////////////////////////
     
-    public void setTestFigureForMatching(final Integer testfigure) {
-        this.testFigureForMatching = testfigure;
-    }
-    
-    private String testFieldForMatching;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @MultiLine
-    @Named("Tekst voor matching")
-    public String getTestFieldForMatching(){
-        return testFieldForMatching;
-    }
-    
-    public void setTestFieldForMatching(final String testtext) {
-        this.testFieldForMatching = testtext;
-    }
+//    private Integer testFigureForMatching;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "true")
+//    @Named("Cijfer voor matching")
+//    public Integer getTestFigureForMatching(){
+//        return testFigureForMatching;
+//    }
+//    
+//    public void setTestFigureForMatching(final Integer testfigure) {
+//        this.testFigureForMatching = testfigure;
+//    }
+//    
+//    private String testFieldForMatching;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "true")
+//    @MultiLine
+//    @Named("Tekst voor matching")
+//    public String getTestFieldForMatching(){
+//        return testFieldForMatching;
+//    }
+//    
+//    public void setTestFieldForMatching(final String testtext) {
+//        this.testFieldForMatching = testtext;
+//    }
     
     
     private Person profileOwner;
@@ -148,7 +149,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return validateNewProfileElement(profileElementDescription, this);
     }
     
-    @Named("Nieuw KeyWord element")
+    @Named("Nieuw steekwoorden element")
     public Profile newKeyWordElement(
             @Named("Profiel element beschrijving")
             final String profileElementDescription,
@@ -160,6 +161,16 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return this;
     }    
     
+    @Named("Nieuw getal element")
+    public Profile newFigureElement(
+            @Named("Profiel element beschrijving")
+            final String profileElementDescription,
+            @Named("Getal")
+            final Integer figure
+            ) {
+        newFigureElement(profileElementDescription, figure, this, currentUserName());
+        return this;
+    }    
     // helpers
     
     private String currentUserName() {
@@ -207,6 +218,16 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             final String ownedBy) {
         pe_keywords.newProfileElement(profileElementDescription, keywords, profileElementOwner, ownedBy);
     }
+    
+    @Programmatic
+    public void newFigureElement(
+            final String profileElementDescription,
+            final Integer figure,
+            final Profile profileElementOwner, 
+            final String ownedBy) {
+        pe_figures.newProfileElement(profileElementDescription, figure, profileElementOwner, ownedBy);
+    }
+    
     //Injects
     
     @Inject
@@ -214,6 +235,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Inject
     Pe_Keywords pe_keywords;
+    
+    @Inject
+    Pe_Figures pe_figures;
         
     @javax.inject.Inject
     private DomainObjectContainer container;

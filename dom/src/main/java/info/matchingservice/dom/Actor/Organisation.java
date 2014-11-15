@@ -1,18 +1,14 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.Need.PersonNeeds;
-import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.Profiles;
 
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
@@ -146,10 +142,10 @@ public class Organisation extends Actor {
     @Hidden
     @MemberOrder(sequence = "100")
     @Render(Type.EAGERLY)
-    public List<SystemRole> getAllMyRoles() {
-        QueryDefault<SystemRole> query =
+    public List<OrganisationRole> getAllMyRoles() {
+        QueryDefault<OrganisationRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        OrganisationRole.class,
                         "findMyRoles",
                         "ownedBy", this.getOwnedBy());
         return container.allMatches(query);
@@ -163,7 +159,7 @@ public class Organisation extends Actor {
             if (!tb.toString().equals("")){
                 tb.append(",");
             }
-            tb.append(RoleType.PRINCIPAL.title());
+            tb.append(OrganisationRoleType.PRINCIPAL.title());
         }
         return tb.toString();
     }
@@ -274,18 +270,18 @@ public class Organisation extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsPrincipal(Organisation ownerPerson) {
-        QueryDefault<SystemRole> query =
+        QueryDefault<OrganisationRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        OrganisationRole.class,
                         "findSpecificRole",
                         "ownedBy", ownerPerson.getOwnedBy(),
-                        "role", RoleType.PRINCIPAL);
+                        "role", OrganisationRoleType.PRINCIPAL);
         return !container.allMatches(query).isEmpty();
     }
     
     @Programmatic // now values can be set by fixtures
     public void addRolePrincipal(String ownedBy) {
-        roles.newRole(RoleType.PRINCIPAL, ownedBy);
+        roles.newRole(OrganisationRoleType.PRINCIPAL, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -300,13 +296,13 @@ public class Organisation extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void deleteRolePrincipal(String ownedBy) {
-        QueryDefault<SystemRole> query =
+        QueryDefault<OrganisationRole> query =
                 QueryDefault.create(
-                        SystemRole.class,
+                        OrganisationRole.class,
                         "findSpecificRole",
                         "ownedBy", ownedBy,
-                        "role", RoleType.PRINCIPAL);
-        SystemRole roleToDelete = container.firstMatch(query);
+                        "role", OrganisationRoleType.PRINCIPAL);
+        OrganisationRole roleToDelete = container.firstMatch(query);
         roleToDelete.delete(true);
     }
     
@@ -365,7 +361,7 @@ public class Organisation extends Actor {
     private DomainObjectContainer container;
     
     @Inject
-    private SystemRoles roles;
+    private OrganisationRoles roles;
 
     @Inject
     private Profiles profiles;

@@ -15,7 +15,7 @@ import nl.socrates.dom.RegexValidation;
 import nl.socrates.dom.SocratesDomainService;
 
 @DomainService(menuOrder = "30", repositoryFor = SocOrganisation.class)
-@Named("Organisaties")
+@Named("Socrates Organisaties")
 public class SocOrganisations extends SocratesDomainService<SocOrganisation> {
     
     public SocOrganisations() {

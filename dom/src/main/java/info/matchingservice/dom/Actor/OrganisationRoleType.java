@@ -2,15 +2,13 @@ package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.TitledEnum;
 
-public enum RoleType implements TitledEnum {
+public enum OrganisationRoleType implements TitledEnum {
 
-    STUDENT("student"),
-    PROFESSIONAL("zelfstandig professional"),
     PRINCIPAL("opdrachtgever");
 
     private String title;
     
-    RoleType (String title) {
+    OrganisationRoleType (String title) {
         this.title = title;
     }
     

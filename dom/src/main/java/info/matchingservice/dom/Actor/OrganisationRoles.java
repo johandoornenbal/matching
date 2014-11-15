@@ -11,25 +11,25 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.query.QueryDefault;
 
-@DomainService(menuOrder = "20", repositoryFor = SystemRole.class)
-@Named("Systeem Rollen")
+@DomainService(menuOrder = "20", repositoryFor = OrganisationRole.class)
+@Named("Organisatie Rollen")
 @Hidden
-public class SystemRoles extends MatchingDomainService<SystemRole> {
+public class OrganisationRoles extends MatchingDomainService<OrganisationRole> {
 
-    public SystemRoles() {
-        super(SystemRoles.class, SystemRole.class);
+    public OrganisationRoles() {
+        super(OrganisationRoles.class, OrganisationRole.class);
     }
     
-    public SystemRole newRole(final SystemRoleType role){
+    public OrganisationRole newRole(final OrganisationRoleType role){
         return newRole(role, currentUserName());
     }
     
-    public String validateNewRole(final SystemRoleType role){
+    public String validateNewRole(final OrganisationRoleType role){
         return validateNewRole(role, currentUserName());
     }
     
-    public List<SystemRole> allRoles() {
-        return container.allInstances(SystemRole.class);
+    public List<OrganisationRole> allRoles() {
+        return container.allInstances(OrganisationRole.class);
     }
     
     // Region>helpers ////////////////////////////
@@ -39,8 +39,8 @@ public class SystemRoles extends MatchingDomainService<SystemRole> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public SystemRole newRole(final SystemRoleType role, final String userName) {
-        SystemRole newrole = newTransientInstance(SystemRole.class);
+    public OrganisationRole newRole(final OrganisationRoleType role, final String userName) {
+        OrganisationRole newrole = newTransientInstance(OrganisationRole.class);
         newrole.setRole(role);
         newrole.setOwnedBy(userName);
         persist(newrole);
@@ -48,10 +48,10 @@ public class SystemRoles extends MatchingDomainService<SystemRole> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public String validateNewRole(final SystemRoleType role, final String userName){
-        QueryDefault<SystemRole> query = 
+    public String validateNewRole(final OrganisationRoleType role, final String userName){
+        QueryDefault<OrganisationRole> query = 
                 QueryDefault.create(
-                        SystemRole.class, 
+                        OrganisationRole.class, 
                     "findSpecificRole", 
                     "ownedBy", userName,
                     "role", role);        

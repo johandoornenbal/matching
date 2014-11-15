@@ -159,7 +159,7 @@ public class System extends Actor {
             if (!tb.toString().equals("")){
                 tb.append(",");
             }
-            tb.append(RoleType.PRINCIPAL.title());
+            tb.append(SystemRoleType.PRINCIPAL.title());
         }
         return tb.toString();
     }
@@ -275,13 +275,13 @@ public class System extends Actor {
                         SystemRole.class,
                         "findSpecificRole",
                         "ownedBy", ownerPerson.getOwnedBy(),
-                        "role", RoleType.PRINCIPAL);
+                        "role", SystemRoleType.PRINCIPAL);
         return !container.allMatches(query).isEmpty();
     }
     
     @Programmatic // now values can be set by fixtures
     public void addRolePrincipal(String ownedBy) {
-        roles.newRole(RoleType.PRINCIPAL, ownedBy);
+        roles.newRole(SystemRoleType.PRINCIPAL, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -301,7 +301,7 @@ public class System extends Actor {
                         SystemRole.class,
                         "findSpecificRole",
                         "ownedBy", ownedBy,
-                        "role", RoleType.PRINCIPAL);
+                        "role", SystemRoleType.PRINCIPAL);
         SystemRole roleToDelete = container.firstMatch(query);
         roleToDelete.delete(true);
     }

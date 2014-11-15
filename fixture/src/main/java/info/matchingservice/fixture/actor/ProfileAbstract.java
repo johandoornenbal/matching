@@ -13,13 +13,13 @@ public abstract class ProfileAbstract extends FixtureScript {
     
     protected Profile createProfile(
             String testProfileName,
-            String testStringForMatching,
-            Integer testfigure,
+//            String testStringForMatching,
+//            Integer testfigure,
             Person profileOwner,
             String user,
             ExecutionContext executionContext
             ) {
-        Profile newProfile = profiles.newProfile(testProfileName, testStringForMatching, testfigure, profileOwner, user);
+        Profile newProfile = profiles.newProfile(testProfileName, profileOwner, user);
         return executionContext.add(this,newProfile);
     }
     

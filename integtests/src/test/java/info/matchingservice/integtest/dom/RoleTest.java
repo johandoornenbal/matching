@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import info.matchingservice.dom.Actor.SystemRole;
-import info.matchingservice.dom.Actor.RoleType;
-import info.matchingservice.dom.Actor.SystemRoles;
+import info.matchingservice.dom.Actor.PersonRole;
+import info.matchingservice.dom.Actor.PersonRoleType;
+import info.matchingservice.dom.Actor.PersonRoles;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 import static org.junit.Assert.assertThat;
@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class RoleTest extends MatchingIntegrationTest {
     
     @Inject 
-    SystemRoles roles;
+    PersonRoles roles;
     
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
@@ -27,10 +27,10 @@ public class RoleTest extends MatchingIntegrationTest {
     
     public static class testRole extends RoleTest {
         
-        private static final RoleType ROLE = RoleType.STUDENT;
+        private static final PersonRoleType ROLE = PersonRoleType.STUDENT;
         private static final String USERNAME = "frans";
         
-        SystemRole r1;
+        PersonRole r1;
         
         @Test
         public void valuesSet() throws Exception {
@@ -42,11 +42,11 @@ public class RoleTest extends MatchingIntegrationTest {
     
     public static class NewRole extends RoleTest {
         
-        private static final RoleType ROLE = RoleType.PROFESSIONAL;
+        private static final PersonRoleType ROLE = PersonRoleType.PROFESSIONAL;
         private static final String USERNAME = "frans";
         
-        SystemRole r1;
-        SystemRole r2;
+        PersonRole r1;
+        PersonRole r2;
         
         @Before
         public void setUp() throws Exception {
@@ -66,10 +66,10 @@ public class RoleTest extends MatchingIntegrationTest {
     
     public static class ExistingRole extends RoleTest {
         
-        private static final RoleType ROLE = RoleType.PROFESSIONAL;
+        private static final PersonRoleType ROLE = PersonRoleType.PROFESSIONAL;
         private static final String USERNAME = "frans";
         
-        SystemRole r1;
+        PersonRole r1;
         
         @Before
         public void setUp() throws Exception {
