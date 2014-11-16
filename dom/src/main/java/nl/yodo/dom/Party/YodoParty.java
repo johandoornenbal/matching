@@ -47,15 +47,15 @@ public abstract class YodoParty extends YodoSecureMutableObject<YodoParty> {
         this.ownedBy = owner;
     }
     
-    private String uniquePartyId;
+    private String uniqueYodoPartyId;
     
     @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getUniquePartyId() {
-        return uniquePartyId;
+    public String getUniqueYodoPartyId() {
+        return uniqueYodoPartyId;
     }
     
-    public void setUniquePartyId(final String id) {
-        this.uniquePartyId = id;
+    public void setUniqueYodoPartyId(final String id) {
+        this.uniqueYodoPartyId = id;
     }
 }

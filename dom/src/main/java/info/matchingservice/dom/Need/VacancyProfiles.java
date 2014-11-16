@@ -26,7 +26,7 @@ public class VacancyProfiles extends MatchingDomainService<VacancyProfile> {
             final String vacancyDescription,
 //            final String testTextForMatching,
 //            final Integer testfigure,
-            final PersonNeed vacancyOwner,
+            final Need vacancyOwner,
             final String ownedBy
             ){
         final VacancyProfile newVac = newTransientInstance(VacancyProfile.class);

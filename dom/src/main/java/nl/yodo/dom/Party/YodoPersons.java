@@ -168,7 +168,7 @@ public class YodoPersons extends YodoDomainService<YodoPerson> {
             final @Named("Achternaam") String lastName,
             final String userName) {
         final YodoPerson person = newTransientInstance(YodoPerson.class);
-        person.setUniquePartyId(uniquePartyId);
+        person.setUniqueYodoPartyId(uniquePartyId);
         person.setFirstName(firstName);
         person.setMiddleName(middleName);
         person.setLastName(lastName);

@@ -1,14 +1,19 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.Need.PersonNeeds;
+import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.Profiles;
 
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
@@ -24,20 +29,22 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 
+//@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+//@javax.jdo.annotations.DatastoreIdentity(
+//        strategy = IdGeneratorStrategy.NATIVE,
+//        column = "id")
+//@javax.jdo.annotations.Discriminator(
+//        strategy = DiscriminatorStrategy.CLASS_NAME,
+//        column = "discriminator")
+//@javax.jdo.annotations.Version(
+//        strategy = VersionStrategy.VERSION_NUMBER,
+//        column = "version")
+//@javax.jdo.annotations.Uniques({
+//    @javax.jdo.annotations.Unique(
+//            name = "SYS_ID_UNQ", members = "uniqueActorId")
+//})
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
-@javax.jdo.annotations.Version(
-        strategy = VersionStrategy.VERSION_NUMBER,
-        column = "version")
-@javax.jdo.annotations.Uniques({
-    @javax.jdo.annotations.Unique(
-            name = "SYS_ID_UNQ", members = "uniqueActorId")
-})
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findSystemUnique", language = "JDOQL",
@@ -58,33 +65,33 @@ import org.apache.isis.applib.util.TitleBuffer;
 @AutoComplete(repository=Systems.class,  action="autoComplete")
 public class System extends Actor {
     
-    private String ownedBy;
-    
-    @Override
-    @Hidden
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(final String owner) {
-        this.ownedBy = owner;
-    }
-    
-    private String uniqueActorId;
-    
-    @Override
-    @Disabled
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getUniqueActorId() {
-        return uniqueActorId;
-    }
-    
-    public void setUniqueActorId(final String id) {
-        this.uniqueActorId = id;
-    }
-    
+//    private String ownedBy;
+//    
+//    @Override
+//    @Hidden
+//    @javax.jdo.annotations.Column(allowsNull = "false")
+//    @Disabled
+//    public String getOwnedBy() {
+//        return ownedBy;
+//    }
+//
+//    public void setOwnedBy(final String owner) {
+//        this.ownedBy = owner;
+//    }
+//    
+//    private String uniqueActorId;
+//    
+//    @Override
+//    @Disabled
+//    @javax.jdo.annotations.Column(allowsNull = "false")
+//    public String getUniqueActorId() {
+//        return uniqueActorId;
+//    }
+//    
+//    public void setUniqueActorId(final String id) {
+//        this.uniqueActorId = id;
+//    }
+//    
     public String title() {
         return systemName;
     }
@@ -169,34 +176,34 @@ public class System extends Actor {
 
     //Region> PROFILE /////////////////////////////////////////////////////////////
    
-//    private SortedSet<Profile> profile = new TreeSet<Profile>();
-//   
-//    @Render(Type.EAGERLY)
-//    @Persistent(mappedBy = "profileOwner", dependentElement = "true")
-//    @Named("Mijn profiel")
-//    public SortedSet<Profile> getProfile() {
-//        return profile;
-//    }
-//   
-//    public void setProfile(final SortedSet<Profile> profile) {
-//        this.profile = profile;
-//    }
-//   
-//    @Named("Maak een profiel")
-//    public Profile makeProfile(
-//            @Named("Naam van je profiel")
-//            final String profileName
-//            ) {
-//        return makeProfile(profileName, this, getOwnedBy());
-//    }
-//   
-//    public boolean hideMakeProfile(final String testfield) {
-//        return hideMakeProfile(testfield, this, getOwnedBy());
-//    }
-//   
-//    public String validateMakeProfile(final String testfield) {
-//        return validateMakeProfile(testfield, this, getOwnedBy());
-//    }
+    private SortedSet<Profile> profile = new TreeSet<Profile>();
+   
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "profileOwner", dependentElement = "true")
+    @Named("Mijn profiel")
+    public SortedSet<Profile> getProfile() {
+        return profile;
+    }
+   
+    public void setProfile(final SortedSet<Profile> profile) {
+        this.profile = profile;
+    }
+   
+    @Named("Maak een profiel")
+    public Profile makeProfile(
+            @Named("Naam van je profiel")
+            final String profileName
+            ) {
+        return makeProfile(profileName, this, getOwnedBy());
+    }
+   
+    public boolean hideMakeProfile(final String testfield) {
+        return hideMakeProfile(testfield, this, getOwnedBy());
+    }
+   
+    public String validateMakeProfile(final String testfield) {
+        return validateMakeProfile(testfield, this, getOwnedBy());
+    }
     
     //END Region> PROFILE /////////////////////////////////////////////////////////////
     
@@ -318,43 +325,43 @@ public class System extends Actor {
     
     // HELPERS Profile
     
-//    @Programmatic // now values can be set by fixtures
-//    public Profile makeProfile(
-//            @Named("Naam van je profiel")
-//            final String profileName, 
-//            final Organisation person, 
-//            final String ownedBy) {
-//        return profiles.newProfile(profileName, person, ownedBy);
-//    }
-//    
-//    @Programmatic // now values can be set by fixtures
-//    public boolean hideMakeProfile(final String testfield, final Organisation person, final String ownedBy) {
-//        // if you are not the owner
-//        if (!this.getOwnedBy().equals(currentUserName())){
-//            return true;
-//        }
-//        // if you have already profile
-//        QueryDefault<Profile> query = 
-//                QueryDefault.create(
-//                        Profile.class, 
-//                    "findProfileByOwner", 
-//                    "ownedBy", ownedBy);
-//        return container.firstMatch(query) != null?
-//                true        
-//                :false;
-//    }
-//    
-//    @Programmatic // now values can be set by fixtures
-//    public String validateMakeProfile(final String testfield, final Organisation person, final String ownedBy) {
-//        QueryDefault<Profile> query = 
-//                QueryDefault.create(
-//                        Profile.class, 
-//                    "findProfileByOwner", 
-//                    "ownedBy", ownedBy);
-//        return container.firstMatch(query) != null?
-//                "You already have a profile"        
-//                :null;
-//    }
+    @Programmatic // now values can be set by fixtures
+    public Profile makeProfile(
+            @Named("Naam van je profiel")
+            final String profileName, 
+            final System system, 
+            final String ownedBy) {
+        return profiles.newProfile(profileName, system, ownedBy);
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public boolean hideMakeProfile(final String testfield, final System system, final String ownedBy) {
+        // if you are not the owner
+        if (!this.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        // if you have already profile
+        QueryDefault<Profile> query = 
+                QueryDefault.create(
+                        Profile.class, 
+                    "findProfileByOwner", 
+                    "profileOwner", this);
+        return container.firstMatch(query) != null?
+                true        
+                :false;
+    }
+    
+    @Programmatic // now values can be set by fixtures
+    public String validateMakeProfile(final String testfield, final System person, final String ownedBy) {
+        QueryDefault<Profile> query = 
+                QueryDefault.create(
+                        Profile.class, 
+                    "findProfileByOwner", 
+                    "profileOwner", this);
+        return container.firstMatch(query) != null?
+                "You already have a profile"        
+                :null;
+    }
     
     // Region>injections ////////////////////////////
     @javax.inject.Inject

@@ -42,8 +42,8 @@ public class YodoOrganisations extends YodoDomainService<YodoOrganisation> {
             final @Named("Organisatie naam") String organisationName,
             final String userName) {
         YodoOrganisation org = newTransientInstance(YodoOrganisation.class);
-        org.setOrganisationName(organisationName);
-        org.setUniquePartyId(uniquePartyId);
+        org.setUniqueYodoPartyId(uniquePartyId);
+        org.setOrganisationName("yodo_" + organisationName);
         org.setOwnedBy(userName);
         persist(org);
         return org;        

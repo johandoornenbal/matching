@@ -37,7 +37,7 @@ public class YodoPersonTest extends YodoIntegrationTest {
             assertThat(p1.getFirstName(), is(FIRST_NAME));
             assertThat(p1.getLastName(), is(LAST_NAME));
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
-            assertThat(p1.getUniquePartyId(), is(UNIQUE_ID));            
+            assertThat(p1.getUniqueYodoPartyId(), is(UNIQUE_ID));            
             assertThat(p1.getOwnedBy(), is(OWNED_BY));
             
         }
@@ -75,11 +75,11 @@ public class YodoPersonTest extends YodoIntegrationTest {
 
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
             
-            assertThat(p1.getUniquePartyId(), is(UNIQUE_ID));
+            assertThat(p1.getUniqueYodoPartyId(), is(UNIQUE_ID));
             
             assertThat(p1.getOwnedBy(), is(OWNED_BY));
             
-            assertThat(p2.getUniquePartyId(), is(UNIQUE_ID));
+            assertThat(p2.getUniqueYodoPartyId(), is(UNIQUE_ID));
             assertThat(p2.getOwnedBy(), is(OWNED_BY));
             
             assertThat(p1,is(p2));

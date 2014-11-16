@@ -2,6 +2,7 @@ package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
+import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
 
 import java.util.SortedSet;
@@ -36,7 +37,7 @@ import org.apache.isis.applib.query.QueryDefault;
             name = "findProfileByOwner", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE ownedBy == :ownedBy")
+                    + "WHERE profileOwner == :profileOwner")
 })
 @AutoComplete(repository=Profiles.class,  action="autoComplete")
 public class Profile extends MatchingSecureMutableObject<Profile> {
@@ -73,42 +74,17 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
 /////////////////////////////////////////////////////////////////
     
-//    private Integer testFigureForMatching;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "true")
-//    @Named("Cijfer voor matching")
-//    public Integer getTestFigureForMatching(){
-//        return testFigureForMatching;
-//    }
-//    
-//    public void setTestFigureForMatching(final Integer testfigure) {
-//        this.testFigureForMatching = testfigure;
-//    }
-//    
-//    private String testFieldForMatching;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "true")
-//    @MultiLine
-//    @Named("Tekst voor matching")
-//    public String getTestFieldForMatching(){
-//        return testFieldForMatching;
-//    }
-//    
-//    public void setTestFieldForMatching(final String testtext) {
-//        this.testFieldForMatching = testtext;
-//    }
-    
-    
-    private Person profileOwner;
+
+    private Actor profileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Named("Eigenaar profiel")
     @Disabled
-    public Person getProfileOwner() {
+    public Actor getProfileOwner() {
         return profileOwner;
     }
     
-    public void setProfileOwner(final Person owner) {
+    public void setProfileOwner(final Actor owner) {
         this.profileOwner =owner;
     }
     

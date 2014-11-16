@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
@@ -31,20 +32,22 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 
+//@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+//@javax.jdo.annotations.DatastoreIdentity(
+//        strategy = IdGeneratorStrategy.NATIVE,
+//        column = "id")
+//@javax.jdo.annotations.Discriminator(
+//        strategy = DiscriminatorStrategy.CLASS_NAME,
+//        column = "discriminator")
+//@javax.jdo.annotations.Version(
+//        strategy = VersionStrategy.VERSION_NUMBER,
+//        column = "version")
+//@javax.jdo.annotations.Uniques({
+//    @javax.jdo.annotations.Unique(
+//            name = "PERSON_ID_UNQ", members = "uniqueActorId")
+//})
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
-@javax.jdo.annotations.Version(
-        strategy = VersionStrategy.VERSION_NUMBER,
-        column = "version")
-@javax.jdo.annotations.Uniques({
-    @javax.jdo.annotations.Unique(
-            name = "PERSON_ID_UNQ", members = "uniqueActorId")
-})
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findPersonUnique", language = "JDOQL",
@@ -65,32 +68,32 @@ import org.apache.isis.applib.util.TitleBuffer;
 @AutoComplete(repository=Persons.class,  action="autoComplete")
 public class Person extends Actor {
     
-    private String ownedBy;
-    
-    @Override
-    @Hidden
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(final String owner) {
-        this.ownedBy = owner;
-    }
-    
-    private String uniqueActorId;
-    
-    @Override
-    @Disabled
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getUniqueActorId() {
-        return uniqueActorId;
-    }
-    
-    public void setUniqueActorId(final String id) {
-        this.uniqueActorId = id;
-    }
+//    private String ownedBy;
+//    
+//    @Override
+//    @Hidden
+//    @javax.jdo.annotations.Column(allowsNull = "false")
+//    @Disabled
+//    public String getOwnedBy() {
+//        return ownedBy;
+//    }
+//
+//    public void setOwnedBy(final String owner) {
+//        this.ownedBy = owner;
+//    }
+//    
+//    private String uniqueActorId;
+//    
+//    @Override
+//    @Disabled
+//    @javax.jdo.annotations.Column(allowsNull = "false")
+//    public String getUniqueActorId() {
+//        return uniqueActorId;
+//    }
+//    
+//    public void setUniqueActorId(final String id) {
+//        this.uniqueActorId = id;
+//    }
     
     public String title() {
         if (getMiddleName()==null) {
@@ -572,7 +575,7 @@ public class Person extends Actor {
                 QueryDefault.create(
                         Profile.class, 
                     "findProfileByOwner", 
-                    "ownedBy", ownedBy);
+                    "profileOwner", this);
         return container.firstMatch(query) != null?
                 true        
                 :false;
@@ -584,7 +587,7 @@ public class Person extends Actor {
                 QueryDefault.create(
                         Profile.class, 
                     "findProfileByOwner", 
-                    "ownedBy", ownedBy);
+                    "profileOwner", this);
         return container.firstMatch(query) != null?
                 "You already have a profile"        
                 :null;

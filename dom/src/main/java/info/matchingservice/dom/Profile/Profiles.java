@@ -1,13 +1,14 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Actor.Organisation;
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.System;
 
 import java.util.List;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
@@ -25,7 +26,7 @@ public class Profiles extends MatchingDomainService<Profile> {
     }
     
     //NOTE:
-    // No newProfile method here. It will be set on Party instance by action
+    // No newProfile method here. It will be set on Actor instance by action
 
     
     // Region>helpers ////////////////////////////
@@ -46,30 +47,37 @@ public class Profiles extends MatchingDomainService<Profile> {
         return newProfile;
     }
     
-//    @Programmatic //newProfile can now be made by fixtures
-//    @Named("Nieuw profiel")
-//    public Profile newProfile(
-//            @Named("Profiel naam")
-//            final String profileName,
-//            @Named("Tekst voor matching")
-//            @MultiLine
-//            final String testFieldForMatching,
-//            @Named("Getal voor matching")
-//            final Integer testfigure,
-//            final Person profileowner,
-//            final String ownedBy
-//            ){
-//        final Profile newProfile = newTransientInstance(Profile.class);
-//        newProfile.setProfileName(profileName);
-//        newProfile.setTestFieldForMatching(testFieldForMatching);
-//        newProfile.setTestFigureForMatching(testfigure);
-//        newProfile.setProfileOwner(profileowner);
-//        newProfile.setOwnedBy(ownedBy);
-//        persist(newProfile);
-//        return newProfile;
-//    }
-    
-    
+    @Programmatic //newProfile can now be made by fixtures
+    @Named("Nieuw profiel")
+    public Profile newProfile(
+            @Named("Profiel naam")
+            final String profileName,
+            final Organisation profileowner,
+            final String ownedBy
+            ){
+        final Profile newProfile = newTransientInstance(Profile.class);
+        newProfile.setProfileName(profileName);
+        newProfile.setProfileOwner(profileowner);
+        newProfile.setOwnedBy(ownedBy);
+        persist(newProfile);
+        return newProfile;
+    }
+     
+    @Programmatic //newProfile can now be made by fixtures
+    @Named("Nieuw profiel")
+    public Profile newProfile(
+            @Named("Profiel naam")
+            final String profileName,
+            final System profileowner,
+            final String ownedBy
+            ){
+        final Profile newProfile = newTransientInstance(Profile.class);
+        newProfile.setProfileName(profileName);
+        newProfile.setProfileOwner(profileowner);
+        newProfile.setOwnedBy(ownedBy);
+        persist(newProfile);
+        return newProfile;
+    }
 
     // Region>injections ////////////////////////////
     @javax.inject.Inject

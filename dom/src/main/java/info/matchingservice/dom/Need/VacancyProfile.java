@@ -68,41 +68,16 @@ implements VacancyProfileElementOwner {
         this.vacancyDescription = description;
     }
     
-//    private String testFieldForMatching;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "true")
-//    @MultiLine
-//    @Named("Tekst om te matchen")
-//    public String getTestFieldForMatching(){
-//        return testFieldForMatching;
-//    }
-//    
-//    public void setTestFieldForMatching(final String testtext) {
-//        this.testFieldForMatching = testtext;
-//    }
-//    
-//    private Integer testFigureForMatching;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "true")
-//    @Named("Cijfer om te matchen")
-//    public Integer getTestFigureForMatching(){
-//        return testFigureForMatching;
-//    }
-//    
-//    public void setTestFigureForMatching(final Integer testfigure) {
-//        this.testFigureForMatching = testfigure;
-//    }
-    
-    private PersonNeed vacancyOwner;
+    private Need vacancyOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     @Named("Opdracht")
-    public PersonNeed getVacancyOwner() {
+    public Need getVacancyOwner() {
         return vacancyOwner;
     }
     
-    public void setVacancyOwner(final PersonNeed vacancyOwner) {
+    public void setVacancyOwner(final Need vacancyOwner) {
         this.vacancyOwner = vacancyOwner;
     }
     
@@ -166,7 +141,7 @@ implements VacancyProfileElementOwner {
    
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "vacancyProfileElementOwner", dependentElement = "true")
-    @Named("Profiel elementen")
+    @Named("Gevraagde profiel elementen")
     public SortedSet<VacancyProfileElement> getVacancyProfileElement() {
         return vacancyProfileElement;
     }
