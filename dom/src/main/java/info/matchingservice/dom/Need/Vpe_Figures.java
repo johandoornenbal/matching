@@ -46,6 +46,26 @@ public class Vpe_Figures extends MatchingDomainService<Vpe_Figure> {
     @Programmatic    
     public Vpe_Figure newProfileElement(
             final String profileElementDescription,
+            final Integer figure,
+            final Integer weight,
+            final VacancyProfile profileElementOwner,
+            final String ownedBy
+            ){
+        final Vpe_Figure newProf = newTransientInstance(Vpe_Figure.class);
+        newProf.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT); // default
+        newProf.setProfileElementType(ProfileElementType.MATCHABLE_FIGURE); // default
+        newProf.setVacancyProfileElementDescription(profileElementDescription);
+        newProf.setWeight(weight);
+        newProf.setFigure(figure);
+        newProf.setVacancyProfileElementOwner(profileElementOwner);
+        newProf.setOwnedBy(ownedBy);
+        persist(newProf);
+        return newProf;
+    }
+    
+    @Programmatic    
+    public Vpe_Figure newProfileElement(
+            final String profileElementDescription,
             final VacancyProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature

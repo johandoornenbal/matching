@@ -24,15 +24,27 @@ public class VacancyProfiles extends MatchingDomainService<VacancyProfile> {
     @Programmatic
     public VacancyProfile newVacancy(
             final String vacancyDescription,
-//            final String testTextForMatching,
-//            final Integer testfigure,
             final Need vacancyOwner,
             final String ownedBy
             ){
         final VacancyProfile newVac = newTransientInstance(VacancyProfile.class);
         newVac.setVacancyDescription(vacancyDescription);
-//        newVac.setTestFieldForMatching(testTextForMatching);
-//        newVac.setTestFigureForMatching(testfigure);
+        newVac.setVacancyOwner(vacancyOwner);
+        newVac.setOwnedBy(ownedBy);
+        persist(newVac);
+        return newVac;
+    }
+    
+    @Programmatic
+    public VacancyProfile newVacancy(
+            final String vacancyDescription,
+            final Integer weight,
+            final Need vacancyOwner,
+            final String ownedBy
+            ){
+        final VacancyProfile newVac = newTransientInstance(VacancyProfile.class);
+        newVac.setVacancyDescription(vacancyDescription);
+        newVac.setWeight(weight);
         newVac.setVacancyOwner(vacancyOwner);
         newVac.setOwnedBy(ownedBy);
         persist(newVac);

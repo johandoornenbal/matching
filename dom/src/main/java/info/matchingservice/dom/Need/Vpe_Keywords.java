@@ -46,6 +46,26 @@ public class Vpe_Keywords extends MatchingDomainService<Vpe_Keyword> {
     @Programmatic    
     public Vpe_Keyword newProfileElement(
             final String profileElementDescription,
+            final String keyWord,
+            final Integer weight,
+            final VacancyProfile profileElementOwner,
+            final String ownedBy
+            ){
+        final Vpe_Keyword newProf = newTransientInstance(Vpe_Keyword.class);
+        newProf.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT); // default
+        newProf.setProfileElementType(ProfileElementType.MATCHABLE_KEYWORDS); // default
+        newProf.setVacancyProfileElementDescription(profileElementDescription);
+        newProf.setKeyWords(keyWord);
+        newProf.setWeight(weight);
+        newProf.setVacancyProfileElementOwner(profileElementOwner);
+        newProf.setOwnedBy(ownedBy);
+        persist(newProf);
+        return newProf;
+    }
+    
+    @Programmatic    
+    public Vpe_Keyword newProfileElement(
+            final String profileElementDescription,
             final VacancyProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature

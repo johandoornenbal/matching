@@ -3,7 +3,14 @@ package info.matchingservice.fixture.actor;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.Need.PersonNeed;
+import info.matchingservice.dom.Need.PersonNeeds;
+import info.matchingservice.dom.Need.VacancyProfile;
+import info.matchingservice.dom.Need.VacancyProfiles;
+import info.matchingservice.dom.Need.Vpe_Figures;
+import info.matchingservice.dom.Need.Vpe_Keywords;
 import info.matchingservice.dom.Profile.Pe_Figures;
+import info.matchingservice.dom.Profile.Pe_Keywords;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.Profiles;
 
@@ -24,6 +31,23 @@ public abstract class PersonAbstract extends FixtureScript {
             String profileName,
             String profileElementDescription,
             Integer figure,
+            String profileElementDescription2,
+            Integer figure2,
+            String profileElementDescription3,
+            String text,
+            String needDescription,
+            Integer needWeight,
+            String vacancyDescription,
+            Integer vacancyWeight,
+            String VacancyProfileElementDescription,
+            Integer vacFigure,
+            Integer elemWeight1,
+            String VacancyProfileElementDescription2,
+            Integer vacFigure2,
+            Integer elemWeight2,
+            String VacancyProfileElementDescription3,
+            String vacText,
+            Integer elemWeight3,
             String user,
             ExecutionContext executionContext
             ) {
@@ -31,8 +55,18 @@ public abstract class PersonAbstract extends FixtureScript {
         
         Profile newProfile = createProfile(newPerson, profileName, user, executionContext);
         
-        createProfileElement(newPerson, newProfile, profileElementDescription, figure, user, executionContext);
+        createProfileFigureElement(newPerson, newProfile, profileElementDescription, figure, user, executionContext);
+        createProfileFigureElement(newPerson, newProfile, profileElementDescription2, figure2, user, executionContext);
+        createProfileTextElement(newPerson, newProfile, profileElementDescription3, text, user, executionContext);
         
+        PersonNeed newNeed = createNeed(newPerson, needDescription, needWeight, user, executionContext);
+        
+        VacancyProfile newVacProfile = createVacancyProfile(newPerson, newNeed, vacancyDescription, vacancyWeight, user, executionContext);
+        
+        createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription, vacFigure, elemWeight1, user, executionContext);
+        createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription2, vacFigure2, elemWeight2, user, executionContext);
+        createVacancyProfileTextElement(newPerson, newVacProfile, VacancyProfileElementDescription3, vacText, elemWeight3, user, executionContext);
+               
         return executionContext.add(this, newPerson);
     }
     
@@ -47,7 +81,7 @@ public abstract class PersonAbstract extends FixtureScript {
         return executionContext.add(this, newProfile);
     }
     
-    protected Actor createProfileElement(
+    protected Actor createProfileFigureElement(
             Actor newPerson,
             Profile newProfile,
             String profileElementDescription,
@@ -56,6 +90,72 @@ public abstract class PersonAbstract extends FixtureScript {
             ExecutionContext executionContext
             ){
         peFigures.newProfileElement(profileElementDescription, figure, newProfile, user);
+        getContainer().flush();
+        return executionContext.add(this, newPerson);
+    }
+    
+    protected Actor createProfileTextElement(
+            Actor newPerson,
+            Profile newProfile,
+            String profileElementDescription,
+            String text,
+            String user,
+            ExecutionContext executionContext
+            ){
+        peKeyWords.newProfileElement(profileElementDescription, text, newProfile, user);
+        getContainer().flush();
+        return executionContext.add(this, newPerson);
+    }
+    
+    protected PersonNeed createNeed(
+            Actor newPerson,
+            String needDescription,
+            Integer weight,
+            String user,
+            ExecutionContext executionContext
+            ){
+        PersonNeed newNeed = personNeeds.newNeed(needDescription, weight, (Person) newPerson, user);
+        getContainer().flush();
+        return executionContext.add(this, newNeed);
+    }
+    
+    protected VacancyProfile createVacancyProfile(
+            Actor newPerson,
+            PersonNeed newNeed,
+            String vacancyDescription,
+            Integer weight,
+            String user,
+            ExecutionContext executionContext
+            ){
+        VacancyProfile newVacProfile = vacancyprofiles.newVacancy(vacancyDescription, weight, newNeed, user);
+        getContainer().flush();
+        return executionContext.add(this, newVacProfile);
+    }
+    
+    protected Actor createVacancyProfileFigureElement(
+            Actor newPerson,
+            VacancyProfile newVacProfile,
+            String profileElementDescription,
+            Integer figure,
+            Integer weight,
+            String user,
+            ExecutionContext executionContext
+            ){
+        vpeFigures.newProfileElement(profileElementDescription, figure, weight, newVacProfile, user);
+        getContainer().flush();
+        return executionContext.add(this, newPerson);
+    }
+    
+    protected Actor createVacancyProfileTextElement(
+            Actor newPerson,
+            VacancyProfile newVacProfile,
+            String profileElementDescription,
+            String text,
+            Integer weight,
+            String user,
+            ExecutionContext executionContext
+            ){
+        vpeKeywords.newProfileElement(profileElementDescription, text, weight, newVacProfile, user);
         getContainer().flush();
         return executionContext.add(this, newPerson);
     }
@@ -69,5 +169,20 @@ public abstract class PersonAbstract extends FixtureScript {
     
     @Inject
     private Pe_Figures peFigures;
+    
+    @Inject
+    Pe_Keywords peKeyWords;
+    
+    @Inject
+    PersonNeeds personNeeds;
+    
+    @Inject
+    VacancyProfiles vacancyprofiles;
+    
+    @Inject
+    Vpe_Figures vpeFigures;
+    
+    @Inject
+    Vpe_Keywords vpeKeywords;
 
 }
