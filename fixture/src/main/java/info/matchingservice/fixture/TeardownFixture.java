@@ -10,6 +10,7 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"PersonRole\"");
         isisJdoSupport.executeUpdate("delete from \"OrganisationRole\"");
         isisJdoSupport.executeUpdate("delete from \"SystemRole\"");
+        isisJdoSupport.executeUpdate("delete from \"Role\"");
 //        isisJdoSupport.executeUpdate("delete from \"Pe_Keyword\"");
 //        isisJdoSupport.executeUpdate("delete from \"Vpe_Keyword\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileElement\"");
@@ -17,9 +18,12 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"VacancyProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"VacancyProfile\"");
         isisJdoSupport.executeUpdate("delete from \"PersonNeed\"");
+        isisJdoSupport.executeUpdate("delete from \"OrganisationNeed\"");
+        isisJdoSupport.executeUpdate("delete from \"Need\"");
         isisJdoSupport.executeUpdate("delete from \"Person\"");
         isisJdoSupport.executeUpdate("delete from \"Organisation\""); 
-        isisJdoSupport.executeUpdate("delete from \"System\"");  
+        isisJdoSupport.executeUpdate("delete from \"System\""); 
+        isisJdoSupport.executeUpdate("delete from \"Actor\"");
     }
     
     @javax.inject.Inject

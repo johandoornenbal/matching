@@ -11,6 +11,9 @@ public class PersonForAntoni extends PersonAbstract {
                 "Antoni", 
                 "van", 
                 "Leeuwenhoek",
+                "Leeuwe Profiel",
+                "En mijn getal is",
+                3,
                 "antoni",
                 executionContext);
     }

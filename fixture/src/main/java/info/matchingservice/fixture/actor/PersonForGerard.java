@@ -1,6 +1,5 @@
 package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Actor.PersonRoleType;
 
 public class PersonForGerard extends PersonAbstract {
 
@@ -11,6 +10,9 @@ public class PersonForGerard extends PersonAbstract {
                 "Gerard", 
                 "", 
                 "Dou",
+                "Het profiel van Gerard",
+                "My Magic figure",
+                7,
                 "gerard",
                 executionContext);
     }

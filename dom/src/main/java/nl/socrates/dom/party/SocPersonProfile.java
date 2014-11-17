@@ -50,7 +50,7 @@ import nl.yodo.dom.TrustLevel;
                     + "FROM nl.socrates.dom.person.PersonProfile "
                     + "WHERE person == :person && profileTrustlevel == :level")                  
     })
-public class PersonProfile extends AbstractDomainObject implements Comparable<PersonProfile>{
+public class SocPersonProfile extends AbstractDomainObject implements Comparable<SocPersonProfile>{
 
     //authorization: only Read access unlesss
     //TODO: needs to be extended by hiding it according to Trustlevel
@@ -162,18 +162,18 @@ public class PersonProfile extends AbstractDomainObject implements Comparable<Pe
     //endregion
         
     @Named("Verwijderen")
-    public List<PersonProfile> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) { 
+    public List<SocPersonProfile> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) { 
         container.removeIfNotAlready(this);
         
         container.informUser("Profiel verwijderd");
         
-        QueryDefault<PersonProfile> query = 
+        QueryDefault<SocPersonProfile> query = 
                 QueryDefault.create(
-                     PersonProfile.class, 
+                     SocPersonProfile.class, 
                     "findProfileByPerson", 
                     "person", getPerson());
         
-        return (List<PersonProfile>) container.allMatches(query);   
+        return (List<SocPersonProfile>) container.allMatches(query);   
     }
     public String validateDelete(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
@@ -194,7 +194,7 @@ public class PersonProfile extends AbstractDomainObject implements Comparable<Pe
     
     
     @Override
-    public int compareTo(PersonProfile other) {
+    public int compareTo(SocPersonProfile other) {
         return ComparisonChain.start()
                 .compare(this.getProfileTrustlevel(), other.getProfileTrustlevel())
                 .compare(this.getPerson(), other.getPerson())

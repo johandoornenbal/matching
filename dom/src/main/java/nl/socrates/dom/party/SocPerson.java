@@ -296,7 +296,7 @@ public class SocPerson extends SocParty {
     
     // //////////////////////////////////////
     @Named("Maak een profiel")
-    public List<PersonProfile> makeProfile(
+    public List<SocPersonProfile> makeProfile(
             @Named("Profiel naam") final String profilename, 
             @Named("Vertrouwens niveau") final TrustLevel level, 
             @Optional @Named("Foto") final Blob picture){
@@ -305,22 +305,22 @@ public class SocPerson extends SocParty {
                 this, 
                 level, 
                 picture);
-        QueryDefault<PersonProfile> query = 
+        QueryDefault<SocPersonProfile> query = 
                 QueryDefault.create(
-                     PersonProfile.class, 
+                     SocPersonProfile.class, 
                     "findProfileByPerson", 
                     "person", this);
         
-        return (List<PersonProfile>) container.allMatches(query); 
+        return (List<SocPersonProfile>) container.allMatches(query); 
     }
     
     public String validateMakeProfile(
             final String profilename,
             final TrustLevel level,
             final Blob picture) {
-                QueryDefault<PersonProfile> query = 
+                QueryDefault<SocPersonProfile> query = 
                         QueryDefault.create(
-                        PersonProfile.class, 
+                        SocPersonProfile.class, 
                         "findProfileByPersonAndLevel", 
                         "person", this,
                         "level", level);
@@ -375,10 +375,10 @@ public class SocPerson extends SocParty {
     @MemberOrder(sequence = "10")
     @Render(Type.EAGERLY)
     @Named("Profielen")
-    public List<PersonProfile> getProfilesAllowedToView() {
-        QueryDefault<PersonProfile> query =
+    public List<SocPersonProfile> getProfilesAllowedToView() {
+        QueryDefault<SocPersonProfile> query =
                 QueryDefault.create(
-                        PersonProfile.class,
+                        SocPersonProfile.class,
                         "findProfileByPerson",
                         "person", this);
         // user is owner
@@ -389,8 +389,8 @@ public class SocPerson extends SocParty {
         if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
             return container.allMatches(query);
         }
-        List<PersonProfile> tempProfileList = new ArrayList<PersonProfile>();
-        for (PersonProfile e: container.allMatches(query)) {
+        List<SocPersonProfile> tempProfileList = new ArrayList<SocPersonProfile>();
+        for (SocPersonProfile e: container.allMatches(query)) {
             if (getViewerRights()!=null && e.getProfileTrustlevel().compareTo(getViewerRights()) <= 0) {
                  tempProfileList.add(e);
             }
@@ -464,5 +464,5 @@ public class SocPerson extends SocParty {
     private DomainObjectContainer container;
     
     @Inject
-    PersonProfiles profiles;
+    SocPersonProfiles profiles;
 }

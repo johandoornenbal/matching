@@ -14,24 +14,24 @@ import org.apache.isis.applib.value.Blob;
 
 import nl.yodo.dom.TrustLevel;
 
-@DomainService(repositoryFor=PersonProfile.class)
-public class PersonProfiles extends AbstractFactoryAndRepository {
+@DomainService(repositoryFor=SocPersonProfile.class)
+public class SocPersonProfiles extends AbstractFactoryAndRepository {
     
     @Named("Alle profielen")
     @NotInServiceMenu
-    public List<PersonProfile> listAll() {
-        return container.allInstances(PersonProfile.class);
+    public List<SocPersonProfile> listAll() {
+        return container.allInstances(SocPersonProfile.class);
     }
     
     @MemberOrder(name = "PersonProfiles", sequence = "1")
     @Named("Voeg profiel toe")
     @NotInServiceMenu
-    public PersonProfile createProfile(
+    public SocPersonProfile createProfile(
         @Named("Profiel naam") final String profilename,
         final SocPerson person,
         final TrustLevel level,
         @Optional @Named("Foto") Blob picture ) {
-        final PersonProfile pf = container.newTransientInstance(PersonProfile.class);
+        final SocPersonProfile pf = container.newTransientInstance(SocPersonProfile.class);
         pf.setProfilename(profilename);
         pf.setPerson(person);
         pf.setProfileTrustlevel(level);
@@ -55,9 +55,9 @@ public class PersonProfiles extends AbstractFactoryAndRepository {
             final SocPerson person,
             final TrustLevel level,
             final Blob picture) {
-                QueryDefault<PersonProfile> query = 
+                QueryDefault<SocPersonProfile> query = 
                         QueryDefault.create(
-                        PersonProfile.class, 
+                        SocPersonProfile.class, 
                         "findProfileByPersonAndLevel", 
                         "person", person,
                         "level", level);

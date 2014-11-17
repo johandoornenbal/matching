@@ -57,5 +57,23 @@ public class ProfileElements extends MatchingDomainService<ProfileElement> {
         persist(newProf);
         return newProf;
     }
+    
+    @Programmatic    
+    public ProfileElement newProfileElement(
+            final String profileElementDescription,
+            final Profile profileElementOwner,
+            final String ownedBy,
+            final ProfileElementType type,
+            final ProfileElementNature nature
+            ){
+        final ProfileElement newProf = newTransientInstance(ProfileElement.class);
+        newProf.setProfileElementNature(nature);
+        newProf.setProfileElementType(type);
+        newProf.setProfileElementDescription(profileElementDescription);
+        newProf.setProfileElementOwner(profileElementOwner);
+        newProf.setOwnedBy(ownedBy);
+        persist(newProf);
+        return newProf;
+    }
 
 }
