@@ -76,6 +76,15 @@ public class PersonNeed extends Need {
         return allvacancies.newVacancy(vacancyDescription, vacancyOwner, ownedBy);
     }
     
+    @Programmatic
+    public VacancyProfile newVacancyProfile(
+            final String vacancyDescription,
+            final Integer weight,
+            final PersonNeed vacancyOwner, 
+            final String ownedBy) {
+        return allvacancies.newVacancy(vacancyDescription, weight, vacancyOwner, ownedBy);
+    }
+    
     //Injection
     
     @Inject
