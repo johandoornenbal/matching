@@ -65,7 +65,7 @@ public abstract class PersonAbstract extends FixtureScript {
         
         createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription, vacFigure, elemWeight1, user, executionContext);
         createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription2, vacFigure2, elemWeight2, user, executionContext);
-        createVacancyProfileTextElement(newPerson, newVacProfile, VacancyProfileElementDescription3, vacText, elemWeight3, user, executionContext);
+//        createVacancyProfileTextElement(newPerson, newVacProfile, VacancyProfileElementDescription3, vacText, elemWeight3, user, executionContext);
                
         return executionContext.add(this, newPerson);
     }

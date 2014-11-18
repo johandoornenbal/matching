@@ -25,7 +25,7 @@ public class PersonForFrans extends PersonAbstract {
                 7,
                 10,
                 "nog een getal",
-                29,
+                16,
                 5,
                 "woorden",
                 "schilder, schilderij, junior",

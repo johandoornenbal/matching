@@ -31,12 +31,11 @@ import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.Render.Type;
 
-@DomainService
-public class MatchingService extends AbstractService {
+//@DomainService
+public class CopyOfMatchingService extends AbstractService {
     
-    // Thresholds
-    final Integer MATCHING_ElEMENT_THRESHOLD = 70;
-    final Integer MATCHING_PROFILE_THRESHOLD = 50;
+    // This threshold is applied twice!! First for filtering elements on ElementComparison and later on for filtering totalMatch on ProfileComparison 
+    final Integer MATCHING_THRESHOLD = 70;
     
     //return matches on vacancyProfileElement
     @NotInServiceMenu
@@ -58,7 +57,7 @@ public class MatchingService extends AbstractService {
                     // uitsluiten van dezelfde owner
                     // drempelwaarde is MATCHING_THRESHOLD
                     Integer matchValue = 100 - 10*Math.abs(element.getFigure() - e.getFigure());
-                    if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
+                    if (matchValue >= MATCHING_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
                         ElementComparison matchTmp = new ElementComparison(element.getVacancyProfileElementOwner(), element, e, e.getProfileElementOwner().getProfileOwner() ,matchValue);
                         elementMatches.add(matchTmp);
                     }
@@ -86,83 +85,52 @@ public class MatchingService extends AbstractService {
             Actor tempProfileOwner = profile.getProfileOwner();
             
             //TempElement ProfileComparison with matchingvalue 0
-            //This is a temporary Object that we will transfer the values of to a persistent object
             ProfileComparison tempMatch = new ProfileComparison(vacancy, profile, 0);
             Integer elementCounter = 0;
             
-            // For every figureElement on Vacancy
-            // We determine the cumulative weight and the avarage weight in case no weight is given
-            // if nowhere a weight is given we will use default 1 for avarage weight;            
-            Integer cumWeight = 0;
-            Integer avarageWeight = 1;
-            Integer weightCounter = 0;
-            Integer elCounter = 0;
-            for (VacancyProfileElement vpelement: vacancy.getVacancyProfileElement()){
-                //Only for elements of type figure
-                if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
-                    elCounter ++;
-                    if (vpelement.getWeight()>0){
-                        cumWeight+=vpelement.getWeight();
-                        weightCounter++;
-                    }
-                }
-            }
-            if (cumWeight>0 && weightCounter>0){
-                avarageWeight = cumWeight/weightCounter;
-            }
-            // we now add average weight for the elements without weight to cumulative Weight
-            if (elCounter > weightCounter){
-                cumWeight += (elCounter - weightCounter)*avarageWeight;
-            }
-            
-            // For every figureElement on Vacancy we add to totalMatching value
-            Long totalMatchingValue = (long) 0;
+            //For every figureElement on Vacancy
             for (VacancyProfileElement vpelement: vacancy.getVacancyProfileElement()){
                 
-                //Only for elementmatches on figures with tempProfileOwner as ProfileOwner
+                //For all elementmatches on figures with tempProfileOwner as ProfileOwner
                 if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
-                    
-                    // Get the matching profileElements in ElementComparison Object
-                    List<ElementComparison> tempListOfElements = getElementMatches((Vpe_Figure) vpelement);
-                    for (ElementComparison e: tempListOfElements){
-                        
+                    List<ElementComparison> templist = getElementMatches((Vpe_Figure) vpelement);
+                    for (ElementComparison e: templist){
                         //only if tempProfileOwner is ProfileOwner
                         if (e.getMatchingProfileOwner().equals(tempProfileOwner)){
-                            
+                            //Add to matching value
+                            tempMatch.setCalculatedMatchingValue(tempMatch.getCalculatedMatchingValue() + e.getCalculatedMatchingValue());
                             //Add 1 to elementCounter
                             elementCounter ++;
-                            //Add to matching value
-                            if (vpelement.getWeight() > 0){
-                                totalMatchingValue+=e.getCalculatedMatchingValue()*vpelement.getWeight()/cumWeight;
-                            } else {
-                                totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
-                            }
-                            
                         }
                     }
                 }
             }
-            // Divide totalMatchingValue through number of elements if any are found
-            if (elementCounter > 0) {
-                tempMatch.setCalculatedMatchingValue((int) (totalMatchingValue/elementCounter));
+            // average matching value
+            if (elementCounter > 0){
+                tempMatch.setCalculatedMatchingValue(tempMatch.getCalculatedMatchingValue()/elementCounter);
             }
-            
             // drempelwaarde is MATCHING_THRESHOLD
-            if (totalMatchingValue > MATCHING_PROFILE_THRESHOLD){
+            if (tempMatch.getCalculatedMatchingValue() > MATCHING_THRESHOLD){
                 final ProfileComparison defMatch = newTransientInstance(ProfileComparison.class);
                 tempMatch.setMatchInitiator(tempMatch.getMatchInitiator());
                 tempMatch.setMatchingProfile(tempMatch.getMatchingProfile());
-                tempMatch.setCalculatedMatchingValue(totalMatchingValue.intValue());
+                tempMatch.setCalculatedMatchingValue(tempMatch.getCalculatedMatchingValue());
                 persistIfNotAlready(defMatch);
                 matches.add(tempMatch);
             }
-                 
+            
+            
+            
         }
         
         return matches;
     }
     
-
+    private class CompareWeight {
+        Integer elementCounter;
+        Integer weight;
+        Integer matchingValue;
+    }
     
 //    // return matches on vacancyProfile
 //    @NotInServiceMenu

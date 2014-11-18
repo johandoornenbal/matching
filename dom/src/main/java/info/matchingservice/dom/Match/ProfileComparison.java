@@ -1,25 +1,40 @@
 package info.matchingservice.dom.Match;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+
+import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Profile.Profile;
 
+import org.apache.isis.applib.AbstractDomainObject;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.ViewModel;
 
 
 @ViewModel
-public class ProfileComparison {
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.DatastoreIdentity(
+        strategy = IdGeneratorStrategy.NATIVE,
+        column = "id")
+public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
+    
+    public ProfileComparison() {
+        super("matchInitiator");
+    }
 
     public ProfileComparison(VacancyProfile matchInitiator, Profile matchingProfile, Integer value) {
+        super("matchInitiator");
         this.matchInitiator = matchInitiator;
         this.matchingProfile = matchingProfile;
-        this.calculatedMatchingValue = value;
+        this.calculatedMatchingValue = value;   
     }
     
     private VacancyProfile matchInitiator;
     
     @Hidden
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public VacancyProfile getMatchInitiator() {
         return matchInitiator;
     }
@@ -30,6 +45,7 @@ public class ProfileComparison {
     
     private Profile matchingProfile;
     
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public Profile getMatchingProfile() {
         return matchingProfile;
     }
@@ -40,6 +56,7 @@ public class ProfileComparison {
     
     private Integer calculatedMatchingValue;
     
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public Integer getCalculatedMatchingValue() {
         return calculatedMatchingValue;
     }
@@ -47,27 +64,6 @@ public class ProfileComparison {
     public void setCalculatedMatchingValue(final Integer matchingvalue) {
         this.calculatedMatchingValue = matchingvalue;
     }
-    
-    private String matchedTextDiffs;
-    
-    @Hidden
-    public String getMatchedTextDiffs() {
-        return matchedTextDiffs;
-    }
-    
-    public void setMatchedTextDiffs(final String difs) {
-        this.matchedTextDiffs = difs;
-    }
-
-    private Integer matchedTextMeasure;
-    
-    public Integer getmatchedTextMeasure() {
-        return matchedTextMeasure;
-    }
-    
-    public void setmatchedTextMeasure(final Integer difs) {
-        this.matchedTextMeasure = difs;
-    }   
     
     //helpers
     
@@ -77,6 +73,10 @@ public class ProfileComparison {
     
     public Actor getProposedPerson() {
         return getMatchingProfile().getProfileOwner();
+    }
+    
+    public String SaveMatch(){
+        return "DUMMY___" + getProposedPerson().toString();
     }
 
 }

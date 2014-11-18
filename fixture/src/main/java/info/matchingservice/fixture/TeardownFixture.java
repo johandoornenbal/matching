@@ -13,6 +13,7 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"Role\"");
 //        isisJdoSupport.executeUpdate("delete from \"Pe_Keyword\"");
 //        isisJdoSupport.executeUpdate("delete from \"Vpe_Keyword\"");
+        isisJdoSupport.executeUpdate("delete from \"ProfileComparison\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"Profile\"");
         isisJdoSupport.executeUpdate("delete from \"VacancyProfileElement\"");

@@ -90,7 +90,7 @@ public class NeedTest extends MatchingIntegrationTest {
             v1 = n1.getVacancyProfiles().last();
             assertThat(v1.getVacancyDescription(), is(VACANCYDESCRIPTION));
             assertThat(v1.getOwnedBy(), is(USERNAME));
-            assertThat(v1.getVacancyProfileElement().size(), is(3));
+            assertThat(v1.getVacancyProfileElement().size(), is(2));
         }
     }
     
