@@ -53,9 +53,11 @@ public class PersonNeed extends Need {
     @Named("Nieuwe stoel")
     public VacancyProfile newVacancyProfile(
             @Named("Omschrijving van 'stoel'")
-            final  String vacancyDescription
+            final  String vacancyDescription,
+            @Named("Gewicht")
+            final Integer weight 
             ) {
-        return newVacancyProfile(vacancyDescription, this, currentUserName());
+        return newVacancyProfile(vacancyDescription, weight, this, currentUserName());
     }
     
     // helpers
@@ -70,7 +72,7 @@ public class PersonNeed extends Need {
     
     @Programmatic
     public VacancyProfile newVacancyProfile(
-            final String vacancyDescription, 
+            final String vacancyDescription,
             final PersonNeed vacancyOwner, 
             final String ownedBy) {
         return allvacancies.newVacancy(vacancyDescription, vacancyOwner, ownedBy);

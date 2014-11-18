@@ -336,7 +336,7 @@ public class PersonTest extends MatchingIntegrationTest {
         @Before
         public void setUp() throws Exception {
             p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
-            ((Person) p1).newNeed("Ik zoek iemand", (Person) p1, OWNED_BY);
+            ((Person) p1).newNeed("Ik zoek iemand", 10, (Person) p1, OWNED_BY);
             p2 = persons.allPersons().get(0); // FRANS HALS
         }
         

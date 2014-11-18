@@ -14,7 +14,7 @@ public class PersonForGerard extends PersonAbstract {
                 "My Magic figure",
                 7,
                 "And again",
-                17,
+                8,
                 "Tekst van Gerard",
                 "Junior schilder met penselen",
                 "Schilder en schoonmaakproject",

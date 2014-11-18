@@ -53,18 +53,19 @@ public class MatchingService extends AbstractService {
             return elementMatches;
         }
         
-            for (Pe_Figure e : container.allInstances(Pe_Figure.class)) {
-                if (e.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
-                    // uitsluiten van dezelfde owner
-                    // drempelwaarde is MATCHING_THRESHOLD
-                    Integer matchValue = 100 - 10*Math.abs(element.getFigure() - e.getFigure());
-                    if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
-                        ElementComparison matchTmp = new ElementComparison(element.getVacancyProfileElementOwner(), element, e, e.getProfileElementOwner().getProfileOwner() ,matchValue);
-                        elementMatches.add(matchTmp);
-                    }
+        for (Pe_Figure e : container.allInstances(Pe_Figure.class)) {
+            if (e.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
+                // uitsluiten van dezelfde owner
+                // drempelwaarde is MATCHING_THRESHOLD
+                Integer matchValue = 100 - 10*Math.abs(element.getFigure() - e.getFigure());
+                if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
+                    ElementComparison matchTmp = new ElementComparison(element.getVacancyProfileElementOwner(), element, e, e.getProfileElementOwner().getProfileOwner() ,matchValue);
+                    elementMatches.add(matchTmp);
                 }
             }
-        
+        }
+        Collections.sort(elementMatches);
+        Collections.reverse(elementMatches);
         return elementMatches;
     }
     
@@ -158,7 +159,8 @@ public class MatchingService extends AbstractService {
             }
                  
         }
-        
+        Collections.sort(matches);
+        Collections.reverse(matches);
         return matches;
     }
     

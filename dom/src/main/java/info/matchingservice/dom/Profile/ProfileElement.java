@@ -106,5 +106,11 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     public void setProfileElementOwner(final Profile vacancyProfileOwner) {
         this.profileElementOwner = vacancyProfileOwner;
     }
+    
+    /// Helpers
+    
+    public String toString(){
+        return this.profileElementDescription;
+    }
 
 }

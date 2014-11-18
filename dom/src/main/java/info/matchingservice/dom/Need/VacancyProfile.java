@@ -107,33 +107,21 @@ implements VacancyProfileElementOwner {
         return getVacancyDescription();
     }
     
-//    @Named("Bewerk tekst")
-//    public VacancyProfile EditTestField(
-//            @Named("Tekst om te matchen")
-//            @MultiLine
-//            String newString
-//            ){
-//        this.setTestFieldForMatching(newString);
-//        return this;
-//    }
-//    
-//    public String default0EditTestField() {
-//        return getTestFieldForMatching();
-//    }    
-//    
-//    @Named("Bewerk cijfer")
-//    public VacancyProfile EditTestValue(
-//            @Named("Cijfer om te matchen")
-//            Integer newInteger
-//            ){
-//        this.setTestFigureForMatching(newInteger);
-//        return this;
-//    }
-//    
-//    public Integer default0EditTestValue() {
-//        return getTestFigureForMatching();
-//    }  
-//    
+    @Named("Bewerk gewicht stoel")
+    public VacancyProfile EditWeight(
+            @Named("Omschrijving van 'stoel'")
+            @MultiLine
+            Integer newInteger
+            ){
+        this.setWeight(newInteger);
+        return this;
+    }
+    
+    public Integer default0EditWeight() {
+        return getWeight();
+    }
+    
+
     // Region> VacanciesProfileElements
         
     private SortedSet<VacancyProfileElement> vacancyProfileElement = new TreeSet<VacancyProfileElement>();
@@ -151,6 +139,7 @@ implements VacancyProfileElementOwner {
     }
     
     @Named("Nieuw (single) profiel element")
+    @Hidden
     public VacancyProfile newVacancyProfileElement(
             @Named("Profiel element beschrijving")
             final String vacancyProfileElementDescription
@@ -168,6 +157,7 @@ implements VacancyProfileElementOwner {
     }
     
     @Named("Nieuw steekwoorden element")
+    @Hidden
     public VacancyProfile newKeyWordElement(
             @Named("Profiel element beschrijving")
             final String profileElementDescription,

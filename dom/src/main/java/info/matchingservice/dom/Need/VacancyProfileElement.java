@@ -10,6 +10,8 @@ import javax.jdo.annotations.IdentityType;
 
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Immutable;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Where;
@@ -33,6 +35,7 @@ import org.apache.isis.applib.annotation.Where;
                     + "FROM info.matchingservice.dom.Need.VacancyProfileElement "
                     + "WHERE vacancyProfileElementOwner == :vacancyProfileElementOwner && profileElementNature == :profileElementNature")
 })
+@Immutable
 public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyProfileElement> {
 
     public VacancyProfileElement() {
@@ -59,6 +62,7 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     
     @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "100")
     public ProfileElementNature getProfileElementNature() {
         return profileElementNature;
     }
@@ -71,6 +75,7 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     
     @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "110")
     public ProfileElementType getProfileElementType() {
         return profileElementType;
     }
@@ -82,6 +87,7 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     private Integer weight;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @MemberOrder(sequence = "20")
     public Integer getWeight() {
         return weight;
     }
@@ -97,6 +103,7 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MultiLine
     @Named("Profiel element beschrijving")
+    @MemberOrder(sequence = "30")
     public String getVacancyProfileElementDescription(){
         return vacancyProfileElementDescription;
     }
@@ -111,12 +118,19 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     @Disabled
     @Named("'Stoel'")
     @Hidden(where=Where.PARENTED_TABLES)
+    @MemberOrder(sequence = "120")
     public VacancyProfile getVacancyProfileElementOwner() {
         return vacancyProfileElementOwner;
     }
     
     public void setVacancyProfileElementOwner(final VacancyProfile vacancyProfileOwner) {
         this.vacancyProfileElementOwner = vacancyProfileOwner;
+    }
+    
+    /// Helpers
+    
+    public String toString(){
+        return this.vacancyProfileElementDescription;
     }
 
 }

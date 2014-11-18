@@ -330,12 +330,14 @@ public class Person extends Actor {
     public PersonNeed newNeed(
             @Named("Korte opdrachtomschrijving voor tafel")
             @MultiLine
-            final String needDescription
+            final String needDescription,
+            @Named("Gewicht")
+            final Integer weight
             ) {
-        return newNeed(needDescription, this, currentUserName());
+        return newNeed(needDescription, weight, this, currentUserName());
     }
     
-    public boolean hideNewNeed(final String needDescription) {
+    public boolean hideNewNeed(final String needDescription, final Integer weight) {
         return hideNewNeed(needDescription, this);
     }
     
@@ -347,9 +349,11 @@ public class Person extends Actor {
     public PersonNeed newNeed(
             @Named("Korte opdrachtomschrijving") 
             @MultiLine 
-            final String needDescription, 
+            final String needDescription,
+            @Named("Gewicht") 
+            final Integer weight,
             final Person needOwner, final String ownedBy){
-        return needs.newNeed(needDescription, needOwner, ownedBy);
+        return needs.newNeed(needDescription, weight, needOwner, ownedBy);
     }
     
     @Programmatic

@@ -39,13 +39,13 @@ public class PersonNeeds extends MatchingDomainService<PersonNeed> {
     @Programmatic
     public PersonNeed newNeed(
             final @Named("Opdracht samenvatting") String needDescription,
-            final Integer weight,
+            final @Named("Gewicht") Integer weight,
             final Person needOwner,
             final String ownedBy
             ){
         final PersonNeed newNeed = newTransientInstance(PersonNeed.class);
         newNeed.setNeedDescription(needDescription);
-        newNeed.setWeight(weight);        
+        newNeed.setWeight(weight);
         newNeed.setNeedOwner(needOwner);
         newNeed.setOwnedBy(ownedBy);
         persist(newNeed);

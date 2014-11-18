@@ -1,16 +1,21 @@
 package info.matchingservice.dom.Match;
 
+import com.google.common.collect.ComparisonChain;
+
+import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Need.VacancyProfileElement;
 import info.matchingservice.dom.Profile.ProfileElement;
 
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.ViewModel;
 
 @ViewModel
-public class ElementComparison {
+public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     
     public ElementComparison(VacancyProfile elementOwner, VacancyProfileElement elementInitiator, ProfileElement matchingProfileElement, Actor matchingProfileOwner, Integer value){
+        super("elementOwner");
         this.elementOwner = elementOwner;
         this.elementInitiator = elementInitiator;
         this.matchingProfileElement = matchingProfileElement;
@@ -20,6 +25,7 @@ public class ElementComparison {
     
     private VacancyProfile elementOwner;
     
+    @Hidden
     public VacancyProfile getElementOwner() {
         return elementOwner;
     }
@@ -30,6 +36,7 @@ public class ElementComparison {
     
     private VacancyProfileElement elementInitiator;
     
+    @Hidden
     public VacancyProfileElement getElementInitiator() {
         return elementInitiator;
     }
@@ -72,6 +79,13 @@ public class ElementComparison {
     
     public String toString() {
         return getElementInitiator().toString() + " vs. " + getMatchingProfileElement().toString();
+    }
+    
+    public int compareTo(ElementComparison that) {
+        return ComparisonChain.start()
+            .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
+            .compare(this.matchingProfileOwner, that.matchingProfileOwner)
+            .result();
     }
 
 }

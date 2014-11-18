@@ -3,12 +3,13 @@ package info.matchingservice.dom.Match;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 
+import com.google.common.collect.ComparisonChain;
+
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Profile.Profile;
 
-import org.apache.isis.applib.AbstractDomainObject;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.ViewModel;
 
@@ -77,6 +78,13 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     public String SaveMatch(){
         return "DUMMY___" + getProposedPerson().toString();
+    }
+    
+    public int compareTo(ProfileComparison that) {
+        return ComparisonChain.start()
+            .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
+            .compare(this.matchingProfile, that.matchingProfile)
+            .result();
     }
 
 }
