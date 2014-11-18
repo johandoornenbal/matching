@@ -10,7 +10,7 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
 @DomainService(menuOrder = "50", repositoryFor = OrganisationNeed.class)
-@Named("Tafels (pers)")
+@Named("Tafels (org)")
 public class OrganisationNeeds extends MatchingDomainService<OrganisationNeed> {
 
     public OrganisationNeeds() {

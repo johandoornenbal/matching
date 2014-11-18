@@ -102,7 +102,7 @@ public class MatchingService extends AbstractService {
                 //Only for elements of type figure
                 if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
                     elCounter ++;
-                    if (vpelement.getWeight()>0){
+                    if (vpelement.getWeight() != null && vpelement.getWeight()>0){
                         cumWeight+=vpelement.getWeight();
                         weightCounter++;
                     }
@@ -125,20 +125,22 @@ public class MatchingService extends AbstractService {
                     
                     // Get the matching profileElements in ElementComparison Object
                     List<ElementComparison> tempListOfElements = getElementMatches((Vpe_Figure) vpelement);
-                    for (ElementComparison e: tempListOfElements){
-                        
-                        //only if tempProfileOwner is ProfileOwner
-                        if (e.getMatchingProfileOwner().equals(tempProfileOwner)){
+                    if (!tempListOfElements.isEmpty()){
+                        for (ElementComparison e: tempListOfElements){
                             
-                            //Add 1 to elementCounter
-                            elementCounter ++;
-                            //Add to matching value
-                            if (vpelement.getWeight() > 0){
-                                totalMatchingValue+=e.getCalculatedMatchingValue()*vpelement.getWeight()/cumWeight;
-                            } else {
-                                totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
+                            //only if tempProfileOwner is ProfileOwner
+                            if (e.getMatchingProfileOwner().equals(tempProfileOwner)){
+                                
+                                //Add 1 to elementCounter
+                                elementCounter ++;
+                                //Add to matching value
+                                if (vpelement.getWeight()!=null && vpelement.getWeight() > 0){
+                                    totalMatchingValue+=e.getCalculatedMatchingValue()*vpelement.getWeight()/cumWeight;
+                                } else {
+                                    totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
+                                }
+                                
                             }
-                            
                         }
                     }
                 }
