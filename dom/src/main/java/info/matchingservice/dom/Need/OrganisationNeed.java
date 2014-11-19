@@ -1,7 +1,5 @@
 package info.matchingservice.dom.Need;
 
-import info.matchingservice.dom.Actor.Organisation;
-
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -11,7 +9,6 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
@@ -19,22 +16,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class OrganisationNeed extends Need {
-    
-//    private Organisation needOwner;
-//    
-//    @Override
-//    @javax.jdo.annotations.Column(allowsNull = "false")
-//    @Disabled
-//    @Named("Opdrachtgever")
-//    public Organisation getNeedOwner() {
-//        return needOwner;
-//    }
-//    
-//    public void setNeedOwner(final Organisation needOwner) {
-//        this.needOwner = needOwner;
-//    }
-    
+public class OrganisationNeed extends Need {    
     // Region> Vacancies
     
     private SortedSet<VacancyProfile> vacancyProfiles = new TreeSet<VacancyProfile>();
@@ -53,9 +35,11 @@ public class OrganisationNeed extends Need {
     @Named("Nieuwe stoel")
     public VacancyProfile newVacancyProfile(
             @Named("Omschrijving van 'stoel'")
-            final  String vacancyDescription
+            final  String vacancyDescription,
+            @Named("Gewicht")
+            final Integer weight
             ) {
-        return newVacancyProfile(vacancyDescription, this, currentUserName());
+        return newVacancyProfile(vacancyDescription, weight, this, currentUserName());
     }
     
     // helpers
@@ -73,6 +57,10 @@ public class OrganisationNeed extends Need {
         return allvacancies.newVacancy(vacancyDescription, vacancyOwner, ownedBy);
     }
     
+    @Programmatic
+    public VacancyProfile newVacancyProfile(final String vacancyDescription, final Integer weight, final OrganisationNeed vacancyOwner, final String ownedBy) {
+        return allvacancies.newVacancy(vacancyDescription, weight, vacancyOwner, ownedBy);
+    }
     //Injection
     
     @Inject

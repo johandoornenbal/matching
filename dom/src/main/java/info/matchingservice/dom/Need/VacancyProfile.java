@@ -109,8 +109,7 @@ implements VacancyProfileElementOwner {
     
     @Named("Bewerk gewicht stoel")
     public VacancyProfile EditWeight(
-            @Named("Omschrijving van 'stoel'")
-            @MultiLine
+            @Named("Gewicht")
             Integer newInteger
             ){
         this.setWeight(newInteger);

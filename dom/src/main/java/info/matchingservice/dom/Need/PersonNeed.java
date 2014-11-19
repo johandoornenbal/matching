@@ -1,7 +1,5 @@
 package info.matchingservice.dom.Need;
 
-import info.matchingservice.dom.Actor.Person;
-
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -11,7 +9,6 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
@@ -20,20 +17,6 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 public class PersonNeed extends Need {
- 
-//    private Person needOwner;
-//    
-//    @Override
-//    @javax.jdo.annotations.Column(allowsNull = "false")
-//    @Disabled
-//    @Named("Opdrachtgever")
-//    public Person getNeedOwner() {
-//        return needOwner;
-//    }
-//    
-//    public void setNeedOwner(final Person needOwner) {
-//        this.needOwner = needOwner;
-//    }
     
     // Region> Vacancies
     
