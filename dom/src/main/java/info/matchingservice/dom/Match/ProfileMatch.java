@@ -5,6 +5,7 @@ import javax.jdo.annotations.IdentityType;
 
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.Named;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
@@ -21,6 +22,7 @@ import info.matchingservice.dom.Need.VacancyProfile;
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
         column = "id")
+@Immutable
 public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
 
     public ProfileMatch() {
@@ -44,6 +46,7 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     private Actor ownerActor;
     
     @Named("Eigenaar")
+    @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
     public Actor getOwnerActor() {
         return ownerActor;
@@ -56,6 +59,7 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     private Actor vacancyCandidate;
     
     @Named("Gevonden kandidaat")
+    @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
     public Actor getVacancyCandidate() {
         return vacancyCandidate;
@@ -69,6 +73,7 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Named("Stoel")
+    @Disabled
     public VacancyProfile getVacancyProfile() {
         return vacancyProfile;
     }
@@ -87,6 +92,17 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     
     public void setCandidateStatus(final CandidateStatus candidateStatus){
         this.candidateStatus = candidateStatus;
+    }
+    
+    //Region>Actions
+    
+    public ProfileMatch ChangeStatus(final CandidateStatus status) {
+        setCandidateStatus(status);
+        return this;
+    }
+    
+    public CandidateStatus default0ChangeStatus(final CandidateStatus status){
+        return getCandidateStatus();
     }
 
 }

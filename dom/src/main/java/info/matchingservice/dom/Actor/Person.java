@@ -1,5 +1,6 @@
 package info.matchingservice.dom.Actor;
 
+import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Need.PersonNeed;
 import info.matchingservice.dom.Need.PersonNeeds;
 import info.matchingservice.dom.Profile.Profile;
@@ -341,7 +342,23 @@ public class Person extends Actor {
         return hideNewNeed(needDescription, this);
     }
     
+
+    //Region> Saved Matches /////////////////////////////////////////////////////////////
     
+    private SortedSet<ProfileMatch> mySavedMatches = new TreeSet<ProfileMatch>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
+    @Named("Mijn bewaarde 'matches'")
+    public SortedSet<ProfileMatch> getMySavedMatches() {
+        return mySavedMatches;
+    }
+    
+    public void setMySavedMatches(final SortedSet<ProfileMatch> mySavedMatches){
+        this.mySavedMatches = mySavedMatches;
+    }
+    
+    //END Region> Saved Matches /////////////////////////////////////////////////////////////
     
     //helpers
     @Programmatic
