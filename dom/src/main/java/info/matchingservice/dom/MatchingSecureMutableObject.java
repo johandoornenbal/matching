@@ -126,7 +126,7 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
         }
         return true;
     }
-
+    
     // /////// Injects ////////////////////////////////////////////////
 
     @javax.inject.Inject

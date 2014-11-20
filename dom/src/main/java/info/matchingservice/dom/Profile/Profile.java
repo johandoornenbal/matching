@@ -2,7 +2,9 @@ package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
+import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Assessment.ProfileAssessment;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -25,6 +27,7 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
+
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -162,7 +165,26 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             ) {
         newFigureElement(profileElementDescription, figure, this, currentUserName());
         return this;
-    }    
+    }
+    
+    // Region> Assessments
+    
+    private SortedSet<ProfileAssessment> assessments = new TreeSet<ProfileAssessment>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "target", dependentElement = "true")
+    @Named("Assessments")
+    public SortedSet<ProfileAssessment> getAssessments() {
+        return assessments;
+    }
+   
+    public void setAssessments(final SortedSet<ProfileAssessment> assessment) {
+        this.assessments = assessment;
+    }
+    
+    public boolean hideAssessments() {
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }  
     
     // helpers
     

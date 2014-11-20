@@ -2,7 +2,10 @@ package info.matchingservice.dom.Need;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
+import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.VacancyProfileElementOwner;
+import info.matchingservice.dom.Assessment.ProfileAssessment;
+import info.matchingservice.dom.Assessment.VacancyProfileAssessment;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -182,6 +185,25 @@ implements VacancyProfileElementOwner {
         newFigureElement(profileElementDescription, figure, weight, this, currentUserName());
         return this;
     } 
+    
+    // Region> Assessments
+    
+    private SortedSet<VacancyProfileAssessment> assessments = new TreeSet<VacancyProfileAssessment>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "target", dependentElement = "true")
+    @Named("Assessments")
+    public SortedSet<VacancyProfileAssessment> getAssessments() {
+        return assessments;
+    }
+   
+    public void setAssessments(final SortedSet<VacancyProfileAssessment> assessment) {
+        this.assessments = assessment;
+    }
+    
+    public boolean hideAssessments() {
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }  
     
     // helpers
     

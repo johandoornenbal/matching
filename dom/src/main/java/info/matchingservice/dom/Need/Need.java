@@ -1,11 +1,12 @@
 package info.matchingservice.dom.Need;
 
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.TrustLevel;
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Assessment.NeedAssessment;
+
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Assessment.Assessment;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -109,20 +110,24 @@ public abstract class Need extends MatchingSecureMutableObject<Need> {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     
-    // Region> Asessments
+    // Region> Assessments
     
-    private SortedSet<Assessment> needAssessments = new TreeSet<Assessment>();
+    private SortedSet<NeedAssessment> assessments = new TreeSet<NeedAssessment>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "target", dependentElement = "true")
     @Named("Assessments")
-    public SortedSet<Assessment> getNeedAssessments() {
-        return needAssessments;
+    public SortedSet<NeedAssessment> getAssessments() {
+        return assessments;
+    }
+   
+    public void setAssessments(final SortedSet<NeedAssessment> assessment) {
+        this.assessments = assessment;
     }
     
-    public void setNeedAssessments(final SortedSet<Assessment> assessment){
-        this.needAssessments = assessment;
-    }
+    public boolean hideAssessments() {
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }  
 
     // Helpers
     

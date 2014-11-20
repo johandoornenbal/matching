@@ -7,6 +7,12 @@ public class TeardownFixture extends FixtureScript {
 
     @Override
     protected void execute(ExecutionContext executionContext) { 
+        
+        isisJdoSupport.executeUpdate("delete from \"VacancyProfileAssessment\"");
+        isisJdoSupport.executeUpdate("delete from \"ProfileAssessment\"");
+        isisJdoSupport.executeUpdate("delete from \"NeedAssessment\"");
+        isisJdoSupport.executeUpdate("delete from \"Assessment\"");
+        
         isisJdoSupport.executeUpdate("delete from \"PersonRole\"");
         isisJdoSupport.executeUpdate("delete from \"OrganisationRole\"");
         isisJdoSupport.executeUpdate("delete from \"SystemRole\"");

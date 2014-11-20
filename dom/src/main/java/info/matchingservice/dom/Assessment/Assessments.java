@@ -8,10 +8,12 @@ import org.apache.isis.applib.annotation.Named;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Need.Need;
+import info.matchingservice.dom.Need.VacancyProfile;
+import info.matchingservice.dom.Profile.Profile;
 
 
 @DomainService(menuOrder = "60", repositoryFor = Assessment.class)
-@Named("Asessments")
+@Named("Assessments")
 public class Assessments extends MatchingDomainService<Assessment> {
 
     public Assessments() {
@@ -23,10 +25,30 @@ public class Assessments extends MatchingDomainService<Assessment> {
     }
     
     public Assessment newAssessment(
-            final Need need
+            final Need targetObject
             ){
-        final Assessment newAs = newTransientInstance(Assessment.class);
-        newAs.setTarget(need);
+        final NeedAssessment newAs = newTransientInstance(NeedAssessment.class);
+        newAs.setTarget(targetObject);
+        newAs.setOwnedBy(currentUserName());
+        persist(newAs);
+        return newAs;
+    }
+    
+    public Assessment newAssessment(
+            final Profile targetObject
+            ){
+        final ProfileAssessment newAs = newTransientInstance(ProfileAssessment.class);
+        newAs.setTarget(targetObject);
+        newAs.setOwnedBy(currentUserName());
+        persist(newAs);
+        return newAs;
+    }
+    
+    public VacancyProfileAssessment newAssessment(
+            final VacancyProfile targetObject
+            ){
+        final VacancyProfileAssessment newAs = newTransientInstance(VacancyProfileAssessment.class);
+        newAs.setTarget(targetObject);
         newAs.setOwnedBy(currentUserName());
         persist(newAs);
         return newAs;

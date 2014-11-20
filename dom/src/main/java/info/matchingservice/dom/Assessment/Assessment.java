@@ -1,7 +1,6 @@
 package info.matchingservice.dom.Assessment;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Need.Need;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
@@ -16,7 +15,7 @@ import org.apache.isis.applib.annotation.Optional;
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @Immutable
-public abstract class Assessment extends MatchingSecureMutableObject<Assessment> {
+public class Assessment extends MatchingSecureMutableObject<Assessment> {
 
     public Assessment() {
         super("ownedBy");
@@ -40,18 +39,21 @@ public abstract class Assessment extends MatchingSecureMutableObject<Assessment>
 
     // Immutables //////////////////////////////////////////////////////////////////////////////////////////////////
     
-    private Need target;
+    /**
+     * Should be overridden for use on specific Object Type
+     */
+    private Object target;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     @Named("doel")
-    public Need getTarget() {
+    public Object getTarget() {
         return target;
     }
     
-    public void setTarget(final Need object) {
+    public void setTarget(final Object object) {
         this.target = object;
-    }   
+    }       
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
