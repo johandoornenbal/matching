@@ -14,6 +14,7 @@ import info.matchingservice.dom.Profile.Profile;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.ViewModel;
+import org.apache.isis.applib.query.QueryDefault;
 
 
 @ViewModel
@@ -74,9 +75,36 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         return profileMatches.newProfileMatch(getMatchInitiator().getVacancyOwner().getNeedOwner(), getMatchingProfile().getProfileOwner(), getMatchInitiator());
     }
     
-    //TODO: uitbreiden met controle of er al een save is gemaakt met deze kenmerken...
+    //TODO: uitbreiden met controle (en hideXxx ) of er al een save is gemaakt met deze kenmerken...
+    // Hide if not owner or if already saved match
     public boolean hideSaveMatch() {
-        return !getMatchInitiator().getVacancyOwner().getNeedOwner().getOwnedBy().equals(currentUserName());
+        QueryDefault<ProfileMatch> query = 
+                QueryDefault.create(
+                        ProfileMatch.class, 
+                    "findProfileMatchUnique", 
+                    "ownedBy", currentUserName(),
+                    "vacancyCandidate", getMatchingProfile().getProfileOwner(),
+                    "vacancyProfile", getMatchInitiator());
+        return !getMatchInitiator().getVacancyOwner().getNeedOwner().getOwnedBy().equals(currentUserName()) || container.firstMatch(query) != null;
+    }
+    
+    public String validateSaveMatch() {
+        QueryDefault<ProfileMatch> query = 
+                QueryDefault.create(
+                        ProfileMatch.class, 
+                    "findProfileMatchUnique", 
+                    "ownedBy", currentUserName(),
+                    "vacancyCandidate", getMatchingProfile().getProfileOwner(),
+                    "vacancyProfile", getMatchInitiator());
+        if (container.firstMatch(query) != null) {
+            return "You already saved this candidate for this vacancy";
+        }
+        if (!getMatchInitiator().getVacancyOwner().getNeedOwner().getOwnedBy().equals(currentUserName())){
+            return "Sorry, you are not the owner of this match";
+        } else {
+            return null;
+        }
+            
     }
     
     

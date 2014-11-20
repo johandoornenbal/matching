@@ -7,16 +7,20 @@ import info.matchingservice.dom.ProfileElementType;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
         column = "id")
@@ -39,8 +43,10 @@ import org.apache.isis.applib.annotation.Where;
 public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyProfileElement> {
 
     public VacancyProfileElement() {
-        super("ownedBy, vacancyProfileElementDescription");
+        super("ownedBy, vacancyProfileElementDescription, weight, vacancyProfileElementOwner, profileElementId");
     }
+    
+    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
     
     private String ownedBy;
     
@@ -56,7 +62,22 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
         this.ownedBy = owner;
     }
     
-    ///////////////////////////////////////////////////////////////////////////////////////
+    // immutables /////////////////////////////////////////////////////////////////////////////////////
+    
+    private VacancyProfile vacancyProfileElementOwner;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    @Named("'Stoel'")
+    @Hidden(where=Where.PARENTED_TABLES)
+    @MemberOrder(sequence = "120")
+    public VacancyProfile getVacancyProfileElementOwner() {
+        return vacancyProfileElementOwner;
+    }
+    
+    public void setVacancyProfileElementOwner(final VacancyProfile vacancyProfileOwner) {
+        this.vacancyProfileElementOwner = vacancyProfileOwner;
+    }
     
     private ProfileElementNature profileElementNature;
     
@@ -84,6 +105,8 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
         this.profileElementType = type;
     }
     
+    // weight /////////////////////////////////////////////////////////////////////////////////////
+    
     private Integer weight;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -96,7 +119,20 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
         this.weight = weight;
     }
     
-    ///////////////////////////////////////////////////////////////////////////////////////
+    @Named("Bewerk gewicht")
+    public VacancyProfileElement EditWeight(
+            @Named("gewicht")
+            Integer newWeight
+            ){
+        this.setWeight(newWeight);
+        return this;
+    }
+    
+    public Integer default0EditWeight() {
+        return getWeight();
+    }
+    
+    //element description /////////////////////////////////////////////////////////////////////////////////////
     
     private String vacancyProfileElementDescription;
     
@@ -112,19 +148,33 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
         this.vacancyProfileElementDescription = description;
     }
     
-    private VacancyProfile vacancyProfileElementOwner;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    @Named("'Stoel'")
-    @Hidden(where=Where.PARENTED_TABLES)
-    @MemberOrder(sequence = "120")
-    public VacancyProfile getVacancyProfileElementOwner() {
-        return vacancyProfileElementOwner;
+    @Named("Bewerk beschrijving")
+    public VacancyProfileElement EditVacancyProfileDescription(
+            @Named("Beschrijving")
+            @MultiLine
+            String newDescr
+            ){
+        this.setVacancyProfileElementDescription(newDescr);
+        return this;
     }
     
-    public void setVacancyProfileElementOwner(final VacancyProfile vacancyProfileOwner) {
-        this.vacancyProfileElementOwner = vacancyProfileOwner;
+    public String default0EditVacancyProfileDescription() {
+        return getVacancyProfileElementDescription();
+    }
+    
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
+    
+    @Named("Verwijder element")
+    public VacancyProfile DeleteVacancyProfileElement(
+            @Optional @Named("Verwijderen OK?") boolean areYouSure
+            ){
+        container.removeIfNotAlready(this);
+        container.informUser("Element verwijderd");
+        return getVacancyProfileElementOwner();
+    }
+    
+    public String validateDeleteVacancyProfileElement(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     
     /// Helpers
@@ -132,5 +182,28 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     public String toString(){
         return this.vacancyProfileElementDescription;
     }
+    
+    // Used in case owner chooses identical description and weight
+    @SuppressWarnings("unused")
+    private String profileElementId;
+
+    @Hidden
+    public String getProfileElementId() {
+        if (this.getId() != null) {
+            return this.getId();
+        }
+        return "";
+    }
+    
+    public void setProfileElementId() {
+        this.profileElementId = this.getId();
+    }
+
+    // Injects
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+    
+    
 
 }

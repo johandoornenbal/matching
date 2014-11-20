@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
@@ -26,6 +27,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
         column = "id")
@@ -38,7 +40,7 @@ public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile>
 implements VacancyProfileElementOwner {
 
     public VacancyProfile() {
-        super("ownedBy, vacancyDescription");
+        super("ownedBy, vacancyDescription, weight, profileId");
     }
     
     private String ownedBy;
@@ -173,9 +175,11 @@ implements VacancyProfileElementOwner {
             @Named("Profiel element beschrijving")
             final String profileElementDescription,
             @Named("Getal")
-            final Integer figure
+            final Integer figure,
+            @Named("Gewicht")
+            final Integer weight
             ) {
-        newFigureElement(profileElementDescription, figure, this, currentUserName());
+        newFigureElement(profileElementDescription, figure, weight, this, currentUserName());
         return this;
     } 
     
@@ -188,6 +192,26 @@ implements VacancyProfileElementOwner {
     public String toString() {
         return "Stoel : " + this.vacancyDescription;
     }
+    
+    
+    // Used in case owner chooses identical vacancyDescription and weight
+    @SuppressWarnings("unused")
+    private String profileId;
+
+    @Hidden
+    public String getProfileId() {
+        if (this.getId() != null) {
+            return this.getId();
+        }
+        return "";
+    }
+    
+    public void setProfileId() {
+        this.profileId = this.getId();
+    }
+
+    
+    
     
     @Programmatic
     public void newVacancyProfileElement(final String vacancyProfileElementDescription, final VacancyProfile vacancyProfileOwner, final String ownedBy) {
@@ -235,9 +259,10 @@ implements VacancyProfileElementOwner {
     public void newFigureElement(
             final String profileElementDescription,
             final Integer figure,
+            final Integer weight,
             final VacancyProfile profileElementOwner, 
             final String ownedBy) {
-        pe_figures.newProfileElement(profileElementDescription, figure, profileElementOwner, ownedBy);
+        pe_figures.newProfileElement(profileElementDescription, figure, weight, profileElementOwner, ownedBy);
     }
     //Injects
     

@@ -12,7 +12,7 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
 @DomainService(menuOrder = "60", repositoryFor = ProfileElement.class)
-@Named("Profiel elementen")
+@Named("Alle profiel elementen")
 @Hidden
 public class ProfileElements extends MatchingDomainService<ProfileElement> {
 

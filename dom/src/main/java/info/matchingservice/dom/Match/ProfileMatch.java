@@ -22,6 +22,13 @@ import info.matchingservice.dom.Need.VacancyProfile;
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
         column = "id")
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findProfileMatchUnique", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Match.ProfileMatch "
+                    + "WHERE ownedBy == :ownedBy && vacancyCandidate == :vacancyCandidate && vacancyProfile == :vacancyProfile")                  
+})
 @Immutable
 public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
 

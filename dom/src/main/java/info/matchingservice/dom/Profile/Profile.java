@@ -3,7 +3,6 @@ package info.matchingservice.dom.Profile;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Actor.Person;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -12,6 +11,7 @@ import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
@@ -20,12 +20,14 @@ import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
         column = "id")
@@ -46,6 +48,8 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         super("profileName");
     }
     
+    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
+    
     private String ownedBy;
     
     @Override
@@ -59,22 +63,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
-    
-    private String profileName;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Profiel naam")
-    public String getProfileName() {
-        return profileName;
-    }
-    
-    public void setProfileName(final String test) {
-        this.profileName = test;
-    }
-    
-/////////////////////////////////////////////////////////////////
-    
 
+    //Immutables /////////////////////////////////////////////////////////////////////////////////////
+    
     private Actor profileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -87,9 +78,34 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public void setProfileOwner(final Actor owner) {
         this.profileOwner =owner;
     }
+
+    //END Immutables /////////////////////////////////////////////////////////////////////////////////////
+
+    private String profileName;
     
-    public String toString() {
-        return "Profiel: " + this.profileName;
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Named("Profiel naam")
+    public String getProfileName() {
+        return profileName;
+    }
+    
+    public void setProfileName(final String test) {
+        this.profileName = test;
+    }
+    
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
+    
+    @Named("Verwijder profiel")
+    public Actor DeleteProfile(
+            @Optional @Named("Verwijderen OK?") boolean areYouSure
+            ){
+        container.removeIfNotAlready(this);
+        container.informUser("Profiel verwijderd");
+        return getProfileOwner();
+    }
+    
+    public String validateDeleteProfile(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     
     // Region> ProfileElements
@@ -147,7 +163,12 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         newFigureElement(profileElementDescription, figure, this, currentUserName());
         return this;
     }    
+    
     // helpers
+    
+    public String toString() {
+        return "Profiel: " + this.profileName;
+    }
     
     private String currentUserName() {
         return container.getUser().getName();

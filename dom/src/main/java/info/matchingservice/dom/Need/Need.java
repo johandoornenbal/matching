@@ -6,14 +6,18 @@ import info.matchingservice.dom.Actor.Actor;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
         column = "id")
@@ -23,9 +27,11 @@ import org.apache.isis.applib.annotation.Named;
 public abstract class Need extends MatchingSecureMutableObject<Need> {
 
     public Need() {
-        super("ownedBy, needDescription");
+        super("ownedBy, needDescription, weight");
     }
-    
+
+    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
+  
     private String ownedBy;
     
     @Override
@@ -39,19 +45,8 @@ public abstract class Need extends MatchingSecureMutableObject<Need> {
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
-    
-    private String needDescription;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @MultiLine
-    @Named("Opdracht omschrijving op tafel")
-    public String getNeedDescription(){
-        return needDescription;
-    }
-    
-    public void setNeedDescription(final String description) {
-        this.needDescription = description;
-    }
+
+    //Immutables /////////////////////////////////////////////////////////////////////////////////////
     
     private Actor needOwner;
     
@@ -65,6 +60,21 @@ public abstract class Need extends MatchingSecureMutableObject<Need> {
     public void setNeedOwner(final Actor needOwner) {
         this.needOwner = needOwner;
     }
+ 
+    //END Immutables /////////////////////////////////////////////////////////////////////////////////////
+
+    private String needDescription;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @MultiLine
+    @Named("Opdracht omschrijving op tafel")
+    public String getNeedDescription(){
+        return needDescription;
+    }
+    
+    public void setNeedDescription(final String description) {
+        this.needDescription = description;
+    }
     
     private Integer weight;
     
@@ -76,13 +86,32 @@ public abstract class Need extends MatchingSecureMutableObject<Need> {
     public void setWeight(final Integer weight) {
         this.weight = weight;
     }
-    
 
-    // helpers
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
+    
+    @Named("Verwijder tafel")
+    public Actor DeleteNeed(
+            @Optional @Named("Verwijderen OK?") boolean areYouSure
+            ){
+        container.removeIfNotAlready(this);
+        container.informUser("Tafel verwijderd");
+        return getNeedOwner();
+    }
+    
+    public String validateDeleteNeed(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+
+    // Helpers
     
     
     public String toString() {
         return getNeedDescription() + " - " + getNeedOwner().title();
     }
+    
+    // Injects
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
     
 }
