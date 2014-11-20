@@ -6,11 +6,13 @@ import info.matchingservice.dom.Actor.Person;
 import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
 @DomainService(menuOrder = "50", repositoryFor = PersonNeed.class)
 @Named("Tafels (pers)")
+@Hidden
 public class PersonNeeds extends MatchingDomainService<PersonNeed> {
 
     public PersonNeeds() {

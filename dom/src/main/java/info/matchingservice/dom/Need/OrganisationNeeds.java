@@ -6,11 +6,13 @@ import info.matchingservice.dom.Actor.Organisation;
 import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
 @DomainService(menuOrder = "50", repositoryFor = OrganisationNeed.class)
 @Named("Tafels (org)")
+@Hidden
 public class OrganisationNeeds extends MatchingDomainService<OrganisationNeed> {
 
     public OrganisationNeeds() {

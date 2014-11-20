@@ -1,12 +1,17 @@
 package info.matchingservice.dom.Need;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Assessment.Assessment;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
@@ -14,6 +19,8 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Render;
+import org.apache.isis.applib.annotation.Render.Type;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -100,6 +107,21 @@ public abstract class Need extends MatchingSecureMutableObject<Need> {
     
     public String validateDeleteNeed(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+    
+    // Region> Asessments
+    
+    private SortedSet<Assessment> needAssessments = new TreeSet<Assessment>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "target", dependentElement = "true")
+    @Named("Assessments")
+    public SortedSet<Assessment> getNeedAssessments() {
+        return needAssessments;
+    }
+    
+    public void setNeedAssessments(final SortedSet<Assessment> assessment){
+        this.needAssessments = assessment;
     }
 
     // Helpers
