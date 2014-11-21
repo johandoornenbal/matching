@@ -3,6 +3,7 @@ package info.matchingservice.dom.Need;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.ProfileElementNature;
 import info.matchingservice.dom.ProfileElementType;
+import info.matchingservice.dom.Dropdown.Quality;
 
 import java.util.List;
 
@@ -58,4 +59,22 @@ public class VacancyProfileElements extends MatchingDomainService<VacancyProfile
         return newVacProf;
     }
 
+    @Programmatic
+    public VP_DropDownElement newDropdownElement(
+            final String vacancyProfileElementDescription,
+            final Quality keyword,
+            final VacancyProfile vacancyProfileElementOwner,
+            final String ownedBy,
+            final ProfileElementNature nature           
+            ){
+        final VP_DropDownElement newElement = newTransientInstance(VP_DropDownElement.class);
+        newElement.setKeyword(keyword);
+        newElement.setProfileElementNature(nature);
+        newElement.setProfileElementType(ProfileElementType.MATCHABLE_KEYWORDS); // default
+        newElement.setVacancyProfileElementDescription(vacancyProfileElementDescription);
+        newElement.setVacancyProfileElementOwner(vacancyProfileElementOwner);
+        newElement.setOwnedBy(ownedBy);
+        persist(newElement);
+        return newElement;
+    }
 }

@@ -4,8 +4,8 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.VacancyProfileElementOwner;
-import info.matchingservice.dom.Assessment.ProfileAssessment;
 import info.matchingservice.dom.Assessment.VacancyProfileAssessment;
+import info.matchingservice.dom.Dropdown.Quality;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -160,18 +160,28 @@ implements VacancyProfileElementOwner {
         return validateNewVacancyProfileElement(vacancyProfileElementDescription, this);
     }
     
-    @Named("Nieuw steekwoorden element")
-    @Hidden
-    public VacancyProfile newKeyWordElement(
+    @Named("Nieuw kwaliteiten element")
+    public VacancyProfile newDropdownElement(
             @Named("Profiel element beschrijving")
             final String profileElementDescription,
             @Named("Keywords")
             @MultiLine
-            final String keywords
+            final Quality keyword
             ) {
-        newKeyWordElement(profileElementDescription, keywords, this, currentUserName());
+        newDropdownElement(profileElementDescription, keyword, this, currentUserName());
         return this;
     }    
+    
+    @Programmatic
+    public void newDropdownElement(
+            @Named("Profiel element beschrijving")
+            final String profileElementDescription,
+            @Named("Keywords")
+            final Quality keyword,
+            final VacancyProfile profileElementOwner, 
+            final String ownedBy) {
+        vacancyProfileElements.newDropdownElement(profileElementDescription, keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
+    }
     
     @Named("Nieuw getal element")
     public VacancyProfile newFigureElement(
