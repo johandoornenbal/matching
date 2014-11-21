@@ -53,7 +53,21 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     
     public void setTarget(final Object object) {
         this.target = object;
-    }       
+    }
+    
+    //description /////////////////////////////////////////////////////////////////////////////////////
+    
+    private String assessmentDescription;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Named("Titel - korte omschrijving")
+    public String getAssessmentDescription() {
+        return assessmentDescription;
+    }
+    
+    public void setAssessmentDescription(final String assessmentDescription){
+        this.assessmentDescription = assessmentDescription;
+    }
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
@@ -67,6 +81,12 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     
     public String validateDeleteAssessment(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+    
+    //helpers ////////////////
+    
+    public String title() {
+        return getTarget().toString() + " - " + getAssessmentDescription();
     }
     
     // Region>injections ////////////////////////////

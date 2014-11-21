@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 
 import info.matchingservice.dom.MatchingDomainService;
@@ -24,31 +25,55 @@ public class Assessments extends MatchingDomainService<Assessment> {
         return allInstances();
     }
     
+    @Named("Geef feedback")
     public Assessment newAssessment(
-            final Need targetObject
+            final Need targetObject,
+            @Named("Titel - korte omschrijving")
+            final String description,
+            @Named("Feedback")
+            @MultiLine
+            final String feedback
             ){
-        final NeedAssessment newAs = newTransientInstance(NeedAssessment.class);
+        final NeedFeedback newAs = newTransientInstance(NeedFeedback.class);
         newAs.setTarget(targetObject);
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
         newAs.setOwnedBy(currentUserName());
         persist(newAs);
         return newAs;
     }
     
+    @Named("Geef feedback")
     public Assessment newAssessment(
-            final Profile targetObject
+            final Profile targetObject,
+            @Named("Titel - korte omschrijving")
+            final String description,
+            @Named("Feedback")
+            @MultiLine
+            final String feedback
             ){
-        final ProfileAssessment newAs = newTransientInstance(ProfileAssessment.class);
+        final ProfileFeedback newAs = newTransientInstance(ProfileFeedback.class);
         newAs.setTarget(targetObject);
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
         newAs.setOwnedBy(currentUserName());
         persist(newAs);
         return newAs;
     }
     
-    public VacancyProfileAssessment newAssessment(
-            final VacancyProfile targetObject
+    @Named("Geef feedback")
+    public VacancyProfileFeedback newAssessment(
+            final VacancyProfile targetObject,
+            @Named("Titel - korte omschrijving")
+            final String description,
+            @Named("Feedback")
+            @MultiLine
+            final String feedback
             ){
-        final VacancyProfileAssessment newAs = newTransientInstance(VacancyProfileAssessment.class);
+        final VacancyProfileFeedback newAs = newTransientInstance(VacancyProfileFeedback.class);
         newAs.setTarget(targetObject);
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
         newAs.setOwnedBy(currentUserName());
         persist(newAs);
         return newAs;
