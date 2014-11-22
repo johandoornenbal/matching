@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Assessment;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Actor.Person;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
@@ -18,7 +19,7 @@ import org.apache.isis.applib.annotation.Optional;
 public class Assessment extends MatchingSecureMutableObject<Assessment> {
 
     public Assessment() {
-        super("ownedBy");
+        super("ownedBy, assessmentDescription");
     }
     
     //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +54,19 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     
     public void setTarget(final Object object) {
         this.target = object;
+    }
+    
+    private Person ownerPerson;
+    
+    @Disabled
+    @Named("Afzender")
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public Person getOwnerPerson(){
+        return ownerPerson;
+    }
+    
+    public void setOwnerPerson(final Person owner) {
+        this.ownerPerson = owner;
     }
     
     //description /////////////////////////////////////////////////////////////////////////////////////
@@ -92,4 +106,5 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;
+
 }

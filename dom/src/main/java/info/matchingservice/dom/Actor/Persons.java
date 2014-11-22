@@ -179,6 +179,15 @@ public class Persons extends MatchingDomainService<Person> {
         return allMatches(query);
     }
     
+    @Programmatic
+    public Person findPersonUnique(String ownedBy){
+        QueryDefault<Person> query = 
+                QueryDefault.create(
+                        Person.class, 
+                    "findPersonUnique", 
+                    "ownedBy", ownedBy);          
+        return allMatches(query).get(0);
+    }
     
     // Region>injections ////////////////////////////
     @javax.inject.Inject
