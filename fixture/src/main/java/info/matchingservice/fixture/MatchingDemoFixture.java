@@ -1,5 +1,6 @@
 package info.matchingservice.fixture;
 
+import info.matchingservice.dropdown.QualitiesFixture;
 import info.matchingservice.fixture.actor.PersonForAntoni;
 import info.matchingservice.fixture.actor.PersonForFrans;
 import info.matchingservice.fixture.actor.PersonForGerard;
@@ -37,6 +38,7 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new RolesForAntoni(), executionContext);
         executeChild(new RolesForMichiel(), executionContext);
         executeChild(new RolesForRembrandt(), executionContext);
+        executeChild(new QualitiesFixture(), executionContext);
     }
 
 }

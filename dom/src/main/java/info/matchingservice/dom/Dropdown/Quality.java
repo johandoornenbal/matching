@@ -1,5 +1,6 @@
 package info.matchingservice.dom.Dropdown;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
@@ -9,7 +10,17 @@ import info.matchingservice.dom.MatchingDomainObject;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@AutoComplete(repository=Quality.class,  action="autoComplete")
+@javax.jdo.annotations.DatastoreIdentity(
+        strategy = IdGeneratorStrategy.NATIVE,
+        column = "id")
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "matchQualityByKeyWord", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Dropdown.Quality "
+                    + "WHERE keyword.indexOf(:keyword) >= 0")             
+})
+@AutoComplete(repository=Qualities.class,  action="autoComplete")
 public class Quality extends MatchingDomainObject<Quality> {
 
     public Quality() {
@@ -28,6 +39,10 @@ public class Quality extends MatchingDomainObject<Quality> {
     }
     
     public String toString(){
+        return getKeyword();
+    }
+    
+    public String title(){
         return getKeyword();
     }
 }

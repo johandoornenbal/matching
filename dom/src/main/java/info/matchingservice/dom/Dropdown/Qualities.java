@@ -1,11 +1,11 @@
 package info.matchingservice.dom.Dropdown;
 
+import info.matchingservice.dom.MatchingDomainService;
+
 import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
-
-import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(menuOrder = "150", repositoryFor = Quality.class)
 public class Qualities extends MatchingDomainService<Quality> {
@@ -28,4 +28,12 @@ public class Qualities extends MatchingDomainService<Quality> {
        persist(newQuality);
        return newQuality;
     }
+    
+    public List<Quality> findQualities(
+            @Named("Keyword of gedeelte ervan")
+            final String keyword
+            ) {
+        return allMatches("matchQualityByKeyWord", "keyword", keyword);
+    }
+   
 }

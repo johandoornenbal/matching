@@ -61,17 +61,18 @@ public class VacancyProfileElements extends MatchingDomainService<VacancyProfile
 
     @Programmatic
     public VP_DropDownElement newDropdownElement(
-            final String vacancyProfileElementDescription,
             final Quality keyword,
+            final Integer weight,
             final VacancyProfile vacancyProfileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature           
             ){
         final VP_DropDownElement newElement = newTransientInstance(VP_DropDownElement.class);
         newElement.setKeyword(keyword);
+        newElement.setWeight(weight);
         newElement.setProfileElementNature(nature);
-        newElement.setProfileElementType(ProfileElementType.MATCHABLE_KEYWORDS); // default
-        newElement.setVacancyProfileElementDescription(vacancyProfileElementDescription);
+        newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);
+        newElement.setVacancyProfileElementDescription(keyword.toString());
         newElement.setVacancyProfileElementOwner(vacancyProfileElementOwner);
         newElement.setOwnedBy(ownedBy);
         persist(newElement);

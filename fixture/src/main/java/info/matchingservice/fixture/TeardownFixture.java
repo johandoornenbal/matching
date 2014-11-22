@@ -8,6 +8,8 @@ public class TeardownFixture extends FixtureScript {
     @Override
     protected void execute(ExecutionContext executionContext) { 
         
+        isisJdoSupport.executeUpdate("delete from \"Quality\"");
+        
         isisJdoSupport.executeUpdate("delete from \"VacancyProfileAssessment\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileAssessment\"");
         isisJdoSupport.executeUpdate("delete from \"NeedAssessment\"");
@@ -26,6 +28,8 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"ProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"Profile\"");
         
+        isisJdoSupport.executeUpdate("delete from \"VP_DropDownElement\"");
+        isisJdoSupport.executeUpdate("delete from \"VP_TextElement\"");
         isisJdoSupport.executeUpdate("delete from \"Vpe_Keyword\"");
         isisJdoSupport.executeUpdate("delete from \"Vpe_Figure\"");
         isisJdoSupport.executeUpdate("delete from \"VacancyProfileElement\"");

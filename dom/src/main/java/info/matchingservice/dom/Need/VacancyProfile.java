@@ -5,8 +5,10 @@ import info.matchingservice.dom.ProfileElementNature;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.VacancyProfileElementOwner;
 import info.matchingservice.dom.Assessment.VacancyProfileAssessment;
+import info.matchingservice.dom.Dropdown.Qualities;
 import info.matchingservice.dom.Dropdown.Quality;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -24,6 +26,7 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -162,25 +165,31 @@ implements VacancyProfileElementOwner {
     
     @Named("Nieuw kwaliteiten element")
     public VacancyProfile newDropdownElement(
-            @Named("Profiel element beschrijving")
-            final String profileElementDescription,
             @Named("Keywords")
             @MultiLine
-            final Quality keyword
+            final Quality keyword,
+            @Named("Gewicht")
+            @Optional
+            final Integer weight
             ) {
-        newDropdownElement(profileElementDescription, keyword, this, currentUserName());
+        newDropdownElement(keyword, weight, this, currentUserName());
         return this;
-    }    
+    }   
+    
+    public List<Quality> autoComplete0NewDropdownElement(String search) {
+        return qualities.findQualities(search);
+    }
+       
+    @Inject
+    Qualities qualities;
     
     @Programmatic
     public void newDropdownElement(
-            @Named("Profiel element beschrijving")
-            final String profileElementDescription,
-            @Named("Keywords")
             final Quality keyword,
+            final Integer weight,
             final VacancyProfile profileElementOwner, 
             final String ownedBy) {
-        vacancyProfileElements.newDropdownElement(profileElementDescription, keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
+        vacancyProfileElements.newDropdownElement(keyword, weight, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
     }
     
     @Named("Nieuw getal element")

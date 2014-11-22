@@ -3,7 +3,8 @@ package info.matchingservice.dom;
 public enum ProfileElementType implements TitledEnum {
 
     MATCHABLE_KEYWORDS("Matchbare steekwoorden"),
-    MATCHABLE_FIGURE("Matchbaar getal");
+    MATCHABLE_FIGURE("Matchbaar getal"),
+    MATCHABLE_DROPDOWN("Matchbare keuzelijst");
 
     private String title;
     

@@ -11,7 +11,6 @@ import info.matchingservice.dom.Need.VacancyProfiles;
 import info.matchingservice.dom.Need.Vpe_Figures;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
 
 public abstract class NeedAbstract extends FixtureScript {
 
