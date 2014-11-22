@@ -1,5 +1,7 @@
 package info.matchingservice.fixture.actor;
 
+import info.matchingservice.dom.Dropdown.Qualities;
+
 
 public class PersonForRembrandt extends PersonAbstract {
 
@@ -15,8 +17,7 @@ public class PersonForRembrandt extends PersonAbstract {
                 13,
                 "Tweede getal",
                 23,
-                "Tekst van R",
-                "Bekend professioneel allround schilder dapper",
+                qualities.allQualities().get(0),
                 "Figuranten voor de Nachtwacht",
                 5,
                 "Dikke admiraal",
@@ -33,5 +34,8 @@ public class PersonForRembrandt extends PersonAbstract {
                 "rembrandt",
                 executionContext);
     }
+    
+    @javax.inject.Inject
+    private Qualities qualities;
 
 }

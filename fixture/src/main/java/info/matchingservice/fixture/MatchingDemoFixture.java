@@ -27,6 +27,7 @@ public class MatchingDemoFixture extends FixtureScript {
 //        executeChild(new TeardownFixture(), executionContext);
         
         // create
+        executeChild(new QualitiesFixture(), executionContext);
         executeChild(new PersonForFrans(), executionContext);
         executeChild(new PersonForRembrandt(), executionContext);
         executeChild(new PersonForGerard(), executionContext);
@@ -38,7 +39,6 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new RolesForAntoni(), executionContext);
         executeChild(new RolesForMichiel(), executionContext);
         executeChild(new RolesForRembrandt(), executionContext);
-        executeChild(new QualitiesFixture(), executionContext);
     }
 
 }

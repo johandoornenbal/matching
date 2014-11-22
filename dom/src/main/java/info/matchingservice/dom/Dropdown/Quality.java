@@ -5,6 +5,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.annotation.AutoComplete;
+import org.apache.isis.applib.annotation.Immutable;
 
 import info.matchingservice.dom.MatchingDomainObject;
 
@@ -20,6 +21,7 @@ import info.matchingservice.dom.MatchingDomainObject;
                     + "FROM info.matchingservice.dom.Dropdown.Quality "
                     + "WHERE keyword.indexOf(:keyword) >= 0")             
 })
+@Immutable
 @AutoComplete(repository=Qualities.class,  action="autoComplete")
 public class Quality extends MatchingDomainObject<Quality> {
 

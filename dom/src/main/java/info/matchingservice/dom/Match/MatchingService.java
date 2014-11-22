@@ -3,9 +3,11 @@ package info.matchingservice.dom.Match;
 import info.matchingservice.dom.ProfileElementType;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Match.diff_match_patch.Diff;
+import info.matchingservice.dom.Need.VP_DropDownElement;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Need.VacancyProfileElement;
 import info.matchingservice.dom.Need.Vpe_Figure;
+import info.matchingservice.dom.Profile.P_DropDownElement;
 import info.matchingservice.dom.Profile.Pe_Figure;
 import info.matchingservice.dom.Profile.Pe_Figures;
 import info.matchingservice.dom.Profile.Profile;
@@ -38,7 +40,8 @@ public class MatchingService extends AbstractService {
     final Integer MATCHING_ElEMENT_THRESHOLD = 70;
     final Integer MATCHING_PROFILE_THRESHOLD = 50;
     
-    //return matches on vacancyProfileElement
+    //FIGURES//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //return matches on vacancyProfileElement of Figure elements
     @NotInServiceMenu
     @NotContributed(As.ACTION)
     @ActionSemantics(Of.SAFE)
@@ -58,6 +61,41 @@ public class MatchingService extends AbstractService {
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
                 Integer matchValue = 100 - 10*Math.abs(element.getFigure() - e.getFigure());
+                if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
+                    ElementComparison matchTmp = new ElementComparison(element.getVacancyProfileElementOwner(), element, e, e.getProfileElementOwner().getProfileOwner() ,matchValue);
+                    elementMatches.add(matchTmp);
+                }
+            }
+        }
+        Collections.sort(elementMatches);
+        Collections.reverse(elementMatches);
+        return elementMatches;
+    }
+    
+    //DROPDOWNS//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //return matches on vacancyProfileElement of DROPDOWN elements
+    @NotInServiceMenu
+    @NotContributed(As.ACTION)
+    @ActionSemantics(Of.SAFE)
+    @Render(Type.EAGERLY)
+    @Named("Gevonden matching profiel elementen")
+    public List<ElementComparison> getDropDownElementMatches(VP_DropDownElement element){
+        
+        List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
+        
+        //Init Test: Only if there are any Profiles
+        if (container.allInstances(P_DropDownElement.class).isEmpty()) {
+            return elementMatches;
+        }
+        
+        for (P_DropDownElement e : container.allInstances(P_DropDownElement.class)) {
+            if (e.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
+                // uitsluiten van dezelfde owner
+                // drempelwaarde is MATCHING_THRESHOLD
+                Integer matchValue=0;
+                if (element.getKeyword().equals(e.getKeyword())){
+                    matchValue=100;
+                }
                 if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
                     ElementComparison matchTmp = new ElementComparison(element.getVacancyProfileElementOwner(), element, e, e.getProfileElementOwner().getProfileOwner() ,matchValue);
                     elementMatches.add(matchTmp);
@@ -91,7 +129,7 @@ public class MatchingService extends AbstractService {
             ProfileComparison tempMatch = new ProfileComparison(vacancy, profile, 0);
             Integer elementCounter = 0;
             
-            // For every figureElement on Vacancy
+            // For every figureElement and DropdownElement on Vacancy
             // We determine the cumulative weight and the avarage weight in case no weight is given
             // if nowhere a weight is given we will use default 1 for avarage weight;            
             Integer cumWeight = 0;
@@ -100,7 +138,7 @@ public class MatchingService extends AbstractService {
             Integer elCounter = 0;
             for (VacancyProfileElement vpelement: vacancy.getVacancyProfileElement()){
                 //Only for elements of type figure
-                if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
+                if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE || vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
                     elCounter ++;
                     if (vpelement.getWeight() != null && vpelement.getWeight()>0){
                         cumWeight+=vpelement.getWeight();
@@ -116,7 +154,7 @@ public class MatchingService extends AbstractService {
                 cumWeight += (elCounter - weightCounter)*avarageWeight;
             }
             
-            // For every figureElement on Vacancy we add to totalMatching value
+            // For every figureElement and DropDownElement on Vacancy we add to totalMatching value
             Long totalMatchingValue = (long) 0;
             for (VacancyProfileElement vpelement: vacancy.getVacancyProfileElement()){
                 
@@ -144,6 +182,30 @@ public class MatchingService extends AbstractService {
                         }
                     }
                 }
+                
+                //Only for elementmatches on DropDownElements with tempProfileOwner as ProfileOwner
+                if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
+                    
+                 // Get the matching profileElements in ElementComparison Object
+                    List<ElementComparison> tempListOfElements = getDropDownElementMatches((VP_DropDownElement) vpelement);
+                    if (!tempListOfElements.isEmpty()){
+                        for (ElementComparison e: tempListOfElements){
+                            
+                          //only if tempProfileOwner is ProfileOwner
+                            if (e.getMatchingProfileOwner().equals(tempProfileOwner)){
+                                //Add 1 to elementCounter
+                                elementCounter ++;
+                                //Add to matching value
+                                if (vpelement.getWeight()!=null && vpelement.getWeight() > 0){
+                                    totalMatchingValue+=e.getCalculatedMatchingValue()*vpelement.getWeight()/cumWeight;
+                                } else {
+                                    totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
+                                }                                                              
+                            }
+                        }
+                    }
+                }
+                
             }
             // Divide totalMatchingValue through number of elements if any are found
             if (elementCounter > 0) {

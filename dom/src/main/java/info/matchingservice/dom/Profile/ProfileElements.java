@@ -3,8 +3,12 @@ package info.matchingservice.dom.Profile;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.ProfileElementNature;
 import info.matchingservice.dom.ProfileElementType;
+import info.matchingservice.dom.Dropdown.Qualities;
+import info.matchingservice.dom.Dropdown.Quality;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Hidden;
@@ -75,5 +79,43 @@ public class ProfileElements extends MatchingDomainService<ProfileElement> {
         persist(newProf);
         return newProf;
     }
-
+    
+    @Programmatic
+    public P_DropDownElement newDropdownElement(
+            final Quality keyword,
+            final Profile profileElementOwner,
+            final String ownedBy,
+            final ProfileElementNature nature           
+            ){
+        final P_DropDownElement newElement = newTransientInstance(P_DropDownElement.class);
+        newElement.setKeyword(keyword);
+        newElement.setProfileElementNature(nature);
+        newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);
+        newElement.setProfileElementDescription(keyword.toString());
+        newElement.setProfileElementOwner(profileElementOwner);
+        newElement.setOwnedBy(ownedBy);
+        persist(newElement);
+        return newElement;
+    }
+    
+    //TODO: deze werkt niet
+    @Programmatic
+    public P_DropDownElement newDropdownElementForFixture(){
+        final P_DropDownElement newElement = newTransientInstance(P_DropDownElement.class);
+        newElement.setKeyword(qualities.allQualities().get(0));
+        newElement.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT);
+        newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);
+        newElement.setProfileElementDescription(qualities.allQualities().get(0).toString());
+        newElement.setProfileElementOwner(profiles.allProfiles().get(0));
+        newElement.setOwnedBy("frans");
+        persist(newElement);
+        return newElement;
+    }
+    
+    @Inject
+    Qualities qualities;
+    
+    @Inject
+    Profiles profiles;
+    
 }

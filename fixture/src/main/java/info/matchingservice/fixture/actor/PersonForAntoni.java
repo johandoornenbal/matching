@@ -1,5 +1,7 @@
 package info.matchingservice.fixture.actor;
 
+import info.matchingservice.dom.Dropdown.Qualities;
+
 
 public class PersonForAntoni extends PersonAbstract {
 
@@ -15,8 +17,7 @@ public class PersonForAntoni extends PersonAbstract {
                 3,
                 "en mijn tweede getal is",
                 17,
-                "En mijn tekst is",
-                "Wetenschapper, wetenschappelijk onderzoek, universiteit",
+                qualities.allQualities().get(0),
                 "Wetenschappelijk onderzoek",
                 3,
                 "Schilder",
@@ -33,5 +34,8 @@ public class PersonForAntoni extends PersonAbstract {
                 "antoni",
                 executionContext);
     }
+    
+    @javax.inject.Inject
+    private Qualities qualities;
 
 }

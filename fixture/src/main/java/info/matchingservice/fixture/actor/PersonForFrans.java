@@ -1,5 +1,7 @@
 package info.matchingservice.fixture.actor;
 
+import info.matchingservice.dom.Dropdown.Qualities;
+
 
 public class PersonForFrans extends PersonAbstract {
 
@@ -15,8 +17,7 @@ public class PersonForFrans extends PersonAbstract {
                 5,
                 "Nog een keer",
                 15,
-                "Tekst van Frans",
-                "ervaren schilder met penselen",
+                qualities.allQualities().get(0),
                 "Schilderproject",
                 10,
                 "Junior hulpschilder",
@@ -33,5 +34,8 @@ public class PersonForFrans extends PersonAbstract {
                 "frans",
                 executionContext);
     }
+    
+    @javax.inject.Inject
+    private Qualities qualities;
 
 }

@@ -60,7 +60,7 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     
     @Disabled
     @Named("Afzender")
-    @javax.jdo.annotations.Column(allowsNull = "false")
+    @javax.jdo.annotations.Column(allowsNull = "true")
     public Person getOwnerPerson(){
         return ownerPerson;
     }

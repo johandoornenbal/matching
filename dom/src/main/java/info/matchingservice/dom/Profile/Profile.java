@@ -5,7 +5,10 @@ import info.matchingservice.dom.ProfileElementNature;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
+import info.matchingservice.dom.Dropdown.Qualities;
+import info.matchingservice.dom.Dropdown.Quality;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -128,6 +131,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     
     @Named("Nieuw (single) profiel element")
+    @Hidden
     public Profile newProfileElement(
             @Named("Profiel element beschrijving")
             final String profileElementDescription
@@ -145,6 +149,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     
     @Named("Nieuw steekwoorden element")
+    @Hidden
     public Profile newKeyWordElement(
             @Named("Profiel element beschrijving")
             final String profileElementDescription,
@@ -155,6 +160,30 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         newKeyWordElement(profileElementDescription, keywords, this, currentUserName());
         return this;
     }    
+
+    @Named("Nieuw kwaliteiten element")
+    public Profile newDropdownElement(
+            @Named("Keyword")
+            final Quality keyword
+            ) {
+        newDropdownElement(keyword, this, currentUserName());
+        return this;
+    }   
+    
+    public List<Quality> autoComplete0NewDropdownElement(String search) {
+        return qualities.findQualities(search);
+    }
+       
+    @Inject
+    Qualities qualities;
+    
+    @Programmatic
+    public void newDropdownElement(
+            final Quality keyword,
+            final Profile profileElementOwner, 
+            final String ownedBy) {
+        profileElements.newDropdownElement(keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
+    }
     
     @Named("Nieuw getal element")
     public Profile newFigureElement(
