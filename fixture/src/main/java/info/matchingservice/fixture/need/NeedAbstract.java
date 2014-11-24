@@ -8,7 +8,7 @@ import info.matchingservice.dom.Need.PersonNeed;
 import info.matchingservice.dom.Need.PersonNeeds;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Need.VacancyProfiles;
-import info.matchingservice.dom.Need.Vpe_Figures;
+import info.matchingservice.dom.Need.VacancyProfileFigureElements;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -72,5 +72,5 @@ public abstract class NeedAbstract extends FixtureScript {
     VacancyProfiles vacancyprofiles;
     
     @Inject
-    Vpe_Figures vpeFigures;
+    VacancyProfileFigureElements vpeFigures;
 }

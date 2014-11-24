@@ -1,4 +1,4 @@
-package info.matchingservice.dom.Profile;
+package info.matchingservice.dom.Need;
 
 import info.matchingservice.dom.Dropdown.Quality;
 
@@ -8,7 +8,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class P_DropDownElement extends ProfileElement {
+public class VacancyProfileDropDownElement extends VacancyProfileElement {
     
     private Quality keyword;
     

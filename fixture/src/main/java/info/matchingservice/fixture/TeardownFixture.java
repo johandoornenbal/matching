@@ -23,17 +23,17 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"ProfileMatch\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileComparison\"");
           
-        isisJdoSupport.executeUpdate("delete from \"P_DropDownElement\"");
-        isisJdoSupport.executeUpdate("delete from \"P_TextElement\"");
+        isisJdoSupport.executeUpdate("delete from \"ProfileDropDownElement\"");
+        isisJdoSupport.executeUpdate("delete from \"ProfileTextElement\"");
         isisJdoSupport.executeUpdate("delete from \"Pe_Keyword\"");
-        isisJdoSupport.executeUpdate("delete from \"Pe_Figure\"");
+        isisJdoSupport.executeUpdate("delete from \"ProfileFigureElement\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"Profile\"");
         
-        isisJdoSupport.executeUpdate("delete from \"VP_DropDownElement\"");
-        isisJdoSupport.executeUpdate("delete from \"VP_TextElement\"");
+        isisJdoSupport.executeUpdate("delete from \"VacancyProfileDropDownElement\"");
+        isisJdoSupport.executeUpdate("delete from \"VacancyProfileTextElement\"");
         isisJdoSupport.executeUpdate("delete from \"Vpe_Keyword\"");
-        isisJdoSupport.executeUpdate("delete from \"Vpe_Figure\"");
+        isisJdoSupport.executeUpdate("delete from \"VacancyProfileFigureElement\"");
         isisJdoSupport.executeUpdate("delete from \"VacancyProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"VacancyProfile\"");
         isisJdoSupport.executeUpdate("delete from \"PersonNeed\"");

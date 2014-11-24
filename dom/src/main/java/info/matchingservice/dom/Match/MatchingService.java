@@ -3,13 +3,13 @@ package info.matchingservice.dom.Match;
 import info.matchingservice.dom.ProfileElementType;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Match.diff_match_patch.Diff;
-import info.matchingservice.dom.Need.VP_DropDownElement;
+import info.matchingservice.dom.Need.VacancyProfileDropDownElement;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Need.VacancyProfileElement;
-import info.matchingservice.dom.Need.Vpe_Figure;
-import info.matchingservice.dom.Profile.P_DropDownElement;
-import info.matchingservice.dom.Profile.Pe_Figure;
-import info.matchingservice.dom.Profile.Pe_Figures;
+import info.matchingservice.dom.Need.VacancyProfileFigureElement;
+import info.matchingservice.dom.Profile.ProfileDropDownElement;
+import info.matchingservice.dom.Profile.ProfileFigureElement;
+import info.matchingservice.dom.Profile.ProfileFigures;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 
@@ -47,16 +47,16 @@ public class MatchingService extends AbstractService {
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
     @Named("Gevonden matching profiel elementen")
-    public List<ElementComparison> getElementMatches(Vpe_Figure element){
+    public List<ElementComparison> getElementMatches(VacancyProfileFigureElement element){
         
         List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
         
         //Init Test: Only if there are any Profiles
-        if (container.allInstances(Pe_Figure.class).isEmpty()) {
+        if (container.allInstances(ProfileFigureElement.class).isEmpty()) {
             return elementMatches;
         }
         
-        for (Pe_Figure e : container.allInstances(Pe_Figure.class)) {
+        for (ProfileFigureElement e : container.allInstances(ProfileFigureElement.class)) {
             if (e.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
@@ -79,16 +79,16 @@ public class MatchingService extends AbstractService {
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
     @Named("Gevonden matching profiel elementen")
-    public List<ElementComparison> getDropDownElementMatches(VP_DropDownElement element){
+    public List<ElementComparison> getDropDownElementMatches(VacancyProfileDropDownElement element){
         
         List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
         
         //Init Test: Only if there are any Profiles
-        if (container.allInstances(P_DropDownElement.class).isEmpty()) {
+        if (container.allInstances(ProfileDropDownElement.class).isEmpty()) {
             return elementMatches;
         }
         
-        for (P_DropDownElement e : container.allInstances(P_DropDownElement.class)) {
+        for (ProfileDropDownElement e : container.allInstances(ProfileDropDownElement.class)) {
             if (e.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
@@ -162,7 +162,7 @@ public class MatchingService extends AbstractService {
                 if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
                     
                     // Get the matching profileElements in ElementComparison Object
-                    List<ElementComparison> tempListOfElements = getElementMatches((Vpe_Figure) vpelement);
+                    List<ElementComparison> tempListOfElements = getElementMatches((VacancyProfileFigureElement) vpelement);
                     if (!tempListOfElements.isEmpty()){
                         for (ElementComparison e: tempListOfElements){
                             
@@ -187,7 +187,7 @@ public class MatchingService extends AbstractService {
                 if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
                     
                  // Get the matching profileElements in ElementComparison Object
-                    List<ElementComparison> tempListOfElements = getDropDownElementMatches((VP_DropDownElement) vpelement);
+                    List<ElementComparison> tempListOfElements = getDropDownElementMatches((VacancyProfileDropDownElement) vpelement);
                     if (!tempListOfElements.isEmpty()){
                         for (ElementComparison e: tempListOfElements){
                             

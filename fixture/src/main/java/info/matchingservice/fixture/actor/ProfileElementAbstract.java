@@ -1,7 +1,7 @@
 package info.matchingservice.fixture.actor;
 
 import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElements;
+import info.matchingservice.dom.Profile.ProfileFigureElements;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -18,5 +18,5 @@ public abstract class ProfileElementAbstract extends FixtureScript {
     }
       
     @javax.inject.Inject
-    ProfileElements profileElements;
+    ProfileFigureElements profileElements;
 }

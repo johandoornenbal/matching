@@ -60,14 +60,14 @@ public class VacancyProfileElements extends MatchingDomainService<VacancyProfile
     }
 
     @Programmatic
-    public VP_DropDownElement newDropdownElement(
+    public VacancyProfileDropDownElement newDropdownElement(
             final Quality keyword,
             final Integer weight,
             final VacancyProfile vacancyProfileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature           
             ){
-        final VP_DropDownElement newElement = newTransientInstance(VP_DropDownElement.class);
+        final VacancyProfileDropDownElement newElement = newTransientInstance(VacancyProfileDropDownElement.class);
         newElement.setKeyword(keyword);
         newElement.setWeight(weight);
         newElement.setProfileElementNature(nature);

@@ -18,10 +18,10 @@ import org.apache.isis.applib.annotation.Programmatic;
 @DomainService(menuOrder = "60", repositoryFor = ProfileElement.class)
 @Named("Alle profiel elementen")
 @Hidden
-public class ProfileElements extends MatchingDomainService<ProfileElement> {
+public class ProfileFigureElements extends MatchingDomainService<ProfileElement> {
 
-    public ProfileElements() {
-        super(ProfileElements.class, ProfileElement.class);
+    public ProfileFigureElements() {
+        super(ProfileFigureElements.class, ProfileElement.class);
     }
     
     @Named("Alle profiel elementen")
@@ -81,13 +81,13 @@ public class ProfileElements extends MatchingDomainService<ProfileElement> {
     }
     
     @Programmatic
-    public P_DropDownElement newDropdownElement(
+    public ProfileDropDownElement newDropdownElement(
             final Quality keyword,
             final Profile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature           
             ){
-        final P_DropDownElement newElement = newTransientInstance(P_DropDownElement.class);
+        final ProfileDropDownElement newElement = newTransientInstance(ProfileDropDownElement.class);
         newElement.setKeyword(keyword);
         newElement.setProfileElementNature(nature);
         newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);
@@ -100,8 +100,8 @@ public class ProfileElements extends MatchingDomainService<ProfileElement> {
     
     //TODO: deze werkt niet
     @Programmatic
-    public P_DropDownElement newDropdownElementForFixture(){
-        final P_DropDownElement newElement = newTransientInstance(P_DropDownElement.class);
+    public ProfileDropDownElement newDropdownElementForFixture(){
+        final ProfileDropDownElement newElement = newTransientInstance(ProfileDropDownElement.class);
         newElement.setKeyword(qualities.allQualities().get(0));
         newElement.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT);
         newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);

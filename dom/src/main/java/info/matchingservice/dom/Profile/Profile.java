@@ -279,13 +279,13 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //Injects
     
     @Inject
-    ProfileElements profileElements;
+    ProfileFigureElements profileElements;
     
     @Inject
     Pe_Keywords pe_keywords;
     
     @Inject
-    Pe_Figures pe_figures;
+    ProfileFigures pe_figures;
         
     @javax.inject.Inject
     private DomainObjectContainer container;

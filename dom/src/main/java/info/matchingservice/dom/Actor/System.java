@@ -371,10 +371,5 @@ public class System extends Actor {
     private SystemRoles roles;
 
     @Inject
-    private Profiles profiles;
-    
-    @Inject
-    private PersonNeeds needs;
-
-    
+    private Profiles profiles;    
 }

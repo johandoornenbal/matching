@@ -314,7 +314,7 @@ implements VacancyProfileElementOwner {
     Vpe_Keywords pe_keywords;
     
     @Inject
-    Vpe_Figures pe_figures;
+    VacancyProfileFigureElements pe_figures;
         
     @javax.inject.Inject
     private DomainObjectContainer container;

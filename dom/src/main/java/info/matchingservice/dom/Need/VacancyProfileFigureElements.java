@@ -11,28 +11,28 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "70", repositoryFor = Vpe_Figure.class)
+@DomainService(menuOrder = "70", repositoryFor = VacancyProfileFigureElement.class)
 @Named("Profiel elementen")
 @Hidden
-public class Vpe_Figures extends MatchingDomainService<Vpe_Figure> {
+public class VacancyProfileFigureElements extends MatchingDomainService<VacancyProfileFigureElement> {
 
-    public Vpe_Figures() {
-        super(Vpe_Figures.class, Vpe_Figure.class);
+    public VacancyProfileFigureElements() {
+        super(VacancyProfileFigureElements.class, VacancyProfileFigureElement.class);
     }
     
     @Named("Alle getal elementen")
-    public List<Vpe_Figure> allProfileElements() {
+    public List<VacancyProfileFigureElement> allProfileElements() {
         return allInstances();
     }
     
     @Programmatic    
-    public Vpe_Figure newProfileElement(
+    public VacancyProfileFigureElement newProfileElement(
             final String profileElementDescription,
             final Integer figure,
             final VacancyProfile profileElementOwner,
             final String ownedBy
             ){
-        final Vpe_Figure newProf = newTransientInstance(Vpe_Figure.class);
+        final VacancyProfileFigureElement newProf = newTransientInstance(VacancyProfileFigureElement.class);
         newProf.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT); // default
         newProf.setProfileElementType(ProfileElementType.MATCHABLE_FIGURE); // default
         newProf.setVacancyProfileElementDescription(profileElementDescription);
@@ -44,14 +44,14 @@ public class Vpe_Figures extends MatchingDomainService<Vpe_Figure> {
     }
     
     @Programmatic    
-    public Vpe_Figure newProfileElement(
+    public VacancyProfileFigureElement newProfileElement(
             final String profileElementDescription,
             final Integer figure,
             final Integer weight,
             final VacancyProfile profileElementOwner,
             final String ownedBy
             ){
-        final Vpe_Figure newProf = newTransientInstance(Vpe_Figure.class);
+        final VacancyProfileFigureElement newProf = newTransientInstance(VacancyProfileFigureElement.class);
         newProf.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT); // default
         newProf.setProfileElementType(ProfileElementType.MATCHABLE_FIGURE); // default
         newProf.setVacancyProfileElementDescription(profileElementDescription);
@@ -64,13 +64,13 @@ public class Vpe_Figures extends MatchingDomainService<Vpe_Figure> {
     }
     
     @Programmatic    
-    public Vpe_Figure newProfileElement(
+    public VacancyProfileFigureElement newProfileElement(
             final String profileElementDescription,
             final VacancyProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){
-        final Vpe_Figure newProf = newTransientInstance(Vpe_Figure.class);
+        final VacancyProfileFigureElement newProf = newTransientInstance(VacancyProfileFigureElement.class);
         newProf.setProfileElementNature(nature);
         newProf.setProfileElementType(ProfileElementType.MATCHABLE_FIGURE); // default
         newProf.setVacancyProfileElementDescription(profileElementDescription);

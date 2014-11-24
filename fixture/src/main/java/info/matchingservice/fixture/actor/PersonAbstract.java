@@ -9,11 +9,11 @@ import info.matchingservice.dom.Need.PersonNeed;
 import info.matchingservice.dom.Need.PersonNeeds;
 import info.matchingservice.dom.Need.VacancyProfile;
 import info.matchingservice.dom.Need.VacancyProfiles;
-import info.matchingservice.dom.Need.Vpe_Figures;
+import info.matchingservice.dom.Need.VacancyProfileFigureElements;
 import info.matchingservice.dom.Need.Vpe_Keywords;
-import info.matchingservice.dom.Profile.Pe_Figures;
+import info.matchingservice.dom.Profile.ProfileFigures;
 import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElements;
+import info.matchingservice.dom.Profile.ProfileFigureElements;
 import info.matchingservice.dom.Profile.Profiles;
 
 import javax.inject.Inject;
@@ -154,10 +154,10 @@ public abstract class PersonAbstract extends FixtureScript {
     private Profiles profiles;
     
     @Inject
-    private Pe_Figures peFigures;
+    private ProfileFigures peFigures;
     
     @Inject
-    ProfileElements profileElements;
+    ProfileFigureElements profileElements;
     
     @Inject
     PersonNeeds personNeeds;
@@ -166,7 +166,7 @@ public abstract class PersonAbstract extends FixtureScript {
     VacancyProfiles vacancyprofiles;
     
     @Inject
-    Vpe_Figures vpeFigures;
+    VacancyProfileFigureElements vpeFigures;
     
     @Inject
     Vpe_Keywords vpeKeywords;

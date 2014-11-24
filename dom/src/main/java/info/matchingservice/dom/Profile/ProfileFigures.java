@@ -11,27 +11,27 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "70", repositoryFor = Pe_Figure.class)
+@DomainService(menuOrder = "70", repositoryFor = ProfileFigureElement.class)
 @Hidden
-public class Pe_Figures extends MatchingDomainService<Pe_Figure> {
+public class ProfileFigures extends MatchingDomainService<ProfileFigureElement> {
 
-    public Pe_Figures() {
-        super(Pe_Figures.class, Pe_Figure.class);
+    public ProfileFigures() {
+        super(ProfileFigures.class, ProfileFigureElement.class);
     }
     
     @Named("Alle getal elementen")
-    public List<Pe_Figure> allProfileElements() {
+    public List<ProfileFigureElement> allProfileElements() {
         return allInstances();
     }
     
     @Programmatic    
-    public Pe_Figure newProfileElement(
+    public ProfileFigureElement newProfileElement(
             final String profileElementDescription,
             final Integer figure,
             final Profile profileElementOwner,
             final String ownedBy
             ){
-        final Pe_Figure newProf = newTransientInstance(Pe_Figure.class);
+        final ProfileFigureElement newProf = newTransientInstance(ProfileFigureElement.class);
         newProf.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT); // default
         newProf.setProfileElementType(ProfileElementType.MATCHABLE_FIGURE); // default
         newProf.setProfileElementDescription(profileElementDescription);
@@ -43,13 +43,13 @@ public class Pe_Figures extends MatchingDomainService<Pe_Figure> {
     }
     
     @Programmatic    
-    public Pe_Figure newProfileElement(
+    public ProfileFigureElement newProfileElement(
             final String profileElementDescription,
             final Profile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){
-        final Pe_Figure newProf = newTransientInstance(Pe_Figure.class);
+        final ProfileFigureElement newProf = newTransientInstance(ProfileFigureElement.class);
         newProf.setProfileElementNature(nature);
         newProf.setProfileElementType(ProfileElementType.MATCHABLE_FIGURE); // default
         newProf.setProfileElementDescription(profileElementDescription);

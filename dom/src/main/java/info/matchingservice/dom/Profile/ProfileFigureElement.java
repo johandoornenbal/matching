@@ -7,7 +7,7 @@ import org.apache.isis.applib.annotation.Named;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class Pe_Figure extends ProfileElement {
+public class ProfileFigureElement extends ProfileElement {
     
     private Integer figure;
     
@@ -21,7 +21,7 @@ public class Pe_Figure extends ProfileElement {
     }
     
     @Named("Bewerk getal")
-    public Pe_Figure EditFigure(
+    public ProfileFigureElement EditFigure(
             @Named("getal")
             Integer newInt
             ){

@@ -108,3 +108,4 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     private DomainObjectContainer container;
 
 }
+
