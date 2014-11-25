@@ -69,25 +69,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
         return newAs;
     }
     
-    @Named("Geef feedback")
-    @NotInServiceMenu
-    public VacancyProfileFeedback newAssessment(
-            final DemandProfile targetObject,
-            @Named("Titel - korte omschrijving")
-            final String description,
-            @Named("Feedback")
-            @MultiLine
-            final String feedback
-            ){
-        final VacancyProfileFeedback newAs = newTransientInstance(VacancyProfileFeedback.class);
-        newAs.setTarget(targetObject);
-        newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
-        newAs.setAssessmentDescription(description);
-        newAs.setFeedback(feedback);
-        newAs.setOwnedBy(currentUserName());
-        persist(newAs);
-        return newAs;
-    }
+
     
     
     //Region> Helpers ///////////////////////////////

@@ -1,23 +1,32 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.ProfileElementNature;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
+import info.matchingservice.dom.Dropdown.Qualities;
+import info.matchingservice.dom.Dropdown.Quality;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -61,6 +70,101 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     public void setProfileName(final String test) {
         this.profileName = test;
     }
+    
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
+    @Named("Verwijder profiel")
+    public void DeleteProfile(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+        container.removeIfNotAlready(this);
+        container.informUser("Profiel verwijderd");
+        return ;
+    }
+
+    public String validateDeleteProfile(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+    
+    // Region> ProfileElements
+    @Named("Nieuw (single) profiel element")
+    @Hidden
+    public SuperProfile newProfileElement(
+                @Named("Profiel element beschrijving")
+                final String profileElementDescription) {
+        newProfileElement(profileElementDescription, this, currentUserName());
+        return this;
+    }
+    
+    @Programmatic
+    public void newDropdownElement(final Quality keyword, final SuperProfile profileElementOwner, final String ownedBy) {
+        profileElements.newDropdownElement(keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
+    }
+
+    public boolean hideNewProfileElement(final String profileElementDescription) {
+        return hideNewProfileElement(profileElementDescription, this);
+    }
+
+    public String validateNewProfileElement(final String profileElementDescription) {
+        return validateNewProfileElement(profileElementDescription, this);
+    }
+    
+    @Programmatic
+    public void newProfileElement(final String profileElementDescription, final SuperProfile profileElementOwner, final String ownedBy) {
+        profileElements.newProfileElement(profileElementDescription, profileElementOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
+    }
+
+    @Programmatic
+    public boolean hideNewProfileElement(final String profileElementDescription, final SuperProfile profileElementOwner) {
+        // if you have already profile
+        QueryDefault<ProfileElement> query = 
+                QueryDefault.create(
+                        ProfileElement.class, 
+                    "findProfileElementByOwnerProfileAndNature", 
+                    "profileElementOwner", profileElementOwner,
+                    "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
+        return container.firstMatch(query) != null ?
+                true        
+                :false;
+    }
+
+    @Programmatic
+    public String validateNewProfileElement(final String profileElementDescription, final SuperProfile profileElementOwner) {
+        // if you have already profile
+        QueryDefault<ProfileElement> query = 
+                QueryDefault.create(
+                        ProfileElement.class, 
+                        "findProfileElementByOwnerProfileAndNature", 
+                        "profileElementOwner", profileElementOwner,
+                        "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
+        return container.firstMatch(query) != null?
+                "This VacancyProfile has this single element already!"        
+                :null;
+    }
+
+    @Programmatic
+    public void newFigureElement(final String profileElementDescription, final Integer figure, final SuperProfile profileElementOwner, final String ownedBy) {
+        pe_figures.newProfileElement(profileElementDescription, figure, profileElementOwner, ownedBy);
+    }
+
+
+
+    @Named("Nieuw kwaliteiten element")
+    public SuperProfile newDropdownElement(@Named("Keyword")
+                final Quality keyword) {
+        newDropdownElement(keyword, this, currentUserName());
+        return this;
+    }
+
+    public List<Quality> autoComplete0NewDropdownElement(String search) {
+        return qualities.findQualities(search);
+    }
+    
+    @Named("Nieuw getal element")
+    public SuperProfile newFigureElement(@Named("Profiel element beschrijving")
+                final String profileElementDescription, @Named("Getal")
+                final Integer figure) {
+        newFigureElement(profileElementDescription, figure, this, currentUserName());
+        return this;
+    }
+
 
     //Profile Elements ///////////////////////////////////////////////////////////////////////////////
     private SortedSet<ProfileElement> profileElement = new TreeSet<ProfileElement>();
@@ -75,7 +179,6 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     public void setProfileElement(final SortedSet<ProfileElement> vac) {
         this.profileElement = vac;
     }
-
 
     //Assessments ///////////////////////////////////////////////////////////////////////////////
     private SortedSet<ProfileAssessment> assessments = new TreeSet<ProfileAssessment>();
@@ -100,5 +203,23 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     public String toString() {
         return "Profiel: " + this.profileName;
     }
+    
+    private String currentUserName() {
+        return container.getUser().getName();
+    }
+    
+    //Injects
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+    
+    @Inject
+    ProfileFigureElements profileElements;
+    
+    @Inject
+    Qualities qualities;
+    
+    @Inject
+    ProfileFigures pe_figures;
     
 }

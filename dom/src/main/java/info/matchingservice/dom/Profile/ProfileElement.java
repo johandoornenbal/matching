@@ -87,17 +87,17 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.profileElementType = type;
     }
     
-    private SupplyProfile profileElementOwner;
+    private SuperProfile profileElementOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     @Named("Profiel")
     @Hidden(where=Where.PARENTED_TABLES)
-    public SupplyProfile getProfileElementOwner() {
+    public SuperProfile getProfileElementOwner() {
         return profileElementOwner;
     }
     
-    public void setProfileElementOwner(final SupplyProfile vacancyProfileOwner) {
+    public void setProfileElementOwner(final SuperProfile vacancyProfileOwner) {
         this.profileElementOwner = vacancyProfileOwner;
     }
     

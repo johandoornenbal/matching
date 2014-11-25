@@ -59,23 +59,23 @@ public class DemandProfileElements extends MatchingDomainService<DemandProfileEl
         return newVacProf;
     }
 
-    @Programmatic
-    public VacancyProfileDropDownElement newDropdownElement(
-            final Quality keyword,
-            final Integer weight,
-            final DemandProfile vacancyProfileElementOwner,
-            final String ownedBy,
-            final ProfileElementNature nature           
-            ){
-        final VacancyProfileDropDownElement newElement = newTransientInstance(VacancyProfileDropDownElement.class);
-        newElement.setKeyword(keyword);
-        newElement.setWeight(weight);
-        newElement.setProfileElementNature(nature);
-        newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);
-        newElement.setVacancyProfileElementDescription(keyword.toString());
-        newElement.setVacancyProfileElementOwner(vacancyProfileElementOwner);
-        newElement.setOwnedBy(ownedBy);
-        persist(newElement);
-        return newElement;
-    }
+//    @Programmatic
+//    public VacancyProfileDropDownElement newDropdownElement(
+//            final Quality keyword,
+//            final Integer weight,
+//            final DemandProfile vacancyProfileElementOwner,
+//            final String ownedBy,
+//            final ProfileElementNature nature           
+//            ){
+//        final VacancyProfileDropDownElement newElement = newTransientInstance(VacancyProfileDropDownElement.class);
+//        newElement.setKeyword(keyword);
+//        newElement.setWeight(weight);
+//        newElement.setProfileElementNature(nature);
+//        newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);
+//        newElement.setVacancyProfileElementDescription(keyword.toString());
+//        newElement.setVacancyProfileElementOwner(vacancyProfileElementOwner);
+//        newElement.setOwnedBy(ownedBy);
+//        persist(newElement);
+//        return newElement;
+//    }
 }

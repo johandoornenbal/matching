@@ -32,7 +32,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final SupplyProfile profileElementOwner,
+            final SuperProfile profileElementOwner,
             final String ownedBy
             ){
         final ProfileElement newProf = newTransientInstance(ProfileElement.class);
@@ -48,7 +48,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final SupplyProfile profileElementOwner,
+            final SuperProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){
@@ -65,7 +65,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final SupplyProfile profileElementOwner,
+            final SuperProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementType type,
             final ProfileElementNature nature
@@ -83,7 +83,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic
     public ProfileDropDownElement newDropdownElement(
             final Quality keyword,
-            final SupplyProfile profileElementOwner,
+            final SuperProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature           
             ){
