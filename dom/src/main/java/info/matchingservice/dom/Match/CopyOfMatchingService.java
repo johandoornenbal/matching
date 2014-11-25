@@ -3,12 +3,12 @@ package info.matchingservice.dom.Match;
 import info.matchingservice.dom.ProfileElementType;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Match.diff_match_patch.Diff;
-import info.matchingservice.dom.Need.VacancyProfile;
+import info.matchingservice.dom.Need.DemandProfile;
 import info.matchingservice.dom.Need.VacancyProfileElement;
 import info.matchingservice.dom.Need.VacancyProfileFigureElement;
 import info.matchingservice.dom.Profile.ProfileFigureElement;
 import info.matchingservice.dom.Profile.ProfileFigures;
-import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.SupplyProfile;
 import info.matchingservice.dom.Profile.ProfileElement;
 
 import java.util.ArrayList;
@@ -72,14 +72,14 @@ public class CopyOfMatchingService extends AbstractService {
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
     @Named("Gevonden kandidaten")
-    public List<ProfileComparison> getMatches(VacancyProfile vacancy) {
+    public List<ProfileComparison> getMatches(DemandProfile vacancy) {
         List<ProfileComparison> matches = new ArrayList<ProfileComparison>();
         //Init Test: Only if there are any Profiles
-        if (container.allInstances(Profile.class).isEmpty()) {
+        if (container.allInstances(SupplyProfile.class).isEmpty()) {
             return matches;
         }
         //For every Profile
-        for (Profile profile: container.allInstances(Profile.class)) {
+        for (SupplyProfile profile: container.allInstances(SupplyProfile.class)) {
             
             //Actually for every ProfileOwner (Actor)
             Actor tempProfileOwner = profile.getProfileOwner();

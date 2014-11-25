@@ -10,7 +10,7 @@ import org.apache.isis.applib.annotation.Programmatic;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Need.VacancyProfile;
+import info.matchingservice.dom.Need.DemandProfile;
 
 @DomainService(menuOrder = "100", repositoryFor = ProfileMatch.class)
 @Named("Matches")
@@ -32,7 +32,7 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
             @Named("Gevonden kandidaat")
             Actor vacancyCandidate,
             @Named("Stoel")
-            VacancyProfile vacancyProfile
+            DemandProfile vacancyProfile
             ){
         return newProfileMatch(ownerActor, vacancyCandidate, vacancyProfile, currentUserName(), CandidateStatus.CANDIDATE);
     }
@@ -46,7 +46,7 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
     public ProfileMatch newProfileMatch(
             Actor ownerActor,
             Actor vacancyCandidate,
-            VacancyProfile vacancyProfile,
+            DemandProfile vacancyProfile,
             String owner,
             CandidateStatus candidateStatus
             ){

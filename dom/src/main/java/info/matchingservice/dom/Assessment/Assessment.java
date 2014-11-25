@@ -1,7 +1,7 @@
 package info.matchingservice.dom.Assessment;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.Actor;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
@@ -56,17 +56,17 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
         this.target = object;
     }
     
-    private Person ownerPerson;
+    private Actor ownerActor;
     
     @Disabled
     @Named("Afzender")
     @javax.jdo.annotations.Column(allowsNull = "true")
-    public Person getOwnerPerson(){
-        return ownerPerson;
+    public Actor getOwnerActor(){
+        return ownerActor;
     }
     
-    public void setOwnerPerson(final Person owner) {
-        this.ownerPerson = owner;
+    public void setOwnerActor(final Actor owner) {
+        this.ownerActor = owner;
     }
     
     //description /////////////////////////////////////////////////////////////////////////////////////

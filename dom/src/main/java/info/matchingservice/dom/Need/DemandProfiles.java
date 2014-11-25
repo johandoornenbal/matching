@@ -8,27 +8,27 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "50", repositoryFor = VacancyProfile.class)
+@DomainService(menuOrder = "50", repositoryFor = DemandProfile.class)
 @Named("'Stoelen'")
-public class VacancyProfiles extends MatchingDomainService<VacancyProfile> {
+public class DemandProfiles extends MatchingDomainService<DemandProfile> {
 
-    public VacancyProfiles() {
-        super(VacancyProfiles.class, VacancyProfile.class);
+    public DemandProfiles() {
+        super(DemandProfiles.class, DemandProfile.class);
     }
     
     @Named("Alle 'stoelen'")
-    public List<VacancyProfile> allVacancyProfiles() {
+    public List<DemandProfile> allVacancyProfiles() {
         return allInstances();
     }
     
     @Programmatic
-    public VacancyProfile newVacancy(
+    public DemandProfile newVacancy(
             final String vacancyDescription,
             final Need vacancyOwner,
             final String ownedBy
             ){
-        final VacancyProfile newVac = newTransientInstance(VacancyProfile.class);
-        newVac.setVacancyDescription(vacancyDescription);
+        final DemandProfile newVac = newTransientInstance(DemandProfile.class);
+        newVac.setProfileName(vacancyDescription);
         newVac.setVacancyOwner(vacancyOwner);
         newVac.setOwnedBy(ownedBy);
         persist(newVac);
@@ -36,14 +36,14 @@ public class VacancyProfiles extends MatchingDomainService<VacancyProfile> {
     }
     
     @Programmatic
-    public VacancyProfile newVacancy(
+    public DemandProfile newVacancy(
             final String vacancyDescription,
             final Integer weight,
             final Need vacancyOwner,
             final String ownedBy
             ){
-        final VacancyProfile newVac = newTransientInstance(VacancyProfile.class);
-        newVac.setVacancyDescription(vacancyDescription);
+        final DemandProfile newVac = newTransientInstance(DemandProfile.class);
+        newVac.setProfileName(vacancyDescription);
         newVac.setWeight(weight);
         newVac.setVacancyOwner(vacancyOwner);
         newVac.setOwnedBy(ownedBy);

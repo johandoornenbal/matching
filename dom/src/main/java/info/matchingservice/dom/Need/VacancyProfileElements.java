@@ -29,7 +29,7 @@ public class VacancyProfileElements extends MatchingDomainService<VacancyProfile
     @Programmatic
     public VacancyProfileElement newVacancyProfileElement(
             final String vacancyProfileElementDescription,
-            final VacancyProfile vacancyProfileElementOwner,
+            final DemandProfile vacancyProfileElementOwner,
             final String ownedBy
             ){
         final VacancyProfileElement newVacProf = newTransientInstance(VacancyProfileElement.class);
@@ -45,7 +45,7 @@ public class VacancyProfileElements extends MatchingDomainService<VacancyProfile
     @Programmatic
     public VacancyProfileElement newVacancyProfileElement(
             final String vacancyProfileElementDescription,
-            final VacancyProfile vacancyProfileElementOwner,
+            final DemandProfile vacancyProfileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){
@@ -63,7 +63,7 @@ public class VacancyProfileElements extends MatchingDomainService<VacancyProfile
     public VacancyProfileDropDownElement newDropdownElement(
             final Quality keyword,
             final Integer weight,
-            final VacancyProfile vacancyProfileElementOwner,
+            final DemandProfile vacancyProfileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature           
             ){

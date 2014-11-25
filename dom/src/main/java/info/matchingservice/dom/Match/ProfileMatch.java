@@ -10,7 +10,7 @@ import org.apache.isis.applib.annotation.Named;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Need.VacancyProfile;
+import info.matchingservice.dom.Need.DemandProfile;
 
 /**
  * It takes an action on a VacancyProfile to create and persist a ProfileMatch instance
@@ -76,16 +76,16 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
         this.vacancyCandidate = candidate;
     }
     
-    private VacancyProfile vacancyProfile;
+    private DemandProfile vacancyProfile;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Named("Stoel")
     @Disabled
-    public VacancyProfile getVacancyProfile() {
+    public DemandProfile getVacancyProfile() {
         return vacancyProfile;
     }
     
-    public void setVacancyProfile(final VacancyProfile vacancyProfile){
+    public void setVacancyProfile(final DemandProfile vacancyProfile){
         this.vacancyProfile = vacancyProfile;
     }
     

@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.need;
 
-import info.matchingservice.dom.Need.VacancyProfiles;
+import info.matchingservice.dom.Need.DemandProfiles;
 
 import javax.inject.Inject;
 
@@ -30,5 +30,5 @@ public class VacancyProfileElementsForRembrandt extends VacancyProfileElementAbs
     }
     
     @Inject
-    VacancyProfiles vacs;
+    DemandProfiles vacs;
 }

@@ -7,13 +7,13 @@ import info.matchingservice.dom.Dropdown.Qualities;
 import info.matchingservice.dom.Dropdown.Quality;
 import info.matchingservice.dom.Need.Need;
 import info.matchingservice.dom.Need.Needs;
-import info.matchingservice.dom.Need.VacancyProfile;
+import info.matchingservice.dom.Need.DemandProfile;
 import info.matchingservice.dom.Need.VacancyProfileFigureElements;
-import info.matchingservice.dom.Need.VacancyProfiles;
-import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Need.DemandProfiles;
+import info.matchingservice.dom.Profile.SupplyProfile;
 import info.matchingservice.dom.Profile.ProfileFigureElements;
 import info.matchingservice.dom.Profile.ProfileFigures;
-import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Profile.SupplyProfiles;
 
 import javax.inject.Inject;
 
@@ -53,14 +53,14 @@ public abstract class PersonAbstract extends FixtureScript {
             ) {
         Actor newPerson = persons.newPerson(uniquePartyId, firstName, middleName, lastName, user);
         
-        Profile newProfile = createProfile(newPerson, profileName, user, executionContext);
+        SupplyProfile newProfile = createProfile(newPerson, profileName, user, executionContext);
         
         createProfileFigureElement(newPerson, newProfile, profileElementDescription, figure, user, executionContext);
         createProfileFigureElement(newPerson, newProfile, profileElementDescription2, figure2, user, executionContext);
         
         Need newNeed = createNeed(newPerson, needDescription, needWeight, user, executionContext);
         
-        VacancyProfile newVacProfile = createVacancyProfile(newPerson, newNeed, vacancyDescription, vacancyWeight, user, executionContext);
+        DemandProfile newVacProfile = createVacancyProfile(newPerson, newNeed, vacancyDescription, vacancyWeight, user, executionContext);
         
         createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription, vacFigure, elemWeight1, user, executionContext);
         createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription2, vacFigure2, elemWeight2, user, executionContext);
@@ -68,20 +68,20 @@ public abstract class PersonAbstract extends FixtureScript {
         return executionContext.add(this, newPerson);
     }
     
-    protected Profile createProfile(
+    protected SupplyProfile createProfile(
             Actor newPerson,
             String profileName,
             String user,
             ExecutionContext executionContext
             ){
-        Profile newProfile = profiles.newProfile(profileName, (Person) newPerson, user);
+        SupplyProfile newProfile = profiles.newProfile(profileName, (Person) newPerson, user);
         getContainer().flush();
         return executionContext.add(this, newProfile);
     }
     
     protected Actor createProfileFigureElement(
             Actor newPerson,
-            Profile newProfile,
+            SupplyProfile newProfile,
             String profileElementDescription,
             Integer figure,
             String user,
@@ -104,7 +104,7 @@ public abstract class PersonAbstract extends FixtureScript {
         return executionContext.add(this, newNeed);
     }
     
-    protected VacancyProfile createVacancyProfile(
+    protected DemandProfile createVacancyProfile(
             Actor newPerson,
             Need newNeed,
             String vacancyDescription,
@@ -112,14 +112,14 @@ public abstract class PersonAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext
             ){
-        VacancyProfile newVacProfile = vacancyprofiles.newVacancy(vacancyDescription, weight, newNeed, user);
+        DemandProfile newVacProfile = vacancyprofiles.newVacancy(vacancyDescription, weight, newNeed, user);
         getContainer().flush();
         return executionContext.add(this, newVacProfile);
     }
     
     protected Actor createVacancyProfileFigureElement(
             Actor newPerson,
-            VacancyProfile newVacProfile,
+            DemandProfile newVacProfile,
             String profileElementDescription,
             Integer figure,
             Integer weight,
@@ -138,7 +138,7 @@ public abstract class PersonAbstract extends FixtureScript {
     private Persons persons;
     
     @Inject
-    private Profiles profiles;
+    private SupplyProfiles profiles;
     
     @Inject
     private ProfileFigures peFigures;
@@ -150,7 +150,7 @@ public abstract class PersonAbstract extends FixtureScript {
     Needs needs;
     
     @Inject
-    VacancyProfiles vacancyprofiles;
+    DemandProfiles vacancyprofiles;
     
     @Inject
     VacancyProfileFigureElements vpeFigures;

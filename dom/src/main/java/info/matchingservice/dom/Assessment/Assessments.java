@@ -13,8 +13,8 @@ import org.apache.isis.applib.annotation.NotInServiceMenu;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Need.Need;
-import info.matchingservice.dom.Need.VacancyProfile;
-import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Need.DemandProfile;
+import info.matchingservice.dom.Profile.SuperProfile;
 
 
 @DomainService(menuOrder = "60", repositoryFor = Assessment.class)
@@ -41,7 +41,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
             ){
         final NeedFeedback newAs = newTransientInstance(NeedFeedback.class);
         newAs.setTarget(targetObject);
-        newAs.setOwnerPerson(persons.findPersonUnique(currentUserName()));
+        newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(currentUserName());
@@ -52,7 +52,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
     @Named("Geef feedback")
     @NotInServiceMenu
     public Assessment newAssessment(
-            final Profile targetObject,
+            final SuperProfile targetObject,
             @Named("Titel - korte omschrijving")
             final String description,
             @Named("Feedback")
@@ -61,7 +61,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
             ){
         final ProfileFeedback newAs = newTransientInstance(ProfileFeedback.class);
         newAs.setTarget(targetObject);
-        newAs.setOwnerPerson(persons.findPersonUnique(currentUserName()));
+        newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(currentUserName());
@@ -72,7 +72,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
     @Named("Geef feedback")
     @NotInServiceMenu
     public VacancyProfileFeedback newAssessment(
-            final VacancyProfile targetObject,
+            final DemandProfile targetObject,
             @Named("Titel - korte omschrijving")
             final String description,
             @Named("Feedback")
@@ -81,7 +81,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
             ){
         final VacancyProfileFeedback newAs = newTransientInstance(VacancyProfileFeedback.class);
         newAs.setTarget(targetObject);
-        newAs.setOwnerPerson(persons.findPersonUnique(currentUserName()));
+        newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(currentUserName());

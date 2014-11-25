@@ -32,7 +32,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final Profile profileElementOwner,
+            final SupplyProfile profileElementOwner,
             final String ownedBy
             ){
         final ProfileElement newProf = newTransientInstance(ProfileElement.class);
@@ -48,7 +48,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final Profile profileElementOwner,
+            final SupplyProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){
@@ -65,7 +65,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final Profile profileElementOwner,
+            final SupplyProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementType type,
             final ProfileElementNature nature
@@ -83,7 +83,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic
     public ProfileDropDownElement newDropdownElement(
             final Quality keyword,
-            final Profile profileElementOwner,
+            final SupplyProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature           
             ){
@@ -106,7 +106,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
         newElement.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT);
         newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);
         newElement.setProfileElementDescription(qualities.allQualities().get(0).toString());
-        newElement.setProfileElementOwner(profiles.allProfiles().get(0));
+        newElement.setProfileElementOwner(profiles.allSupplyProfiles().get(0));
         newElement.setOwnedBy("frans");
         persist(newElement);
         return newElement;
@@ -116,6 +116,6 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     Qualities qualities;
     
     @Inject
-    Profiles profiles;
+    SupplyProfiles profiles;
     
 }

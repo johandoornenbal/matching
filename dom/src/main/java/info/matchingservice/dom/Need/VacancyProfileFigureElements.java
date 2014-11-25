@@ -29,7 +29,7 @@ public class VacancyProfileFigureElements extends MatchingDomainService<VacancyP
     public VacancyProfileFigureElement newProfileElement(
             final String profileElementDescription,
             final Integer figure,
-            final VacancyProfile profileElementOwner,
+            final DemandProfile profileElementOwner,
             final String ownedBy
             ){
         final VacancyProfileFigureElement newProf = newTransientInstance(VacancyProfileFigureElement.class);
@@ -48,7 +48,7 @@ public class VacancyProfileFigureElements extends MatchingDomainService<VacancyP
             final String profileElementDescription,
             final Integer figure,
             final Integer weight,
-            final VacancyProfile profileElementOwner,
+            final DemandProfile profileElementOwner,
             final String ownedBy
             ){
         final VacancyProfileFigureElement newProf = newTransientInstance(VacancyProfileFigureElement.class);
@@ -66,7 +66,7 @@ public class VacancyProfileFigureElements extends MatchingDomainService<VacancyP
     @Programmatic    
     public VacancyProfileFigureElement newProfileElement(
             final String profileElementDescription,
-            final VacancyProfile profileElementOwner,
+            final DemandProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){

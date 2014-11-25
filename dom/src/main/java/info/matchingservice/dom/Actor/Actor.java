@@ -3,8 +3,9 @@ package info.matchingservice.dom.Actor;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Need.Need;
 import info.matchingservice.dom.Need.Needs;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Profile.SupplyProfile;
+import info.matchingservice.dom.Profile.SupplyProfiles;
+import info.matchingservice.dom.Profile.SuperProfile;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -81,21 +82,21 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     //Region> PROFILE /////////////////////////////////////////////////////////////
     
-    private SortedSet<Profile> profile = new TreeSet<Profile>();
+    private SortedSet<SupplyProfile> profile = new TreeSet<SupplyProfile>();
    
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "profileOwner", dependentElement = "true")
     @Named("Mijn profiel")
-    public SortedSet<Profile> getProfile() {
+    public SortedSet<SupplyProfile> getProfile() {
         return profile;
     }
    
-    public void setProfile(final SortedSet<Profile> profile) {
+    public void setProfile(final SortedSet<SupplyProfile> profile) {
         this.profile = profile;
     }
    
     @Named("Maak een profiel")
-    public Profile makeProfile(
+    public SuperProfile makeProfile(
             @Named("Naam van je profiel")
             final String profileName
             ) {
@@ -113,7 +114,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     // HELPERS Profile
     
     @Programmatic // now values can be set by fixtures
-    public Profile makeProfile(
+    public SuperProfile makeProfile(
             @Named("Naam van je profiel")
             final String profileName, 
             final Actor actor, 
@@ -128,9 +129,9 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             return true;
         }
         // if you have already profile
-        QueryDefault<Profile> query = 
+        QueryDefault<SupplyProfile> query = 
                 QueryDefault.create(
-                        Profile.class, 
+                        SupplyProfile.class, 
                     "findProfileByOwner", 
                     "profileOwner", this);
         return container.firstMatch(query) != null?
@@ -140,9 +141,9 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     @Programmatic // now values can be set by fixtures
     public String validateMakeProfile(final String testfield, final Actor actor, final String ownedBy) {
-        QueryDefault<Profile> query = 
+        QueryDefault<SupplyProfile> query = 
                 QueryDefault.create(
-                        Profile.class, 
+                        SupplyProfile.class, 
                     "findProfileByOwner", 
                     "profileOwner", this);
         return container.firstMatch(query) != null?
@@ -223,7 +224,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     Needs needs;
     
     @Inject
-    private Profiles profiles;
+    private SupplyProfiles profiles;
     
 
 }

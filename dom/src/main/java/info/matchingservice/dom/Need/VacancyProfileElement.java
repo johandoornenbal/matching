@@ -64,18 +64,18 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     
     // immutables /////////////////////////////////////////////////////////////////////////////////////
     
-    private VacancyProfile vacancyProfileElementOwner;
+    private DemandProfile vacancyProfileElementOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     @Named("'Stoel'")
     @Hidden(where=Where.PARENTED_TABLES)
     @MemberOrder(sequence = "120")
-    public VacancyProfile getVacancyProfileElementOwner() {
+    public DemandProfile getVacancyProfileElementOwner() {
         return vacancyProfileElementOwner;
     }
     
-    public void setVacancyProfileElementOwner(final VacancyProfile vacancyProfileOwner) {
+    public void setVacancyProfileElementOwner(final DemandProfile vacancyProfileOwner) {
         this.vacancyProfileElementOwner = vacancyProfileOwner;
     }
     
@@ -165,7 +165,7 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
     @Named("Verwijder element")
-    public VacancyProfile DeleteVacancyProfileElement(
+    public DemandProfile DeleteVacancyProfileElement(
             @Optional @Named("Verwijderen OK?") boolean areYouSure
             ){
         container.removeIfNotAlready(this);

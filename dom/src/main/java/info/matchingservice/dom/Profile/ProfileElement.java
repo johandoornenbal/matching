@@ -87,17 +87,17 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.profileElementType = type;
     }
     
-    private Profile profileElementOwner;
+    private SupplyProfile profileElementOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     @Named("Profiel")
     @Hidden(where=Where.PARENTED_TABLES)
-    public Profile getProfileElementOwner() {
+    public SupplyProfile getProfileElementOwner() {
         return profileElementOwner;
     }
     
-    public void setProfileElementOwner(final Profile vacancyProfileOwner) {
+    public void setProfileElementOwner(final SupplyProfile vacancyProfileOwner) {
         this.profileElementOwner = vacancyProfileOwner;
     }
     
@@ -133,7 +133,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
     @Named("Verwijder element")
-    public Profile DeleteProfileElement(
+    public SuperProfile DeleteProfileElement(
             @Optional @Named("Verwijderen OK?") boolean areYouSure
             ){
         container.removeIfNotAlready(this);

@@ -114,21 +114,21 @@ public class Need extends MatchingSecureMutableObject<Need> {
     
     // Region> Vacancies
     
-    private SortedSet<VacancyProfile> vacancyProfiles = new TreeSet<VacancyProfile>();
+    private SortedSet<DemandProfile> vacancyProfiles = new TreeSet<DemandProfile>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "vacancyOwner", dependentElement = "true")
     @Named("Mijn stoelen")
-    public SortedSet<VacancyProfile> getVacancyProfiles() {
+    public SortedSet<DemandProfile> getVacancyProfiles() {
         return vacancyProfiles;
     }
     
-    public void setVacancyProfiles(final SortedSet<VacancyProfile> vac){
+    public void setVacancyProfiles(final SortedSet<DemandProfile> vac){
         this.vacancyProfiles = vac;
     }
     
     @Named("Nieuwe stoel")
-    public VacancyProfile newVacancyProfile(
+    public DemandProfile newVacancyProfile(
             @Named("Omschrijving van 'stoel'")
             final  String vacancyDescription,
             @Named("Gewicht")
@@ -147,7 +147,7 @@ public class Need extends MatchingSecureMutableObject<Need> {
 //    }
     
     @Programmatic
-    public VacancyProfile newVacancyProfile(
+    public DemandProfile newVacancyProfile(
             final String vacancyDescription,
             final Integer weight,
             final Need vacancyOwner, 
@@ -189,6 +189,6 @@ public class Need extends MatchingSecureMutableObject<Need> {
     private DomainObjectContainer container;
     
     @Inject
-    VacancyProfiles allvacancies;
+    DemandProfiles allvacancies;
     
 }

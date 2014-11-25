@@ -1,12 +1,9 @@
 package info.matchingservice.dom.Need;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.ProfileElementNature;
-import info.matchingservice.dom.TrustLevel;
-import info.matchingservice.dom.VacancyProfileElementOwner;
-import info.matchingservice.dom.Assessment.VacancyProfileAssessment;
 import info.matchingservice.dom.Dropdown.Qualities;
 import info.matchingservice.dom.Dropdown.Quality;
+import info.matchingservice.dom.Profile.SuperProfile;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -40,41 +37,9 @@ import org.apache.isis.applib.query.QueryDefault;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-@AutoComplete(repository=VacancyProfiles.class,  action="autoComplete")
+@AutoComplete(repository=DemandProfiles.class,  action="autoComplete")
 @Immutable
-public class VacancyProfile extends MatchingSecureMutableObject<VacancyProfile>
-implements VacancyProfileElementOwner {
-
-    public VacancyProfile() {
-        super("ownedBy, vacancyDescription, weight, profileId");
-    }
-    
-    private String ownedBy;
-    
-    @Override
-    @Hidden
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(final String owner) {
-        this.ownedBy = owner;
-    }
-    
-    private String vacancyDescription;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @MultiLine
-    @Named("Omschrijving van 'stoel'")
-    public String getVacancyDescription(){
-        return vacancyDescription;
-    }
-    
-    public void setVacancyDescription(final String description) {
-        this.vacancyDescription = description;
-    }
+public class DemandProfile extends SuperProfile {
     
     private Need vacancyOwner;
     
@@ -102,21 +67,21 @@ implements VacancyProfileElementOwner {
     
     // Region actions
     @Named("Bewerk omschrijving stoel")
-    public VacancyProfile EditVacancyDescription(
+    public DemandProfile EditVacancyDescription(
             @Named("Omschrijving van 'stoel'")
             @MultiLine
             String newString
             ){
-        this.setVacancyDescription(newString);
+        this.setProfileName(newString);
         return this;
     }
     
     public String default0EditVacancyDescription() {
-        return getVacancyDescription();
+        return getProfileName();
     }
     
     @Named("Bewerk gewicht stoel")
-    public VacancyProfile EditWeight(
+    public DemandProfile EditWeight(
             @Named("Gewicht")
             Integer newInteger
             ){
@@ -147,7 +112,7 @@ implements VacancyProfileElementOwner {
     
     @Named("Nieuw (single) profiel element")
     @Hidden
-    public VacancyProfile newVacancyProfileElement(
+    public DemandProfile newVacancyProfileElement(
             @Named("Profiel element beschrijving")
             final String vacancyProfileElementDescription
             ) {
@@ -164,7 +129,7 @@ implements VacancyProfileElementOwner {
     }
     
     @Named("Nieuw kwaliteiten element")
-    public VacancyProfile newDropdownElement(
+    public DemandProfile newDropdownElement(
             @Named("Keywords")
             @MultiLine
             final Quality keyword,
@@ -187,13 +152,13 @@ implements VacancyProfileElementOwner {
     public void newDropdownElement(
             final Quality keyword,
             final Integer weight,
-            final VacancyProfile profileElementOwner, 
+            final DemandProfile profileElementOwner, 
             final String ownedBy) {
         vacancyProfileElements.newDropdownElement(keyword, weight, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
     }
     
     @Named("Nieuw getal element")
-    public VacancyProfile newFigureElement(
+    public DemandProfile newFigureElement(
             @Named("Profiel element beschrijving")
             final String profileElementDescription,
             @Named("Getal")
@@ -207,22 +172,22 @@ implements VacancyProfileElementOwner {
     
     // Region> Assessments
     
-    private SortedSet<VacancyProfileAssessment> assessments = new TreeSet<VacancyProfileAssessment>();
-    
-    @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "target", dependentElement = "true")
-    @Named("Assessments")
-    public SortedSet<VacancyProfileAssessment> getAssessments() {
-        return assessments;
-    }
-   
-    public void setAssessments(final SortedSet<VacancyProfileAssessment> assessment) {
-        this.assessments = assessment;
-    }
-    
-    public boolean hideAssessments() {
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-    }  
+//    private SortedSet<VacancyProfileAssessment> assessments = new TreeSet<VacancyProfileAssessment>();
+//    
+//    @Render(Type.EAGERLY)
+//    @Persistent(mappedBy = "target", dependentElement = "true")
+//    @Named("Assessments")
+//    public SortedSet<VacancyProfileAssessment> getAssessments() {
+//        return assessments;
+//    }
+//   
+//    public void setAssessments(final SortedSet<VacancyProfileAssessment> assessment) {
+//        this.assessments = assessment;
+//    }
+//    
+//    public boolean hideAssessments() {
+//        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+//    }  
     
     // helpers
     
@@ -230,9 +195,9 @@ implements VacancyProfileElementOwner {
         return container.getUser().getName();
     }
     
-    public String toString() {
-        return "Stoel : " + this.vacancyDescription;
-    }
+//    public String toString() {
+//        return "Stoel : " + this.vacancyDescription;
+//    }
     
     
     // Used in case owner chooses identical vacancyDescription and weight
@@ -255,12 +220,12 @@ implements VacancyProfileElementOwner {
     
     
     @Programmatic
-    public void newVacancyProfileElement(final String vacancyProfileElementDescription, final VacancyProfile vacancyProfileOwner, final String ownedBy) {
+    public void newVacancyProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileOwner, final String ownedBy) {
         vacancyProfileElements.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
     }
     
     @Programmatic
-    public boolean hideNewVacancyProfileElement(final String vacancyProfileElementDescription, final VacancyProfile vacancyProfileElementOwner){
+    public boolean hideNewVacancyProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileElementOwner){
         // if you have already profile
         QueryDefault<VacancyProfileElement> query = 
                 QueryDefault.create(
@@ -274,7 +239,7 @@ implements VacancyProfileElementOwner {
     }
     
     @Programmatic
-    public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription, final VacancyProfile vacancyProfileElementOwner){
+    public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileElementOwner){
         // if you have already profile
         QueryDefault<VacancyProfileElement> query = 
                 QueryDefault.create(
@@ -292,7 +257,7 @@ implements VacancyProfileElementOwner {
             final String profileElementDescription,
             final Integer figure,
             final Integer weight,
-            final VacancyProfile profileElementOwner, 
+            final DemandProfile profileElementOwner, 
             final String ownedBy) {
         pe_figures.newProfileElement(profileElementDescription, figure, weight, profileElementOwner, ownedBy);
     }

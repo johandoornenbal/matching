@@ -10,17 +10,17 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "30", repositoryFor = Profile.class)
+@DomainService(menuOrder = "30", repositoryFor = SupplyProfile.class)
 @Named("Profielen")
-public class Profiles extends MatchingDomainService<Profile> {
+public class SupplyProfiles extends MatchingDomainService<SupplyProfile> {
 
-    public Profiles() {
-        super(Profiles.class, Profile.class);
+    public SupplyProfiles() {
+        super(SupplyProfiles.class, SupplyProfile.class);
     }
     
     @Named("Alle profielen")
-    public List<Profile> allProfiles() {
-        return container.allInstances(Profile.class);
+    public List<SupplyProfile> allSupplyProfiles() {
+        return container.allInstances(SupplyProfile.class);
     }
     
     //NOTE:
@@ -31,13 +31,13 @@ public class Profiles extends MatchingDomainService<Profile> {
     
     @Programmatic //newProfile can now be made by fixtures
     @Named("Nieuw profiel")
-    public Profile newProfile(
+    public SupplyProfile newProfile(
             @Named("Profiel naam")
             final String profileName,
             final Actor profileowner,
             final String ownedBy
             ){
-        final Profile newProfile = newTransientInstance(Profile.class);
+        final SupplyProfile newProfile = newTransientInstance(SupplyProfile.class);
         newProfile.setProfileName(profileName);
         newProfile.setProfileOwner(profileowner);
         newProfile.setOwnedBy(ownedBy);

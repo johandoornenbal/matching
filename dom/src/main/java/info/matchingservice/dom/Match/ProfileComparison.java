@@ -8,8 +8,8 @@ import com.google.common.collect.ComparisonChain;
 
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Need.VacancyProfile;
-import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Need.DemandProfile;
+import info.matchingservice.dom.Profile.SupplyProfile;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Hidden;
@@ -28,33 +28,33 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         super("matchInitiator");
     }
 
-    public ProfileComparison(VacancyProfile matchInitiator, Profile matchingProfile, Integer value) {
+    public ProfileComparison(DemandProfile matchInitiator, SupplyProfile matchingProfile, Integer value) {
         super("matchInitiator");
         this.matchInitiator = matchInitiator;
         this.matchingProfile = matchingProfile;
         this.calculatedMatchingValue = value;   
     }
     
-    private VacancyProfile matchInitiator;
+    private DemandProfile matchInitiator;
     
     @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public VacancyProfile getMatchInitiator() {
+    public DemandProfile getMatchInitiator() {
         return matchInitiator;
     }
     
-    public void setMatchInitiator(final VacancyProfile vac) {
+    public void setMatchInitiator(final DemandProfile vac) {
         this.matchInitiator = vac;
     }
     
-    private Profile matchingProfile;
+    private SupplyProfile matchingProfile;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public Profile getMatchingProfile() {
+    public SupplyProfile getMatchingProfile() {
         return matchingProfile;
     }
     
-    public void setMatchingProfile(final Profile prof) {
+    public void setMatchingProfile(final SupplyProfile prof) {
         this.matchingProfile = prof;
     }
     

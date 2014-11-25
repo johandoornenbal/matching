@@ -9,8 +9,8 @@ import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Need.Need;
 import info.matchingservice.dom.Need.PersonNeed;
 import info.matchingservice.dom.Need.PersonNeeds;
-import info.matchingservice.dom.Need.VacancyProfiles;
-import info.matchingservice.dom.Need.VacancyProfile;
+import info.matchingservice.dom.Need.DemandProfiles;
+import info.matchingservice.dom.Need.DemandProfile;
 import info.matchingservice.dom.Need.VacancyProfileElement;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
@@ -82,7 +82,7 @@ public class NeedTest extends MatchingIntegrationTest {
         private static final String USERNAME = "frans";
         
         PersonNeed n1;
-        VacancyProfile v1;
+        DemandProfile v1;
         
         @Test
         public void valuesSet() throws Exception {
@@ -102,8 +102,8 @@ public class NeedTest extends MatchingIntegrationTest {
         
         Actor frans;
         PersonNeed n1;
-        VacancyProfile v1; // new vacancy without vacancyprofile
-        VacancyProfile v2; // has already vacancyprofile
+        DemandProfile v1; // new vacancy without vacancyprofile
+        DemandProfile v2; // has already vacancyprofile
         VacancyProfileElement pe1;
         
         @Before
@@ -127,7 +127,7 @@ public class NeedTest extends MatchingIntegrationTest {
         }
         
         @Inject
-        VacancyProfiles vacancies;
+        DemandProfiles vacancies;
         
     }
         

@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.need;
 
-import info.matchingservice.dom.Need.VacancyProfile;
+import info.matchingservice.dom.Need.DemandProfile;
 import info.matchingservice.dom.Need.VacancyProfileElement;
 import info.matchingservice.dom.Need.VacancyProfileElements;
 
@@ -13,7 +13,7 @@ public abstract class VacancyProfileElementAbstract extends FixtureScript {
     
     protected VacancyProfileElement createVacancyProfileElement(
             String vacancyProfileElementDescription,
-            VacancyProfile vacancyProfileElementOwner,
+            DemandProfile vacancyProfileElementOwner,
             String user,
             ExecutionContext executionContext
             ) {

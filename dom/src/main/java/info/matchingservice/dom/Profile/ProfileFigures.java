@@ -28,7 +28,7 @@ public class ProfileFigures extends MatchingDomainService<ProfileFigureElement> 
     public ProfileFigureElement newProfileElement(
             final String profileElementDescription,
             final Integer figure,
-            final Profile profileElementOwner,
+            final SupplyProfile profileElementOwner,
             final String ownedBy
             ){
         final ProfileFigureElement newProf = newTransientInstance(ProfileFigureElement.class);
@@ -45,7 +45,7 @@ public class ProfileFigures extends MatchingDomainService<ProfileFigureElement> 
     @Programmatic    
     public ProfileFigureElement newProfileElement(
             final String profileElementDescription,
-            final Profile profileElementOwner,
+            final SupplyProfile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){
