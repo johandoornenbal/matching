@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.need;
 
-import info.matchingservice.dom.Need.PersonNeeds;
+import info.matchingservice.dom.Need.Needs;
 
 import javax.inject.Inject;
 
@@ -36,5 +36,5 @@ public class VacanciesForRembrandt extends VacancyAbstract {
     }
     
     @Inject
-    PersonNeeds needs;
+    Needs needs;
 }

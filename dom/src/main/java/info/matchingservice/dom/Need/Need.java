@@ -8,6 +8,7 @@ import info.matchingservice.dom.Assessment.NeedAssessment;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -20,6 +21,7 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 
@@ -32,7 +34,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public abstract class Need extends MatchingSecureMutableObject<Need> {
+public class Need extends MatchingSecureMutableObject<Need> {
 
     public Need() {
         super("ownedBy, needDescription, weight");
@@ -110,6 +112,49 @@ public abstract class Need extends MatchingSecureMutableObject<Need> {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     
+    // Region> Vacancies
+    
+    private SortedSet<VacancyProfile> vacancyProfiles = new TreeSet<VacancyProfile>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "vacancyOwner", dependentElement = "true")
+    @Named("Mijn stoelen")
+    public SortedSet<VacancyProfile> getVacancyProfiles() {
+        return vacancyProfiles;
+    }
+    
+    public void setVacancyProfiles(final SortedSet<VacancyProfile> vac){
+        this.vacancyProfiles = vac;
+    }
+    
+    @Named("Nieuwe stoel")
+    public VacancyProfile newVacancyProfile(
+            @Named("Omschrijving van 'stoel'")
+            final  String vacancyDescription,
+            @Named("Gewicht")
+            final Integer weight 
+            ) {
+        return newVacancyProfile(vacancyDescription, weight, this, currentUserName());
+    }
+    
+    // Helpers vacancy profile
+//    @Programmatic
+//    public VacancyProfile newVacancyProfile(
+//            final String vacancyDescription,
+//            final Need vacancyOwner, 
+//            final String ownedBy) {
+//        return allvacancies.newVacancy(vacancyDescription, vacancyOwner, ownedBy);
+//    }
+    
+    @Programmatic
+    public VacancyProfile newVacancyProfile(
+            final String vacancyDescription,
+            final Integer weight,
+            final Need vacancyOwner, 
+            final String ownedBy) {
+        return allvacancies.newVacancy(vacancyDescription, weight, vacancyOwner, ownedBy);
+    }
+    
     // Region> Assessments
     
     private SortedSet<NeedAssessment> assessments = new TreeSet<NeedAssessment>();
@@ -130,7 +175,9 @@ public abstract class Need extends MatchingSecureMutableObject<Need> {
     }  
 
     // Helpers
-    
+    private String currentUserName() {
+        return container.getUser().getName();
+    }
     
     public String toString() {
         return getNeedDescription() + " - " + getNeedOwner().title();
@@ -140,5 +187,8 @@ public abstract class Need extends MatchingSecureMutableObject<Need> {
     
     @javax.inject.Inject
     private DomainObjectContainer container;
+    
+    @Inject
+    VacancyProfiles allvacancies;
     
 }

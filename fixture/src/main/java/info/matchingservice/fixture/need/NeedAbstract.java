@@ -1,14 +1,14 @@
 package info.matchingservice.fixture.need;
 
-import javax.inject.Inject;
-
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Need.PersonNeed;
-import info.matchingservice.dom.Need.PersonNeeds;
+import info.matchingservice.dom.Need.Need;
+import info.matchingservice.dom.Need.Needs;
 import info.matchingservice.dom.Need.VacancyProfile;
-import info.matchingservice.dom.Need.VacancyProfiles;
 import info.matchingservice.dom.Need.VacancyProfileFigureElements;
+import info.matchingservice.dom.Need.VacancyProfiles;
+
+import javax.inject.Inject;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -17,7 +17,7 @@ public abstract class NeedAbstract extends FixtureScript {
     @Override
     protected abstract void execute(ExecutionContext executionContext);
     
-    protected PersonNeed createNeed(
+    protected Need createNeed(
             Person needOwner,
             String needDescription,
             Integer weight,
@@ -29,7 +29,7 @@ public abstract class NeedAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext
             ) {
-        PersonNeed newNeed = needs.newNeed(needDescription, weight, needOwner, user);
+        Need newNeed = needs.newNeed(needDescription, weight, needOwner, user);
         
         VacancyProfile newVacProfile = createVacancyProfile(needOwner, newNeed, vacancyDescription, vacancyWeight, user, executionContext);
         
@@ -39,7 +39,7 @@ public abstract class NeedAbstract extends FixtureScript {
     
     protected VacancyProfile createVacancyProfile(
             Actor newPerson,
-            PersonNeed newNeed,
+            Need newNeed,
             String vacancyDescription,
             Integer weight,
             String user,
@@ -50,8 +50,8 @@ public abstract class NeedAbstract extends FixtureScript {
         return executionContext.add(this, newVacProfile);
     }
     
-    protected PersonNeed createVacancyProfileFigureElement(
-            PersonNeed newNeed,
+    protected Need createVacancyProfileFigureElement(
+            Need newNeed,
             VacancyProfile newVacProfile,
             String profileElementDescription,
             Integer figure,
@@ -66,7 +66,7 @@ public abstract class NeedAbstract extends FixtureScript {
     
     //region > injected services
     @javax.inject.Inject
-    PersonNeeds needs;
+    Needs needs;
     
     @Inject
     VacancyProfiles vacancyprofiles;

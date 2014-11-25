@@ -13,7 +13,6 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
@@ -27,7 +26,7 @@ import org.apache.isis.applib.query.QueryDefault;
 
 @DomainService(menuOrder = "18", repositoryFor = System.class)
 @Named("Systemen")
-@Hidden
+//@Hidden
 public class Systems extends MatchingDomainService<System> {
     
     public Systems() {

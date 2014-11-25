@@ -1,9 +1,7 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Actor.Organisation;
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Actor.System;
+import info.matchingservice.dom.Actor.Actor;
 
 import java.util.List;
 
@@ -36,7 +34,7 @@ public class Profiles extends MatchingDomainService<Profile> {
     public Profile newProfile(
             @Named("Profiel naam")
             final String profileName,
-            final Person profileowner,
+            final Actor profileowner,
             final String ownedBy
             ){
         final Profile newProfile = newTransientInstance(Profile.class);
@@ -47,37 +45,6 @@ public class Profiles extends MatchingDomainService<Profile> {
         return newProfile;
     }
     
-    @Programmatic //newProfile can now be made by fixtures
-    @Named("Nieuw profiel")
-    public Profile newProfile(
-            @Named("Profiel naam")
-            final String profileName,
-            final Organisation profileowner,
-            final String ownedBy
-            ){
-        final Profile newProfile = newTransientInstance(Profile.class);
-        newProfile.setProfileName(profileName);
-        newProfile.setProfileOwner(profileowner);
-        newProfile.setOwnedBy(ownedBy);
-        persist(newProfile);
-        return newProfile;
-    }
-     
-    @Programmatic //newProfile can now be made by fixtures
-    @Named("Nieuw profiel")
-    public Profile newProfile(
-            @Named("Profiel naam")
-            final String profileName,
-            final System profileowner,
-            final String ownedBy
-            ){
-        final Profile newProfile = newTransientInstance(Profile.class);
-        newProfile.setProfileName(profileName);
-        newProfile.setProfileOwner(profileowner);
-        newProfile.setOwnedBy(ownedBy);
-        persist(newProfile);
-        return newProfile;
-    }
 
     // Region>injections ////////////////////////////
     @javax.inject.Inject

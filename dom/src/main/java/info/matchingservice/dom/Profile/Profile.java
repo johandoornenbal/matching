@@ -23,7 +23,6 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Programmatic;
@@ -148,18 +147,6 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return validateNewProfileElement(profileElementDescription, this);
     }
     
-    @Named("Nieuw steekwoorden element")
-    @Hidden
-    public Profile newKeyWordElement(
-            @Named("Profiel element beschrijving")
-            final String profileElementDescription,
-            @Named("Keywords")
-            @MultiLine
-            final String keywords
-            ) {
-        newKeyWordElement(profileElementDescription, keywords, this, currentUserName());
-        return this;
-    }    
 
     @Named("Nieuw kwaliteiten element")
     public Profile newDropdownElement(
@@ -258,14 +245,6 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 :null;
     }
     
-    @Programmatic
-    public void newKeyWordElement(
-            final String profileElementDescription,
-            final String keywords,
-            final Profile profileElementOwner, 
-            final String ownedBy) {
-        pe_keywords.newProfileElement(profileElementDescription, keywords, profileElementOwner, ownedBy);
-    }
     
     @Programmatic
     public void newFigureElement(
@@ -281,10 +260,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     @Inject
     ProfileFigureElements profileElements;
     
-    @Inject
-    Pe_Keywords pe_keywords;
-    
-    @Inject
+   @Inject
     ProfileFigures pe_figures;
         
     @javax.inject.Inject

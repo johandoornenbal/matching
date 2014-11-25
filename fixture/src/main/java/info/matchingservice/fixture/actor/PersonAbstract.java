@@ -5,15 +5,14 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.Qualities;
 import info.matchingservice.dom.Dropdown.Quality;
-import info.matchingservice.dom.Need.PersonNeed;
-import info.matchingservice.dom.Need.PersonNeeds;
+import info.matchingservice.dom.Need.Need;
+import info.matchingservice.dom.Need.Needs;
 import info.matchingservice.dom.Need.VacancyProfile;
-import info.matchingservice.dom.Need.VacancyProfiles;
 import info.matchingservice.dom.Need.VacancyProfileFigureElements;
-import info.matchingservice.dom.Need.Vpe_Keywords;
-import info.matchingservice.dom.Profile.ProfileFigures;
+import info.matchingservice.dom.Need.VacancyProfiles;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileFigureElements;
+import info.matchingservice.dom.Profile.ProfileFigures;
 import info.matchingservice.dom.Profile.Profiles;
 
 import javax.inject.Inject;
@@ -59,7 +58,7 @@ public abstract class PersonAbstract extends FixtureScript {
         createProfileFigureElement(newPerson, newProfile, profileElementDescription, figure, user, executionContext);
         createProfileFigureElement(newPerson, newProfile, profileElementDescription2, figure2, user, executionContext);
         
-        PersonNeed newNeed = createNeed(newPerson, needDescription, needWeight, user, executionContext);
+        Need newNeed = createNeed(newPerson, needDescription, needWeight, user, executionContext);
         
         VacancyProfile newVacProfile = createVacancyProfile(newPerson, newNeed, vacancyDescription, vacancyWeight, user, executionContext);
         
@@ -93,21 +92,21 @@ public abstract class PersonAbstract extends FixtureScript {
         return executionContext.add(this, newPerson);
     }
     
-    protected PersonNeed createNeed(
+    protected Need createNeed(
             Actor newPerson,
             String needDescription,
             Integer weight,
             String user,
             ExecutionContext executionContext
             ){
-        PersonNeed newNeed = personNeeds.newNeed(needDescription, weight, (Person) newPerson, user);
+        Need newNeed = needs.newNeed(needDescription, weight, (Person) newPerson, user);
         getContainer().flush();
         return executionContext.add(this, newNeed);
     }
     
     protected VacancyProfile createVacancyProfile(
             Actor newPerson,
-            PersonNeed newNeed,
+            Need newNeed,
             String vacancyDescription,
             Integer weight,
             String user,
@@ -132,19 +131,7 @@ public abstract class PersonAbstract extends FixtureScript {
         return executionContext.add(this, newPerson);
     }
     
-    protected Actor createVacancyProfileTextElement(
-            Actor newPerson,
-            VacancyProfile newVacProfile,
-            String profileElementDescription,
-            String text,
-            Integer weight,
-            String user,
-            ExecutionContext executionContext
-            ){
-        vpeKeywords.newProfileElement(profileElementDescription, text, weight, newVacProfile, user);
-        getContainer().flush();
-        return executionContext.add(this, newPerson);
-    }
+
     
     //region > injected services
     @javax.inject.Inject
@@ -160,16 +147,13 @@ public abstract class PersonAbstract extends FixtureScript {
     ProfileFigureElements profileElements;
     
     @Inject
-    PersonNeeds personNeeds;
+    Needs needs;
     
     @Inject
     VacancyProfiles vacancyprofiles;
     
     @Inject
     VacancyProfileFigureElements vpeFigures;
-    
-    @Inject
-    Vpe_Keywords vpeKeywords;
     
     @Inject
     Qualities qualities;

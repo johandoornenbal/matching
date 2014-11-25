@@ -288,15 +288,6 @@ implements VacancyProfileElementOwner {
     }
     
     @Programmatic
-    public void newKeyWordElement(
-            final String profileElementDescription,
-            final String keywords,
-            final VacancyProfile profileElementOwner, 
-            final String ownedBy) {
-        pe_keywords.newProfileElement(profileElementDescription, keywords, profileElementOwner, ownedBy);
-    }
-    
-    @Programmatic
     public void newFigureElement(
             final String profileElementDescription,
             final Integer figure,
@@ -309,9 +300,6 @@ implements VacancyProfileElementOwner {
     
     @Inject
     VacancyProfileElements vacancyProfileElements;
-    
-    @Inject
-    Vpe_Keywords pe_keywords;
     
     @Inject
     VacancyProfileFigureElements pe_figures;
