@@ -4,7 +4,7 @@ import info.matchingservice.dom.ProfileElementType;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Match.diff_match_patch.Diff;
 import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.VacancyProfileElement;
+import info.matchingservice.dom.Need.DemandProfileElement;
 import info.matchingservice.dom.Need.VacancyProfileFigureElement;
 import info.matchingservice.dom.Profile.ProfileFigureElement;
 import info.matchingservice.dom.Profile.ProfileFigures;
@@ -89,7 +89,7 @@ public class CopyOfMatchingService extends AbstractService {
             Integer elementCounter = 0;
             
             //For every figureElement on Vacancy
-            for (VacancyProfileElement vpelement: vacancy.getVacancyProfileElement()){
+            for (DemandProfileElement vpelement: vacancy.getDemandProfileElement()){
                 
                 //For all elementmatches on figures with tempProfileOwner as ProfileOwner
                 if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){

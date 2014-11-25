@@ -5,7 +5,7 @@ import com.google.common.collect.ComparisonChain;
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.VacancyProfileElement;
+import info.matchingservice.dom.Need.DemandProfileElement;
 import info.matchingservice.dom.Profile.ProfileElement;
 
 import org.apache.isis.applib.annotation.Hidden;
@@ -14,7 +14,7 @@ import org.apache.isis.applib.annotation.ViewModel;
 @ViewModel
 public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     
-    public ElementComparison(DemandProfile elementOwner, VacancyProfileElement elementInitiator, ProfileElement matchingProfileElement, Actor matchingProfileOwner, Integer value){
+    public ElementComparison(DemandProfile elementOwner, DemandProfileElement elementInitiator, ProfileElement matchingProfileElement, Actor matchingProfileOwner, Integer value){
         super("elementOwner");
         this.elementOwner = elementOwner;
         this.elementInitiator = elementInitiator;
@@ -34,14 +34,14 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
         this.elementOwner = owner;
     }
     
-    private VacancyProfileElement elementInitiator;
+    private DemandProfileElement elementInitiator;
     
     @Hidden
-    public VacancyProfileElement getElementInitiator() {
+    public DemandProfileElement getElementInitiator() {
         return elementInitiator;
     }
     
-    public void setElementInitiator(final VacancyProfileElement initiator) {
+    public void setElementInitiator(final DemandProfileElement initiator) {
         this.elementInitiator = initiator;
     }
     

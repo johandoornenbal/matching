@@ -11,7 +11,7 @@ import info.matchingservice.dom.Need.PersonNeed;
 import info.matchingservice.dom.Need.PersonNeeds;
 import info.matchingservice.dom.Need.DemandProfiles;
 import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.VacancyProfileElement;
+import info.matchingservice.dom.Need.DemandProfileElement;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
@@ -49,7 +49,7 @@ public class NeedTest extends MatchingIntegrationTest {
             assertThat(n1.getNeedDescription(), is(NEEDDESCRIPTION));
             assertThat(n1.getNeedOwner(), is(Frans));
             assertThat(n1.getOwnedBy(), is(USERNAME));
-            assertThat(n1.getVacancyProfiles().size(), is(1));
+            assertThat(n1.getDemandProfiles().size(), is(1));
         }
     }
     
@@ -68,10 +68,10 @@ public class NeedTest extends MatchingIntegrationTest {
         @Test
         public void valuesSet() throws Exception {
             n1 = needs.allNeeds().get(0);
-            assertThat(n1.getVacancyProfiles().size(), is(2));
-            assertThat(n1.getVacancyProfiles().last().getVacancyDescription(), is("Test vacancy"));
-            assertThat((PersonNeed) n1.getVacancyProfiles().last().getVacancyOwner(), is(n1));
-            assertThat(n1.getVacancyProfiles().last().getOwnedBy(), is(USERNAME));
+            assertThat(n1.getDemandProfiles().size(), is(2));
+            assertThat(n1.getDemandProfiles().last().getVacancyDescription(), is("Test vacancy"));
+            assertThat((PersonNeed) n1.getDemandProfiles().last().getDemandOwner(), is(n1));
+            assertThat(n1.getDemandProfiles().last().getOwnedBy(), is(USERNAME));
         }
         
     }
@@ -87,10 +87,10 @@ public class NeedTest extends MatchingIntegrationTest {
         @Test
         public void valuesSet() throws Exception {
             n1 = needs.allNeeds().get(0);
-            v1 = n1.getVacancyProfiles().last();
+            v1 = n1.getDemandProfiles().last();
             assertThat(v1.getVacancyDescription(), is(VACANCYDESCRIPTION));
             assertThat(v1.getOwnedBy(), is(USERNAME));
-            assertThat(v1.getVacancyProfileElement().size(), is(2));
+            assertThat(v1.getDemandProfileElement().size(), is(2));
         }
     }
     
@@ -104,16 +104,16 @@ public class NeedTest extends MatchingIntegrationTest {
         PersonNeed n1;
         DemandProfile v1; // new vacancy without vacancyprofile
         DemandProfile v2; // has already vacancyprofile
-        VacancyProfileElement pe1;
+        DemandProfileElement pe1;
         
         @Before
         public void setUp() throws Exception {
             frans = persons.allActors().get(0);
             n1 = needs.allNeeds().get(0);
-            v2 = n1.getVacancyProfiles().last();
-            n1.newVacancyProfile(TEST_VACANCY_DESCRIPTION, TEST_VACANCY_WEIGHT, n1, USERNAME);
+            v2 = n1.getDemandProfiles().last();
+            n1.newDemandProfile(TEST_VACANCY_DESCRIPTION, TEST_VACANCY_WEIGHT, n1, USERNAME);
             n1 = needs.allNeeds().get(0); // get n1 again
-            v1 = n1.getVacancyProfiles().last(); // new vacancy
+            v1 = n1.getDemandProfiles().last(); // new vacancy
 //            v1.newVacancyProfileElement(TEST_VACANCYPROFILEELEMENT_DESCR, v1, USERNAME);
 //            n1 = needs.allNeeds().get(0); // get n1 again
 //            v1 = n1.getVacancyProfiles().last(); // new last vacancy with element

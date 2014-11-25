@@ -10,8 +10,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
@@ -31,27 +29,21 @@ import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
 @AutoComplete(repository=DemandProfiles.class,  action="autoComplete")
 @Immutable
 public class DemandProfile extends SuperProfile {
     
-    private Need vacancyOwner;
+    private Need demandOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     @Named("Opdracht")
-    public Need getVacancyOwner() {
-        return vacancyOwner;
+    public Need getDemandOwner() {
+        return demandOwner;
     }
     
-    public void setVacancyOwner(final Need vacancyOwner) {
-        this.vacancyOwner = vacancyOwner;
+    public void setDemandOwner(final Need vacancyOwner) {
+        this.demandOwner = vacancyOwner;
     }
     
     private Integer weight;
@@ -67,7 +59,7 @@ public class DemandProfile extends SuperProfile {
     
     // Region actions
     @Named("Bewerk omschrijving stoel")
-    public DemandProfile EditVacancyDescription(
+    public DemandProfile EditProfileName(
             @Named("Omschrijving van 'stoel'")
             @MultiLine
             String newString
@@ -76,7 +68,7 @@ public class DemandProfile extends SuperProfile {
         return this;
     }
     
-    public String default0EditVacancyDescription() {
+    public String default0EditProfileName() {
         return getProfileName();
     }
     
@@ -94,38 +86,38 @@ public class DemandProfile extends SuperProfile {
     }
     
 
-    // Region> VacanciesProfileElements
+    // Region> demandProfileElements
         
-    private SortedSet<VacancyProfileElement> vacancyProfileElement = new TreeSet<VacancyProfileElement>();
+    private SortedSet<DemandProfileElement> demandProfileElement = new TreeSet<DemandProfileElement>();
     
    
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "vacancyProfileElementOwner", dependentElement = "true")
     @Named("Gevraagde profiel elementen")
-    public SortedSet<VacancyProfileElement> getVacancyProfileElement() {
-        return vacancyProfileElement;
+    public SortedSet<DemandProfileElement> getDemandProfileElement() {
+        return demandProfileElement;
     }
     
-    public void setVacancyProfileElement(final SortedSet<VacancyProfileElement> vac){
-        this.vacancyProfileElement = vac;
+    public void setDemandProfileElement(final SortedSet<DemandProfileElement> vac){
+        this.demandProfileElement = vac;
     }
     
     @Named("Nieuw (single) profiel element")
     @Hidden
-    public DemandProfile newVacancyProfileElement(
+    public DemandProfile newDemandProfileElement(
             @Named("Profiel element beschrijving")
             final String vacancyProfileElementDescription
             ) {
-        newVacancyProfileElement(vacancyProfileElementDescription, this, currentUserName());
+        newDemandProfileElement(vacancyProfileElementDescription, this, currentUserName());
         return this;
     }
     
-    public boolean hideNewVacancyProfileElement(final String vacancyProfileElementDescription){
-        return hideNewVacancyProfileElement(vacancyProfileElementDescription, this);
+    public boolean hideNewDemandProfileElement(final String vacancyProfileElementDescription){
+        return hideNewDemandProfileElement(vacancyProfileElementDescription, this);
     }
     
-    public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription){
-        return validateNewVacancyProfileElement(vacancyProfileElementDescription, this);
+    public String validateNewDemandProfileElement(final String vacancyProfileElementDescription){
+        return validateNewDemandProfileElement(vacancyProfileElementDescription, this);
     }
     
     @Named("Nieuw kwaliteiten element")
@@ -154,7 +146,7 @@ public class DemandProfile extends SuperProfile {
             final Integer weight,
             final DemandProfile profileElementOwner, 
             final String ownedBy) {
-        vacancyProfileElements.newDropdownElement(keyword, weight, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
+        demandProfileElements.newDropdownElement(keyword, weight, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
     }
     
     @Named("Nieuw getal element")
@@ -170,24 +162,6 @@ public class DemandProfile extends SuperProfile {
         return this;
     } 
     
-    // Region> Assessments
-    
-//    private SortedSet<VacancyProfileAssessment> assessments = new TreeSet<VacancyProfileAssessment>();
-//    
-//    @Render(Type.EAGERLY)
-//    @Persistent(mappedBy = "target", dependentElement = "true")
-//    @Named("Assessments")
-//    public SortedSet<VacancyProfileAssessment> getAssessments() {
-//        return assessments;
-//    }
-//   
-//    public void setAssessments(final SortedSet<VacancyProfileAssessment> assessment) {
-//        this.assessments = assessment;
-//    }
-//    
-//    public boolean hideAssessments() {
-//        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-//    }  
     
     // helpers
     
@@ -195,9 +169,9 @@ public class DemandProfile extends SuperProfile {
         return container.getUser().getName();
     }
     
-//    public String toString() {
-//        return "Stoel : " + this.vacancyDescription;
-//    }
+    public String toString() {
+        return "Stoel : " + this.getProfileName();
+    }
     
     
     // Used in case owner chooses identical vacancyDescription and weight
@@ -220,16 +194,16 @@ public class DemandProfile extends SuperProfile {
     
     
     @Programmatic
-    public void newVacancyProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileOwner, final String ownedBy) {
-        vacancyProfileElements.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
+    public void newDemandProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileOwner, final String ownedBy) {
+        demandProfileElements.newVacancyProfileElement(vacancyProfileElementDescription, vacancyProfileOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
     }
     
     @Programmatic
-    public boolean hideNewVacancyProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileElementOwner){
+    public boolean hideNewDemandProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileElementOwner){
         // if you have already profile
-        QueryDefault<VacancyProfileElement> query = 
+        QueryDefault<DemandProfileElement> query = 
                 QueryDefault.create(
-                        VacancyProfileElement.class, 
+                        DemandProfileElement.class, 
                     "findVacancyProfileElementByOwnerVacancyAndNature", 
                     "vacancyProfileElementOwner", vacancyProfileElementOwner,
                     "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
@@ -239,11 +213,11 @@ public class DemandProfile extends SuperProfile {
     }
     
     @Programmatic
-    public String validateNewVacancyProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileElementOwner){
+    public String validateNewDemandProfileElement(final String vacancyProfileElementDescription, final DemandProfile vacancyProfileElementOwner){
         // if you have already profile
-        QueryDefault<VacancyProfileElement> query = 
+        QueryDefault<DemandProfileElement> query = 
                 QueryDefault.create(
-                        VacancyProfileElement.class, 
+                        DemandProfileElement.class, 
                     "findVacancyProfileElementByOwnerVacancyAndNature", 
                     "vacancyProfileElementOwner", vacancyProfileElementOwner,
                     "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
@@ -264,7 +238,7 @@ public class DemandProfile extends SuperProfile {
     //Injects
     
     @Inject
-    VacancyProfileElements vacancyProfileElements;
+    DemandProfileElements demandProfileElements;
     
     @Inject
     VacancyProfileFigureElements pe_figures;

@@ -4,7 +4,7 @@ import info.matchingservice.dom.ProfileElementType;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Need.DemandProfile;
 import info.matchingservice.dom.Need.VacancyProfileDropDownElement;
-import info.matchingservice.dom.Need.VacancyProfileElement;
+import info.matchingservice.dom.Need.DemandProfileElement;
 import info.matchingservice.dom.Need.VacancyProfileFigureElement;
 import info.matchingservice.dom.Profile.ProfileDropDownElement;
 import info.matchingservice.dom.Profile.ProfileFigureElement;
@@ -129,7 +129,7 @@ public class MatchingService extends AbstractService {
             Integer avarageWeight = 1;
             Integer weightCounter = 0;
             Integer elCounter = 0;
-            for (VacancyProfileElement vpelement: vacancy.getVacancyProfileElement()){
+            for (DemandProfileElement vpelement: vacancy.getDemandProfileElement()){
                 //Only for elements of type figure
                 if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE || vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
                     elCounter ++;
@@ -149,7 +149,7 @@ public class MatchingService extends AbstractService {
             
             // For every figureElement and DropDownElement on Vacancy we add to totalMatching value
             Long totalMatchingValue = (long) 0;
-            for (VacancyProfileElement vpelement: vacancy.getVacancyProfileElement()){
+            for (DemandProfileElement vpelement: vacancy.getDemandProfileElement()){
                 
                 //Only for elementmatches on figures with tempProfileOwner as ProfileOwner
                 if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){

@@ -45,7 +45,7 @@ public abstract class NeedAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext
             ){
-        DemandProfile newVacProfile = vacancyprofiles.newVacancy(vacancyDescription, weight, newNeed, user);
+        DemandProfile newVacProfile = vacancyprofiles.newDemand(vacancyDescription, weight, newNeed, user);
         getContainer().flush();
         return executionContext.add(this, newVacProfile);
     }

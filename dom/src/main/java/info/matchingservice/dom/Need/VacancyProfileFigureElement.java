@@ -8,7 +8,7 @@ import org.apache.isis.applib.annotation.Named;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class VacancyProfileFigureElement extends VacancyProfileElement {
+public class VacancyProfileFigureElement extends DemandProfileElement {
     
     private Integer figure;
     

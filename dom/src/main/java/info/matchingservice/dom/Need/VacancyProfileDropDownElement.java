@@ -8,7 +8,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class VacancyProfileDropDownElement extends VacancyProfileElement {
+public class VacancyProfileDropDownElement extends DemandProfileElement {
     
     private Quality keyword;
     

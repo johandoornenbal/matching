@@ -27,7 +27,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public abstract class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
+public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     
     public SuperProfile() {
         super("profileName, ownedBy");

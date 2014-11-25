@@ -5,7 +5,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class VacancyProfileTextElement extends VacancyProfileElement {
+public class VacancyProfileTextElement extends DemandProfileElement {
     
     private String text;
     

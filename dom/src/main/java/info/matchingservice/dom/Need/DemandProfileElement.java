@@ -31,18 +31,18 @@ import org.apache.isis.applib.annotation.Where;
     @javax.jdo.annotations.Query(
             name = "findVacancyProfileElementByOwnerVacancy", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Need.VacancyProfileElement "
+                    + "FROM info.matchingservice.dom.Need.DemandProfileElement "
                     + "WHERE vacancyProfileElementOwner == :vacancyProfileElementOwner"),
     @javax.jdo.annotations.Query(
             name = "findVacancyProfileElementByOwnerVacancyAndNature", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Need.VacancyProfileElement "
+                    + "FROM info.matchingservice.dom.Need.DemandProfileElement "
                     + "WHERE vacancyProfileElementOwner == :vacancyProfileElementOwner && profileElementNature == :profileElementNature")
 })
 @Immutable
-public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyProfileElement> {
+public class DemandProfileElement extends MatchingSecureMutableObject<DemandProfileElement> {
 
-    public VacancyProfileElement() {
+    public DemandProfileElement() {
         super("ownedBy, vacancyProfileElementDescription, weight, vacancyProfileElementOwner, profileElementId");
     }
     
@@ -120,7 +120,7 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     }
     
     @Named("Bewerk gewicht")
-    public VacancyProfileElement EditWeight(
+    public DemandProfileElement EditWeight(
             @Named("gewicht")
             Integer newWeight
             ){
@@ -149,7 +149,7 @@ public class VacancyProfileElement extends MatchingSecureMutableObject<VacancyPr
     }
     
     @Named("Bewerk beschrijving")
-    public VacancyProfileElement EditVacancyProfileDescription(
+    public DemandProfileElement EditVacancyProfileDescription(
             @Named("Beschrijving")
             @MultiLine
             String newDescr

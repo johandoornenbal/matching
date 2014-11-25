@@ -12,27 +12,27 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "60", repositoryFor = VacancyProfileElement.class)
+@DomainService(menuOrder = "60", repositoryFor = DemandProfileElement.class)
 @Named("Profiel element 'stoel'")
 @Hidden
-public class VacancyProfileElements extends MatchingDomainService<VacancyProfileElement> {
+public class DemandProfileElements extends MatchingDomainService<DemandProfileElement> {
 
-    public VacancyProfileElements() {
-        super(VacancyProfileElements.class, VacancyProfileElement.class);
+    public DemandProfileElements() {
+        super(DemandProfileElements.class, DemandProfileElement.class);
     }
     
     @Named("Alle profiel elementen van alle stoelen")
-    public List<VacancyProfileElement> allVacancyProfileElements() {
+    public List<DemandProfileElement> allVacancyProfileElements() {
         return allInstances();
     }
     
     @Programmatic
-    public VacancyProfileElement newVacancyProfileElement(
+    public DemandProfileElement newVacancyProfileElement(
             final String vacancyProfileElementDescription,
             final DemandProfile vacancyProfileElementOwner,
             final String ownedBy
             ){
-        final VacancyProfileElement newVacProf = newTransientInstance(VacancyProfileElement.class);
+        final DemandProfileElement newVacProf = newTransientInstance(DemandProfileElement.class);
         newVacProf.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT); // default
         newVacProf.setProfileElementType(ProfileElementType.MATCHABLE_KEYWORDS); // default
         newVacProf.setVacancyProfileElementDescription(vacancyProfileElementDescription);
@@ -43,13 +43,13 @@ public class VacancyProfileElements extends MatchingDomainService<VacancyProfile
     }
     
     @Programmatic
-    public VacancyProfileElement newVacancyProfileElement(
+    public DemandProfileElement newVacancyProfileElement(
             final String vacancyProfileElementDescription,
             final DemandProfile vacancyProfileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){
-        final VacancyProfileElement newVacProf = newTransientInstance(VacancyProfileElement.class);
+        final DemandProfileElement newVacProf = newTransientInstance(DemandProfileElement.class);
         newVacProf.setProfileElementNature(nature); // default
         newVacProf.setProfileElementType(ProfileElementType.MATCHABLE_KEYWORDS); // default
         newVacProf.setVacancyProfileElementDescription(vacancyProfileElementDescription);

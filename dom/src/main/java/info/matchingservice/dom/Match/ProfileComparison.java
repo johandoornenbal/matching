@@ -72,7 +72,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     //Region>Actions ////////////////////////////////////////////////////////
     
     public ProfileMatch SaveMatch(){
-        return profileMatches.newProfileMatch(getMatchInitiator().getVacancyOwner().getNeedOwner(), getMatchingProfile().getProfileOwner(), getMatchInitiator());
+        return profileMatches.newProfileMatch(getMatchInitiator().getDemandOwner().getNeedOwner(), getMatchingProfile().getProfileOwner(), getMatchInitiator());
     }
     
     //TODO: uitbreiden met controle (en hideXxx ) of er al een save is gemaakt met deze kenmerken...
@@ -85,7 +85,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
                     "ownedBy", currentUserName(),
                     "vacancyCandidate", getMatchingProfile().getProfileOwner(),
                     "vacancyProfile", getMatchInitiator());
-        return !getMatchInitiator().getVacancyOwner().getNeedOwner().getOwnedBy().equals(currentUserName()) || container.firstMatch(query) != null;
+        return !getMatchInitiator().getDemandOwner().getNeedOwner().getOwnedBy().equals(currentUserName()) || container.firstMatch(query) != null;
     }
     
     public String validateSaveMatch() {
@@ -99,7 +99,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         if (container.firstMatch(query) != null) {
             return "You already saved this candidate for this vacancy";
         }
-        if (!getMatchInitiator().getVacancyOwner().getNeedOwner().getOwnedBy().equals(currentUserName())){
+        if (!getMatchInitiator().getDemandOwner().getNeedOwner().getOwnedBy().equals(currentUserName())){
             return "Sorry, you are not the owner of this match";
         } else {
             return null;

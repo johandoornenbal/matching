@@ -29,14 +29,14 @@ public class DemandProfiles extends MatchingDomainService<DemandProfile> {
             ){
         final DemandProfile newVac = newTransientInstance(DemandProfile.class);
         newVac.setProfileName(vacancyDescription);
-        newVac.setVacancyOwner(vacancyOwner);
+        newVac.setDemandOwner(vacancyOwner);
         newVac.setOwnedBy(ownedBy);
         persist(newVac);
         return newVac;
     }
     
     @Programmatic
-    public DemandProfile newVacancy(
+    public DemandProfile newDemand(
             final String vacancyDescription,
             final Integer weight,
             final Need vacancyOwner,
@@ -45,7 +45,7 @@ public class DemandProfiles extends MatchingDomainService<DemandProfile> {
         final DemandProfile newVac = newTransientInstance(DemandProfile.class);
         newVac.setProfileName(vacancyDescription);
         newVac.setWeight(weight);
-        newVac.setVacancyOwner(vacancyOwner);
+        newVac.setDemandOwner(vacancyOwner);
         newVac.setOwnedBy(ownedBy);
         persist(newVac);
         return newVac;

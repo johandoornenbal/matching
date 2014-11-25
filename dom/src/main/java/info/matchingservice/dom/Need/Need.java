@@ -114,45 +114,37 @@ public class Need extends MatchingSecureMutableObject<Need> {
     
     // Region> Vacancies
     
-    private SortedSet<DemandProfile> vacancyProfiles = new TreeSet<DemandProfile>();
+    private SortedSet<DemandProfile> demandProfiles = new TreeSet<DemandProfile>();
     
     @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "vacancyOwner", dependentElement = "true")
+    @Persistent(mappedBy = "demandOwner", dependentElement = "true")
     @Named("Mijn stoelen")
-    public SortedSet<DemandProfile> getVacancyProfiles() {
-        return vacancyProfiles;
+    public SortedSet<DemandProfile> getDemandProfiles() {
+        return demandProfiles;
     }
     
-    public void setVacancyProfiles(final SortedSet<DemandProfile> vac){
-        this.vacancyProfiles = vac;
+    public void setDemandProfiles(final SortedSet<DemandProfile> vac){
+        this.demandProfiles = vac;
     }
     
     @Named("Nieuwe stoel")
-    public DemandProfile newVacancyProfile(
+    public DemandProfile newDemandProfile(
             @Named("Omschrijving van 'stoel'")
             final  String vacancyDescription,
             @Named("Gewicht")
             final Integer weight 
             ) {
-        return newVacancyProfile(vacancyDescription, weight, this, currentUserName());
+        return newDemandProfile(vacancyDescription, weight, this, currentUserName());
     }
     
-    // Helpers vacancy profile
-//    @Programmatic
-//    public VacancyProfile newVacancyProfile(
-//            final String vacancyDescription,
-//            final Need vacancyOwner, 
-//            final String ownedBy) {
-//        return allvacancies.newVacancy(vacancyDescription, vacancyOwner, ownedBy);
-//    }
     
     @Programmatic
-    public DemandProfile newVacancyProfile(
+    public DemandProfile newDemandProfile(
             final String vacancyDescription,
             final Integer weight,
             final Need vacancyOwner, 
             final String ownedBy) {
-        return allvacancies.newVacancy(vacancyDescription, weight, vacancyOwner, ownedBy);
+        return allDemandProfiles.newDemand(vacancyDescription, weight, vacancyOwner, ownedBy);
     }
     
     // Region> Assessments
@@ -189,6 +181,6 @@ public class Need extends MatchingSecureMutableObject<Need> {
     private DomainObjectContainer container;
     
     @Inject
-    DemandProfiles allvacancies;
+    DemandProfiles allDemandProfiles;
     
 }
