@@ -4,7 +4,6 @@ import info.matchingservice.dom.ProfileElementType;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Match.diff_match_patch.Diff;
 import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.DemandProfileElement;
 import info.matchingservice.dom.Profile.ProfileFigureElement;
 import info.matchingservice.dom.Profile.ProfileFigures;
 import info.matchingservice.dom.Profile.SupplyProfile;

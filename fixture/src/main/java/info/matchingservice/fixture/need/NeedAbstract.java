@@ -2,11 +2,10 @@ package info.matchingservice.fixture.need;
 
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Need.DemandProfile;
+import info.matchingservice.dom.Need.DemandProfiles;
 import info.matchingservice.dom.Need.Need;
 import info.matchingservice.dom.Need.Needs;
-import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.VacancyProfileFigureElements;
-import info.matchingservice.dom.Need.DemandProfiles;
 
 import javax.inject.Inject;
 
@@ -33,7 +32,7 @@ public abstract class NeedAbstract extends FixtureScript {
         
         DemandProfile newVacProfile = createVacancyProfile(needOwner, newNeed, vacancyDescription, vacancyWeight, user, executionContext);
         
-        createVacancyProfileFigureElement(newNeed, newVacProfile, VacancyProfileElementDescription, vacFigure, elemWeight1, user, executionContext);
+//        createVacancyProfileFigureElement(newNeed, newVacProfile, VacancyProfileElementDescription, vacFigure, elemWeight1, user, executionContext);
         return executionContext.add(this,newNeed);
     }
     
@@ -50,19 +49,19 @@ public abstract class NeedAbstract extends FixtureScript {
         return executionContext.add(this, newVacProfile);
     }
     
-    protected Need createVacancyProfileFigureElement(
-            Need newNeed,
-            DemandProfile newVacProfile,
-            String profileElementDescription,
-            Integer figure,
-            Integer weight,
-            String user,
-            ExecutionContext executionContext
-            ){
-        vpeFigures.newProfileElement(profileElementDescription, figure, weight, newVacProfile, user);
-        getContainer().flush();
-        return executionContext.add(this, newNeed);
-    }
+//    protected Need createVacancyProfileFigureElement(
+//            Need newNeed,
+//            DemandProfile newVacProfile,
+//            String profileElementDescription,
+//            Integer figure,
+//            Integer weight,
+//            String user,
+//            ExecutionContext executionContext
+//            ){
+//        vpeFigures.newProfileElement(profileElementDescription, figure, weight, newVacProfile, user);
+//        getContainer().flush();
+//        return executionContext.add(this, newNeed);
+//    }
     
     //region > injected services
     @javax.inject.Inject
@@ -71,6 +70,6 @@ public abstract class NeedAbstract extends FixtureScript {
     @Inject
     DemandProfiles vacancyprofiles;
     
-    @Inject
-    VacancyProfileFigureElements vpeFigures;
+//    @Inject
+//    VacancyProfileFigureElements vpeFigures;
 }

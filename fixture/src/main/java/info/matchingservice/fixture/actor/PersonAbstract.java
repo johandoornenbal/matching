@@ -5,14 +5,13 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.Qualities;
 import info.matchingservice.dom.Dropdown.Quality;
+import info.matchingservice.dom.Need.DemandProfile;
+import info.matchingservice.dom.Need.DemandProfiles;
 import info.matchingservice.dom.Need.Need;
 import info.matchingservice.dom.Need.Needs;
-import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.VacancyProfileFigureElements;
-import info.matchingservice.dom.Need.DemandProfiles;
-import info.matchingservice.dom.Profile.SupplyProfile;
 import info.matchingservice.dom.Profile.ProfileFigureElements;
 import info.matchingservice.dom.Profile.ProfileFigures;
+import info.matchingservice.dom.Profile.SupplyProfile;
 import info.matchingservice.dom.Profile.SupplyProfiles;
 
 import javax.inject.Inject;
@@ -62,9 +61,9 @@ public abstract class PersonAbstract extends FixtureScript {
         
         DemandProfile newVacProfile = createVacancyProfile(newPerson, newNeed, vacancyDescription, vacancyWeight, user, executionContext);
         
-        createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription, vacFigure, elemWeight1, user, executionContext);
-        createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription2, vacFigure2, elemWeight2, user, executionContext);
-               
+//        createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription, vacFigure, elemWeight1, user, executionContext);
+//        createVacancyProfileFigureElement(newPerson, newVacProfile, VacancyProfileElementDescription2, vacFigure2, elemWeight2, user, executionContext);
+//               
         return executionContext.add(this, newPerson);
     }
     
@@ -117,19 +116,19 @@ public abstract class PersonAbstract extends FixtureScript {
         return executionContext.add(this, newVacProfile);
     }
     
-    protected Actor createVacancyProfileFigureElement(
-            Actor newPerson,
-            DemandProfile newVacProfile,
-            String profileElementDescription,
-            Integer figure,
-            Integer weight,
-            String user,
-            ExecutionContext executionContext
-            ){
-        vpeFigures.newProfileElement(profileElementDescription, figure, weight, newVacProfile, user);
-        getContainer().flush();
-        return executionContext.add(this, newPerson);
-    }
+//    protected Actor createVacancyProfileFigureElement(
+//            Actor newPerson,
+//            DemandProfile newVacProfile,
+//            String profileElementDescription,
+//            Integer figure,
+//            Integer weight,
+//            String user,
+//            ExecutionContext executionContext
+//            ){
+//        vpeFigures.newProfileElement(profileElementDescription, figure, weight, newVacProfile, user);
+//        getContainer().flush();
+//        return executionContext.add(this, newPerson);
+//    }
     
 
     
@@ -151,9 +150,7 @@ public abstract class PersonAbstract extends FixtureScript {
     
     @Inject
     DemandProfiles vacancyprofiles;
-    
-    @Inject
-    VacancyProfileFigureElements vpeFigures;
+
     
     @Inject
     Qualities qualities;

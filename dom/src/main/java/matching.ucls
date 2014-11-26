@@ -4,7 +4,7 @@
   <class id="1" language="java" name="info.matchingservice.dom.Actor.Actor" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Actor.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="519" y="321"/>    
+    <position height="-1" width="-1" x="545" y="101"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -14,7 +14,7 @@
   <class id="2" language="java" name="info.matchingservice.dom.Actor.Person" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Person.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="177" y="333"/>    
+    <position height="-1" width="-1" x="264" y="-83"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -24,7 +24,7 @@
   <class id="3" language="java" name="info.matchingservice.dom.Actor.Role" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Role.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="138" y="48"/>    
+    <position height="-1" width="-1" x="175" y="1298"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -34,7 +34,7 @@
   <class id="4" language="java" name="info.matchingservice.dom.Actor.PersonRole" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/PersonRole.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="472" y="45"/>    
+    <position height="-1" width="-1" x="509" y="1295"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -44,7 +44,7 @@
   <enumeration id="5" language="java" name="info.matchingservice.dom.Actor.PersonRoleType" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/PersonRoleType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="817" y="54"/>    
+    <position height="-1" width="-1" x="854" y="1304"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -54,7 +54,7 @@
   <class id="6" language="java" name="info.matchingservice.dom.Actor.SystemRole" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/SystemRole.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="472" y="161"/>    
+    <position height="-1" width="-1" x="509" y="1411"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -64,7 +64,7 @@
   <enumeration id="7" language="java" name="info.matchingservice.dom.Actor.SystemRoleType" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/SystemRoleType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="815" y="178"/>    
+    <position height="-1" width="-1" x="848" y="1429"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -74,7 +74,7 @@
   <class id="8" language="java" name="info.matchingservice.dom.Actor.OrganisationRole" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/OrganisationRole.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="472" y="-81"/>    
+    <position height="-1" width="-1" x="509" y="1169"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -85,7 +85,7 @@
     project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/OrganisationRoleType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="818" y="-82"/>    
+    <position height="-1" width="-1" x="855" y="1168"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -95,7 +95,7 @@
   <class id="10" language="java" name="info.matchingservice.dom.Profile.SupplyProfile" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/SupplyProfile.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="165" y="600"/>    
+    <position height="-1" width="-1" x="150" y="591"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -105,7 +105,7 @@
   <class id="11" language="java" name="info.matchingservice.dom.Actor.System" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/System.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1020" y="321"/>    
+    <position height="-1" width="-1" x="541" y="-110"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -115,7 +115,7 @@
   <class id="12" language="java" name="info.matchingservice.dom.Actor.Organisation" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Organisation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1020" y="466"/>    
+    <position height="-1" width="-1" x="827" y="-108"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -125,7 +125,7 @@
   <class id="13" language="java" name="info.matchingservice.dom.Profile.SuperProfile" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/SuperProfile.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="464" y="758"/>    
+    <position height="-1" width="-1" x="461" y="718"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -135,7 +135,7 @@
   <class id="14" language="java" name="info.matchingservice.dom.Need.Need" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Need/Need.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="716" y="527"/>    
+    <position height="-1" width="-1" x="999" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -145,7 +145,7 @@
   <class id="15" language="java" name="info.matchingservice.dom.Need.DemandProfile" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Need/DemandProfile.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="756" y="759"/>    
+    <position height="-1" width="-1" x="1032" y="585"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -155,7 +155,7 @@
   <class id="16" language="java" name="info.matchingservice.dom.Profile.ProfileElement" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/ProfileElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="464" y="1003"/>    
+    <position height="-1" width="-1" x="631" y="941"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -166,7 +166,7 @@
     project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/ProfileFigureElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="144" y="1047"/>    
+    <position height="-1" width="-1" x="956" y="995"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -177,158 +177,248 @@
     project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/ProfileDropDownElement.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="160" y="960"/>    
+    <position height="-1" width="-1" x="969" y="908"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="info.matchingservice.dom.Need.DemandProfileElement" project="matchingservice-dom" 
-    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Need/DemandProfileElement.java" binary="false" 
+  <class id="19" language="java" name="info.matchingservice.dom.Assessment.Assessment" project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Assessment/Assessment.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="784" y="966"/>    
+    <position height="-1" width="-1" x="544" y="300"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <generalization id="20">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <generalization id="21">    
+  <class id="20" language="java" name="info.matchingservice.dom.Assessment.NeedAssessment" project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Assessment/NeedAssessment.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="736" y="424"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="info.matchingservice.dom.Assessment.ProfileAssessment" 
+    project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Assessment/ProfileAssessment.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="460" y="422"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="info.matchingservice.dom.Assessment.ProfileFeedback" 
+    project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Assessment/ProfileFeedback.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="617" y="517"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="info.matchingservice.dom.Assessment.NeedFeedback" project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Assessment/NeedFeedback.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="812" y="519"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <generalization id="24">    
     <end type="SOURCE" refId="17"/>    
     <end type="TARGET" refId="16"/>  
   </generalization>  
-  <generalization id="22">    
+  <generalization id="25">    
     <end type="SOURCE" refId="15"/>    
     <end type="TARGET" refId="13"/>  
   </generalization>  
-  <association id="23">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="24" name="myNeeds"/>      
-      <multiplicity id="25" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="26">    
+  <generalization id="26">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <association id="27">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="27" name="role"/>      
-      <multiplicity id="28" minimum="0" maximum="1"/>    
+      <attribute id="28" name="role"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="29">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="30" name="demandProfiles"/>      
-      <multiplicity id="31" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="32">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="21"/>  
   </generalization>  
-  <association id="33">    
+  <association id="31">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="34" name="demandOwner"/>      
-      <multiplicity id="35" minimum="0" maximum="1"/>    
+      <attribute id="32" name="demandOwner"/>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="36">    
+  <association id="34">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="37" name="role"/>      
-      <multiplicity id="38" minimum="0" maximum="1"/>    
+      <attribute id="35" name="role"/>      
+      <multiplicity id="36" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="39">    
+  <association id="37">    
     <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="40" name="needOwner"/>      
-      <multiplicity id="41" minimum="0" maximum="1"/>    
+      <attribute id="38" name="needOwner"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="42">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="43" name="profile"/>      
-      <multiplicity id="44" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="45">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="13"/>  
+  <generalization id="40">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="20"/>  
   </generalization>  
-  <association id="46">    
+  <association id="41">    
     <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="47" name="profileElementOwner"/>      
-      <multiplicity id="48" minimum="0" maximum="1"/>    
+      <attribute id="42" name="profileElementOwner"/>      
+      <multiplicity id="43" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="49">    
+  <generalization id="44">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <association id="45">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="50" name="role"/>      
-      <multiplicity id="51" minimum="0" maximum="1"/>    
+      <attribute id="46" name="role"/>      
+      <multiplicity id="47" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="52">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <association id="53">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="54" name="profileElement"/>      
-      <multiplicity id="55" minimum="0" maximum="2147483647"/>    
+  <association id="48">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="49" name="target"/>      
+      <multiplicity id="50" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
+    <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="56">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="57" name="vacancyProfileElementOwner"/>      
-      <multiplicity id="58" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="59">    
+  <association id="51">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="60" name="profileOwner"/>      
-      <multiplicity id="61" minimum="0" maximum="1"/>    
+      <attribute id="52" name="profileOwner"/>      
+      <multiplicity id="53" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="62">    
+  <generalization id="54">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="16"/>  
+  </generalization>  
+  <generalization id="55">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="56">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="57" name="assessments"/>      
+      <multiplicity id="58" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="59">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="60" name="myNeeds"/>      
+      <multiplicity id="61" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="62">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="63" name="demandProfiles"/>      
+      <multiplicity id="64" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="65">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="66">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="67" name="profile"/>      
+      <multiplicity id="68" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="69">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <association id="70">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="71" name="assessments"/>      
+      <multiplicity id="72" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="73">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="74">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="75" name="profileElement"/>      
+      <multiplicity id="76" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="77">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="78" name="ownerActor"/>      
+      <multiplicity id="79" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="80">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="81" name="target"/>      
+      <multiplicity id="82" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="83">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <generalization id="63">    
+  <generalization id="84">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <generalization id="64">    
+  <generalization id="85">    
     <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <generalization id="65">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="16"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    

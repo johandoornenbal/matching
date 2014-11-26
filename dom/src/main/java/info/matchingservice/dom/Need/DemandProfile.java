@@ -5,7 +5,6 @@ import info.matchingservice.dom.Profile.SuperProfile;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
@@ -75,10 +74,6 @@ public class DemandProfile extends SuperProfile {
 
     // helpers
     
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
-    
     public String toString() {
         return "Stoel : " + this.getProfileName();
     }
@@ -99,11 +94,5 @@ public class DemandProfile extends SuperProfile {
     public void setProfileId() {
         this.profileId = this.getId();
     }
-
- 
-    //Injects
-        
-    @javax.inject.Inject
-    private DomainObjectContainer container;
 
 }

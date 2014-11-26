@@ -1,28 +1,7 @@
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.ProfileElementType;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.DemandProfileElement;
-import info.matchingservice.dom.Profile.ProfileDropDownElement;
-import info.matchingservice.dom.Profile.ProfileFigureElement;
-import info.matchingservice.dom.Profile.SupplyProfile;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.isis.applib.AbstractService;
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionSemantics;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.annotation.NotContributed.As;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
 
 @DomainService
 public class MatchingService extends AbstractService {
