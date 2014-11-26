@@ -5,8 +5,6 @@ import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
 import info.matchingservice.dom.Dropdown.ProfileElementDropDown;
 import info.matchingservice.dom.Dropdown.ProfileElementDropDowns;
-import info.matchingservice.dom.Dropdown.Qualities;
-import info.matchingservice.dom.Dropdown.Quality;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -19,14 +17,11 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
-import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
-import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -117,86 +112,86 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
    
     
-    @Named("Nieuw (single) profiel element")
-    @Hidden
-    public Profile newProfileElement(
-                @Named("Profiel element beschrijving")
-                final String profileElementDescription) {
-        newProfileElement(profileElementDescription, this, currentUserName());
-        return this;
-    }
-    
-    @Programmatic
-    public void newDropdownElement(final Quality keyword, final Profile profileElementOwner, final String ownedBy) {
-        profileFigureElements.newDropdownElement(keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
-    }
-
-    public boolean hideNewProfileElement(final String profileElementDescription) {
-        return hideNewProfileElement(profileElementDescription, this);
-    }
-
-    public String validateNewProfileElement(final String profileElementDescription) {
-        return validateNewProfileElement(profileElementDescription, this);
-    }
-    
-    @Programmatic
-    public void newProfileElement(final String profileElementDescription, final Profile profileElementOwner, final String ownedBy) {
-        profileFigureElements.newProfileElement(profileElementDescription, profileElementOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
-    }
-
-    @Programmatic
-    public boolean hideNewProfileElement(final String profileElementDescription, final Profile profileElementOwner) {
-        // if you have already profile
-        QueryDefault<ProfileElement> query = 
-                QueryDefault.create(
-                        ProfileElement.class, 
-                    "findProfileElementByOwnerProfileAndNature", 
-                    "profileElementOwner", profileElementOwner,
-                    "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
-        return container.firstMatch(query) != null ?
-                true        
-                :false;
-    }
-
-    @Programmatic
-    public String validateNewProfileElement(final String profileElementDescription, final Profile profileElementOwner) {
-        // if you have already profile
-        QueryDefault<ProfileElement> query = 
-                QueryDefault.create(
-                        ProfileElement.class, 
-                        "findProfileElementByOwnerProfileAndNature", 
-                        "profileElementOwner", profileElementOwner,
-                        "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
-        return container.firstMatch(query) != null?
-                "This VacancyProfile has this single element already!"        
-                :null;
-    }
-
-    @Programmatic
-    public void newFigureElement(final String profileElementDescription, final Integer figure, final Profile profileElementOwner, final String ownedBy) {
-        pe_figures.newProfileElement(profileElementDescription, figure, profileElementOwner, ownedBy);
-    }
-
-
-
-    @Named("Nieuw kwaliteiten element")
-    public Profile newDropdownElement(@Named("Keyword")
-                final Quality keyword) {
-        newDropdownElement(keyword, this, currentUserName());
-        return this;
-    }
-
-    public List<Quality> autoComplete0NewDropdownElement(String search) {
-        return qualities.findQualities(search);
-    }
-    
-    @Named("Nieuw getal element")
-    public Profile newFigureElement(@Named("Profiel element beschrijving")
-                final String profileElementDescription, @Named("Getal")
-                final Integer figure) {
-        newFigureElement(profileElementDescription, figure, this, currentUserName());
-        return this;
-    }
+//    @Named("Nieuw (single) profiel element")
+//    @Hidden
+//    public Profile newProfileElement(
+//                @Named("Profiel element beschrijving")
+//                final String profileElementDescription) {
+//        newProfileElement(profileElementDescription, this, currentUserName());
+//        return this;
+//    }
+//    
+//    @Programmatic
+//    public void newDropdownElement(final Quality keyword, final Profile profileElementOwner, final String ownedBy) {
+//        profileFigureElements.newDropdownElement(keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
+//    }
+//
+//    public boolean hideNewProfileElement(final String profileElementDescription) {
+//        return hideNewProfileElement(profileElementDescription, this);
+//    }
+//
+//    public String validateNewProfileElement(final String profileElementDescription) {
+//        return validateNewProfileElement(profileElementDescription, this);
+//    }
+//    
+//    @Programmatic
+//    public void newProfileElement(final String profileElementDescription, final Profile profileElementOwner, final String ownedBy) {
+//        profileFigureElements.newProfileElement(profileElementDescription, profileElementOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
+//    }
+//
+//    @Programmatic
+//    public boolean hideNewProfileElement(final String profileElementDescription, final Profile profileElementOwner) {
+//        // if you have already profile
+//        QueryDefault<ProfileElement> query = 
+//                QueryDefault.create(
+//                        ProfileElement.class, 
+//                    "findProfileElementByOwnerProfileAndNature", 
+//                    "profileElementOwner", profileElementOwner,
+//                    "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
+//        return container.firstMatch(query) != null ?
+//                true        
+//                :false;
+//    }
+//
+//    @Programmatic
+//    public String validateNewProfileElement(final String profileElementDescription, final Profile profileElementOwner) {
+//        // if you have already profile
+//        QueryDefault<ProfileElement> query = 
+//                QueryDefault.create(
+//                        ProfileElement.class, 
+//                        "findProfileElementByOwnerProfileAndNature", 
+//                        "profileElementOwner", profileElementOwner,
+//                        "profileElementNature", ProfileElementNature.SINGLE_ELEMENT);
+//        return container.firstMatch(query) != null?
+//                "This VacancyProfile has this single element already!"        
+//                :null;
+//    }
+//
+//    @Programmatic
+//    public void newFigureElement(final String profileElementDescription, final Integer figure, final Profile profileElementOwner, final String ownedBy) {
+//        pe_figures.newProfileElement(profileElementDescription, figure, profileElementOwner, ownedBy);
+//    }
+//
+//
+//
+//    @Named("Nieuw kwaliteiten element")
+//    public Profile newDropdownElement(@Named("Keyword")
+//                final Quality keyword) {
+//        newDropdownElement(keyword, this, currentUserName());
+//        return this;
+//    }
+//
+//    public List<Quality> autoComplete0NewDropdownElement(String search) {
+//        return qualities.findQualities(search);
+//    }
+//    
+//    @Named("Nieuw getal element")
+//    public Profile newFigureElement(@Named("Profiel element beschrijving")
+//                final String profileElementDescription, @Named("Getal")
+//                final Integer figure) {
+//        newFigureElement(profileElementDescription, figure, this, currentUserName());
+//        return this;
+//    }
 
 
     //Profile Elements ///////////////////////////////////////////////////////////////////////////////
@@ -237,23 +232,8 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return "Profiel: " + this.profileName;
     }
     
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
     
     //Injects
-    
-    @javax.inject.Inject
-    private DomainObjectContainer container;
-    
-    @Inject
-    private ProfileFigureElements profileFigureElements;
-    
-    @Inject
-    private Qualities qualities;
-    
-    @Inject
-    private ProfileFigures pe_figures;
     
     @Inject
     ProfileElements profileElements;

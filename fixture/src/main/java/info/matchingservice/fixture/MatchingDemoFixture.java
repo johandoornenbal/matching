@@ -1,7 +1,6 @@
 package info.matchingservice.fixture;
 
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
-import info.matchingservice.dropdown.QualitiesFixture;
 import info.matchingservice.fixture.actor.PersonForAntoni;
 import info.matchingservice.fixture.actor.PersonForFrans;
 import info.matchingservice.fixture.actor.PersonForGerard;
@@ -27,7 +26,6 @@ public class MatchingDemoFixture extends FixtureScript {
 //        executeChild(new TeardownFixture(), executionContext);
         
         // create
-        executeChild(new QualitiesFixture(), executionContext);
         executeChild(new ProfileElementDropDownsFixture(), executionContext);
         executeChild(new PersonForFrans(), executionContext);
         executeChild(new PersonForRembrandt(), executionContext);
