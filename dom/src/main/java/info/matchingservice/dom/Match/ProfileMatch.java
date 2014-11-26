@@ -10,7 +10,7 @@ import org.apache.isis.applib.annotation.Named;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Need.DemandProfile;
+import info.matchingservice.dom.Demand.DemandProfile;
 
 /**
  * It takes an action on a VacancyProfile to create and persist a ProfileMatch instance

@@ -11,7 +11,6 @@ import info.matchingservice.fixture.actor.RolesForFrans;
 import info.matchingservice.fixture.actor.RolesForGerard;
 import info.matchingservice.fixture.actor.RolesForMichiel;
 import info.matchingservice.fixture.actor.RolesForRembrandt;
-import info.matchingservice.fixture.need.NeedForFrans;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -33,7 +32,6 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new PersonForGerard(), executionContext);
         executeChild(new PersonForMichiel(), executionContext);
         executeChild(new PersonForAntoni(), executionContext);
-        executeChild(new NeedForFrans(), executionContext);
         executeChild(new RolesForFrans(), executionContext);
         executeChild(new RolesForGerard(), executionContext);
         executeChild(new RolesForAntoni(), executionContext);

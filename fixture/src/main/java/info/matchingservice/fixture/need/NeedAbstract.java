@@ -2,10 +2,10 @@ package info.matchingservice.fixture.need;
 
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.DemandProfiles;
-import info.matchingservice.dom.Need.Need;
-import info.matchingservice.dom.Need.Needs;
+import info.matchingservice.dom.Demand.Demand;
+import info.matchingservice.dom.Demand.DemandProfile;
+import info.matchingservice.dom.Demand.DemandProfiles;
+import info.matchingservice.dom.Demand.Demands;
 
 import javax.inject.Inject;
 
@@ -16,7 +16,7 @@ public abstract class NeedAbstract extends FixtureScript {
     @Override
     protected abstract void execute(ExecutionContext executionContext);
     
-    protected Need createNeed(
+    protected Demand createNeed(
             Person needOwner,
             String needDescription,
             Integer weight,
@@ -28,7 +28,7 @@ public abstract class NeedAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext
             ) {
-        Need newNeed = needs.newNeed(needDescription, weight, needOwner, user);
+        Demand newNeed = needs.newDemand(needDescription, weight, needOwner, user);
         
         DemandProfile newVacProfile = createVacancyProfile(needOwner, newNeed, vacancyDescription, vacancyWeight, user, executionContext);
         
@@ -38,7 +38,7 @@ public abstract class NeedAbstract extends FixtureScript {
     
     protected DemandProfile createVacancyProfile(
             Actor newPerson,
-            Need newNeed,
+            Demand newNeed,
             String vacancyDescription,
             Integer weight,
             String user,
@@ -65,7 +65,7 @@ public abstract class NeedAbstract extends FixtureScript {
     
     //region > injected services
     @javax.inject.Inject
-    Needs needs;
+    Demands needs;
     
     @Inject
     DemandProfiles vacancyprofiles;

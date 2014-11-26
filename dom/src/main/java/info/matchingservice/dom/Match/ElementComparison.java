@@ -4,7 +4,7 @@ import com.google.common.collect.ComparisonChain;
 
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Need.DemandProfile;
+import info.matchingservice.dom.Demand.DemandProfile;
 import info.matchingservice.dom.Profile.ProfileElement;
 
 import org.apache.isis.applib.annotation.Hidden;

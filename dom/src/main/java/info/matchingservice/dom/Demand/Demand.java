@@ -1,9 +1,9 @@
-package info.matchingservice.dom.Need;
+package info.matchingservice.dom.Demand;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Assessment.NeedAssessment;
+import info.matchingservice.dom.Assessment.DemandAssessment;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -34,10 +34,10 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class Need extends MatchingSecureMutableObject<Need> {
+public class Demand extends MatchingSecureMutableObject<Demand> {
 
-    public Need() {
-        super("ownedBy, needDescription, weight");
+    public Demand() {
+        super("ownedBy, demandDescription, weight");
     }
 
     //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
@@ -58,32 +58,31 @@ public class Need extends MatchingSecureMutableObject<Need> {
 
     //Immutables /////////////////////////////////////////////////////////////////////////////////////
     
-    private Actor needOwner;
+    private Actor demandOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    @Named("Opdrachtgever")
-    public Actor getNeedOwner() {
-        return needOwner;
+    public Actor getDemandOwner() {
+        return demandOwner;
     }
     
-    public void setNeedOwner(final Actor needOwner) {
-        this.needOwner = needOwner;
+    public void setDemandOwner(final Actor needOwner) {
+        this.demandOwner = needOwner;
     }
  
     //END Immutables /////////////////////////////////////////////////////////////////////////////////////
 
-    private String needDescription;
+    private String demandDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MultiLine
     @Named("Opdracht omschrijving op tafel")
-    public String getNeedDescription(){
-        return needDescription;
+    public String getDemandDescription(){
+        return demandDescription;
     }
     
-    public void setNeedDescription(final String description) {
-        this.needDescription = description;
+    public void setDemandDescription(final String description) {
+        this.demandDescription = description;
     }
     
     private Integer weight;
@@ -99,16 +98,15 @@ public class Need extends MatchingSecureMutableObject<Need> {
 
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @Named("Verwijder tafel")
-    public Actor DeleteNeed(
+    public Actor DeleteDemand(
             @Optional @Named("Verwijderen OK?") boolean areYouSure
             ){
         container.removeIfNotAlready(this);
-        container.informUser("Tafel verwijderd");
-        return getNeedOwner();
+        container.informUser("Demand deleted");
+        return getDemandOwner();
     }
     
-    public String validateDeleteNeed(boolean areYouSure) {
+    public String validateDeleteDemand(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     
@@ -117,8 +115,7 @@ public class Need extends MatchingSecureMutableObject<Need> {
     private SortedSet<DemandProfile> demandProfiles = new TreeSet<DemandProfile>();
     
     @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "demandOwner", dependentElement = "true")
-    @Named("Mijn stoelen")
+    @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
     public SortedSet<DemandProfile> getDemandProfiles() {
         return demandProfiles;
     }
@@ -127,38 +124,35 @@ public class Need extends MatchingSecureMutableObject<Need> {
         this.demandProfiles = vac;
     }
     
-    @Named("Nieuwe stoel")
     public DemandProfile newDemandProfile(
-            @Named("Omschrijving van 'stoel'")
-            final  String vacancyDescription,
-            @Named("Gewicht")
+            final  String demandProfileDescription,
             final Integer weight 
             ) {
-        return newDemandProfile(vacancyDescription, weight, this, currentUserName());
+        return newDemandProfile(demandProfileDescription, weight, this, currentUserName());
     }
     
     
     @Programmatic
     public DemandProfile newDemandProfile(
-            final String vacancyDescription,
+            final String demandProfileDescription,
             final Integer weight,
-            final Need vacancyOwner, 
+            final Demand demandProfileOwner, 
             final String ownedBy) {
-        return allDemandProfiles.newDemand(vacancyDescription, weight, vacancyOwner, ownedBy);
+        return allDemandProfiles.newDemand(demandProfileDescription, weight, demandProfileOwner, ownedBy);
     }
     
     // Region> Assessments
     
-    private SortedSet<NeedAssessment> assessments = new TreeSet<NeedAssessment>();
+    private SortedSet<DemandAssessment> assessments = new TreeSet<DemandAssessment>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "target", dependentElement = "true")
     @Named("Assessments")
-    public SortedSet<NeedAssessment> getAssessments() {
+    public SortedSet<DemandAssessment> getAssessments() {
         return assessments;
     }
    
-    public void setAssessments(final SortedSet<NeedAssessment> assessment) {
+    public void setAssessments(final SortedSet<DemandAssessment> assessment) {
         this.assessments = assessment;
     }
     
@@ -172,7 +166,7 @@ public class Need extends MatchingSecureMutableObject<Need> {
     }
     
     public String toString() {
-        return getNeedDescription() + " - " + getNeedOwner().title();
+        return getDemandDescription() + " - " + getDemandOwner().title();
     }
     
     // Injects

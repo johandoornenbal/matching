@@ -32,7 +32,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final SuperProfile profileElementOwner,
+            final Profile profileElementOwner,
             final String ownedBy
             ){
         final ProfileElement newProf = newTransientInstance(ProfileElement.class);
@@ -48,7 +48,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final SuperProfile profileElementOwner,
+            final Profile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature
             ){
@@ -65,7 +65,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic    
     public ProfileElement newProfileElement(
             final String profileElementDescription,
-            final SuperProfile profileElementOwner,
+            final Profile profileElementOwner,
             final String ownedBy,
             final ProfileElementType type,
             final ProfileElementNature nature
@@ -83,7 +83,7 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
     @Programmatic
     public ProfileDropDownElement newDropdownElement(
             final Quality keyword,
-            final SuperProfile profileElementOwner,
+            final Profile profileElementOwner,
             final String ownedBy,
             final ProfileElementNature nature           
             ){
@@ -98,24 +98,10 @@ public class ProfileFigureElements extends MatchingDomainService<ProfileElement>
         return newElement;
     }
     
-    //TODO: deze werkt niet
-    @Programmatic
-    public ProfileDropDownElement newDropdownElementForFixture(){
-        final ProfileDropDownElement newElement = newTransientInstance(ProfileDropDownElement.class);
-        newElement.setKeyword(qualities.allQualities().get(0));
-        newElement.setProfileElementNature(ProfileElementNature.MULTI_ELEMENT);
-        newElement.setProfileElementType(ProfileElementType.MATCHABLE_DROPDOWN);
-        newElement.setProfileElementDescription(qualities.allQualities().get(0).toString());
-        newElement.setProfileElementOwner(profiles.allSupplyProfiles().get(0));
-        newElement.setOwnedBy("frans");
-        persist(newElement);
-        return newElement;
-    }
     
     @Inject
     Qualities qualities;
     
-    @Inject
-    SupplyProfiles profiles;
+
     
 }

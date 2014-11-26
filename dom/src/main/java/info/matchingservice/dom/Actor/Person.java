@@ -222,21 +222,21 @@ public class Person extends Actor {
         return tb.toString();
     }
         
-    //Region> NEED /////////////////////////////////////////////////////////////
+    //Region> DEMAND /////////////////////////////////////////////////////////////
     
-    // method myNeeds() is on Actor
-    public boolean hideMyNeeds() {
+    // method myDemands() is on Actor
+    public boolean hideMyDemands() {
         return !getIsPrincipal();
     }
     
     // method newNeed() is on Actor
-    public boolean hideNewNeed(final String needDescription, final Integer weight) {
-        return hideNewNeed(needDescription, this);
+    public boolean hideNewDemand(final String needDescription, final Integer weight) {
+        return hideNewDemand(needDescription, this);
     }
     
     // Need helpers
     @Programmatic
-    public boolean hideNewNeed(final String needDescription, final Actor needOwner){
+    public boolean hideNewDemand(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
             return true;
@@ -247,24 +247,9 @@ public class Person extends Actor {
         }
         return false;
     }   
-    //END Region> NEED /////////////////////////////////////////////////////////////
+    //END Region> DEMANDS /////////////////////////////////////////////////////////////
     
-    //Region> Saved Matches /////////////////////////////////////////////////////////////
-    
-    private SortedSet<ProfileMatch> mySavedMatches = new TreeSet<ProfileMatch>();
-    
-    @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
-    @Named("Mijn bewaarde 'matches'")
-    public SortedSet<ProfileMatch> getMySavedMatches() {
-        return mySavedMatches;
-    }
-    
-    public void setMySavedMatches(final SortedSet<ProfileMatch> mySavedMatches){
-        this.mySavedMatches = mySavedMatches;
-    }
-    
-    //END Region> Saved Matches /////////////////////////////////////////////////////////////
+
     
     // Region>HELPERS ////////////////////////////
     

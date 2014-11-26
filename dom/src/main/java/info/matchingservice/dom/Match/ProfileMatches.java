@@ -10,7 +10,7 @@ import org.apache.isis.applib.annotation.Programmatic;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Need.DemandProfile;
+import info.matchingservice.dom.Demand.DemandProfile;
 
 @DomainService(menuOrder = "100", repositoryFor = ProfileMatch.class)
 @Named("Matches")

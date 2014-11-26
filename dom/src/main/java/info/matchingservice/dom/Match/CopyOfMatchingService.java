@@ -1,33 +1,6 @@
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.ProfileElementType;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Match.diff_match_patch.Diff;
-import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Profile.ProfileFigureElement;
-import info.matchingservice.dom.Profile.ProfileFigures;
-import info.matchingservice.dom.Profile.SupplyProfile;
-import info.matchingservice.dom.Profile.ProfileElement;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import org.apache.isis.applib.AbstractService;
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionSemantics;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.NotContributed.As;
-import org.apache.isis.applib.annotation.Render.Type;
 
 //@DomainService
 public class CopyOfMatchingService extends AbstractService {

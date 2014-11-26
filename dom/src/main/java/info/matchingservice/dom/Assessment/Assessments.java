@@ -12,9 +12,9 @@ import org.apache.isis.applib.annotation.NotInServiceMenu;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.Need.Need;
-import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Profile.SuperProfile;
+import info.matchingservice.dom.Demand.Demand;
+import info.matchingservice.dom.Demand.DemandProfile;
+import info.matchingservice.dom.Profile.Profile;
 
 
 @DomainService(menuOrder = "60", repositoryFor = Assessment.class)
@@ -32,14 +32,14 @@ public class Assessments extends MatchingDomainService<Assessment> {
     @Named("Geef feedback")
     @NotInServiceMenu
     public Assessment newAssessment(
-            final Need targetObject,
+            final Demand targetObject,
             @Named("Titel - korte omschrijving")
             final String description,
             @Named("Feedback")
             @MultiLine
             final String feedback
             ){
-        final NeedFeedback newAs = newTransientInstance(NeedFeedback.class);
+        final DemandFeedback newAs = newTransientInstance(DemandFeedback.class);
         newAs.setTarget(targetObject);
         newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
         newAs.setAssessmentDescription(description);
@@ -52,7 +52,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
     @Named("Geef feedback")
     @NotInServiceMenu
     public Assessment newAssessment(
-            final SuperProfile targetObject,
+            final Profile targetObject,
             @Named("Titel - korte omschrijving")
             final String description,
             @Named("Feedback")

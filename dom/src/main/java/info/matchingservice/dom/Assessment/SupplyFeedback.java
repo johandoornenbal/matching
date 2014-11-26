@@ -7,7 +7,7 @@ import org.apache.isis.applib.annotation.MultiLine;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class NeedFeedback extends NeedAssessment {
+public class SupplyFeedback extends SupplyAssessment {
     
     private String feedback;
     

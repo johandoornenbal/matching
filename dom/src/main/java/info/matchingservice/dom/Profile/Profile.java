@@ -36,9 +36,9 @@ import org.apache.isis.applib.query.QueryDefault;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
+public class Profile extends MatchingSecureMutableObject<Profile> {
     
-    public SuperProfile() {
+    public Profile() {
         super("profileName, ownedBy");
     }
     
@@ -86,7 +86,7 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     // Region> ProfileElements
     @Named("Nieuw (single) profiel element")
     @Hidden
-    public SuperProfile newProfileElement(
+    public Profile newProfileElement(
                 @Named("Profiel element beschrijving")
                 final String profileElementDescription) {
         newProfileElement(profileElementDescription, this, currentUserName());
@@ -94,7 +94,7 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     }
     
     @Programmatic
-    public void newDropdownElement(final Quality keyword, final SuperProfile profileElementOwner, final String ownedBy) {
+    public void newDropdownElement(final Quality keyword, final Profile profileElementOwner, final String ownedBy) {
         profileElements.newDropdownElement(keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
     }
 
@@ -107,12 +107,12 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     }
     
     @Programmatic
-    public void newProfileElement(final String profileElementDescription, final SuperProfile profileElementOwner, final String ownedBy) {
+    public void newProfileElement(final String profileElementDescription, final Profile profileElementOwner, final String ownedBy) {
         profileElements.newProfileElement(profileElementDescription, profileElementOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
     }
 
     @Programmatic
-    public boolean hideNewProfileElement(final String profileElementDescription, final SuperProfile profileElementOwner) {
+    public boolean hideNewProfileElement(final String profileElementDescription, final Profile profileElementOwner) {
         // if you have already profile
         QueryDefault<ProfileElement> query = 
                 QueryDefault.create(
@@ -126,7 +126,7 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     }
 
     @Programmatic
-    public String validateNewProfileElement(final String profileElementDescription, final SuperProfile profileElementOwner) {
+    public String validateNewProfileElement(final String profileElementDescription, final Profile profileElementOwner) {
         // if you have already profile
         QueryDefault<ProfileElement> query = 
                 QueryDefault.create(
@@ -140,14 +140,14 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     }
 
     @Programmatic
-    public void newFigureElement(final String profileElementDescription, final Integer figure, final SuperProfile profileElementOwner, final String ownedBy) {
+    public void newFigureElement(final String profileElementDescription, final Integer figure, final Profile profileElementOwner, final String ownedBy) {
         pe_figures.newProfileElement(profileElementDescription, figure, profileElementOwner, ownedBy);
     }
 
 
 
     @Named("Nieuw kwaliteiten element")
-    public SuperProfile newDropdownElement(@Named("Keyword")
+    public Profile newDropdownElement(@Named("Keyword")
                 final Quality keyword) {
         newDropdownElement(keyword, this, currentUserName());
         return this;
@@ -158,7 +158,7 @@ public class SuperProfile extends MatchingSecureMutableObject<SuperProfile> {
     }
     
     @Named("Nieuw getal element")
-    public SuperProfile newFigureElement(@Named("Profiel element beschrijving")
+    public Profile newFigureElement(@Named("Profiel element beschrijving")
                 final String profileElementDescription, @Named("Getal")
                 final Integer figure) {
         newFigureElement(profileElementDescription, figure, this, currentUserName());

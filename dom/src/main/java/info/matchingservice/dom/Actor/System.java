@@ -172,34 +172,34 @@ public class System extends Actor {
     
     //END Region> ROLES /////////////////////////////////////////////////
 
-    //Region> NEED /////////////////////////////////////////////////////////////
+    //Region> DEMAND /////////////////////////////////////////////////////////////
     
-    // method myNeeds() is on Actor
-    public boolean hideMyNeeds() {
+    // method myDemands() is on Actor
+    public boolean hideMyDemands() {
         return !getIsPrincipal();
     }
     
     // method NewNeed() is on Actor
-    public boolean hideNewNeed(final String needDescription, final Integer weight) {
-        return hideNewNeed(needDescription, this);
+    public boolean hideNewDemand(final String demandDescription, final Integer weight) {
+        return hideNewDemand(demandDescription, this);
     }
         
     //Need helpers
     
     @Programmatic
-    public boolean hideNewNeed(final String needDescription, final Actor needOwner){
+    public boolean hideNewDemand(final String demandDescription, final Actor demandOwner){
         // if you are not the owner
-        if (!needOwner.getOwnedBy().equals(currentUserName())){
+        if (!demandOwner.getOwnedBy().equals(currentUserName())){
             return true;
         }
         // if you have not Principal Role
-        if (!((System) needOwner).getIsPrincipal()){
+        if (!((System) demandOwner).getIsPrincipal()){
             return true;
         }
         return false;
     }
     
-    //END Region> NEED /////////////////////////////////////////////////////////////
+    //END Region> DEMAND /////////////////////////////////////////////////////////////
     
     // Region>HELPERS ////////////////////////////
     

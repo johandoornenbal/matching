@@ -6,12 +6,12 @@ import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Actors;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.Need.Need;
-import info.matchingservice.dom.Need.PersonNeed;
-import info.matchingservice.dom.Need.PersonNeeds;
-import info.matchingservice.dom.Need.DemandProfiles;
-import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.DemandProfileElement;
+import info.matchingservice.dom.Demand.Demand;
+import info.matchingservice.dom.Demand.DemandProfile;
+import info.matchingservice.dom.Demand.DemandProfileElement;
+import info.matchingservice.dom.Demand.DemandProfiles;
+import info.matchingservice.dom.Demand.PersonNeed;
+import info.matchingservice.dom.Demand.PersonNeeds;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
@@ -46,8 +46,8 @@ public class NeedTest extends MatchingIntegrationTest {
         public void valuesSet() throws Exception {
             n1 = needs.allNeeds().get(0);
             Frans = persons.allActors().get(0);
-            assertThat(n1.getNeedDescription(), is(NEEDDESCRIPTION));
-            assertThat(n1.getNeedOwner(), is(Frans));
+            assertThat(n1.getDemandDescription(), is(NEEDDESCRIPTION));
+            assertThat(n1.getDemandProfileOwner(), is(Frans));
             assertThat(n1.getOwnedBy(), is(USERNAME));
             assertThat(n1.getDemandProfiles().size(), is(1));
         }
@@ -70,7 +70,7 @@ public class NeedTest extends MatchingIntegrationTest {
             n1 = needs.allNeeds().get(0);
             assertThat(n1.getDemandProfiles().size(), is(2));
             assertThat(n1.getDemandProfiles().last().getVacancyDescription(), is("Test vacancy"));
-            assertThat((PersonNeed) n1.getDemandProfiles().last().getDemandOwner(), is(n1));
+            assertThat((PersonNeed) n1.getDemandProfiles().last().getDemandProfileOwner(), is(n1));
             assertThat(n1.getDemandProfiles().last().getOwnedBy(), is(USERNAME));
         }
         

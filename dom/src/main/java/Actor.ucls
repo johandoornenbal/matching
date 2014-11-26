@@ -4,52 +4,67 @@
   <class id="1" language="java" name="info.matchingservice.dom.Actor.Actor" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Actor.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="357" y="205"/>    
+    <position height="-1" width="-1" x="280" y="250"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <class id="2" language="java" name="info.matchingservice.dom.Actor.Organisation" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Organisation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="111" width="215" x="74" y="350"/>    
+    <position height="-1" width="-1" x="286" y="774"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="true" package="true" protected="true" private="true" static="false"/>    
     </display>  
   </class>  
   <class id="3" language="java" name="info.matchingservice.dom.Actor.Person" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Person.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="470" y="436"/>    
+    <position height="-1" width="-1" x="983" y="537"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="true" package="true" protected="true" private="true" static="false"/>    
     </display>  
   </class>  
   <class id="4" language="java" name="info.matchingservice.dom.Actor.System" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/System.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="753" y="411"/>    
+    <position height="-1" width="-1" x="618" y="774"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="false"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="info.matchingservice.dom.MatchingSecureMutableObject" 
+    project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/MatchingSecureMutableObject.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="672" y="60"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <generalization id="5">    
+  <generalization id="6">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <generalization id="6">    
+  <generalization id="7">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <generalization id="8">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <generalization id="7">    
+  <generalization id="9">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  

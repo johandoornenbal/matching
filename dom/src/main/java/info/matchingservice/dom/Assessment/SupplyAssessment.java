@@ -1,27 +1,25 @@
 package info.matchingservice.dom.Assessment;
 
+import info.matchingservice.dom.Supply.Supply;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import info.matchingservice.dom.Profile.Profile;
-
 import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Named;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class ProfileAssessment extends Assessment {
+public class SupplyAssessment extends Assessment {
     
-    private Profile target;
+    private Supply target;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    @Named("doel")
-    public Profile getTarget() {
+    public Supply getTarget() {
         return target;
     }
     
-    public void setTarget(final Profile object) {
+    public void setTarget(final Supply object) {
         this.target = object;
     }       
 

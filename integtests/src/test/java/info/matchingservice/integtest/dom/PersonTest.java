@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.Need.PersonNeeds;
+import info.matchingservice.dom.Demand.PersonNeeds;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
@@ -336,18 +336,18 @@ public class PersonTest extends MatchingIntegrationTest {
         @Before
         public void setUp() throws Exception {
             p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
-            ((Person) p1).newNeed("Ik zoek iemand", 10, (Person) p1, OWNED_BY);
+            ((Person) p1).newDemand("Ik zoek iemand", 10, (Person) p1, OWNED_BY);
             p2 = persons.allPersons().get(0); // FRANS HALS
         }
         
         @Test
         public void hasNeeds() throws Exception {
             Integer maxindex = needs.allNeeds().size() - 1;
-            assertThat(needs.allNeeds().get(maxindex).getNeedDescription(), is("Ik zoek iemand"));
-            assertThat(needs.allNeeds().get(maxindex).getNeedOwner(), is(p1));
+            assertThat(needs.allNeeds().get(maxindex).getDemandDescription(), is("Ik zoek iemand"));
+            assertThat(needs.allNeeds().get(maxindex).getDemandProfileOwner(), is(p1));
             assertThat(needs.allNeeds().get(maxindex).getOwnedBy(), is(OWNED_BY));
             //assertThat(((Person) p1).getMyNeeds().size(), is(1)); //TODO: werkt niet waarom???
-            assertThat(p2.getMyNeeds().size(), is(2));
+            assertThat(p2.getMyDemands().size(), is(2));
         }
         
         @Inject

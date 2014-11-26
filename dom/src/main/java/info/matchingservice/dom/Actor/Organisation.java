@@ -171,34 +171,34 @@ public class Organisation extends Actor {
             
     //END Region> ROLES /////////////////////////////////////////////////
    
-    //Region> NEED /////////////////////////////////////////////////////////////
+    //Region> DEMAND /////////////////////////////////////////////////////////////
     
-    // method myNeeds() is on Actor
-    public boolean hideMyNeeds() {
+    // method myDemands() is on Actor
+    public boolean hideMyDemands() {
         return !getIsPrincipal();
     }
     
-    // method NewNeed() is on Actor
-    public boolean hideNewNeed(final String needDescription, final Integer weight) {
-        return hideNewNeed(needDescription, this);
+    // method NewDemand() is on Actor
+    public boolean hideNewDemand(final String needDescription, final Integer weight) {
+        return hideNewDemand(needDescription, this);
     }
         
     //Need helpers
     
     @Programmatic
-    public boolean hideNewNeed(final String needDescription, final Actor needOwner){
+    public boolean hideNewDemand(final String demandDescription, final Actor demandOwner){
         // if you are not the owner
-        if (!needOwner.getOwnedBy().equals(currentUserName())){
+        if (!demandOwner.getOwnedBy().equals(currentUserName())){
             return true;
         }
         // if you have not Principal Role
-        if (!((Organisation) needOwner).getIsPrincipal()){
+        if (!((Organisation) demandOwner).getIsPrincipal()){
             return true;
         }
         return false;
     }
     
-    //END Region> NEED /////////////////////////////////////////////////////////////
+    //END Region> DEMAND /////////////////////////////////////////////////////////////
     
     // Region>HELPERS ////////////////////////////
     

@@ -1,8 +1,8 @@
 package info.matchingservice.fixture.need;
 
-import info.matchingservice.dom.Need.Need;
-import info.matchingservice.dom.Need.DemandProfile;
-import info.matchingservice.dom.Need.DemandProfiles;
+import info.matchingservice.dom.Demand.Demand;
+import info.matchingservice.dom.Demand.DemandProfile;
+import info.matchingservice.dom.Demand.DemandProfiles;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -13,11 +13,11 @@ public abstract class VacancyAbstract extends FixtureScript {
     
     protected DemandProfile createVacancy(
             String vacancyDescription,
-            Need vacancyOwner,
+            Demand vacancyOwner,
             String user,
             ExecutionContext executionContext
             ) {
-        DemandProfile newVac = vacs.newVacancy(vacancyDescription, vacancyOwner, user);
+        DemandProfile newVac = vacs.newDemand(vacancyDescription, vacancyOwner, user);
         return executionContext.add(this,newVac);
     }
     

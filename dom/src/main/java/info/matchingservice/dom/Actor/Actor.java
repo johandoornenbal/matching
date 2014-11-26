@@ -1,11 +1,12 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Need.Need;
-import info.matchingservice.dom.Need.Needs;
-import info.matchingservice.dom.Profile.SupplyProfile;
-import info.matchingservice.dom.Profile.SupplyProfiles;
-import info.matchingservice.dom.Profile.SuperProfile;
+import info.matchingservice.dom.Demand.Demand;
+import info.matchingservice.dom.Demand.Demands;
+import info.matchingservice.dom.Match.ProfileMatch;
+import info.matchingservice.dom.Supply.Supplies;
+import info.matchingservice.dom.Supply.Supply;
+import info.matchingservice.dom.Supply.SupplyProfile;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -80,103 +81,27 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.uniqueActorId = id;
     }
     
-    //Region> PROFILE /////////////////////////////////////////////////////////////
     
-    private SortedSet<SupplyProfile> profile = new TreeSet<SupplyProfile>();
-   
-    @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "profileOwner", dependentElement = "true")
-    @Named("Mijn profiel")
-    public SortedSet<SupplyProfile> getProfile() {
-        return profile;
-    }
-   
-    public void setProfile(final SortedSet<SupplyProfile> profile) {
-        this.profile = profile;
-    }
-   
-    @Named("Maak een profiel")
-    public SuperProfile makeProfile(
-            @Named("Naam van je profiel")
-            final String profileName
-            ) {
-        return makeProfile(profileName, this, getOwnedBy());
-    }
-   
-    public boolean hideMakeProfile(final String testfield) {
-        return hideMakeProfile(testfield, this, getOwnedBy());
-    }
-   
-    public String validateMakeProfile(final String testfield) {
-        return validateMakeProfile(testfield, this, getOwnedBy());
-    }
+    //Region> DEMANDS /////////////////////////////////////////////////////////////
     
-    // HELPERS Profile
-    
-    @Programmatic // now values can be set by fixtures
-    public SuperProfile makeProfile(
-            @Named("Naam van je profiel")
-            final String profileName, 
-            final Actor actor, 
-            final String ownedBy) {
-        return profiles.newProfile(profileName, actor, ownedBy);
-    }
-    
-    @Programmatic // now values can be set by fixtures
-    public boolean hideMakeProfile(final String testfield, final Actor actor, final String ownedBy) {
-        // if you are not the owner
-        if (!this.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        // if you have already profile
-        QueryDefault<SupplyProfile> query = 
-                QueryDefault.create(
-                        SupplyProfile.class, 
-                    "findProfileByOwner", 
-                    "profileOwner", this);
-        return container.firstMatch(query) != null?
-                true        
-                :false;
-    }
-    
-    @Programmatic // now values can be set by fixtures
-    public String validateMakeProfile(final String testfield, final Actor actor, final String ownedBy) {
-        QueryDefault<SupplyProfile> query = 
-                QueryDefault.create(
-                        SupplyProfile.class, 
-                    "findProfileByOwner", 
-                    "profileOwner", this);
-        return container.firstMatch(query) != null?
-                "You already have a profile"        
-                :null;
-    }
-    
-    //END Region> PROFILE /////////////////////////////////////////////////////////////
-    
-    //Region> NEED /////////////////////////////////////////////////////////////
-    
-    private SortedSet<Need> myNeeds = new TreeSet<Need>();
+    private SortedSet<Demand> myDemands = new TreeSet<Demand>();
     
     @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "needOwner", dependentElement = "true")
-    @Named("Opdrachten (actorniveau")
-    public SortedSet<Need> getMyNeeds() {
-        return myNeeds;
+    @Persistent(mappedBy = "demandOwner", dependentElement = "true")
+    public SortedSet<Demand> getMyDemands() {
+        return myDemands;
     }
    
-    public void setMyNeeds(final SortedSet<Need> need) {
-        this.myNeeds = need;
+    public void setMyDemands(final SortedSet<Demand> demand) {
+        this.myDemands = demand;
     }
     
-    @Named("Plaats nieuwe opdracht")
-    public Need newNeed(
-            @Named("Korte opdrachtomschrijving voor tafel")
+    public Demand newDemand(
             @MultiLine
-            final String needDescription,
-            @Named("Gewicht")
+            final String demandDescription,
             final Integer weight
             ) {
-        return newNeed(needDescription, weight, this, currentUserName());
+        return newDemand(demandDescription, weight, this, currentUserName());
     }
     
 //    public boolean hideNewNeed(final String needDescription) {
@@ -185,20 +110,17 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     //helpers
     @Programmatic
-    @Named("Plaats nieuwe opdracht")
-    public Need newNeed(
-            @Named("Korte opdrachtomschrijving") 
+    public Demand newDemand(
             @MultiLine 
-            final String needDescription,
-            @Named("Gewicht")
+            final String demandDescription,
             final Integer weight,
-            final Actor needOwner, 
+            final Actor demandOwner, 
             final String ownedBy){
-        return needs.newNeed(needDescription, weight, needOwner, ownedBy);
+        return demands.newDemand(demandDescription, weight, demandOwner, ownedBy);
     }
     
-    @Programmatic
-//    public boolean hideNewNeed(final String needDescription, final Actor needOwner){
+//    @Programmatic
+//    public boolean hideNewDemand(final String needDescription, final Actor needOwner){
 //        // if you are not the owner
 //        if (!needOwner.getOwnedBy().equals(currentUserName())){
 //            return true;
@@ -210,6 +132,58 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 //        return false;
 //    }
  
+    
+    //Region> SUPPLIES /////////////////////////////////////////////////////////////
+
+    private SortedSet<Supply> mySupplies = new TreeSet<Supply>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
+    public SortedSet<Supply> getMySupplies() {
+        return mySupplies;
+    }
+   
+    public void setMySupplies(final SortedSet<Supply> supply) {
+        this.mySupplies = supply;
+    }
+    
+    public Supply newSupply(
+            @MultiLine
+            final String needDescription
+            ) {
+        return newSupply(needDescription, this, currentUserName());
+    }
+    
+    //helpers
+    @Programmatic
+    public Supply newSupply(
+            @MultiLine 
+            final String demandDescription,
+            final Actor demandOwner, 
+            final String ownedBy){
+        return supplies.newSupply(demandDescription, demandOwner, ownedBy);
+    }
+    
+    
+    //END Region> SUPPLIES /////////////////////////////////////////////////////////////
+    
+    //Region> Saved Matches /////////////////////////////////////////////////////////////
+    
+    private SortedSet<ProfileMatch> mySavedMatches = new TreeSet<ProfileMatch>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
+    @Named("Mijn bewaarde 'matches'")
+    public SortedSet<ProfileMatch> getMySavedMatches() {
+        return mySavedMatches;
+    }
+    
+    public void setMySavedMatches(final SortedSet<ProfileMatch> mySavedMatches){
+        this.mySavedMatches = mySavedMatches;
+    }
+    
+    //END Region> Saved Matches /////////////////////////////////////////////////////////////
+    
     // Region>HELPERS ////////////////////////////
     
     private String currentUserName() {
@@ -221,10 +195,9 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     private DomainObjectContainer container;
     
     @Inject
-    Needs needs;
+    Supplies supplies;
     
     @Inject
-    private SupplyProfiles profiles;
-    
+    Demands demands;    
 
 }
