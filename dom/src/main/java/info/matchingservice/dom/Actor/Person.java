@@ -1,15 +1,10 @@
 package info.matchingservice.dom.Actor;
 
-import info.matchingservice.dom.Match.ProfileMatch;
-
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
@@ -229,12 +224,12 @@ public class Person extends Actor {
         return !getIsPrincipal();
     }
     
-    // method newNeed() is on Actor
+    // method newDemand() is on Actor
     public boolean hideNewDemand(final String needDescription, final Integer weight) {
         return hideNewDemand(needDescription, this);
     }
     
-    // Need helpers
+    // Demand helpers
     @Programmatic
     public boolean hideNewDemand(final String needDescription, final Actor needOwner){
         // if you are not the owner
@@ -245,6 +240,7 @@ public class Person extends Actor {
         if (!((Person) needOwner).getIsPrincipal()){
             return true;
         }
+        
         return false;
     }   
     //END Region> DEMANDS /////////////////////////////////////////////////////////////

@@ -1,4 +1,6 @@
-package info.matchingservice.dom;
+package info.matchingservice.dom.Profile;
+
+import info.matchingservice.dom.TitledEnum;
 
 public enum ProfileElementTextType implements TitledEnum {
     

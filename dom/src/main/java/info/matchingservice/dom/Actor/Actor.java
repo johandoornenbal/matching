@@ -6,7 +6,6 @@ import info.matchingservice.dom.Demand.Demands;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Supply.Supplies;
 import info.matchingservice.dom.Supply.Supply;
-import info.matchingservice.dom.Supply.SupplyProfile;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -27,7 +26,6 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
-import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -92,8 +90,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return myDemands;
     }
    
-    public void setMyDemands(final SortedSet<Demand> demand) {
-        this.myDemands = demand;
+    public void setMyDemands(final SortedSet<Demand> myDemands) {
+        this.myDemands = myDemands;
     }
     
     public Demand newDemand(
@@ -104,9 +102,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return newDemand(demandDescription, weight, this, currentUserName());
     }
     
-//    public boolean hideNewNeed(final String needDescription) {
-//        return hideNewNeed(needDescription, this);
-//    }
     
     //helpers
     @Programmatic
@@ -119,19 +114,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return demands.newDemand(demandDescription, weight, demandOwner, ownedBy);
     }
     
-//    @Programmatic
-//    public boolean hideNewDemand(final String needDescription, final Actor needOwner){
-//        // if you are not the owner
-//        if (!needOwner.getOwnedBy().equals(currentUserName())){
-//            return true;
-//        }
-        // if you have not Principal Role
-//        if (!needOwner.getIsPrincipal()){
-//            return true;
-//        }
-//        return false;
-//    }
- 
     
     //Region> SUPPLIES /////////////////////////////////////////////////////////////
 
@@ -143,8 +125,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return mySupplies;
     }
    
-    public void setMySupplies(final SortedSet<Supply> supply) {
-        this.mySupplies = supply;
+    public void setMySupplies(final SortedSet<Supply> supplies) {
+        this.mySupplies = supplies;
     }
     
     public Supply newSupply(

@@ -1,15 +1,19 @@
 package info.matchingservice.dom.Demand;
 
+import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Profile.Profile;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -64,6 +68,16 @@ public class DemandProfile extends Profile {
         return getWeight();
     }
     
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
+    public Actor DeleteProfile(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+        container.removeIfNotAlready(this);
+        container.informUser("Profile deleted");
+        return this.getDemandProfileOwner().getDemandOwner();
+    }
+
+    public String validateDeleteProfile(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
 
 
     // helpers
@@ -89,4 +103,8 @@ public class DemandProfile extends Profile {
         this.profileId = this.getId();
     }
 
+    // Injects
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
 }

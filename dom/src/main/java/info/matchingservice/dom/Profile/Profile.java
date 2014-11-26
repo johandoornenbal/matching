@@ -1,9 +1,10 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.ProfileElementNature;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
+import info.matchingservice.dom.Dropdown.ProfileElementDropDown;
+import info.matchingservice.dom.Dropdown.ProfileElementDropDowns;
 import info.matchingservice.dom.Dropdown.Qualities;
 import info.matchingservice.dom.Dropdown.Quality;
 
@@ -22,7 +23,6 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -56,13 +56,35 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
+
+    //Immutables //////////////////////////////////////////////////////////////////////////////////////
     
+    private ProfileNature profileNature;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public ProfileNature getProfileNature() {
+        return profileNature;
+    }
+    
+    public void setProfileNature(final ProfileNature profileNature){
+        this.profileNature = profileNature;
+    }
+    
+    private ProfileType profileType;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public ProfileType getProfileType() {
+        return profileType;
+    }
+    
+    public void setProfileType(final ProfileType profileType){
+        this.profileType = profileType;
+    }
     
     //ProfileName /////////////////////////////////////////////////////////////////////////////////////
     private String profileName;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Profiel naam")
     public String getProfileName() {
         return profileName;
     }
@@ -71,19 +93,30 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         this.profileName = test;
     }
     
-    //delete action /////////////////////////////////////////////////////////////////////////////////////
-    @Named("Verwijder profiel")
-    public void DeleteProfile(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
-        container.removeIfNotAlready(this);
-        container.informUser("Profiel verwijderd");
-        return ;
-    }
-
-    public String validateDeleteProfile(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
-    }
     
     // Region> ProfileElements
+    @Named("NewDropDownTest")
+    public ProfileElement newProfileDropDownElement(
+            final String description,
+            final Integer weight,
+            final ProfileElementDropDown profileElementDropDown
+            ){
+        return profileElements.newProfileElement(
+                description, 
+                weight,
+                profileElementDropDown,
+                ProfileElementCategory.QUALITY, 
+                ProfileElementRepresentation.PROFILE_ELEMENT_DROPDOWN, 
+                this, 
+                ProfileElementNature.MULTI_ELEMENT, 
+                ProfileElementType.MATCHABLE_DROPDOWN);
+    }
+    
+    public List<ProfileElementDropDown> autoComplete2NewProfileDropDownElement(String search) {
+        return profileElementDropDowns.findDropDowns(search);
+    }
+   
+    
     @Named("Nieuw (single) profiel element")
     @Hidden
     public Profile newProfileElement(
@@ -95,7 +128,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Programmatic
     public void newDropdownElement(final Quality keyword, final Profile profileElementOwner, final String ownedBy) {
-        profileElements.newDropdownElement(keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
+        profileFigureElements.newDropdownElement(keyword, profileElementOwner, ownedBy, ProfileElementNature.MULTI_ELEMENT);
     }
 
     public boolean hideNewProfileElement(final String profileElementDescription) {
@@ -108,7 +141,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Programmatic
     public void newProfileElement(final String profileElementDescription, final Profile profileElementOwner, final String ownedBy) {
-        profileElements.newProfileElement(profileElementDescription, profileElementOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
+        profileFigureElements.newProfileElement(profileElementDescription, profileElementOwner, ownedBy, ProfileElementNature.SINGLE_ELEMENT);
     }
 
     @Programmatic
@@ -214,12 +247,18 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private DomainObjectContainer container;
     
     @Inject
-    ProfileFigureElements profileElements;
+    private ProfileFigureElements profileFigureElements;
     
     @Inject
-    Qualities qualities;
+    private Qualities qualities;
     
     @Inject
-    ProfileFigures pe_figures;
+    private ProfileFigures pe_figures;
+    
+    @Inject
+    ProfileElements profileElements;
+    
+    @Inject
+    ProfileElementDropDowns profileElementDropDowns;
     
 }

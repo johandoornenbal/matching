@@ -1,8 +1,6 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.ProfileElementNature;
-import info.matchingservice.dom.ProfileElementType;
 import info.matchingservice.dom.Dropdown.Qualities;
 import info.matchingservice.dom.Dropdown.Quality;
 

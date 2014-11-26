@@ -4,6 +4,8 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.DemandAssessment;
+import info.matchingservice.dom.Profile.ProfileNature;
+import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -128,7 +130,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             final  String demandProfileDescription,
             final Integer weight 
             ) {
-        return newDemandProfile(demandProfileDescription, weight, this, currentUserName());
+        return newDemandProfile(demandProfileDescription, weight, ProfileNature.MULTI_PROFILE, ProfileType.DEMAND_PERSON_PROFILE, this, currentUserName());
     }
     
     
@@ -136,9 +138,11 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public DemandProfile newDemandProfile(
             final String demandProfileDescription,
             final Integer weight,
+            final ProfileNature profileNature,
+            final ProfileType profileType,
             final Demand demandProfileOwner, 
             final String ownedBy) {
-        return allDemandProfiles.newDemand(demandProfileDescription, weight, demandProfileOwner, ownedBy);
+        return allDemandProfiles.newDemandProfile(demandProfileDescription, weight, profileNature, profileType, demandProfileOwner, ownedBy);
     }
     
     // Region> Assessments

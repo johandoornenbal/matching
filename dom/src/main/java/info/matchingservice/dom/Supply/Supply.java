@@ -4,6 +4,8 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.SupplyAssessment;
+import info.matchingservice.dom.Profile.ProfileNature;
+import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -113,19 +115,20 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     }
     
     public SupplyProfile newSupplyProfile(
-            @Named("Omschrijving van supplyProfile")
             final  String supplyProfileDescription
             ) {
-        return newSupplyProfile(supplyProfileDescription, this, currentUserName());
+        return newSupplyProfile(supplyProfileDescription, ProfileNature.SINGLE_PROFILE, ProfileType.SUPPLY_PERSON_PROFILE, this, currentUserName());
     }
     
     
     @Programmatic
     public SupplyProfile newSupplyProfile(
             final String supplyProfileDescription,
+            final ProfileNature profileNature,
+            final ProfileType profileType,
             final Supply supplyProfileOwner, 
             final String ownedBy) {
-        return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, supplyProfileOwner, ownedBy);
+        return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, profileNature, profileType, supplyProfileOwner, ownedBy);
     }
     
     // Region> Assessments

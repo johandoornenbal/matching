@@ -1,4 +1,4 @@
-package info.matchingservice.dom;
+package info.matchingservice.dom.Profile;
 
 public interface ProfileElementOwner {
 

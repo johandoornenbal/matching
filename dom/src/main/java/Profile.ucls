@@ -46,15 +46,16 @@
   <class id="5" language="java" name="info.matchingservice.dom.Profile.ProfileElement" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/ProfileElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="605" y="941"/>    
+    <position height="-1" width="-1" x="600" y="962"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="false"/>    
     </display>  
   </class>  
-  <enumeration id="6" language="java" name="info.matchingservice.dom.ProfileElementNature" project="matchingservice-dom" 
-    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/ProfileElementNature.java" binary="false" 
+  <enumeration id="6" language="java" name="info.matchingservice.dom.Profile.ProfileElementNature" 
+    project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/ProfileElementNature.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="173" y="719"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -63,10 +64,11 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </enumeration>  
-  <enumeration id="7" language="java" name="info.matchingservice.dom.ProfileElementType" project="matchingservice-dom" 
-    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/ProfileElementType.java" binary="false" 
+  <enumeration id="7" language="java" name="info.matchingservice.dom.Profile.ProfileElementType" 
+    project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/ProfileElementType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="156" y="928"/>    
+    <position height="-1" width="-1" x="192" y="927"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -113,86 +115,123 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <association id="12">    
+  <enumeration id="12" language="java" name="info.matchingservice.dom.Profile.ProfileType" project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/ProfileType.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="277" y="-149"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="13" language="java" name="info.matchingservice.dom.Profile.ProfileNature" 
+    project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Profile/ProfileNature.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="653" y="-153"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </enumeration>  
+  <association id="14">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="15" name="profileNature"/>      
+      <multiplicity id="16" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="17">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="13" name="profileElementType"/>      
-      <multiplicity id="14" minimum="0" maximum="1"/>    
+      <attribute id="18" name="profileElementType"/>      
+      <multiplicity id="19" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="15">    
+  <association id="20">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="16" name="profileElement"/>      
-      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
+      <attribute id="21" name="profileType"/>      
+      <multiplicity id="22" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="23">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="24" name="profileElement"/>      
+      <multiplicity id="25" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="18">    
+  <association id="26">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="19" name="supplyProfileOwner"/>      
-      <multiplicity id="20" minimum="0" maximum="1"/>    
+      <attribute id="27" name="supplyProfileOwner"/>      
+      <multiplicity id="28" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="21">    
+  <association id="29">    
     <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="22" name="supplyProfiles"/>      
-      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
+      <attribute id="30" name="supplyProfiles"/>      
+      <multiplicity id="31" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="24">    
+  <generalization id="32">    
     <end type="SOURCE" refId="10"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
-  <generalization id="25">    
+  <generalization id="33">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="5"/>  
   </generalization>  
-  <generalization id="26">    
+  <generalization id="34">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
-  <generalization id="27">    
+  <generalization id="35">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="5"/>  
   </generalization>  
-  <association id="28">    
+  <association id="36">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="29" name="profileElementOwner"/>      
-      <multiplicity id="30" minimum="0" maximum="1"/>    
+      <attribute id="37" name="profileElementOwner"/>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="31">    
+  <association id="39">    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="32" name="demandProfiles"/>      
-      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+      <attribute id="40" name="demandProfiles"/>      
+      <multiplicity id="41" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="34">    
+  <generalization id="42">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="5"/>  
   </generalization>  
-  <association id="35">    
+  <association id="43">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="36" name="profileElementNature"/>      
-      <multiplicity id="37" minimum="0" maximum="1"/>    
+      <attribute id="44" name="profileElementNature"/>      
+      <multiplicity id="45" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="38">    
+  <association id="46">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="39" name="demandProfileOwner"/>      
-      <multiplicity id="40" minimum="0" maximum="1"/>    
+      <attribute id="47" name="demandProfileOwner"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  

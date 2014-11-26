@@ -1,6 +1,8 @@
 package info.matchingservice.dom.Demand;
 
 import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Profile.ProfileNature;
+import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.List;
 
@@ -19,33 +21,22 @@ public class DemandProfiles extends MatchingDomainService<DemandProfile> {
     }
     
     @Programmatic
-    public DemandProfile newDemand(
-            final String demandProfileDescription,
-            final Demand demandProfileOwner,
-            final String ownedBy
-            ){
-        final DemandProfile newDemandProfile = newTransientInstance(DemandProfile.class);
-        newDemandProfile.setProfileName(demandProfileDescription);
-        newDemandProfile.setDemandProfileOwner(demandProfileOwner);
-        newDemandProfile.setOwnedBy(ownedBy);
-        persist(newDemandProfile);
-        return newDemandProfile;
-    }
-    
-    @Programmatic
-    public DemandProfile newDemand(
+    public DemandProfile newDemandProfile(
             final String demandProfileDescription,
             final Integer weight,
+            final ProfileNature profileNature,
+            final ProfileType profileType,
             final Demand demandProfileOwner,
             final String ownedBy
             ){
         final DemandProfile newDemandProfile = newTransientInstance(DemandProfile.class);
         newDemandProfile.setProfileName(demandProfileDescription);
         newDemandProfile.setWeight(weight);
+        newDemandProfile.setProfileNature(profileNature);
+        newDemandProfile.setProfileType(profileType);
         newDemandProfile.setDemandProfileOwner(demandProfileOwner);
         newDemandProfile.setOwnedBy(ownedBy);
         persist(newDemandProfile);
         return newDemandProfile;
     }
-
 }

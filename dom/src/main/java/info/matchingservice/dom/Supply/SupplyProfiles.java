@@ -1,6 +1,8 @@
 package info.matchingservice.dom.Supply;
 
 import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Profile.ProfileNature;
+import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.List;
 
@@ -23,11 +25,15 @@ public class SupplyProfiles extends MatchingDomainService<SupplyProfile> {
     @Programmatic
     public SupplyProfile newSupplyProfile(
             final String supplyProfileDescription,
+            final ProfileNature profileNature,
+            final ProfileType profileType,
             final Supply supplyProfileOwner,
             final String ownedBy
             ){
         final SupplyProfile supplyProfile = newTransientInstance(SupplyProfile.class);
         supplyProfile.setProfileName(supplyProfileDescription);
+        supplyProfile.setProfileNature(profileNature);
+        supplyProfile.setProfileType(profileType);
         supplyProfile.setSupplyProfileOwner(supplyProfileOwner);
         supplyProfile.setOwnedBy(ownedBy);
         persist(supplyProfile);

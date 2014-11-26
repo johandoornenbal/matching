@@ -1,15 +1,19 @@
 package info.matchingservice.dom.Supply;
 
+import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Profile.Profile;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -29,7 +33,8 @@ public class SupplyProfile extends Profile {
         this.supplyProfileOwner = supplyProfileOwner;
     }
     
-    // Region actions
+    // Region actions 
+    //edit action /////////////////////////////////////////////////////////////////////////////////////
     public SupplyProfile EditProfileName(
             @MultiLine
             String newString
@@ -42,6 +47,17 @@ public class SupplyProfile extends Profile {
         return getProfileName();
     }
     
+
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
+    public Actor DeleteProfile(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+        container.removeIfNotAlready(this);
+        container.informUser("Profile deleted");
+        return this.getSupplyProfileOwner().getSupplyOwner();
+    }
+
+    public String validateDeleteProfile(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
 
     // helpers
     
@@ -65,5 +81,10 @@ public class SupplyProfile extends Profile {
     public void setProfileId() {
         this.profileId = this.getId();
     }
+    
+    // Injects
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
 
 }

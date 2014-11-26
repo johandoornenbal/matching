@@ -1,8 +1,8 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.ProfileElementNature;
-import info.matchingservice.dom.ProfileElementType;
+import info.matchingservice.dom.Dropdown.ProfileElementDropDown;
+import info.matchingservice.dom.Supply.SupplyProfile;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -101,6 +101,30 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.profileElementOwner = vacancyProfileOwner;
     }
     
+    private ProfileElementCategory profileElementCategory;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    public ProfileElementCategory getProfileElementCategory(){
+        return profileElementCategory;
+    }
+    
+    public void setProfileElementCategory(final ProfileElementCategory profileElementCategory){
+        this.profileElementCategory = profileElementCategory;
+    }
+    
+    private ProfileElementRepresentation profileElementRepresentation;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    public ProfileElementRepresentation getProfileElementRepresentation(){
+        return profileElementRepresentation;
+    }
+    
+    public void setProfileElementRepresentation(final ProfileElementRepresentation profileElementRepresentation){
+        this.profileElementRepresentation=profileElementRepresentation;
+    }
+    
     //element description /////////////////////////////////////////////////////////////////////////////////////
     
     private String profileElementDescription;
@@ -116,7 +140,6 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.profileElementDescription = description;
     }
     
-    @Named("Bewerk beschrijving")
     public ProfileElement EditProfileDescription(
             @Named("Beschrijving")
             @MultiLine
@@ -128,6 +151,40 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
     public String default0EditProfileDescription() {
         return getProfileElementDescription();
+    }
+    
+    //weight in case of owner is Demand Profile
+    
+    private Integer weight;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight){
+        this.weight=weight;
+    }
+    
+    public boolean hideWeight(){
+        return (this.getProfileElementOwner() instanceof SupplyProfile);
+    }
+    
+    public ProfileElement EditWeight(
+            @Named("Gewicht")
+            @MultiLine
+            Integer newWeight
+            ){
+        this.setWeight(newWeight);
+        return this;
+    }
+    
+    public Integer default0EditWeight() {
+        return getWeight();
+    }
+    
+    public boolean hideEditWeight(){
+        return (this.getProfileElementOwner() instanceof SupplyProfile);
     }
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
@@ -144,6 +201,20 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     public String validateDeleteProfileElement(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
+    
+    //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
+    
+    private ProfileElementDropDown dropDownValue;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public ProfileElementDropDown getDropDownValue(){
+        return dropDownValue;
+    }
+    
+    public void setDropDownValue(final ProfileElementDropDown value){
+        this.dropDownValue = value;
+    }
+    
     
     // Helpers
     
