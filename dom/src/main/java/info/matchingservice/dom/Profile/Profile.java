@@ -3,8 +3,8 @@ package info.matchingservice.dom.Profile;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
-import info.matchingservice.dom.Dropdown.ProfileElementDropDown;
-import info.matchingservice.dom.Dropdown.ProfileElementDropDowns;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -20,6 +20,7 @@ import javax.jdo.annotations.Persistent;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 
@@ -91,25 +92,49 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     // Region> ProfileElements
     @Named("NewDropDownTest")
-    public ProfileElement newProfileDropDownElement(
+    public ProfileElementDropDown newProfileElementDropDown(
             final String description,
             final Integer weight,
-            final ProfileElementDropDown profileElementDropDown
+            final DropDownForProfileElement dropDown
             ){
-        return profileElements.newProfileElement(
+        return profileElementDropDowns.newProfileElementDropDown(
                 description, 
                 weight,
-                profileElementDropDown,
+                dropDown,
                 ProfileElementCategory.QUALITY, 
-                ProfileElementRepresentation.PROFILE_ELEMENT_DROPDOWN, 
                 this, 
                 ProfileElementNature.MULTI_ELEMENT, 
                 ProfileElementType.MATCHABLE_DROPDOWN);
     }
     
-    public List<ProfileElementDropDown> autoComplete2NewProfileDropDownElement(String search) {
-        return profileElementDropDowns.findDropDowns(search);
+    public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDown(String search) {
+        return dropDownForProfileElements.findDropDowns(search);
     }
+    
+    @Named("NewDropDownAndTextTest")
+    public ProfileElementDropDownAndText newProfileElementDropDownAndText(
+            final String description,
+            final Integer weight,
+            @Optional
+            final DropDownForProfileElement dropDown,
+            @Optional
+            final String text
+            ){
+        return profileElementDropDownsAndTexts.newProfileElementDropDownAndText(
+                description, 
+                weight,
+                dropDown,
+                text,
+                ProfileElementCategory.QUALITY, 
+                this, 
+                ProfileElementNature.MULTI_ELEMENT, 
+                ProfileElementType.MATCHABLE_DROPDOWN);
+    }
+    
+    public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDownAndText(String search) {
+        return dropDownForProfileElements.findDropDowns(search);
+    }
+    
    
     
 //    @Named("Nieuw (single) profiel element")
@@ -236,9 +261,12 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //Injects
     
     @Inject
-    ProfileElements profileElements;
+    DropDownForProfileElements dropDownForProfileElements;
     
     @Inject
     ProfileElementDropDowns profileElementDropDowns;
+    
+    @Inject
+    ProfileElementDropDownAndTexts profileElementDropDownsAndTexts;
     
 }

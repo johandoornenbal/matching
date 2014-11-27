@@ -19,9 +19,9 @@ import info.matchingservice.dom.Profile.ProfileElementCategory;
                     + "FROM info.matchingservice.dom.Dropdown.ProfileElementDropDown "
                     + "WHERE category == 'QUALITY' && value.indexOf(:value) >= 0")             
 })
-public class ProfileElementDropDown extends MatchingDomainObject<ProfileElementDropDown>{
+public class DropDownForProfileElement extends MatchingDomainObject<DropDownForProfileElement>{
     
-    public ProfileElementDropDown(){
+    public DropDownForProfileElement(){
         super("value, category");
     }
     

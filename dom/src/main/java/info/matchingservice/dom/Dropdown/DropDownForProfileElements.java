@@ -8,29 +8,29 @@ import org.apache.isis.applib.annotation.Named;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.ProfileElementCategory;
 
-@DomainService(menuOrder = "150", repositoryFor = ProfileElementDropDown.class)
-public class ProfileElementDropDowns extends MatchingDomainService<ProfileElementDropDown> {
+@DomainService(menuOrder = "150", repositoryFor = DropDownForProfileElement.class)
+public class DropDownForProfileElements extends MatchingDomainService<DropDownForProfileElement> {
 
-    public ProfileElementDropDowns() {
-        super(ProfileElementDropDowns.class, ProfileElementDropDown.class);
+    public DropDownForProfileElements() {
+        super(DropDownForProfileElements.class, DropDownForProfileElement.class);
     }
     
-    public List<ProfileElementDropDown> allProfileElementDropDowns(){
-        return allInstances(ProfileElementDropDown.class);
+    public List<DropDownForProfileElement> allProfileElementDropDowns(){
+        return allInstances(DropDownForProfileElement.class);
     }
     
-    public List<ProfileElementDropDown> findDropDowns(
+    public List<DropDownForProfileElement> findDropDowns(
             @Named("Keyword of gedeelte ervan")
             final String value
             ) {
         return allMatches("matchDropDownByKeyWord", "value", value);
     }
     
-    public ProfileElementDropDown newProfileElementDropDown(
+    public DropDownForProfileElement newProfileElementDropDown(
             final ProfileElementCategory category,
             final String value
             ){
-        final ProfileElementDropDown newProfileElementDropDown = newTransientInstance(ProfileElementDropDown.class);
+        final DropDownForProfileElement newProfileElementDropDown = newTransientInstance(DropDownForProfileElement.class);
         newProfileElementDropDown.setCategory(category);
         newProfileElementDropDown.setValue(value);
         persist(newProfileElementDropDown);

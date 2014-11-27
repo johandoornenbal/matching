@@ -1,30 +1,35 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "60", repositoryFor = ProfileElement.class)
-public class ProfileElements extends MatchingDomainService<ProfileElement> {
+@DomainService(repositoryFor = ProfileElementDropDownAndText.class)
+public class ProfileElementDropDownAndTexts extends MatchingDomainService<ProfileElementDropDownAndText> {
 
-    public ProfileElements() {
-        super(ProfileElements.class, ProfileElement.class);
+    public ProfileElementDropDownAndTexts() {
+        super(ProfileElementDropDownAndTexts.class, ProfileElementDropDownAndText.class);
     }
 
     @Programmatic
-    public ProfileElement newProfileElement(
+    public ProfileElementDropDownAndText newProfileElementDropDownAndText(
             final String description,
             final Integer weight,
+            final DropDownForProfileElement dropDown,
+            final String text,
             final ProfileElementCategory profileElementCategory,
             final Profile profileOwner,
             final ProfileElementNature nature,
             final ProfileElementType type
             ){
-        final ProfileElement newProfileElement = newTransientInstance(ProfileElement.class);
+        final ProfileElementDropDownAndText newProfileElement = newTransientInstance(ProfileElementDropDownAndText.class);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
+        newProfileElement.setOptionalDropDownValue(dropDown);
+        newProfileElement.setText(text);
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setProfileElementNature(nature);

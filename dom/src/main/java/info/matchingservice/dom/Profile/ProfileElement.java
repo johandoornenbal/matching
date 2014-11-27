@@ -1,7 +1,7 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Dropdown.ProfileElementDropDown;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Supply.SupplyProfile;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -113,18 +113,6 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.profileElementCategory = profileElementCategory;
     }
     
-    private ProfileElementRepresentation profileElementRepresentation;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    public ProfileElementRepresentation getProfileElementRepresentation(){
-        return profileElementRepresentation;
-    }
-    
-    public void setProfileElementRepresentation(final ProfileElementRepresentation profileElementRepresentation){
-        this.profileElementRepresentation=profileElementRepresentation;
-    }
-    
     //element description /////////////////////////////////////////////////////////////////////////////////////
     
     private String profileElementDescription;
@@ -187,6 +175,18 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         return (this.getProfileElementOwner() instanceof SupplyProfile);
     }
     
+    //Should be set by subClasses
+    private String displayValue;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public String getDisplayValue(){
+        return displayValue;
+    }
+    
+    public void setDisplayValue(final String displayValue){
+        this.displayValue = displayValue;
+    }
+    
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
     @Named("Verwijder element")
@@ -201,21 +201,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     public String validateDeleteProfileElement(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
-    
-    //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
-    
-    private ProfileElementDropDown dropDownValue;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    public ProfileElementDropDown getDropDownValue(){
-        return dropDownValue;
-    }
-    
-    public void setDropDownValue(final ProfileElementDropDown value){
-        this.dropDownValue = value;
-    }
-    
-    
+        
     // Helpers
     
     public String toString(){

@@ -1,30 +1,34 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "60", repositoryFor = ProfileElement.class)
-public class ProfileElements extends MatchingDomainService<ProfileElement> {
+@DomainService(repositoryFor = ProfileElementDropDown.class)
+public class ProfileElementDropDowns extends MatchingDomainService<ProfileElementDropDown> {
 
-    public ProfileElements() {
-        super(ProfileElements.class, ProfileElement.class);
+    public ProfileElementDropDowns() {
+        super(ProfileElementDropDowns.class, ProfileElementDropDown.class);
     }
 
     @Programmatic
-    public ProfileElement newProfileElement(
+    public ProfileElementDropDown newProfileElementDropDown(
             final String description,
             final Integer weight,
+            final DropDownForProfileElement dropDown,
             final ProfileElementCategory profileElementCategory,
             final Profile profileOwner,
             final ProfileElementNature nature,
             final ProfileElementType type
             ){
-        final ProfileElement newProfileElement = newTransientInstance(ProfileElement.class);
+        final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
+        newProfileElement.setDropDownValue(dropDown);
+        newProfileElement.setDisplayValue(dropDown.getValue());
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setProfileElementNature(nature);
