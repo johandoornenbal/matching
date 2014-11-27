@@ -1,8 +1,8 @@
 package info.matchingservice.dom.Actor;
 
-import java.util.List;
-
 import info.matchingservice.dom.MatchingDomainService;
+
+import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;

@@ -35,6 +35,29 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         return newProfileElement;
     }
     
+    @Programmatic
+    public ProfileElementNumeric newProfileElementNumeric(
+            final String description,
+            final Integer weight,
+            final Integer numericValue,
+            final ProfileElementCategory profileElementCategory,
+            final Profile profileOwner,
+            final ProfileElementNature nature,
+            final String ownedBy
+            ){
+        final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
+        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setWeight(weight);
+        newProfileElement.setNumericValue(numericValue);
+        newProfileElement.setDisplayValue(numericValue.toString());
+        newProfileElement.setProfileElementCategory(profileElementCategory);
+        newProfileElement.setProfileElementOwner(profileOwner);
+        newProfileElement.setProfileElementNature(nature);
+        newProfileElement.setOwnedBy(ownedBy);
+        persist(newProfileElement);
+        return newProfileElement;
+    }
+    
     // Region>helpers ///////////////////////////////
     private String currentUserName() {
         return container.getUser().getName();
