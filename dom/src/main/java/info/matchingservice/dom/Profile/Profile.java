@@ -103,8 +103,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 dropDown,
                 ProfileElementCategory.QUALITY, 
                 this, 
-                ProfileElementNature.MULTI_ELEMENT, 
-                ProfileElementType.MATCHABLE_DROPDOWN);
+                ProfileElementNature.MULTI_ELEMENT);
     }
     
     public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDown(String search) {
@@ -127,15 +126,43 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 text,
                 ProfileElementCategory.QUALITY, 
                 this, 
-                ProfileElementNature.MULTI_ELEMENT, 
-                ProfileElementType.MATCHABLE_DROPDOWN);
+                ProfileElementNature.MULTI_ELEMENT);
     }
     
     public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDownAndText(String search) {
         return dropDownForProfileElements.findDropDowns(search);
     }
     
-   
+    @Named("NewTextTest")
+    public ProfileElementText newProfileElementText(
+            final String description,
+            final Integer weight,
+            final String textValue
+            ){
+        return profileElementTexts.newProfileElementText(
+                description, 
+                weight,
+                textValue,
+                ProfileElementCategory.TEXT, 
+                this, 
+                ProfileElementNature.MULTI_ELEMENT);
+    }
+    
+    @Named("NewNumericTest")
+    public ProfileElementNumeric newProfileElementNumeric(
+            final String description,
+            final Integer weight,
+            final Integer numericValue
+            ){
+        return profileElementNumerics.newProfileElementNumeric(
+                description, 
+                weight,
+                numericValue,
+                ProfileElementCategory.NUMERIC, 
+                this, 
+                ProfileElementNature.MULTI_ELEMENT);
+    }
+       
     
 //    @Named("Nieuw (single) profiel element")
 //    @Hidden
@@ -268,5 +295,11 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Inject
     ProfileElementDropDownAndTexts profileElementDropDownsAndTexts;
+    
+    @Inject
+    ProfileElementTexts profileElementTexts;
+    
+    @Inject
+    ProfileElementNumerics profileElementNumerics;
     
 }

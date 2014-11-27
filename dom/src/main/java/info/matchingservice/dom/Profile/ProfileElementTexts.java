@@ -6,29 +6,30 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "60", repositoryFor = ProfileElement.class)
-public class ProfileElements extends MatchingDomainService<ProfileElement> {
+@DomainService(repositoryFor = ProfileElementText.class)
+public class ProfileElementTexts extends MatchingDomainService<ProfileElementText> {
 
-    public ProfileElements() {
-        super(ProfileElements.class, ProfileElement.class);
+    public ProfileElementTexts() {
+        super(ProfileElementTexts.class, ProfileElementText.class);
     }
 
     @Programmatic
-    public ProfileElement newProfileElement(
+    public ProfileElementText newProfileElementText(
             final String description,
             final Integer weight,
+            final String textValue,
             final ProfileElementCategory profileElementCategory,
             final Profile profileOwner,
-            final ProfileElementNature nature,
-            final ProfileElementType type
+            final ProfileElementNature nature
             ){
-        final ProfileElement newProfileElement = newTransientInstance(ProfileElement.class);
+        final ProfileElementText newProfileElement = newTransientInstance(ProfileElementText.class);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
+        newProfileElement.setTextValue(textValue);
+        newProfileElement.setDisplayValue(textValue);
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setProfileElementNature(nature);
-        newProfileElement.setProfileElementType(type);
         newProfileElement.setOwnedBy(currentUserName());
         persist(newProfileElement);
         return newProfileElement;

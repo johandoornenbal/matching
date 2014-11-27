@@ -5,7 +5,8 @@ import info.matchingservice.dom.TitledEnum;
 public enum ProfileElementCategory implements TitledEnum {
     
     QUALITY("Kwaliteit"),
-    FIGURE("Getal (abstract voor test)");
+    TEXT("Tekst"),
+    NUMERIC("Getal");
 
     private String title;
     

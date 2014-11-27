@@ -1,33 +1,32 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(repositoryFor = ProfileElementDropDown.class)
-public class ProfileElementDropDowns extends MatchingDomainService<ProfileElementDropDown> {
+@DomainService(repositoryFor = ProfileElementNumeric.class)
+public class ProfileElementNumerics extends MatchingDomainService<ProfileElementNumeric> {
 
-    public ProfileElementDropDowns() {
-        super(ProfileElementDropDowns.class, ProfileElementDropDown.class);
+    public ProfileElementNumerics() {
+        super(ProfileElementNumerics.class, ProfileElementNumeric.class);
     }
 
     @Programmatic
-    public ProfileElementDropDown newProfileElementDropDown(
+    public ProfileElementNumeric newProfileElementNumeric(
             final String description,
             final Integer weight,
-            final DropDownForProfileElement dropDown,
+            final Integer numericValue,
             final ProfileElementCategory profileElementCategory,
             final Profile profileOwner,
             final ProfileElementNature nature
             ){
-        final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
+        final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
-        newProfileElement.setDropDownValue(dropDown);
-        newProfileElement.setDisplayValue(dropDown.getValue());
+        newProfileElement.setNumericValue(numericValue);
+        newProfileElement.setDisplayValue(numericValue.toString());
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setProfileElementNature(nature);

@@ -1,7 +1,6 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Supply.SupplyProfile;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -73,18 +72,6 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
     public void setProfileElementNature(final ProfileElementNature nature) {
         this.profileElementNature = nature;
-    }
-    
-    private ProfileElementType profileElementType;
-    
-    @Disabled
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public ProfileElementType getProfileElementType() {
-        return profileElementType;
-    }
-    
-    public void setProfileElementType(final ProfileElementType type) {
-        this.profileElementType = type;
     }
     
     private Profile profileElementOwner;
