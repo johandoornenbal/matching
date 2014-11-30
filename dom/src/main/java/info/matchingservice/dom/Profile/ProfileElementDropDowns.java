@@ -36,6 +36,29 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
         return newProfileElement;
     }
     
+    @Programmatic
+    public ProfileElementDropDown newProfileElementDropDown(
+            final String description,
+            final Integer weight,
+            final DropDownForProfileElement dropDown,
+            final ProfileElementCategory profileElementCategory,
+            final Profile profileOwner,
+            final ProfileElementNature nature,
+            final String ownedBy
+            ){
+        final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
+        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setWeight(weight);
+        newProfileElement.setDropDownValue(dropDown);
+        newProfileElement.setDisplayValue(dropDown.getValue());
+        newProfileElement.setProfileElementCategory(profileElementCategory);
+        newProfileElement.setProfileElementOwner(profileOwner);
+        newProfileElement.setProfileElementNature(nature);
+        newProfileElement.setOwnedBy(ownedBy);
+        persist(newProfileElement);
+        return newProfileElement;
+    }
+    
     // Region>helpers ///////////////////////////////
     private String currentUserName() {
         return container.getUser().getName();

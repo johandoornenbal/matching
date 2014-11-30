@@ -3,29 +3,29 @@ package info.matchingservice.fixture.demand;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Profile.ProfileNature;
 import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.fixture.actor.PersonForRembrandt;
+import info.matchingservice.fixture.actor.PersonForFrans;
 
 import javax.inject.Inject;
 
-public class DemandProfilesForFrans extends DemandProfileAbstract {
+public class DemandProfilesForRembrandt extends DemandProfileAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForRembrandt(), executionContext);
-        executeChild(new DemandsForRembrandt(), executionContext);
+        executeChild(new PersonForFrans(), executionContext);
+        executeChild(new DemandsForFrans(), executionContext);
         
         createDemandProfile(
                 "Gezocht profiel 1",
                 10,
                 ProfileNature.MULTI_PROFILE,
                 ProfileType.DEMAND_PERSON_PROFILE,
-                persons.findPersons("Rijn").get(0).getMyDemands().first(),
-                "Mijn getal 7",
+                persons.findPersons("Hals").get(0).getMyDemands().first(),
+                "Mijn getal 10",
                 10,
-                7,
-                "rembrandt",
+                10,
+                "frans",
                 executionContext
                 );
         
@@ -34,24 +34,24 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
                 10,
                 ProfileNature.MULTI_PROFILE,
                 ProfileType.DEMAND_PERSON_PROFILE,
-                persons.findPersons("Rijn").get(0).getMyDemands().first(),
-                "Mijn getal 5",
+                persons.findPersons("Hals").get(0).getMyDemands().first(),
+                "Mijn getal 3",
                 10,
-                5,
-                "rembrandt",
+                3,
+                "frans",
                 executionContext
                 );
         
         createDemandProfile(
-                "Figurant voor de Nachtwacht",
+                "Hulpschilder",
                 10,
                 ProfileNature.MULTI_PROFILE,
                 ProfileType.DEMAND_PERSON_PROFILE,
-                persons.findPersons("Rijn").get(0).getMyDemands().last(),
-                "Getal 13",
+                persons.findPersons("Hals").get(0).getMyDemands().last(),
+                "Getal 5",
                 10,
-                13,
-                "rembrandt",
+                5,
+                "frans",
                 executionContext
                 );
     }

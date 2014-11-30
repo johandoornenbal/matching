@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.Demand.PersonNeeds;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
@@ -289,70 +288,5 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p1.hideDeleteRolePrincipal(p1, OWNED_BY), is(true));   
         }
         
-    }
-    
-    public static class makeProfile extends PersonTest {
-        
-        private static final String LAST_NAME = "Test1";
-        private static final String MIDDLE_NAME = "van der";
-        private static final String FIRST_NAME = "T.";
-        private static final String UNIQUE_ID = "321";
-        private static final String OWNED_BY = "test1";
-        
-        Person p1;
-        Person p2;
-        
-        @Before
-        public void setUp() throws Exception {
-            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
-            p1.makeProfile("This is my profile", p1, OWNED_BY);
-            p2 = persons.allPersons().get(0); // FRANS HALS
-        }
-        
-        @Test
-        public void hasProfile() throws Exception {
-            assertThat(p1.hideMakeProfile("", p1, OWNED_BY), is(true));
-            assertThat(p1.validateMakeProfile("", p1, OWNED_BY), is("You already have a profile"));
-//            assertThat(p1.getProfile().size(), is(1)); TODO: THIS ONE DOES NOT WORK; REQUIERS WRAPPING?
-            assertThat(p2.hideMakeProfile("", p2, p2.getOwnedBy()), is(true));
-            assertThat(p2.validateMakeProfile("", p2, p2.getOwnedBy()), is("You already have a profile"));
-            assertThat(p2.getProfile().size(), is(1)); // This one works; was already set up with fixtures
-            assertThat(p2.getProfile().first().getProfileName(), is("Profiel van Frans"));
-        }
-        
-    }
-    
-    public static class makeNeeds extends PersonTest {
-        
-        private static final String LAST_NAME = "Test1";
-        private static final String MIDDLE_NAME = "van der";
-        private static final String FIRST_NAME = "T.";
-        private static final String UNIQUE_ID = "321";
-        private static final String OWNED_BY = "test1";
-        
-        Actor p1;
-        Person p2;
-        
-        @Before
-        public void setUp() throws Exception {
-            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
-            ((Person) p1).newDemand("Ik zoek iemand", 10, (Person) p1, OWNED_BY);
-            p2 = persons.allPersons().get(0); // FRANS HALS
-        }
-        
-        @Test
-        public void hasNeeds() throws Exception {
-            Integer maxindex = needs.allNeeds().size() - 1;
-            assertThat(needs.allNeeds().get(maxindex).getDemandDescription(), is("Ik zoek iemand"));
-            assertThat(needs.allNeeds().get(maxindex).getDemandProfileOwner(), is(p1));
-            assertThat(needs.allNeeds().get(maxindex).getOwnedBy(), is(OWNED_BY));
-            //assertThat(((Person) p1).getMyNeeds().size(), is(1)); //TODO: werkt niet waarom???
-            assertThat(p2.getMyDemands().size(), is(2));
-        }
-        
-        @Inject
-        PersonNeeds needs;
-        
-    }
-    
+    }   
 }

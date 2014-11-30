@@ -28,7 +28,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         super("matchInitiator");
     }
 
-    public ProfileComparison(DemandProfile matchInitiator, SupplyProfile matchingProfile, Integer value) {
+    public ProfileComparison(DemandProfile matchInitiator, DemandProfile matchingProfile, Integer value) {
         super("matchInitiator");
         this.matchInitiator = matchInitiator;
         this.matchingProfile = matchingProfile;
@@ -47,14 +47,14 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         this.matchInitiator = vac;
     }
     
-    private SupplyProfile matchingProfile;
+    private DemandProfile matchingProfile;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public SupplyProfile getMatchingProfile() {
+    public DemandProfile getMatchingProfile() {
         return matchingProfile;
     }
     
-    public void setMatchingProfile(final SupplyProfile prof) {
+    public void setMatchingProfile(final DemandProfile prof) {
         this.matchingProfile = prof;
     }
     
@@ -83,7 +83,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
                         ProfileMatch.class, 
                     "findProfileMatchUnique", 
                     "ownedBy", currentUserName(),
-                    "vacancyCandidate", getMatchingProfile().getSupplyProfileOwner(),
+                    "vacancyCandidate", getMatchingProfile().getDemandProfileOwner(),
                     "vacancyProfile", getMatchInitiator());
         return !getMatchInitiator().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName()) || container.firstMatch(query) != null;
     }
@@ -94,7 +94,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
                         ProfileMatch.class, 
                     "findProfileMatchUnique", 
                     "ownedBy", currentUserName(),
-                    "vacancyCandidate", getMatchingProfile().getSupplyProfileOwner(),
+                    "vacancyCandidate", getMatchingProfile().getDemandProfileOwner(),
                     "vacancyProfile", getMatchInitiator());
         if (container.firstMatch(query) != null) {
             return "You already saved this candidate for this vacancy";

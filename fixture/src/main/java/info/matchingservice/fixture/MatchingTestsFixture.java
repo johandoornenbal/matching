@@ -12,7 +12,14 @@ import info.matchingservice.fixture.actor.RolesForGerard;
 import info.matchingservice.fixture.actor.RolesForMichiel;
 import info.matchingservice.fixture.actor.RolesForRembrandt;
 import info.matchingservice.fixture.demand.DemandProfilesForFrans;
+import info.matchingservice.fixture.demand.DemandProfilesForRembrandt;
 import info.matchingservice.fixture.demand.DemandsForFrans;
+import info.matchingservice.fixture.demand.DemandsForRembrandt;
+import info.matchingservice.fixture.supply.SuppliesForAntoni;
+import info.matchingservice.fixture.supply.SuppliesForGerard;
+import info.matchingservice.fixture.supply.SupplyProfileDropDownsForAntoni;
+import info.matchingservice.fixture.supply.SupplyProfilesForAntoni;
+import info.matchingservice.fixture.supply.SupplyProfilesForGerard;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -41,6 +48,13 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new RolesForRembrandt(), executionContext);
         executeChild(new DemandsForFrans(), executionContext);
         executeChild(new DemandProfilesForFrans(), executionContext);
+        executeChild(new DemandsForRembrandt(), executionContext);
+        executeChild(new DemandProfilesForRembrandt(), executionContext);
+        executeChild(new SuppliesForGerard(), executionContext);
+        executeChild(new SupplyProfilesForGerard(), executionContext);
+        executeChild(new SuppliesForAntoni(), executionContext);
+        executeChild(new SupplyProfilesForAntoni(), executionContext);
+        executeChild(new SupplyProfileDropDownsForAntoni(), executionContext);
     }
 
 }

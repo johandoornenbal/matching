@@ -8,11 +8,9 @@ public class TeardownFixture extends FixtureScript {
     @Override
     protected void execute(ExecutionContext executionContext) { 
         
-        isisJdoSupport.executeUpdate("delete from \"Quality\"");
-        
-        isisJdoSupport.executeUpdate("delete from \"VacancyProfileAssessment\"");
+        isisJdoSupport.executeUpdate("delete from \"DemandAssessment\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileAssessment\"");
-        isisJdoSupport.executeUpdate("delete from \"NeedAssessment\"");
+        isisJdoSupport.executeUpdate("delete from \"SupplyAssessment\"");
         isisJdoSupport.executeUpdate("delete from \"Assessment\"");
         
         isisJdoSupport.executeUpdate("delete from \"PersonRole\"");
@@ -21,24 +19,16 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"Role\"");
         
         isisJdoSupport.executeUpdate("delete from \"ProfileMatch\"");
-        isisJdoSupport.executeUpdate("delete from \"ProfileComparison\"");
+//        isisJdoSupport.executeUpdate("delete from \"ProfileComparison\"");
           
-        isisJdoSupport.executeUpdate("delete from \"ProfileDropDownElement\"");
-        isisJdoSupport.executeUpdate("delete from \"ProfileTextElement\"");
-        isisJdoSupport.executeUpdate("delete from \"Pe_Keyword\"");
-        isisJdoSupport.executeUpdate("delete from \"ProfileFigureElement\"");
+        isisJdoSupport.executeUpdate("delete from \"DropDownForProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileElement\"");
-        isisJdoSupport.executeUpdate("delete from \"Profile\"");
         
-        isisJdoSupport.executeUpdate("delete from \"VacancyProfileDropDownElement\"");
-        isisJdoSupport.executeUpdate("delete from \"VacancyProfileTextElement\"");
-        isisJdoSupport.executeUpdate("delete from \"Vpe_Keyword\"");
-        isisJdoSupport.executeUpdate("delete from \"VacancyProfileFigureElement\"");
-        isisJdoSupport.executeUpdate("delete from \"VacancyProfileElement\"");
-        isisJdoSupport.executeUpdate("delete from \"VacancyProfile\"");
-        isisJdoSupport.executeUpdate("delete from \"PersonNeed\"");
-        isisJdoSupport.executeUpdate("delete from \"OrganisationNeed\"");
-        isisJdoSupport.executeUpdate("delete from \"Need\"");
+        isisJdoSupport.executeUpdate("delete from \"SupplyProfile\"");
+        isisJdoSupport.executeUpdate("delete from \"DemandProfile\"");
+        isisJdoSupport.executeUpdate("delete from \"Profile\"");
+        isisJdoSupport.executeUpdate("delete from \"Demand\"");
+        isisJdoSupport.executeUpdate("delete from \"Supply\"");
         
         isisJdoSupport.executeUpdate("delete from \"Person\"");
         isisJdoSupport.executeUpdate("delete from \"Organisation\""); 
