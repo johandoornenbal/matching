@@ -16,7 +16,7 @@ import info.matchingservice.dom.Profile.ProfileElementCategory;
     @javax.jdo.annotations.Query(
             name = "matchDropDownByKeyWord", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Dropdown.ProfileElementDropDown "
+                    + "FROM info.matchingservice.dom.Dropdown.DropDownForProfileElement "
                     + "WHERE category == 'QUALITY' && value.indexOf(:value) >= 0")             
 })
 public class DropDownForProfileElement extends MatchingDomainObject<DropDownForProfileElement>{

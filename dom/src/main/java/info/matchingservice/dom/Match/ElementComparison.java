@@ -1,11 +1,10 @@
 package info.matchingservice.dom.Match;
 
-import com.google.common.collect.ComparisonChain;
-
 import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Demand.DemandProfile;
+import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
+
+import com.google.common.collect.ComparisonChain;
 
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.ViewModel;
@@ -13,55 +12,60 @@ import org.apache.isis.applib.annotation.ViewModel;
 @ViewModel
 public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     
-    public ElementComparison(DemandProfile elementOwner, ProfileElement elementInitiator, ProfileElement matchingProfileElement, Actor matchingProfileOwner, Integer value){
-        super("elementOwner");
-        this.elementOwner = elementOwner;
-        this.elementInitiator = elementInitiator;
-        this.matchingProfileElement = matchingProfileElement;
-        this.matchingProfileOwner = matchingProfileOwner;
+    public ElementComparison(
+            Profile demandProfileElementOwner, 
+            ProfileElement demandProfileElement, 
+            ProfileElement matchingSupplyProfileElement, 
+            Profile matchingProfileElementOwner, 
+            Integer value){
+        super("demandProfileElementOwner");
+        this.demandProfileElementOwner = demandProfileElementOwner;
+        this.demandProfileElement = demandProfileElement;
+        this.matchingSupplyProfileElement = matchingSupplyProfileElement;
+        this.matchingProfileElementOwner = matchingProfileElementOwner;
         this.calculatedMatchingValue = value;        
     }
     
-    private DemandProfile elementOwner;
+    private Profile demandProfileElementOwner;
     
     @Hidden
-    public DemandProfile getElementOwner() {
-        return elementOwner;
+    public Profile getDemandProfileElementOwner() {
+        return demandProfileElementOwner;
     }
     
-    public void setElementOwner(final DemandProfile owner) {
-        this.elementOwner = owner;
+    public void setDemandProfileElementOwner(final Profile owner) {
+        this.demandProfileElementOwner = owner;
     }
     
-    private ProfileElement elementInitiator;
+    private ProfileElement demandProfileElement;
     
     @Hidden
-    public ProfileElement getElementInitiator() {
-        return elementInitiator;
+    public ProfileElement getDemandProfileElement() {
+        return demandProfileElement;
     }
     
-    public void setElementInitiator(final ProfileElement initiator) {
-        this.elementInitiator = initiator;
+    public void setDemandProfileElement(final ProfileElement initiator) {
+        this.demandProfileElement = initiator;
     }
     
-    private ProfileElement matchingProfileElement;
+    private ProfileElement matchingSupplyProfileElement;
     
-    public ProfileElement getMatchingProfileElement(){
-        return matchingProfileElement;
+    public ProfileElement getMatchingSupplyProfileElement(){
+        return matchingSupplyProfileElement;
     }
     
-    public void setMatchingProfileElement(final ProfileElement element) {
-        this.matchingProfileElement = element;
+    public void setMatchingSupplyProfileElement(final ProfileElement element) {
+        this.matchingSupplyProfileElement = element;
     }
     
-    private Actor matchingProfileOwner;
+    private Profile matchingProfileElementOwner;
     
-    public Actor getMatchingProfileOwner(){
-        return matchingProfileOwner;
+    public Profile getMatchingProfileElementOwner(){
+        return matchingProfileElementOwner;
     }
     
-    public void setMatchingProfileOwner(final Actor owner) {
-        this.matchingProfileOwner = owner;
+    public void setMatchingProfileElementOwner(final Profile owner) {
+        this.matchingProfileElementOwner = owner;
     }
     
     private Integer calculatedMatchingValue;
@@ -77,13 +81,13 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     //helpers
     
     public String toString() {
-        return getElementInitiator().toString() + " vs. " + getMatchingProfileElement().toString();
+        return getDemandProfileElement().toString() + " vs. " + getMatchingSupplyProfileElement().toString();
     }
     
     public int compareTo(ElementComparison that) {
         return ComparisonChain.start()
             .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
-            .compare(this.matchingProfileOwner, that.matchingProfileOwner)
+            .compare(this.matchingProfileElementOwner, that.matchingProfileElementOwner)
             .result();
     }
 

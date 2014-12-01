@@ -1,7 +1,26 @@
 package info.matchingservice.dom.Match;
 
+import info.matchingservice.dom.Profile.ProfileElementCategory;
+import info.matchingservice.dom.Profile.ProfileElementDropDown;
+import info.matchingservice.dom.Profile.ProfileElementNumeric;
+import info.matchingservice.dom.Profile.ProfileType;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Named;
+
 import org.apache.isis.applib.AbstractService;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.ActionSemantics;
+import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.NotContributed;
+import org.apache.isis.applib.annotation.NotContributed.As;
+import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.Render;
+import org.apache.isis.applib.annotation.Render.Type;
 
 @DomainService
 public class MatchingService extends AbstractService {
@@ -10,72 +29,83 @@ public class MatchingService extends AbstractService {
     final Integer MATCHING_ElEMENT_THRESHOLD = 70;
     final Integer MATCHING_PROFILE_THRESHOLD = 50;
     
-    //FIGURES//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //return matches on vacancyProfileElement of Figure elements
-//    @NotInServiceMenu
-//    @NotContributed(As.ACTION)
-//    @ActionSemantics(Of.SAFE)
-//    @Render(Type.EAGERLY)
-//    @Named("Gevonden matching profiel elementen")
-//    public List<ElementComparison> getElementMatches(VacancyProfileFigureElement element){
-//        
-//        List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
-//        
-//        //Init Test: Only if there are any Profiles
-//        if (container.allInstances(ProfileFigureElement.class).isEmpty()) {
-//            return elementMatches;
-//        }
-//        
-//        for (ProfileFigureElement e : container.allInstances(ProfileFigureElement.class)) {
-//            if (e.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
-//                // uitsluiten van dezelfde owner
-//                // drempelwaarde is MATCHING_THRESHOLD
-//                Integer matchValue = 100 - 10*Math.abs(element.getFigure() - e.getFigure());
-//                if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
-//                    ElementComparison matchTmp = new ElementComparison(element.getVacancyProfileElementOwner(), element, e, ((SupplyProfile) e.getProfileElementOwner()).getProfileOwner() ,matchValue);
-//                    elementMatches.add(matchTmp);
-//                }
-//            }
-//        }
-//        Collections.sort(elementMatches);
-//        Collections.reverse(elementMatches);
-//        return elementMatches;
-//    }
-//    
+    //NUMERIC MATCHES//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //return matches on Numeric ProfileElements only for profiles of Type Supply_Person_Profile
+    @NotInServiceMenu
+    @NotContributed(As.ACTION)
+    @ActionSemantics(Of.SAFE)
+    @Render(Type.EAGERLY)
+    @Named("Gevonden matching persoon profiel elementen")
+    public List<ElementComparison> getElementMatches(ProfileElementNumeric element){
+        
+        List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
+        
+        //Init Test: Only if there are any Profiles
+        if (container.allInstances(ProfileElementNumeric.class).isEmpty()) {
+            return elementMatches;
+        }
+        
+        for (ProfileElementNumeric e : container.allInstances(ProfileElementNumeric.class)) {
+            if (e.getProfileElementOwner().getProfileType() == ProfileType.SUPPLY_PERSON_PROFILE && e.getProfileElementCategory() == ProfileElementCategory.NUMERIC){
+                // uitsluiten van dezelfde owner
+                // drempelwaarde is MATCHING_THRESHOLD
+                Integer matchValue = 100 - 10*Math.abs(element.getNumericValue() - e.getNumericValue());
+                if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
+                    ElementComparison matchTmp = new ElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), matchValue);
+                    elementMatches.add(matchTmp);
+                }
+            }
+        }
+        Collections.sort(elementMatches);
+        Collections.reverse(elementMatches);
+        return elementMatches;
+    }
+    
+    // Hide the contributed List except on Profiles of type Demand_Person_Profile
+    public boolean hideElementMatches(ProfileElementNumeric element){
+        return element.getProfileElementOwner().getProfileType() != ProfileType.DEMAND_PERSON_PROFILE;
+    }
+    
+    
 //    //DROPDOWNS//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    //return matches on vacancyProfileElement of DROPDOWN elements
-//    @NotInServiceMenu
-//    @NotContributed(As.ACTION)
-//    @ActionSemantics(Of.SAFE)
-//    @Render(Type.EAGERLY)
-//    @Named("Gevonden matching profiel elementen")
-//    public List<ElementComparison> getDropDownElementMatches(VacancyProfileDropDownElement element){
+//    //return matches on Dropdown ProfileElements only for profiles of Type Supply_Person_Profile
+    @NotInServiceMenu
+    @NotContributed(As.ACTION)
+    @ActionSemantics(Of.SAFE)
+    @Render(Type.EAGERLY)
+    @Named("Gevonden matching kwaliteiten op persoon profiel elementen")
+    public List<ElementComparison> getDropDownElementMatches(ProfileElementDropDown element){
         
-//        List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
+        List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
         
-//        //Init Test: Only if there are any Profiles
-//        if (container.allInstances(ProfileDropDownElement.class).isEmpty()) {
-//            return elementMatches;
-//        }
-//        
-//        for (ProfileDropDownElement e : container.allInstances(ProfileDropDownElement.class)) {
-//            if (e.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
-//                // uitsluiten van dezelfde owner
-//                // drempelwaarde is MATCHING_THRESHOLD
-//                Integer matchValue=0;
-//                if (element.getKeyword().equals(e.getKeyword())){
-//                    matchValue=100;
-//                }
-//                if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
-//                    ElementComparison matchTmp = new ElementComparison(element.getVacancyProfileElementOwner(), element, e, ((SupplyProfile) e.getProfileElementOwner()).getProfileOwner() ,matchValue);
-//                    elementMatches.add(matchTmp);
-//                }
-//            }
-//        }
-//        Collections.sort(elementMatches);
-//        Collections.reverse(elementMatches);
-//        return elementMatches;
-//    }
+        //Init Test: Only if there are any Profiles
+        if (container.allInstances(ProfileElementDropDown.class).isEmpty()) {
+            return elementMatches;
+        }
+        
+        for (ProfileElementDropDown e : container.allInstances(ProfileElementDropDown.class)) {
+            if (e.getProfileElementOwner().getProfileType() == ProfileType.SUPPLY_PERSON_PROFILE && e.getProfileElementCategory() == ProfileElementCategory.QUALITY){
+                // uitsluiten van dezelfde owner
+                // drempelwaarde is MATCHING_THRESHOLD
+                Integer matchValue=0;
+                if (element.getDropDownValue().equals(e.getDropDownValue())){
+                    matchValue=100;
+                }
+                if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
+                    ElementComparison matchTmp = new ElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner() ,matchValue);
+                    elementMatches.add(matchTmp);
+                }
+            }
+        }
+        Collections.sort(elementMatches);
+        Collections.reverse(elementMatches);
+        return elementMatches;
+    }
+    
+    // Hide the contributed List except on Profiles of type Demand_Person_Profile
+    public boolean hideDropDownElementMatches(ProfileElementDropDown element){
+        return element.getProfileElementOwner().getProfileType() != ProfileType.DEMAND_PERSON_PROFILE;
+    }
     
 //    @NotInServiceMenu
 //    @NotContributed(As.ACTION)
@@ -200,7 +230,7 @@ public class MatchingService extends AbstractService {
     
 
     // Region>injections ////////////////////////////
-//    @javax.inject.Inject
-//    private DomainObjectContainer container;
+    @javax.inject.Inject
+    private DomainObjectContainer container;
 
 }
