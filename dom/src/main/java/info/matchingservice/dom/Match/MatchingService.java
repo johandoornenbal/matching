@@ -1,9 +1,14 @@
 package info.matchingservice.dom.Match;
 
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Demand.DemandProfile;
+import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementCategory;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Supply.Supply;
+import info.matchingservice.dom.Supply.SupplyProfile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,7 +117,7 @@ public class MatchingService extends AbstractService {
 //    @ActionSemantics(Of.SAFE)
 //    @Render(Type.EAGERLY)
 //    @Named("Gevonden kandidaten")
-//    public List<ProfileComparison> getMatches(DemandProfile vacancy) {
+//    public List<ProfileComparison> getMatches(DemandProfile demandProfile) {
 //        List<ProfileComparison> matches = new ArrayList<ProfileComparison>();
 //        //Init Test: Only if there are any Profiles
 //        if (container.allInstances(SupplyProfile.class).isEmpty()) {
@@ -122,11 +127,11 @@ public class MatchingService extends AbstractService {
 //        for (SupplyProfile profile: container.allInstances(SupplyProfile.class)) {
 //            
 //            //Actually for every ProfileOwner (Actor)
-//            Actor tempProfileOwner = profile.getProfileOwner();
+//            Actor tempProfileOwner = profile.getSupplyProfileOwner().getSupplyOwner();
 //            
 //            //TempElement ProfileComparison with matchingvalue 0
 //            //This is a temporary Object that we will transfer the values of to a persistent object
-//            ProfileComparison tempMatch = new ProfileComparison(vacancy, profile, 0);
+//            ProfileComparison tempMatch = new ProfileComparison(demandProfile, profile, 0);
 //            Integer elementCounter = 0;
 //            
 //            // For every figureElement and DropdownElement on Vacancy
@@ -136,9 +141,9 @@ public class MatchingService extends AbstractService {
 //            Integer avarageWeight = 1;
 //            Integer weightCounter = 0;
 //            Integer elCounter = 0;
-//            for (DemandProfileElement vpelement: vacancy.getDemandProfileElement()){
+//            for (ProfileElement vpelement: demandProfile.getProfileElement()){
 //                //Only for elements of type figure
-//                if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE || vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
+//                if (vpelement.getProfileElementCategory() == ProfileElementCategory.NUMERIC || vpelement.getProfileElementCategory() == ProfileElementCategory.QUALITY){
 //                    elCounter ++;
 //                    if (vpelement.getWeight() != null && vpelement.getWeight()>0){
 //                        cumWeight+=vpelement.getWeight();
@@ -153,21 +158,21 @@ public class MatchingService extends AbstractService {
 //            if (elCounter > weightCounter){
 //                cumWeight += (elCounter - weightCounter)*avarageWeight;
 //            }
-            
-            // For every figureElement and DropDownElement on Vacancy we add to totalMatching value
+//            
+//            // For every figureElement and DropDownElement on Vacancy we add to totalMatching value
 //            Long totalMatchingValue = (long) 0;
-//            for (DemandProfileElement vpelement: vacancy.getDemandProfileElement()){
+//            for (ProfileElement vpelement: demandProfile.getProfileElement()){
 //                
 //                //Only for elementmatches on figures with tempProfileOwner as ProfileOwner
-//                if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_FIGURE){
+//                if (vpelement.getProfileElementCategory() == ProfileElementCategory.NUMERIC){
 //                    
 //                    // Get the matching profileElements in ElementComparison Object
-//                    List<ElementComparison> tempListOfElements = getElementMatches((VacancyProfileFigureElement) vpelement);
+//                    List<ElementComparison> tempListOfElements = getElementMatches((ProfileElementNumeric) vpelement);
 //                    if (!tempListOfElements.isEmpty()){
 //                        for (ElementComparison e: tempListOfElements){
 //                            
 //                            //only if tempProfileOwner is ProfileOwner
-//                            if (e.getMatchingProfileOwner().equals(tempProfileOwner)){
+//                            if (e.getDemandProfileElementOwner().g.equals(tempProfileOwner)){
 //                                
 //                                //Add 1 to elementCounter
 //                                elementCounter ++;
@@ -182,8 +187,8 @@ public class MatchingService extends AbstractService {
 //                        }
 //                    }
 //                }
-                
-                //Only for elementmatches on DropDownElements with tempProfileOwner as ProfileOwner
+//                
+//                //Only for elementmatches on DropDownElements with tempProfileOwner as ProfileOwner
 //                if (vpelement.getProfileElementType() == ProfileElementType.MATCHABLE_DROPDOWN){
 //                    
 //                 // Get the matching profileElements in ElementComparison Object
@@ -215,8 +220,8 @@ public class MatchingService extends AbstractService {
 //            // drempelwaarde is MATCHING_THRESHOLD
 //            if (totalMatchingValue > MATCHING_PROFILE_THRESHOLD){
 //                final ProfileComparison defMatch = newTransientInstance(ProfileComparison.class);
-//                tempMatch.setMatchInitiator(tempMatch.getMatchInitiator());
-//                tempMatch.setMatchingProfile(tempMatch.getMatchingProfile());
+//                tempMatch.setDemandProfile(tempMatch.getDemandProfile());
+//                tempMatch.setMatchingSupplyProfile(tempMatch.getMatchingSupplyProfile());
 //                tempMatch.setCalculatedMatchingValue(totalMatchingValue.intValue());
 //                persistIfNotAlready(defMatch);
 //                matches.add(tempMatch);

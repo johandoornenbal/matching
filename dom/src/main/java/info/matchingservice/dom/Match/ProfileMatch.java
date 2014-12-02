@@ -13,7 +13,7 @@ import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Demand.DemandProfile;
 
 /**
- * It takes an action on a VacancyProfile to create and persist a ProfileMatch instance
+ * It takes an action on a Demand Profile to create and persist a ProfileMatch instance
  * 
  *
  * @version $Rev$ $Date$

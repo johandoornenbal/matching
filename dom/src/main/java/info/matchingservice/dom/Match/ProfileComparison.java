@@ -25,37 +25,37 @@ import org.apache.isis.applib.query.QueryDefault;
 public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     public ProfileComparison() {
-        super("matchInitiator");
+        super("demandProfile");
     }
 
-    public ProfileComparison(DemandProfile matchInitiator, DemandProfile matchingProfile, Integer value) {
+    public ProfileComparison(DemandProfile demandProfile, SupplyProfile matchingSupplyProfile, Integer value) {
         super("matchInitiator");
-        this.matchInitiator = matchInitiator;
-        this.matchingProfile = matchingProfile;
+        this.demandProfile = demandProfile;
+        this.matchingSupplyProfile = matchingSupplyProfile;
         this.calculatedMatchingValue = value;   
     }
     
-    private DemandProfile matchInitiator;
+    private DemandProfile demandProfile;
     
     @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public DemandProfile getMatchInitiator() {
-        return matchInitiator;
+    public DemandProfile getDemandProfile() {
+        return demandProfile;
     }
     
-    public void setMatchInitiator(final DemandProfile vac) {
-        this.matchInitiator = vac;
+    public void setDemandProfile(final DemandProfile vac) {
+        this.demandProfile = vac;
     }
     
-    private DemandProfile matchingProfile;
+    private SupplyProfile matchingSupplyProfile;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public DemandProfile getMatchingProfile() {
-        return matchingProfile;
+    public SupplyProfile getMatchingSupplyProfile() {
+        return matchingSupplyProfile;
     }
     
-    public void setMatchingProfile(final DemandProfile prof) {
-        this.matchingProfile = prof;
+    public void setMatchingSupplyProfile(final SupplyProfile prof) {
+        this.matchingSupplyProfile = prof;
     }
     
     private Integer calculatedMatchingValue;
@@ -70,10 +70,10 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     }
     
     //Region>Actions ////////////////////////////////////////////////////////
-//    
-//    public ProfileMatch SaveMatch(){
-//        return profileMatches.newProfileMatch(getMatchInitiator().getDemandProfileOwner().getDemandOwner(), getMatchingProfile().getSupplyProfileOwner(), getMatchInitiator());
-//    }
+    
+    public ProfileMatch SaveMatch(){
+        return profileMatches.newProfileMatch(getDemandProfile().getDemandProfileOwner().getDemandOwner(), getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner(), getDemandProfile());
+    }
     
     //TODO: uitbreiden met controle (en hideXxx ) of er al een save is gemaakt met deze kenmerken...
     // Hide if not owner or if already saved match
@@ -83,9 +83,9 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
                         ProfileMatch.class, 
                     "findProfileMatchUnique", 
                     "ownedBy", currentUserName(),
-                    "vacancyCandidate", getMatchingProfile().getDemandProfileOwner(),
-                    "vacancyProfile", getMatchInitiator());
-        return !getMatchInitiator().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName()) || container.firstMatch(query) != null;
+                    "vacancyCandidate", getMatchingSupplyProfile().getSupplyProfileOwner(),
+                    "vacancyProfile", getDemandProfile());
+        return !getDemandProfile().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName()) || container.firstMatch(query) != null;
     }
     
     public String validateSaveMatch() {
@@ -94,12 +94,12 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
                         ProfileMatch.class, 
                     "findProfileMatchUnique", 
                     "ownedBy", currentUserName(),
-                    "vacancyCandidate", getMatchingProfile().getDemandProfileOwner(),
-                    "vacancyProfile", getMatchInitiator());
+                    "vacancyCandidate", getMatchingSupplyProfile().getSupplyProfileOwner(),
+                    "vacancyProfile", getDemandProfile());
         if (container.firstMatch(query) != null) {
             return "You already saved this candidate for this vacancy";
         }
-        if (!getMatchInitiator().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName())){
+        if (!getDemandProfile().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName())){
             return "Sorry, you are not the owner of this match";
         } else {
             return null;
@@ -114,17 +114,17 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     }
     
     public String toString() {
-        return getMatchInitiator().toString() + " vs. " + getMatchingProfile().toString();
+        return getDemandProfile().toString() + " vs. " + getMatchingSupplyProfile().toString();
     }
     
-//    public Actor getProposedPerson() {
-//        return getMatchingProfile().getSupplyProfileOwner();
-//    }    
+    public Actor getProposedPerson() {
+        return getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner();
+    }    
     
     public int compareTo(ProfileComparison that) {
         return ComparisonChain.start()
             .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
-            .compare(this.matchingProfile, that.matchingProfile)
+            .compare(this.matchingSupplyProfile, that.matchingSupplyProfile)
             .result();
     }
     
