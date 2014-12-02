@@ -1,11 +1,14 @@
 package info.matchingservice.dom.Demand;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.ProfileOwner;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.DemandAssessment;
+import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileNature;
 import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -36,7 +39,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class Demand extends MatchingSecureMutableObject<Demand> {
+public class Demand extends MatchingSecureMutableObject<Demand> implements ProfileOwner {
 
     public Demand() {
         super("ownedBy, demandDescription, weight");
@@ -70,6 +73,10 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     public void setDemandOwner(final Actor needOwner) {
         this.demandOwner = needOwner;
+    }
+    
+    public Actor getProfileOwnerIsOwnedBy(){
+        return getDemandOwner();
     }
  
     //END Immutables /////////////////////////////////////////////////////////////////////////////////////
@@ -114,19 +121,19 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     // Region> Vacancies
     
-    private SortedSet<DemandProfile> demandProfiles = new TreeSet<DemandProfile>();
+    private SortedSet<Profile> demandProfiles = new TreeSet<Profile>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
-    public SortedSet<DemandProfile> getDemandProfiles() {
+    public SortedSet<Profile> getDemandProfiles() {
         return demandProfiles;
     }
     
-    public void setDemandProfiles(final SortedSet<DemandProfile> vac){
+    public void setDemandProfiles(final SortedSet<Profile> vac){
         this.demandProfiles = vac;
     }
     
-    public DemandProfile newDemandProfile(
+    public Profile newDemandProfile(
             final  String demandProfileDescription,
             final Integer weight 
             ) {
@@ -135,7 +142,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     
     @Programmatic
-    public DemandProfile newDemandProfile(
+    public Profile newDemandProfile(
             final String demandProfileDescription,
             final Integer weight,
             final ProfileNature profileNature,
@@ -179,6 +186,6 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private DomainObjectContainer container;
     
     @Inject
-    DemandProfiles allDemandProfiles;
+    Profiles allDemandProfiles;
     
 }

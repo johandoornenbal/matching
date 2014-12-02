@@ -1,8 +1,6 @@
 package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Demand.Demand;
-import info.matchingservice.dom.Demand.DemandProfile;
-import info.matchingservice.dom.Demand.DemandProfiles;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementCategory;
 import info.matchingservice.dom.Profile.ProfileElementNature;
@@ -10,6 +8,7 @@ import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementNumerics;
 import info.matchingservice.dom.Profile.ProfileNature;
 import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -18,7 +17,7 @@ public abstract class DemandProfileAbstract extends FixtureScript {
     @Override
     protected abstract void execute(ExecutionContext executionContext);
     
-    protected DemandProfile createDemandProfile(
+    protected Profile createDemandProfile(
             String demandProfileDescription,
             Integer weight,
             ProfileNature profileNature,
@@ -30,7 +29,7 @@ public abstract class DemandProfileAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        DemandProfile newDemandProfile = profiles.newDemandProfile(demandProfileDescription, weight, profileNature, profileType, demandProfileOwner, ownedBy);
+        Profile newDemandProfile = profiles.newDemandProfile(demandProfileDescription, weight, profileNature, profileType, demandProfileOwner, ownedBy);
         
         createNumericElement(
                 elementDescription, 
@@ -62,7 +61,7 @@ public abstract class DemandProfileAbstract extends FixtureScript {
     
     //region > injected services
     @javax.inject.Inject
-    DemandProfiles profiles;
+    Profiles profiles;
     
     @javax.inject.Inject
     ProfileElementNumerics profileElementNumerics;

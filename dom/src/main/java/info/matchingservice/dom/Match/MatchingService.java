@@ -1,7 +1,6 @@
 package info.matchingservice.dom.Match;
 
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Demand.DemandProfile;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementCategory;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;

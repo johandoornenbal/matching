@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Supply;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.ProfileOwner;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.SupplyAssessment;
@@ -36,7 +37,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class Supply extends MatchingSecureMutableObject<Supply> {
+public class Supply extends MatchingSecureMutableObject<Supply> implements ProfileOwner {
 
     public Supply() {
         super("ownedBy, supplyDescription");
@@ -70,6 +71,10 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     public void setSupplyOwner(final Actor supplyOwner) {
         this.supplyOwner = supplyOwner;
+    }
+    
+    public Actor getProfileOwnerIsOwnedBy(){
+        return getSupplyOwner();
     }
  
     //END Immutables /////////////////////////////////////////////////////////////////////////////////////

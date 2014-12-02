@@ -1,10 +1,14 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.ProfileOwner;
 import info.matchingservice.dom.TrustLevel;
+import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
+import info.matchingservice.dom.Demand.Demand;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Supply.Supply;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -17,8 +21,10 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Render;
@@ -77,6 +83,42 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         this.profileType = profileType;
     }
     
+    private ProfileOwner profileOwner;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Disabled
+    public ProfileOwner getProfileOwner() {
+        return profileOwner;
+    }
+    
+    public void setProfileOwner(final ProfileOwner profileOwner) {
+        this.profileOwner = profileOwner;
+    }
+    
+    private Demand demandProfileOwner;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Disabled
+    public Demand getDemandProfileOwner(){
+        return demandProfileOwner;
+    }
+    
+    public void setDemandProfileOwner(final Demand demandProfileOwner){
+        this.demandProfileOwner = demandProfileOwner;
+    }
+    
+    private Supply supplyProfileOwner;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Disabled
+    public Supply getSupplyProfileOwner(){
+        return supplyProfileOwner;
+    }
+    
+    public void setSupplyProfileOwner(final Supply supplyProfileOwner){
+        this.supplyProfileOwner = supplyProfileOwner;
+    }   
+    
     //ProfileName /////////////////////////////////////////////////////////////////////////////////////
     private String profileName;
     
@@ -87,6 +129,17 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 
     public void setProfileName(final String test) {
         this.profileName = test;
+    }
+    
+    private Integer weight;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight) {
+        this.weight = weight;
     }
     
     
@@ -109,6 +162,42 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDown(String search) {
         return dropDownForProfileElements.findDropDowns(search);
     }
+    
+    // Region actions
+    public Profile EditProfileName(
+            @MultiLine
+            String newString
+            ){
+        this.setProfileName(newString);
+        return this;
+    }
+    
+    public String default0EditProfileName() {
+        return getProfileName();
+    }
+    
+    public Profile EditWeight(
+            Integer newInteger
+            ){
+        this.setWeight(newInteger);
+        return this;
+    }
+    
+    public Integer default0EditWeight() {
+        return getWeight();
+    }
+    
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
+    public Actor DeleteProfile(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+        container.removeIfNotAlready(this);
+        container.informUser("Profile deleted");
+        return this.getProfileOwner().getProfileOwnerIsOwnedBy();
+    }
+
+    public String validateDeleteProfile(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+
     
     @Named("NewDropDownAndTextTest")
     public ProfileElementDropDownAndText newProfileElementDropDownAndText(
@@ -284,8 +373,27 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return "Profiel: " + this.profileName;
     }
     
+    // Used in case owner chooses identical vacancyDescription and weight
+    @SuppressWarnings("unused")
+    private String profileId;
+
+    @Hidden
+    public String getProfileId() {
+        if (this.getId() != null) {
+            return this.getId();
+        }
+        return "";
+    }
     
-    //Injects
+    public void setProfileId() {
+        this.profileId = this.getId();
+    }
+    
+    
+    // Injects
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
     
     @Inject
     DropDownForProfileElements dropDownForProfileElements;

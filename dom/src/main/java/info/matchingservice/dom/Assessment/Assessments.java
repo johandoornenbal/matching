@@ -13,7 +13,6 @@ import org.apache.isis.applib.annotation.NotInServiceMenu;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Demand.Demand;
-import info.matchingservice.dom.Demand.DemandProfile;
 import info.matchingservice.dom.Profile.Profile;
 
 
