@@ -14,14 +14,16 @@ public class SuppliesForGerard extends SupplyAbstract {
         executeChild(new PersonForGerard(), executionContext);
         
         createSupply(
-                "Aanbod 1",
+                "Aanbod 3",
+                10,
                 persons.findPersons("Dou").get(0),
                 "gerard",
                 executionContext
                 );
         
         createSupply(
-                "Aanbod 2",
+                "Aanbod 4",
+                10,
                 persons.findPersons("Dou").get(0),
                 "gerard",
                 executionContext

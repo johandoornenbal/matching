@@ -13,11 +13,12 @@ public abstract class SupplyAbstract extends FixtureScript {
     
     protected Supply createSupply(
             String supplyDescription,
+            final Integer weight,
             Actor supplyOwner,
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Supply newSupply = supplies.newSupply(supplyDescription, supplyOwner, ownedBy);
+        Supply newSupply = supplies.newSupply(supplyDescription, weight, supplyOwner, ownedBy);
         return executionContext.add(this,newSupply);
     }
     

@@ -1,12 +1,12 @@
 package info.matchingservice.dom.Supply;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.ProfileOwner;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.SupplyAssessment;
-import info.matchingservice.dom.Profile.ProfileNature;
+import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -37,7 +37,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class Supply extends MatchingSecureMutableObject<Supply> implements ProfileOwner {
+public class Supply extends MatchingSecureMutableObject<Supply> {
 
     public Supply() {
         super("ownedBy, supplyDescription");
@@ -90,6 +90,17 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements Profi
     public void setSupplyDescription(final String description) {
         this.supplyDescription = description;
     }
+    
+    private Integer weight;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight) {
+        this.weight = weight;
+    }
 
     //delete action /////////////////////////////////////////////////////////////////////////////////////
 
@@ -107,33 +118,34 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements Profi
     
     // Region> aanbod (supply profiles)
     
-    private SortedSet<SupplyProfile> supplyProfiles = new TreeSet<SupplyProfile>();
+    private SortedSet<Profile> supplyProfiles = new TreeSet<Profile>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "supplyProfileOwner", dependentElement = "true")
-    public SortedSet<SupplyProfile> getSupplyProfiles() {
+    public SortedSet<Profile> getSupplyProfiles() {
         return supplyProfiles;
     }
     
-    public void setSupplyProfiles(final SortedSet<SupplyProfile> supplyProfile){
+    public void setSupplyProfiles(final SortedSet<Profile> supplyProfile){
         this.supplyProfiles = supplyProfile;
     }
     
-    public SupplyProfile newSupplyProfile(
-            final  String supplyProfileDescription
+    public Profile newSupplyProfile(
+            final String supplyProfileDescription,
+            final Integer weight
             ) {
-        return newSupplyProfile(supplyProfileDescription, ProfileNature.SINGLE_PROFILE, ProfileType.SUPPLY_PERSON_PROFILE, this, currentUserName());
+        return newSupplyProfile(supplyProfileDescription, weight, ProfileType.PERSON_PROFILE, this, currentUserName());
     }
     
     
     @Programmatic
-    public SupplyProfile newSupplyProfile(
+    public Profile newSupplyProfile(
             final String supplyProfileDescription,
-            final ProfileNature profileNature,
+            final Integer weight,
             final ProfileType profileType,
             final Supply supplyProfileOwner, 
             final String ownedBy) {
-        return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, profileNature, profileType, supplyProfileOwner, ownedBy);
+        return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, weight, profileType, supplyProfileOwner, ownedBy);
     }
     
     // Region> Assessments
@@ -170,6 +182,6 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements Profi
     private DomainObjectContainer container;
     
     @Inject
-    SupplyProfiles allSupplyProfiles;
+    Profiles allSupplyProfiles;
     
 }

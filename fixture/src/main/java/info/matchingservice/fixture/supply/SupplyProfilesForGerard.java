@@ -1,7 +1,6 @@
 package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.Profile.ProfileNature;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.fixture.actor.PersonForGerard;
 
@@ -17,9 +16,9 @@ public class SupplyProfilesForGerard extends SupplyProfileAbstract {
         executeChild(new SuppliesForGerard(), executionContext);
         
         createSupplyProfile(
-                "Aangeboden profiel 1",
-                ProfileNature.MULTI_PROFILE,
-                ProfileType.SUPPLY_PERSON_PROFILE,
+                "Aangeboden: profiel 1",
+                10,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Dou").get(0).getMySupplies().first(),
                 "Mijn getal 10",
                 10,
@@ -29,9 +28,9 @@ public class SupplyProfilesForGerard extends SupplyProfileAbstract {
                 );
         
         createSupplyProfile(
-                "Aangeboden profiel 2",
-                ProfileNature.MULTI_PROFILE,
-                ProfileType.SUPPLY_PERSON_PROFILE,
+                "Aangeboden: profiel 2",
+                10,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Dou").get(0).getMySupplies().first(),
                 "Mijn getal 2",
                 10,
@@ -41,9 +40,9 @@ public class SupplyProfilesForGerard extends SupplyProfileAbstract {
                 );
         
         createSupplyProfile(
-                "Schilder",
-                ProfileNature.MULTI_PROFILE,
-                ProfileType.SUPPLY_PERSON_PROFILE,
+                "Aangeboden: Schilder",
+                10,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Dou").get(0).getMySupplies().last(),
                 "Getal 5",
                 10,

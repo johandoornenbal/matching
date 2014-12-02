@@ -16,7 +16,10 @@ import info.matchingservice.fixture.demand.DemandProfilesForRembrandt;
 import info.matchingservice.fixture.demand.DemandsForFrans;
 import info.matchingservice.fixture.demand.DemandsForRembrandt;
 import info.matchingservice.fixture.supply.SuppliesForAntoni;
+import info.matchingservice.fixture.supply.SuppliesForFrans;
 import info.matchingservice.fixture.supply.SuppliesForGerard;
+import info.matchingservice.fixture.supply.SuppliesForMichiel;
+import info.matchingservice.fixture.supply.SuppliesForRembrandt;
 import info.matchingservice.fixture.supply.SupplyProfileDropDownsForAntoni;
 import info.matchingservice.fixture.supply.SupplyProfilesForAntoni;
 import info.matchingservice.fixture.supply.SupplyProfilesForGerard;
@@ -55,6 +58,9 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new SuppliesForAntoni(), executionContext);
         executeChild(new SupplyProfilesForAntoni(), executionContext);
         executeChild(new SupplyProfileDropDownsForAntoni(), executionContext);
+        executeChild(new SuppliesForFrans(), executionContext);
+        executeChild(new SuppliesForMichiel(), executionContext);
+        executeChild(new SuppliesForRembrandt(), executionContext);
     }
 
 }

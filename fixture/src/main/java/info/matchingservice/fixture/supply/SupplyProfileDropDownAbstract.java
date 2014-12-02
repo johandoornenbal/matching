@@ -5,8 +5,7 @@ import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementCategory;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementDropDowns;
-import info.matchingservice.dom.Profile.ProfileElementNature;
-import info.matchingservice.dom.Supply.SupplyProfiles;
+import info.matchingservice.dom.Profile.Profiles;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -21,17 +20,16 @@ public abstract class SupplyProfileDropDownAbstract extends FixtureScript {
             DropDownForProfileElement dropdownValue,
             ProfileElementCategory profileElementCategory,
             Profile profileOwner,
-            ProfileElementNature nature,
             String ownedBy,
             ExecutionContext executionContext
             ){
-        ProfileElementDropDown newDropDown = profileElementDropDowns.newProfileElementDropDown(description, weight, dropdownValue, profileElementCategory, profileOwner, nature, ownedBy);
+        ProfileElementDropDown newDropDown = profileElementDropDowns.newProfileElementDropDown(description, weight, dropdownValue, profileElementCategory, profileOwner, ownedBy);
         return executionContext.add(this,newDropDown);
     }
     
     //region > injected services
     @javax.inject.Inject
-    SupplyProfiles profiles;
+    Profiles profiles;
     
     @javax.inject.Inject
     ProfileElementDropDowns profileElementDropDowns;

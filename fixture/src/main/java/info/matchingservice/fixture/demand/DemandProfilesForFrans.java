@@ -1,7 +1,6 @@
 package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.Profile.ProfileNature;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.fixture.actor.PersonForRembrandt;
 
@@ -17,10 +16,9 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
         executeChild(new DemandsForRembrandt(), executionContext);
         
         createDemandProfile(
-                "Gezocht profiel 1",
+                "Gezocht: profiel 1",
                 10,
-                ProfileNature.MULTI_PROFILE,
-                ProfileType.DEMAND_PERSON_PROFILE,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Rijn").get(0).getMyDemands().first(),
                 "Mijn getal 7",
                 10,
@@ -30,10 +28,9 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
                 );
         
         createDemandProfile(
-                "Gezocht profiel 2",
+                "Gezocht: profiel 2",
                 10,
-                ProfileNature.MULTI_PROFILE,
-                ProfileType.DEMAND_PERSON_PROFILE,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Rijn").get(0).getMyDemands().first(),
                 "Mijn getal 5",
                 10,
@@ -43,10 +40,9 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
                 );
         
         createDemandProfile(
-                "Figurant voor de Nachtwacht",
+                "Gezocht: Figurant voor de Nachtwacht",
                 10,
-                ProfileNature.MULTI_PROFILE,
-                ProfileType.DEMAND_PERSON_PROFILE,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Rijn").get(0).getMyDemands().last(),
                 "Getal 13",
                 10,

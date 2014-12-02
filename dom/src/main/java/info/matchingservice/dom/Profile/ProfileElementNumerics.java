@@ -19,8 +19,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
             final Integer weight,
             final Integer numericValue,
             final ProfileElementCategory profileElementCategory,
-            final Profile profileOwner,
-            final ProfileElementNature nature
+            final Profile profileOwner
             ){
         final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
         newProfileElement.setProfileElementDescription(description);
@@ -29,7 +28,6 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         newProfileElement.setDisplayValue(numericValue.toString());
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setProfileElementNature(nature);
         newProfileElement.setOwnedBy(currentUserName());
         persist(newProfileElement);
         return newProfileElement;
@@ -42,7 +40,6 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
             final Integer numericValue,
             final ProfileElementCategory profileElementCategory,
             final Profile profileOwner,
-            final ProfileElementNature nature,
             final String ownedBy
             ){
         final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
@@ -52,7 +49,6 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         newProfileElement.setDisplayValue(numericValue.toString());
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setProfileElementNature(nature);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;

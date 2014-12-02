@@ -1,7 +1,6 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.ProfileOwner;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
@@ -61,17 +60,6 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 
     //Immutables //////////////////////////////////////////////////////////////////////////////////////
     
-    private ProfileNature profileNature;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public ProfileNature getProfileNature() {
-        return profileNature;
-    }
-    
-    public void setProfileNature(final ProfileNature profileNature){
-        this.profileNature = profileNature;
-    }
-    
     private ProfileType profileType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -81,19 +69,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public void setProfileType(final ProfileType profileType){
         this.profileType = profileType;
-    }
-    
-    private ProfileOwner profileOwner;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @Disabled
-    public ProfileOwner getProfileOwner() {
-        return profileOwner;
-    }
-    
-    public void setProfileOwner(final ProfileOwner profileOwner) {
-        this.profileOwner = profileOwner;
-    }
+    }    
     
     private Demand demandProfileOwner;
     
@@ -155,8 +131,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 weight,
                 dropDown,
                 ProfileElementCategory.QUALITY, 
-                this, 
-                ProfileElementNature.MULTI_ELEMENT);
+                this);
     }
     
     public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDown(String search) {
@@ -191,7 +166,12 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public Actor DeleteProfile(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
-        return this.getProfileOwner().getProfileOwnerIsOwnedBy();
+        if (this.demandProfileOwner!=null){
+            return this.getDemandProfileOwner().getProfileOwnerIsOwnedBy();
+        } else {
+            return this.getSupplyProfileOwner().getProfileOwnerIsOwnedBy();
+        }
+            
     }
 
     public String validateDeleteProfile(boolean areYouSure) {
@@ -214,8 +194,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 dropDown,
                 text,
                 ProfileElementCategory.QUALITY, 
-                this, 
-                ProfileElementNature.MULTI_ELEMENT);
+                this);
     }
     
     public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDownAndText(String search) {
@@ -233,8 +212,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 weight,
                 textValue,
                 ProfileElementCategory.TEXT, 
-                this, 
-                ProfileElementNature.MULTI_ELEMENT);
+                this);
     }
     
     @Named("NewNumericTest")
@@ -248,8 +226,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 weight,
                 numericValue,
                 ProfileElementCategory.NUMERIC, 
-                this, 
-                ProfileElementNature.MULTI_ELEMENT);
+                this);
     }
        
     

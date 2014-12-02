@@ -20,8 +20,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
             final Integer weight,
             final DropDownForProfileElement dropDown,
             final ProfileElementCategory profileElementCategory,
-            final Profile profileOwner,
-            final ProfileElementNature nature
+            final Profile profileOwner
             ){
         final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
         newProfileElement.setProfileElementDescription(description);
@@ -30,7 +29,6 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
         newProfileElement.setDisplayValue(dropDown.getValue());
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setProfileElementNature(nature);
         newProfileElement.setOwnedBy(currentUserName());
         persist(newProfileElement);
         return newProfileElement;
@@ -43,7 +41,6 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
             final DropDownForProfileElement dropDown,
             final ProfileElementCategory profileElementCategory,
             final Profile profileOwner,
-            final ProfileElementNature nature,
             final String ownedBy
             ){
         final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
@@ -53,7 +50,6 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
         newProfileElement.setDisplayValue(dropDown.getValue());
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setProfileElementNature(nature);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;

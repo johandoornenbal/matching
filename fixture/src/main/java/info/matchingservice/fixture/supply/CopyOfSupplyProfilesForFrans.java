@@ -6,7 +6,7 @@ import info.matchingservice.fixture.actor.PersonForAntoni;
 
 import javax.inject.Inject;
 
-public class SupplyProfilesForAntoni extends SupplyProfileAbstract {
+public class CopyOfSupplyProfilesForFrans extends SupplyProfileAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -16,7 +16,7 @@ public class SupplyProfilesForAntoni extends SupplyProfileAbstract {
         executeChild(new SuppliesForAntoni(), executionContext);
         
         createSupplyProfile(
-                "Aangeboden: profiel 1",
+                "Aangeboden profiel 1",
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Leeuw*").get(0).getMySupplies().first(),
@@ -28,7 +28,7 @@ public class SupplyProfilesForAntoni extends SupplyProfileAbstract {
                 );
         
         createSupplyProfile(
-                "Aangeboden: profiel 2",
+                "Aangeboden profiel 2",
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Leeuw*").get(0).getMySupplies().first(),
@@ -40,7 +40,7 @@ public class SupplyProfilesForAntoni extends SupplyProfileAbstract {
                 );
         
         createSupplyProfile(
-                "Aangeboden: wetenschapper",
+                "wetenschapper",
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Leeuw*").get(0).getMySupplies().last(),

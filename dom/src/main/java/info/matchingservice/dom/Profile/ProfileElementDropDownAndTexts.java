@@ -21,8 +21,7 @@ public class ProfileElementDropDownAndTexts extends MatchingDomainService<Profil
             final DropDownForProfileElement dropDown,
             final String text,
             final ProfileElementCategory profileElementCategory,
-            final Profile profileOwner,
-            final ProfileElementNature nature
+            final Profile profileOwner
             ){
         final ProfileElementDropDownAndText newProfileElement = newTransientInstance(ProfileElementDropDownAndText.class);
         newProfileElement.setProfileElementDescription(description);
@@ -31,7 +30,6 @@ public class ProfileElementDropDownAndTexts extends MatchingDomainService<Profil
         newProfileElement.setText(text);
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setProfileElementNature(nature);
         newProfileElement.setOwnedBy(currentUserName());
         persist(newProfileElement);
         return newProfileElement;

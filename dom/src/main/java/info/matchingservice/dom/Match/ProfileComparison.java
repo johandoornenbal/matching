@@ -9,7 +9,6 @@ import com.google.common.collect.ComparisonChain;
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Supply.SupplyProfile;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Hidden;
@@ -28,7 +27,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         super("demandProfile");
     }
 
-    public ProfileComparison(Profile demandProfile, SupplyProfile matchingSupplyProfile, Integer value) {
+    public ProfileComparison(Profile demandProfile, Profile matchingSupplyProfile, Integer value) {
         super("matchInitiator");
         this.demandProfile = demandProfile;
         this.matchingSupplyProfile = matchingSupplyProfile;
@@ -47,14 +46,14 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         this.demandProfile = vac;
     }
     
-    private SupplyProfile matchingSupplyProfile;
+    private Profile matchingSupplyProfile;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public SupplyProfile getMatchingSupplyProfile() {
+    public Profile getMatchingSupplyProfile() {
         return matchingSupplyProfile;
     }
     
-    public void setMatchingSupplyProfile(final SupplyProfile prof) {
+    public void setMatchingSupplyProfile(final Profile prof) {
         this.matchingSupplyProfile = prof;
     }
     

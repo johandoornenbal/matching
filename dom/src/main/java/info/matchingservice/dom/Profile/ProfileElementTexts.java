@@ -19,8 +19,7 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
             final Integer weight,
             final String textValue,
             final ProfileElementCategory profileElementCategory,
-            final Profile profileOwner,
-            final ProfileElementNature nature
+            final Profile profileOwner
             ){
         final ProfileElementText newProfileElement = newTransientInstance(ProfileElementText.class);
         newProfileElement.setProfileElementDescription(description);
@@ -29,7 +28,6 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
         newProfileElement.setDisplayValue(textValue);
         newProfileElement.setProfileElementCategory(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setProfileElementNature(nature);
         newProfileElement.setOwnedBy(currentUserName());
         persist(newProfileElement);
         return newProfileElement;

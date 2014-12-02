@@ -22,6 +22,7 @@ public class Supplies extends MatchingDomainService<Supply> {
     @Programmatic
     public Supply newSupply(
             String supplyDescription,
+            final Integer weight,
             Actor supplyOwner,
             String ownedBy) {
         final Supply newSupply = newTransientInstance(Supply.class);

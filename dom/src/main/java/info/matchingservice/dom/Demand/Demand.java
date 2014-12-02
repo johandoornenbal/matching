@@ -1,12 +1,10 @@
 package info.matchingservice.dom.Demand;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.ProfileOwner;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.DemandAssessment;
 import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileNature;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 
@@ -39,7 +37,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class Demand extends MatchingSecureMutableObject<Demand> implements ProfileOwner {
+public class Demand extends MatchingSecureMutableObject<Demand> {
 
     public Demand() {
         super("ownedBy, demandDescription, weight");
@@ -137,7 +135,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements Profi
             final  String demandProfileDescription,
             final Integer weight 
             ) {
-        return newDemandProfile(demandProfileDescription, weight, ProfileNature.MULTI_PROFILE, ProfileType.DEMAND_PERSON_PROFILE, this, currentUserName());
+        return newDemandProfile(demandProfileDescription, weight, ProfileType.PERSON_PROFILE, this, currentUserName());
     }
     
     
@@ -145,11 +143,10 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements Profi
     public Profile newDemandProfile(
             final String demandProfileDescription,
             final Integer weight,
-            final ProfileNature profileNature,
             final ProfileType profileType,
             final Demand demandProfileOwner, 
             final String ownedBy) {
-        return allDemandProfiles.newDemandProfile(demandProfileDescription, weight, profileNature, profileType, demandProfileOwner, ownedBy);
+        return allDemandProfiles.newDemandProfile(demandProfileDescription, weight, profileType, demandProfileOwner, ownedBy);
     }
     
     // Region> Assessments

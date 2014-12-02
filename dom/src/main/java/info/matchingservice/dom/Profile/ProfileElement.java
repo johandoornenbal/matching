@@ -1,7 +1,6 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Supply.SupplyProfile;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -61,18 +60,6 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     }
     
     //Immutables /////////////////////////////////////////////////////////////////////////////////////
-    
-    private ProfileElementNature profileElementNature;
-    
-    @Disabled
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public ProfileElementNature getProfileElementNature() {
-        return profileElementNature;
-    }
-    
-    public void setProfileElementNature(final ProfileElementNature nature) {
-        this.profileElementNature = nature;
-    }
     
     private Profile profileElementOwner;
     
@@ -141,9 +128,9 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.weight=weight;
     }
     
-    public boolean hideWeight(){
-        return (this.getProfileElementOwner() instanceof SupplyProfile);
-    }
+//    public boolean hideWeight(){
+//        return (this.getProfileElementOwner() instanceof SupplyProfile);
+//    }
     
     public ProfileElement EditWeight(
             @Named("Gewicht")
@@ -158,9 +145,9 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         return getWeight();
     }
     
-    public boolean hideEditWeight(){
-        return (this.getProfileElementOwner() instanceof SupplyProfile);
-    }
+//    public boolean hideEditWeight(){
+//        return (this.getProfileElementOwner() instanceof SupplyProfile);
+//    }
     
     //Should be set by subClasses
     private String displayValue;

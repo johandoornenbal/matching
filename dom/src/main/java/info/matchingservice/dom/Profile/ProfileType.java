@@ -4,10 +4,8 @@ import info.matchingservice.dom.TitledEnum;
 
 public enum ProfileType implements TitledEnum {
 
-    SUPPLY_PERSON_PROFILE("CV"),
-    SUPPLY_GENERIC_PROFILE("Algemeen aanbod"),
-    DEMAND_PERSON_PROFILE("Gezocht CV"),
-    DEMAND_GENERIC_PROFILE("Algemeen gezocht");
+    PERSON_PROFILE("CV"),
+    GENERIC_PROFILE("Algemeen");
 
     private String title;
     

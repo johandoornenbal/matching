@@ -7,7 +7,6 @@ import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Supply.Supply;
-import info.matchingservice.dom.Supply.SupplyProfile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +49,7 @@ public class MatchingService extends AbstractService {
         }
         
         for (ProfileElementNumeric e : container.allInstances(ProfileElementNumeric.class)) {
-            if (e.getProfileElementOwner().getProfileType() == ProfileType.SUPPLY_PERSON_PROFILE && e.getProfileElementCategory() == ProfileElementCategory.NUMERIC){
+            if (e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementCategory() == ProfileElementCategory.NUMERIC){
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
                 Integer matchValue = 100 - 10*Math.abs(element.getNumericValue() - e.getNumericValue());
@@ -67,7 +66,7 @@ public class MatchingService extends AbstractService {
     
     // Hide the contributed List except on Profiles of type Demand_Person_Profile
     public boolean hideElementMatches(ProfileElementNumeric element){
-        return element.getProfileElementOwner().getProfileType() != ProfileType.DEMAND_PERSON_PROFILE;
+        return element.getProfileElementOwner().getProfileType() != ProfileType.PERSON_PROFILE;
     }
     
     
@@ -88,7 +87,7 @@ public class MatchingService extends AbstractService {
         }
         
         for (ProfileElementDropDown e : container.allInstances(ProfileElementDropDown.class)) {
-            if (e.getProfileElementOwner().getProfileType() == ProfileType.SUPPLY_PERSON_PROFILE && e.getProfileElementCategory() == ProfileElementCategory.QUALITY){
+            if (e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementCategory() == ProfileElementCategory.QUALITY){
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
                 Integer matchValue=0;
@@ -108,7 +107,7 @@ public class MatchingService extends AbstractService {
     
     // Hide the contributed List except on Profiles of type Demand_Person_Profile
     public boolean hideDropDownElementMatches(ProfileElementDropDown element){
-        return element.getProfileElementOwner().getProfileType() != ProfileType.DEMAND_PERSON_PROFILE;
+        return element.getProfileElementOwner().getProfileType() != ProfileType.PERSON_PROFILE;
     }
     
 //    @NotInServiceMenu

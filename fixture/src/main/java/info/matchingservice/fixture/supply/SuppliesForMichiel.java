@@ -1,31 +1,31 @@
 package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.fixture.actor.PersonForAntoni;
+import info.matchingservice.fixture.actor.PersonForMichiel;
 
 import javax.inject.Inject;
 
-public class SuppliesForAntoni extends SupplyAbstract {
+public class SuppliesForMichiel extends SupplyAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForAntoni(), executionContext);
+        executeChild(new PersonForMichiel(), executionContext);
         
         createSupply(
-                "Aanbod 1",
+                "Aanbod 10",
                 10,
-                persons.findPersons("Leeuw*").get(0),
-                "antoni",
+                persons.findPersons("Ruyter").get(0),
+                "frans",
                 executionContext
                 );
         
         createSupply(
-                "Aanbod 2",
+                "Aanbod 11",
                 10,
-                persons.findPersons("Leeuw*").get(0),
-                "antoni",
+                persons.findPersons("Ruyter").get(0),
+                "frans",
                 executionContext
                 );
     }

@@ -131,9 +131,9 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     public Supply newSupply(
             @MultiLine
-            final String needDescription
-            ) {
-        return newSupply(needDescription, this, currentUserName());
+            final String needDescription,
+            final Integer weight){
+        return newSupply(needDescription, weight, this, currentUserName());
     }
     
     //helpers
@@ -141,9 +141,10 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public Supply newSupply(
             @MultiLine 
             final String demandDescription,
+            final Integer weight,
             final Actor demandOwner, 
             final String ownedBy){
-        return supplies.newSupply(demandDescription, demandOwner, ownedBy);
+        return supplies.newSupply(demandDescription, weight, demandOwner, ownedBy);
     }
     
     
