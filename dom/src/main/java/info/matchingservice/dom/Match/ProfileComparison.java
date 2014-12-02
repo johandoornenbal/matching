@@ -73,38 +73,38 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     public ProfileMatch SaveMatch(){
         return profileMatches.newProfileMatch(getDemandProfile().getDemandProfileOwner().getDemandOwner(), getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner(), getDemandProfile());
     }
-    
-    //TODO: uitbreiden met controle (en hideXxx ) of er al een save is gemaakt met deze kenmerken...
-    // Hide if not owner or if already saved match
-    public boolean hideSaveMatch() {
-        QueryDefault<ProfileMatch> query = 
-                QueryDefault.create(
-                        ProfileMatch.class, 
-                    "findProfileMatchUnique", 
-                    "ownedBy", currentUserName(),
-                    "vacancyCandidate", getMatchingSupplyProfile().getSupplyProfileOwner(),
-                    "vacancyProfile", getDemandProfile());
-        return !getDemandProfile().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName()) || container.firstMatch(query) != null;
-    }
-    
-    public String validateSaveMatch() {
-        QueryDefault<ProfileMatch> query = 
-                QueryDefault.create(
-                        ProfileMatch.class, 
-                    "findProfileMatchUnique", 
-                    "ownedBy", currentUserName(),
-                    "vacancyCandidate", getMatchingSupplyProfile().getSupplyProfileOwner(),
-                    "vacancyProfile", getDemandProfile());
-        if (container.firstMatch(query) != null) {
-            return "You already saved this candidate for this vacancy";
-        }
-        if (!getDemandProfile().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName())){
-            return "Sorry, you are not the owner of this match";
-        } else {
-            return null;
-        }
-            
-    }
+//    
+//    //TODO: uitbreiden met controle (en hideXxx ) of er al een save is gemaakt met deze kenmerken...
+//    // Hide if not owner or if already saved match
+//    public boolean hideSaveMatch() {
+//        QueryDefault<ProfileMatch> query = 
+//                QueryDefault.create(
+//                        ProfileMatch.class, 
+//                    "findProfileMatchUnique", 
+//                    "ownedBy", currentUserName(),
+//                    "vacancyCandidate", getMatchingSupplyProfile().getSupplyProfileOwner(),
+//                    "vacancyProfile", getDemandProfile());
+//        return !getDemandProfile().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName()) || container.firstMatch(query) != null;
+//    }
+//    
+//    public String validateSaveMatch() {
+//        QueryDefault<ProfileMatch> query = 
+//                QueryDefault.create(
+//                        ProfileMatch.class, 
+//                    "findProfileMatchUnique", 
+//                    "ownedBy", currentUserName(),
+//                    "vacancyCandidate", getMatchingSupplyProfile().getSupplyProfileOwner(),
+//                    "vacancyProfile", getDemandProfile());
+//        if (container.firstMatch(query) != null) {
+//            return "You already saved this candidate for this vacancy";
+//        }
+//        if (!getDemandProfile().getDemandProfileOwner().getDemandOwner().getOwnedBy().equals(currentUserName())){
+//            return "Sorry, you are not the owner of this match";
+//        } else {
+//            return null;
+//        }
+//            
+//    }
     
     
     //Region>Helpers ////////////////////////////////////////////////////////

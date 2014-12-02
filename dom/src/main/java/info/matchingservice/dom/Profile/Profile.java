@@ -37,6 +37,18 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "allSupplyProfiles", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE supplyProfileOwner != null"),
+    @javax.jdo.annotations.Query(
+            name = "allDemandProfiles", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE demandProfileOwner != null")                  
+})
 public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public Profile() {

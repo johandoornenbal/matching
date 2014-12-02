@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Match;
 
 import info.matchingservice.dom.MatchingDomainObject;
+import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 
@@ -17,12 +18,14 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
             ProfileElement demandProfileElement, 
             ProfileElement matchingSupplyProfileElement, 
             Profile matchingProfileElementOwner, 
+            Actor matchingProfileElementActorOwner,
             Integer value){
         super("demandProfileElementOwner");
         this.demandProfileElementOwner = demandProfileElementOwner;
         this.demandProfileElement = demandProfileElement;
         this.matchingSupplyProfileElement = matchingSupplyProfileElement;
         this.matchingProfileElementOwner = matchingProfileElementOwner;
+        this.matchingProfileElementActorOwner = matchingProfileElementActorOwner;
         this.calculatedMatchingValue = value;        
     }
     
@@ -66,6 +69,16 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     
     public void setMatchingProfileElementOwner(final Profile owner) {
         this.matchingProfileElementOwner = owner;
+    }
+    
+    private Actor matchingProfileElementActorOwner;
+    
+    public Actor getMatchingProfileElementActorOwner() {
+        return matchingProfileElementActorOwner;
+    }
+    
+    public void setMatchingProfileElementActorOwner(final Actor actor) {
+        this.matchingProfileElementActorOwner = actor;
     }
     
     private Integer calculatedMatchingValue;
