@@ -1,8 +1,9 @@
 package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Supply.Supplies;
-import info.matchingservice.dom.Supply.Supply;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.DemandSupply.Supplies;
+import info.matchingservice.dom.DemandSupply.Supply;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -13,12 +14,13 @@ public abstract class SupplyAbstract extends FixtureScript {
     
     protected Supply createSupply(
             String supplyDescription,
-            final Integer weight,
+            Integer weight,
+            DemandSupplyType demandSupplyType,
             Actor supplyOwner,
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Supply newSupply = supplies.newSupply(supplyDescription, weight, supplyOwner, ownedBy);
+        Supply newSupply = supplies.newSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
         return executionContext.add(this,newSupply);
     }
     

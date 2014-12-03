@@ -51,8 +51,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="info.matchingservice.dom.Supply.Supply" project="matchingservice-dom" 
-    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Supply/Supply.java" binary="false" 
+  <class id="6" language="java" name="info.matchingservice.dom.DemandSupply.Supply" project="matchingservice-dom" 
+    file="/matchingservice-dom/src/main/java/info/matchingservice/dom/DemandSupply/Supply.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="77" width="273" x="1059" y="325"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

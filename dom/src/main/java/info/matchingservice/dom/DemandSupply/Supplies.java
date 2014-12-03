@@ -1,4 +1,4 @@
-package info.matchingservice.dom.Supply;
+package info.matchingservice.dom.DemandSupply;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Actor;
@@ -21,12 +21,15 @@ public class Supplies extends MatchingDomainService<Supply> {
 
     @Programmatic
     public Supply newSupply(
-            String supplyDescription,
+            final String supplyDescription,
             final Integer weight,
-            Actor supplyOwner,
-            String ownedBy) {
+            final DemandSupplyType demandSupplyType,
+            final Actor supplyOwner,
+            final String ownedBy) {
         final Supply newSupply = newTransientInstance(Supply.class);
         newSupply.setSupplyDescription(supplyDescription);
+        newSupply.setSupplyType(demandSupplyType);
+        newSupply.setWeight(weight);
         newSupply.setSupplyOwner(supplyOwner);
         newSupply.setOwnedBy(ownedBy);
         persist(newSupply);

@@ -1,9 +1,9 @@
-package info.matchingservice.dom.Supply;
+package info.matchingservice.dom.DemandSupply;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Assessment.SupplyAssessment;
+import info.matchingservice.dom.Assessment.DemandAssessment;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
@@ -37,10 +37,10 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-public class Supply extends MatchingSecureMutableObject<Supply> {
+public class Demand extends MatchingSecureMutableObject<Demand> {
 
-    public Supply() {
-        super("ownedBy, supplyDescription");
+    public Demand() {
+        super("ownedBy, demandDescription, weight");
     }
 
     //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
@@ -61,34 +61,47 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
 
     //Immutables /////////////////////////////////////////////////////////////////////////////////////
     
-    private Actor supplyOwner;
+    private Actor demandOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    public Actor getSupplyOwner() {
-        return supplyOwner;
+    public Actor getDemandOwner() {
+        return demandOwner;
     }
     
-    public void setSupplyOwner(final Actor supplyOwner) {
-        this.supplyOwner = supplyOwner;
+    public void setDemandOwner(final Actor needOwner) {
+        this.demandOwner = needOwner;
     }
     
     public Actor getProfileOwnerIsOwnedBy(){
-        return getSupplyOwner();
+        return getDemandOwner();
+    }
+    
+    private DemandSupplyType demandType;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Disabled
+    public DemandSupplyType getDemandType(){
+        return demandType;
+    }
+    
+    public void setDemandType(final DemandSupplyType demandType){
+        this.demandType = demandType;
     }
  
     //END Immutables /////////////////////////////////////////////////////////////////////////////////////
 
-    private String supplyDescription;
+    private String demandDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MultiLine
-    public String getSupplyDescription(){
-        return supplyDescription;
+    @Named("Opdracht omschrijving op tafel")
+    public String getDemandDescription(){
+        return demandDescription;
     }
     
-    public void setSupplyDescription(final String description) {
-        this.supplyDescription = description;
+    public void setDemandDescription(final String description) {
+        this.demandDescription = description;
     }
     
     private Integer weight;
@@ -103,63 +116,63 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     }
 
     //delete action /////////////////////////////////////////////////////////////////////////////////////
-
-    public Actor DeleteSupply(
+    
+    public Actor DeleteDemand(
             @Optional @Named("Verwijderen OK?") boolean areYouSure
             ){
         container.removeIfNotAlready(this);
-        container.informUser("Supply deleted");
-        return getSupplyOwner();
+        container.informUser("Demand deleted");
+        return getDemandOwner();
     }
     
-    public String validateDeleteSupply(boolean areYouSure) {
+    public String validateDeleteDemand(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     
-    // Region> aanbod (supply profiles)
+    // Region> Vacancies
     
-    private SortedSet<Profile> supplyProfiles = new TreeSet<Profile>();
+    private SortedSet<Profile> demandProfiles = new TreeSet<Profile>();
     
     @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "supplyProfileOwner", dependentElement = "true")
-    public SortedSet<Profile> getSupplyProfiles() {
-        return supplyProfiles;
+    @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
+    public SortedSet<Profile> getDemandProfiles() {
+        return demandProfiles;
     }
     
-    public void setSupplyProfiles(final SortedSet<Profile> supplyProfile){
-        this.supplyProfiles = supplyProfile;
+    public void setDemandProfiles(final SortedSet<Profile> vac){
+        this.demandProfiles = vac;
     }
     
-    public Profile newSupplyProfile(
-            final String supplyProfileDescription,
-            final Integer weight
+    public Profile newDemandProfile(
+            final  String demandProfileDescription,
+            final Integer weight 
             ) {
-        return newSupplyProfile(supplyProfileDescription, weight, ProfileType.PERSON_PROFILE, this, currentUserName());
+        return newDemandProfile(demandProfileDescription, weight, ProfileType.PERSON_PROFILE, this, currentUserName());
     }
     
     
     @Programmatic
-    public Profile newSupplyProfile(
-            final String supplyProfileDescription,
+    public Profile newDemandProfile(
+            final String demandProfileDescription,
             final Integer weight,
             final ProfileType profileType,
-            final Supply supplyProfileOwner, 
+            final Demand demandProfileOwner, 
             final String ownedBy) {
-        return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, weight, profileType, supplyProfileOwner, ownedBy);
+        return allDemandProfiles.newDemandProfile(demandProfileDescription, weight, profileType, demandProfileOwner, ownedBy);
     }
     
     // Region> Assessments
     
-    private SortedSet<SupplyAssessment> assessments = new TreeSet<SupplyAssessment>();
+    private SortedSet<DemandAssessment> assessments = new TreeSet<DemandAssessment>();
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "target", dependentElement = "true")
     @Named("Assessments")
-    public SortedSet<SupplyAssessment> getAssessments() {
+    public SortedSet<DemandAssessment> getAssessments() {
         return assessments;
     }
    
-    public void setAssessments(final SortedSet<SupplyAssessment> assessment) {
+    public void setAssessments(final SortedSet<DemandAssessment> assessment) {
         this.assessments = assessment;
     }
     
@@ -173,7 +186,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     }
     
     public String toString() {
-        return getSupplyDescription() + " - " + getSupplyOwner().title();
+        return getDemandDescription() + " - " + getDemandOwner().title();
     }
     
     // Injects
@@ -182,6 +195,6 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     private DomainObjectContainer container;
     
     @Inject
-    Profiles allSupplyProfiles;
+    Profiles allDemandProfiles;
     
 }

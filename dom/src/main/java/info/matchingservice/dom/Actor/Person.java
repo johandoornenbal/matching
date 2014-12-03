@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Actor;
 
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -225,7 +227,7 @@ public class Person extends Actor {
     }
     
     // method newDemand() is on Actor
-    public boolean hideNewDemand(final String needDescription, final Integer weight) {
+    public boolean hideNewDemand(final String needDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
         return hideNewDemand(needDescription, this);
     }
     

@@ -1,8 +1,9 @@
 package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Demand.Demand;
-import info.matchingservice.dom.Demand.Demands;
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.DemandSupply.Demands;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -14,11 +15,12 @@ public abstract class DemandAbstract extends FixtureScript {
     protected Demand createDemand(
             String demandDescription,
             Integer weight,
+            DemandSupplyType demandSupplyType,
             Actor demandOwner,
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Demand newDemand = demands.newDemand(demandDescription, weight, demandOwner, ownedBy);
+        Demand newDemand = demands.newDemand(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
         return executionContext.add(this,newDemand);
     }
     

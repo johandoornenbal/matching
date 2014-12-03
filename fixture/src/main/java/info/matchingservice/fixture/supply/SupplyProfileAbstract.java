@@ -1,12 +1,12 @@
 package info.matchingservice.fixture.supply;
 
+import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementCategory;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementNumerics;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
-import info.matchingservice.dom.Supply.Supply;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 

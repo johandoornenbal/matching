@@ -5,6 +5,10 @@ import info.matchingservice.dom.TitledEnum;
 public enum ProfileType implements TitledEnum {
 
     PERSON_PROFILE("CV"),
+    SERVICE_PROFILE("Dienst"),
+    DEVICE_PROFILE("Voorwerp"),
+    EVENT_PROFILE("Evenement"),
+    COURSE_PROFILE("Cursus / Opleiding"),
     GENERIC_PROFILE("Algemeen");
 
     private String title;

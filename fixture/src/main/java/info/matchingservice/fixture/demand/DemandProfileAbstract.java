@@ -1,6 +1,6 @@
 package info.matchingservice.fixture.demand;
 
-import info.matchingservice.dom.Demand.Demand;
+import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementCategory;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;

@@ -1,9 +1,9 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Demand.Demand;
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.dom.Supply.Supply;
 
 import java.util.List;
 

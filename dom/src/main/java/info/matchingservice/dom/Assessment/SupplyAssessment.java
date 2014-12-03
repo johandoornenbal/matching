@@ -1,6 +1,6 @@
 package info.matchingservice.dom.Assessment;
 
-import info.matchingservice.dom.Supply.Supply;
+import info.matchingservice.dom.DemandSupply.Supply;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;

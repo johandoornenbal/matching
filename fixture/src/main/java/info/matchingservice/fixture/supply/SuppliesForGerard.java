@@ -1,6 +1,7 @@
 package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.fixture.actor.PersonForGerard;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ public class SuppliesForGerard extends SupplyAbstract {
         createSupply(
                 "Aanbod 3",
                 10,
+                DemandSupplyType.GENERIC_DEMANDSUPPLY,
                 persons.findPersons("Dou").get(0),
                 "gerard",
                 executionContext
@@ -24,6 +26,7 @@ public class SuppliesForGerard extends SupplyAbstract {
         createSupply(
                 "Aanbod 4",
                 10,
+                DemandSupplyType.GENERIC_DEMANDSUPPLY,
                 persons.findPersons("Dou").get(0),
                 "gerard",
                 executionContext
