@@ -2,6 +2,7 @@ package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -266,6 +267,19 @@ public class Person extends Actor {
     
     public void setPersonalContacts(final SortedSet<PersonalContact> personalContacts) {
         this.personalContacts = personalContacts;
+    }
+    
+    @Render(Type.EAGERLY)
+    @Named("Personen verwijzend naar mij")
+    public List<Referral> getPersonsReferringToMe(){
+        List<Referral> personsReferring = new ArrayList<Referral>();
+        for(PersonalContact e: pcontacts.listAll()) {
+            if (e.getContactPerson() == this){
+                Referral referral = new Referral(e.getOwnerPerson(), e.getLevel());
+                personsReferring.add(referral);
+            }
+        }
+        return personsReferring;
     }
         
     /////////////////////////////////////////////////////////////////////////////////////

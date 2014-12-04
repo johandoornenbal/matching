@@ -1,8 +1,8 @@
 package info.matchingservice.dom.Actor;
 
-import org.apache.isis.applib.annotation.ViewModel;
+import info.matchingservice.dom.TrustLevel;
 
-import nl.yodo.dom.TrustLevel;
+import org.apache.isis.applib.annotation.ViewModel;
 
 @ViewModel
 public class Referral {
