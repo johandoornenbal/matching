@@ -2,7 +2,7 @@ package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElementCategory;
+import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementNumerics;
 import info.matchingservice.dom.Profile.ProfileType;
@@ -32,7 +32,7 @@ public abstract class DemandProfileAbstract extends FixtureScript {
                 elementDescription, 
                 elementWeight, 
                 elementNumericValue,
-                ProfileElementCategory.NUMERIC,
+                ProfileElementType.NUMERIC,
                 newDemandProfile,
                 ownedBy,
                 executionContext
@@ -45,7 +45,7 @@ public abstract class DemandProfileAbstract extends FixtureScript {
             String description,
             Integer weight,
             Integer numericValue,
-            ProfileElementCategory profileElementCategory,
+            ProfileElementType profileElementCategory,
             Profile profileOwner,
             String ownedBy,
             ExecutionContext executionContext

@@ -1,20 +1,20 @@
 package info.matchingservice.dropdown;
 
-import info.matchingservice.dom.Profile.ProfileElementCategory;
+import info.matchingservice.dom.Profile.ProfileElementType;
 
 public class ProfileElementDropDownsFixture extends ProfileElementDropDownAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
 
-        createDropdown(ProfileElementCategory.QUALITY, "ijverig", executionContext);
-        createDropdown(ProfileElementCategory.QUALITY, "aandachtig", executionContext);
-        createDropdown(ProfileElementCategory.QUALITY, "analytisch", executionContext);
-        createDropdown(ProfileElementCategory.QUALITY, "out-of-the-box", executionContext);
-        createDropdown(ProfileElementCategory.QUALITY, "verbindend", executionContext);
-        createDropdown(ProfileElementCategory.QUALITY, "empatisch", executionContext);
-        createDropdown(ProfileElementCategory.QUALITY, "supercool", executionContext);
-        createDropdown(ProfileElementCategory.QUALITY, "nieuwsgierig", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "ijverig", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "aandachtig", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "analytisch", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "out-of-the-box", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "verbindend", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "empatisch", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "supercool", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "nieuwsgierig", executionContext);
     }
 
 }

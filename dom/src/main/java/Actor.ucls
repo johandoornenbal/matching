@@ -14,7 +14,7 @@
   <class id="2" language="java" name="info.matchingservice.dom.Actor.Organisation" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Organisation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="286" y="774"/>    
+    <position height="-1" width="-1" x="218" y="771"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -24,7 +24,7 @@
   <class id="3" language="java" name="info.matchingservice.dom.Actor.Person" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/Person.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="983" y="537"/>    
+    <position height="-1" width="-1" x="1004" y="535"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -34,7 +34,7 @@
   <class id="4" language="java" name="info.matchingservice.dom.Actor.System" project="matchingservice-dom" 
     file="/matchingservice-dom/src/main/java/info/matchingservice/dom/Actor/System.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="618" y="774"/>    
+    <position height="-1" width="-1" x="605" y="770"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,15 +57,15 @@
     <end type="TARGET" refId="1"/>  
   </generalization>  
   <generalization id="7">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="8">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="5"/>  
   </generalization>  
-  <generalization id="8">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
   <generalization id="9">    
-    <end type="SOURCE" refId="2"/>    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

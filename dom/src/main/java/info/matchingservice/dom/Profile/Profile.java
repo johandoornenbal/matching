@@ -142,7 +142,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 description, 
                 weight,
                 dropDown,
-                ProfileElementCategory.QUALITY, 
+                ProfileElementType.QUALITY, 
                 this);
     }
     
@@ -205,7 +205,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 weight,
                 dropDown,
                 text,
-                ProfileElementCategory.QUALITY, 
+                ProfileElementType.QUALITY, 
                 this);
     }
     
@@ -223,7 +223,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 description, 
                 weight,
                 textValue,
-                ProfileElementCategory.TEXT, 
+                ProfileElementType.TEXT, 
                 this);
     }
     
@@ -237,7 +237,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 description, 
                 weight,
                 numericValue,
-                ProfileElementCategory.NUMERIC, 
+                ProfileElementType.NUMERIC, 
                 this);
     }
        

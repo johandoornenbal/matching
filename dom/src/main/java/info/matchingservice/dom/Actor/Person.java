@@ -3,10 +3,13 @@ package info.matchingservice.dom.Actor;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
@@ -19,6 +22,8 @@ import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
+
+
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -248,6 +253,23 @@ public class Person extends Actor {
     //END Region> DEMANDS /////////////////////////////////////////////////////////////
     
 
+    ////PERSON CONTACTS EN REFERERS/////////////////////////////////////////////////////////////////////////////////
+    
+    private SortedSet<PersonalContact> personalContacts = new TreeSet<PersonalContact>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
+    @Named("Persoonlijke contacten")
+    public SortedSet<PersonalContact> getPersonalContacts() {
+        return personalContacts;
+    }
+    
+    public void setPersonalContacts(final SortedSet<PersonalContact> personalContacts) {
+        this.personalContacts = personalContacts;
+    }
+        
+    /////////////////////////////////////////////////////////////////////////////////////
+    
     
     // Region>HELPERS ////////////////////////////
     
@@ -412,5 +434,8 @@ public class Person extends Actor {
     
     @Inject
     private PersonRoles roles;
+    
+    @Inject
+    PersonalContacts pcontacts;
 
 }

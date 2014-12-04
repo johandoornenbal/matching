@@ -19,13 +19,11 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"Role\"");
         
         isisJdoSupport.executeUpdate("delete from \"ProfileMatch\"");
-//        isisJdoSupport.executeUpdate("delete from \"ProfileComparison\"");
+        isisJdoSupport.executeUpdate("delete from \"ProfileComparison\"");
           
-        isisJdoSupport.executeUpdate("delete from \"DropDownForProfileElement\"");
+//        isisJdoSupport.executeUpdate("delete from \"DropDownForProfileElement\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileElement\"");
         
-        isisJdoSupport.executeUpdate("delete from \"SupplyProfile\"");
-        isisJdoSupport.executeUpdate("delete from \"DemandProfile\"");
         isisJdoSupport.executeUpdate("delete from \"Profile\"");
         isisJdoSupport.executeUpdate("delete from \"Demand\"");
         isisJdoSupport.executeUpdate("delete from \"Supply\"");

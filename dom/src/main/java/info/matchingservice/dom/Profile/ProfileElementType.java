@@ -2,7 +2,7 @@ package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.TitledEnum;
 
-public enum ProfileElementCategory implements TitledEnum {
+public enum ProfileElementType implements TitledEnum {
     
     QUALITY("Kwaliteit"),
     TEXT("Tekst"),
@@ -10,7 +10,7 @@ public enum ProfileElementCategory implements TitledEnum {
 
     private String title;
     
-    ProfileElementCategory (String title) {
+    ProfileElementType (String title) {
         this.title = title;
     }
     

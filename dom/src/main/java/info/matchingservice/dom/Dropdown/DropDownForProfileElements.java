@@ -6,7 +6,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Profile.ProfileElementCategory;
+import info.matchingservice.dom.Profile.ProfileElementType;
 
 @DomainService(menuOrder = "150", repositoryFor = DropDownForProfileElement.class)
 public class DropDownForProfileElements extends MatchingDomainService<DropDownForProfileElement> {
@@ -27,11 +27,11 @@ public class DropDownForProfileElements extends MatchingDomainService<DropDownFo
     }
     
     public DropDownForProfileElement newProfileElementDropDown(
-            final ProfileElementCategory category,
+            final ProfileElementType category,
             final String value
             ){
         final DropDownForProfileElement newProfileElementDropDown = newTransientInstance(DropDownForProfileElement.class);
-        newProfileElementDropDown.setCategory(category);
+        newProfileElementDropDown.setType(category);
         newProfileElementDropDown.setValue(value);
         persist(newProfileElementDropDown);
         return newProfileElementDropDown;

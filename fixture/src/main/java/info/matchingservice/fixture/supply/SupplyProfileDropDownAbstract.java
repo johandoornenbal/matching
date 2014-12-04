@@ -2,7 +2,7 @@ package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElementCategory;
+import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementDropDowns;
 import info.matchingservice.dom.Profile.Profiles;
@@ -18,7 +18,7 @@ public abstract class SupplyProfileDropDownAbstract extends FixtureScript {
             String description,
             Integer weight,
             DropDownForProfileElement dropdownValue,
-            ProfileElementCategory profileElementCategory,
+            ProfileElementType profileElementCategory,
             Profile profileOwner,
             String ownedBy,
             ExecutionContext executionContext

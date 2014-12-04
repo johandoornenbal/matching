@@ -9,7 +9,7 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.query.QueryDefault;
 
 @DomainService(menuOrder = "40", repositoryFor = MatchingTrustedContact.class)
-@Named("PrutsContacts")
+@Named("Contacts")
 public class MatchingTrustedContacts extends MatchingDomainService<MatchingTrustedContact> {
     
     public MatchingTrustedContacts() {

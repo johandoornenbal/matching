@@ -75,16 +75,16 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.profileElementOwner = vacancyProfileOwner;
     }
     
-    private ProfileElementCategory profileElementCategory;
+    private ProfileElementType profileElementType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    public ProfileElementCategory getProfileElementCategory(){
-        return profileElementCategory;
+    public ProfileElementType getProfileElementType(){
+        return profileElementType;
     }
     
-    public void setProfileElementCategory(final ProfileElementCategory profileElementCategory){
-        this.profileElementCategory = profileElementCategory;
+    public void setProfileElementType(final ProfileElementType profileElementCategory){
+        this.profileElementType = profileElementCategory;
     }
     
     //element description /////////////////////////////////////////////////////////////////////////////////////

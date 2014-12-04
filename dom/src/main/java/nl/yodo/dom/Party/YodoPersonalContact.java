@@ -30,19 +30,19 @@ import nl.yodo.dom.YodoTrustedContact;
 })
 public class YodoPersonalContact extends YodoTrustedContact {
     
-    private YodoPerson contactPerson;
+    private YodoPerson contactYodoPerson;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    public YodoPerson getContactPerson() {
-        return contactPerson;
+    public YodoPerson getContactYodoPerson() {
+        return contactYodoPerson;
     }
 
-    public void setContactPerson(final YodoPerson contact) {
-        this.contactPerson = contact;
+    public void setContactYodoPerson(final YodoPerson contact) {
+        this.contactYodoPerson = contact;
     }
     
-    public List<YodoPerson> autoCompleteContactPerson(String search) {
+    public List<YodoPerson> autoCompleteContactYodoPerson(String search) {
         return yodopersons.findYodoPersons(search);
     }
        

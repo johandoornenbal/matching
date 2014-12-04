@@ -31,6 +31,7 @@ import org.apache.isis.applib.query.QueryDefault;
  * @version $Rev$ $Date$
  */
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
         column = "id")

@@ -3,7 +3,7 @@ package info.matchingservice.dom.Match;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElementCategory;
+import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileType;
@@ -40,7 +40,7 @@ public class MatchingService extends AbstractService {
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
     @Named("Gevonden matching persoon profiel elementen")
-    public List<ElementComparison> getElementMatches(ProfileElementNumeric element){
+    public List<ElementComparison> showElementMatches(ProfileElementNumeric element){
         
         List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
         
@@ -50,7 +50,7 @@ public class MatchingService extends AbstractService {
         }
         
         for (ProfileElementNumeric e : container.allInstances(ProfileElementNumeric.class)) {
-            if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementCategory() == ProfileElementCategory.NUMERIC){
+            if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementType() == ProfileElementType.NUMERIC){
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
                 Integer matchValue = 100 - 10*Math.abs(element.getNumericValue() - e.getNumericValue());
@@ -66,7 +66,7 @@ public class MatchingService extends AbstractService {
     }
     
     // Hide the contributed List except on Profiles of type Demand_Person_Profile
-    public boolean hideElementMatches(ProfileElementNumeric element){
+    public boolean hideShowElementMatches(ProfileElementNumeric element){
         return element.getProfileElementOwner().getDemandProfileOwner()==null;
     }
     
@@ -78,7 +78,7 @@ public class MatchingService extends AbstractService {
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
     @Named("Gevonden matching kwaliteiten op persoon profiel elementen")
-    public List<ElementComparison> getDropDownElementMatches(ProfileElementDropDown element){
+    public List<ElementComparison> showDropDownElementMatches(ProfileElementDropDown element){
         
         List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
         
@@ -88,7 +88,7 @@ public class MatchingService extends AbstractService {
         }
         
         for (ProfileElementDropDown e : container.allInstances(ProfileElementDropDown.class)) {
-            if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementCategory() == ProfileElementCategory.QUALITY){
+            if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementType() == ProfileElementType.QUALITY){
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
                 Integer matchValue=0;
@@ -107,7 +107,7 @@ public class MatchingService extends AbstractService {
     }
     
     // Hide the contributed List except on Profiles of type Demand_Person_Profile
-    public boolean hideDropDownElementMatches(ProfileElementDropDown element){
+    public boolean hideShowDropDownElementMatches(ProfileElementDropDown element){
         return element.getProfileElementOwner().getDemandProfileOwner()==null;
     }
     
@@ -143,7 +143,7 @@ public class MatchingService extends AbstractService {
                 Integer elCounter = 0;
                 for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
                     //Only for elements of type figure
-                    if (demandProfileElement.getProfileElementCategory() == ProfileElementCategory.NUMERIC || demandProfileElement.getProfileElementCategory() == ProfileElementCategory.QUALITY){
+                    if (demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC || demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY){
                         elCounter ++;
                         if (demandProfileElement.getWeight() != null && demandProfileElement.getWeight()>0){
                             cumWeight+=demandProfileElement.getWeight();
@@ -164,10 +164,10 @@ public class MatchingService extends AbstractService {
                 for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
                     
                     //Only for elementmatches on figures with tempProfileOwner as ProfileOwner
-                    if (demandProfileElement.getProfileElementCategory() == ProfileElementCategory.NUMERIC){
+                    if (demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC){
                         
                         // Get the matching profileElements in ElementComparison Object
-                        List<ElementComparison> tempListOfElements = getElementMatches((ProfileElementNumeric) demandProfileElement);
+                        List<ElementComparison> tempListOfElements = showElementMatches((ProfileElementNumeric) demandProfileElement);
                         if (!tempListOfElements.isEmpty()){
                             for (ElementComparison e: tempListOfElements){
                                 
@@ -189,10 +189,10 @@ public class MatchingService extends AbstractService {
                     }
                     
                     //Only for elementmatches on DropDownElements with tempProfileOwner as ProfileOwner
-                    if (demandProfileElement.getProfileElementCategory() == ProfileElementCategory.QUALITY){
+                    if (demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY){
                         
                      // Get the matching profileElements in ElementComparison Object
-                        List<ElementComparison> tempListOfElements = getDropDownElementMatches((ProfileElementDropDown) demandProfileElement);
+                        List<ElementComparison> tempListOfElements = showDropDownElementMatches((ProfileElementDropDown) demandProfileElement);
                         if (!tempListOfElements.isEmpty()){
                             for (ElementComparison e: tempListOfElements){
                                 

@@ -19,7 +19,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
             final String description,
             final Integer weight,
             final DropDownForProfileElement dropDown,
-            final ProfileElementCategory profileElementCategory,
+            final ProfileElementType profileElementCategory,
             final Profile profileOwner
             ){
         final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
@@ -27,7 +27,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
         newProfileElement.setWeight(weight);
         newProfileElement.setDropDownValue(dropDown);
         newProfileElement.setDisplayValue(dropDown.getValue());
-        newProfileElement.setProfileElementCategory(profileElementCategory);
+        newProfileElement.setProfileElementType(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(currentUserName());
         persist(newProfileElement);
@@ -39,7 +39,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
             final String description,
             final Integer weight,
             final DropDownForProfileElement dropDown,
-            final ProfileElementCategory profileElementCategory,
+            final ProfileElementType profileElementCategory,
             final Profile profileOwner,
             final String ownedBy
             ){
@@ -48,7 +48,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
         newProfileElement.setWeight(weight);
         newProfileElement.setDropDownValue(dropDown);
         newProfileElement.setDisplayValue(dropDown.getValue());
-        newProfileElement.setProfileElementCategory(profileElementCategory);
+        newProfileElement.setProfileElementType(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);

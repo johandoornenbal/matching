@@ -18,7 +18,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
             final String description,
             final Integer weight,
             final Integer numericValue,
-            final ProfileElementCategory profileElementCategory,
+            final ProfileElementType profileElementCategory,
             final Profile profileOwner
             ){
         final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
@@ -26,7 +26,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         newProfileElement.setWeight(weight);
         newProfileElement.setNumericValue(numericValue);
         newProfileElement.setDisplayValue(numericValue.toString());
-        newProfileElement.setProfileElementCategory(profileElementCategory);
+        newProfileElement.setProfileElementType(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(currentUserName());
         persist(newProfileElement);
@@ -38,7 +38,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
             final String description,
             final Integer weight,
             final Integer numericValue,
-            final ProfileElementCategory profileElementCategory,
+            final ProfileElementType profileElementCategory,
             final Profile profileOwner,
             final String ownedBy
             ){
@@ -47,7 +47,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         newProfileElement.setWeight(weight);
         newProfileElement.setNumericValue(numericValue);
         newProfileElement.setDisplayValue(numericValue.toString());
-        newProfileElement.setProfileElementCategory(profileElementCategory);
+        newProfileElement.setProfileElementType(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
