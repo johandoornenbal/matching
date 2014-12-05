@@ -25,7 +25,7 @@ import org.apache.isis.applib.util.TitleBuffer;
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
-            name = "findOrganisationUnique", language = "JDOQL",
+            name = "findMyOrganisations", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.Organisation "
                     + "WHERE ownedBy == :ownedBy"),
@@ -81,7 +81,7 @@ public class Organisation extends Actor {
     @Named("Geen opdrachtgever meer")
     @MemberOrder(sequence = "61")
     public Organisation deleteRolePrincipal() {
-        deleteRolePrincipal(currentUserName());
+        deleteRolePrincipal(this);
         return this;
     }
     
@@ -104,7 +104,7 @@ public class Organisation extends Actor {
                 QueryDefault.create(
                         OrganisationRole.class,
                         "findMyRoles",
-                        "ownedBy", this.getOwnedBy());
+                        "roleOwner", this);
         return container.allMatches(query);
     }
     
@@ -124,19 +124,19 @@ public class Organisation extends Actor {
     // Role PRINCIPAL helpers
     
     @Programmatic // now values can be set by fixtures
-    public Boolean getIsPrincipal(Organisation ownerPerson) {
+    public Boolean getIsPrincipal(Organisation ownerOrganisation) {
         QueryDefault<OrganisationRole> query =
                 QueryDefault.create(
                         OrganisationRole.class,
                         "findSpecificRole",
-                        "ownedBy", ownerPerson.getOwnedBy(),
+                        "roleOwner", ownerOrganisation,
                         "role", OrganisationRoleType.PRINCIPAL);
         return !container.allMatches(query).isEmpty();
     }
     
     @Programmatic // now values can be set by fixtures
     public void addRolePrincipal(String ownedBy) {
-        roles.newRole(OrganisationRoleType.PRINCIPAL, ownedBy);
+        roles.newRole(OrganisationRoleType.PRINCIPAL, this, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -150,15 +150,15 @@ public class Organisation extends Actor {
     }
     
     @Programmatic // now values can be set by fixtures
-    public void deleteRolePrincipal(String ownedBy) {
+    public void deleteRolePrincipal(Organisation roleOwner) {
         QueryDefault<OrganisationRole> query =
                 QueryDefault.create(
                         OrganisationRole.class,
                         "findSpecificRole",
-                        "ownedBy", ownedBy,
+                        "roleOwner", roleOwner,
                         "role", OrganisationRoleType.PRINCIPAL);
         OrganisationRole roleToDelete = container.firstMatch(query);
-        roleToDelete.delete(true);
+        roleToDelete.delete(true, this);
     }
     
     @Programmatic // now values can be set by fixtures

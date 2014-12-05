@@ -16,12 +16,12 @@ import org.apache.isis.applib.query.QueryDefault;
             name = "findMyRoles", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.OrganisationRole "
-                    + "WHERE ownedBy == :ownedBy"),
+                    + "WHERE roleOwner == :roleOwner"),
     @javax.jdo.annotations.Query(
             name = "findSpecificRole", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.OrganisationRole "
-                    + "WHERE ownedBy == :ownedBy && role == :role"),
+                    + "WHERE roleOwner == :roleOwner && role == :role"),
 })
 public class OrganisationRole extends Role {
     
@@ -36,6 +36,17 @@ public class OrganisationRole extends Role {
         this.ownedBy=owner;
     }
     
+    private Organisation roleOwner;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public Organisation getRoleOwner(){
+        return roleOwner;
+    }
+    
+    public void setRoleOwner(final Organisation roleOwner){
+        this.roleOwner = roleOwner;
+    }
+    
     private OrganisationRoleType role;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -48,18 +59,23 @@ public class OrganisationRole extends Role {
     }
     
     // Region //// Delete action //////////////////////////////
-    public List<OrganisationRole> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+    public List<OrganisationRole> delete(
+            @Optional 
+            @Named("Verwijderen OK?") 
+            boolean areYouSure,
+            Organisation organisation
+            ) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");
         QueryDefault<OrganisationRole> query =
                 QueryDefault.create(
                         OrganisationRole.class,
                         "findMyRoles",
-                        "ownedBy", this.getOwnedBy());
+                        "roleOwner", organisation);
         return container.allMatches(query);
     }
     
-    public String validateDelete(boolean areYouSure) {
+    public String validateDelete(boolean areYouSure, Organisation organisation) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     

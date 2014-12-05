@@ -33,7 +33,7 @@ public class Organisations extends MatchingDomainService<Organisation> {
     }
     
     @ActionSemantics(Of.NON_IDEMPOTENT)
-    @Named("Maak je organisatie aan in het systeem")
+    @Named("Maak een organisatie aan in het systeem")
     public Organisation newOrganisation(
             final @Named("Uniek ID") String uniquePartyId,
             final @Named("Organisatie naam") String organisationName
@@ -41,25 +41,10 @@ public class Organisations extends MatchingDomainService<Organisation> {
         return newOrganisation(uniquePartyId, organisationName, currentUserName()); // see region>helpers
     }
     
-    public boolean hideNewOrganisation() {
-        return hideNewOrganisation(currentUserName());
-    }
-    
-    /**
-     * There should be at most 1 instance for each owner - contact combination.
-     * 
-     */
-    public String validateNewOrganisation(
-            final @Named("Uniek ID") String uniquePartyId,
-            final @Named("Organisatie naam") String organisationName
-            ) {
-        return validateNewOrganisation(uniquePartyId, organisationName, currentUserName());
-    }
-    
     @MemberOrder(sequence="5")
-    @Named("Dit is jouw organisatie ...")
+    @Named("Dit zijn jouw organisaties ...")
     public List<Organisation> thisIsYou() {
-        return thisIsYou(currentUserName());
+        return yourOrganisations(currentUserName());
     }
     
     @MemberOrder(sequence="10")
@@ -130,41 +115,13 @@ public class Organisations extends MatchingDomainService<Organisation> {
         return organisation;
     }
     
-    @Programmatic //userName can now also be set by fixtures
-    public boolean hideNewOrganisation(String userName) {
-        QueryDefault<Organisation> query = 
-                QueryDefault.create(
-                        Organisation.class, 
-                    "findOrganisationUnique", 
-                    "ownedBy", userName);        
-        return container.firstMatch(query) != null?
-        true        
-        :false;        
-    }
     
     @Programmatic //userName can now also be set by fixtures
-    public String validateNewOrganisation(
-            final @Named("Uniek ID") String uniquePartyId,
-            final @Named("Organisatie naam") String organisationName,
-            final String userName) {
-        
+    public List<Organisation> yourOrganisations(final String userName) {
         QueryDefault<Organisation> query = 
                 QueryDefault.create(
                         Organisation.class, 
-                    "findOrganisationUnique", 
-                    "ownedBy", userName);        
-        return container.firstMatch(query) != null?
-        "Deze organisatie is al aangemaakt. Pas je gegevens eventueel aan in plaats van hier een nieuwe te maken."        
-        :null;
-        
-    }
-    
-    @Programmatic //userName can now also be set by fixtures
-    public List<Organisation> thisIsYou(final String userName) {
-        QueryDefault<Organisation> query = 
-                QueryDefault.create(
-                        Organisation.class, 
-                    "findOrganisationUnique", 
+                    "findMyOrganisations", 
                     "ownedBy", userName);          
         return allMatches(query);
     }

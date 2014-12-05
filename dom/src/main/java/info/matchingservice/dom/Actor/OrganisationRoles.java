@@ -20,12 +20,12 @@ public class OrganisationRoles extends MatchingDomainService<OrganisationRole> {
         super(OrganisationRoles.class, OrganisationRole.class);
     }
     
-    public OrganisationRole newRole(final OrganisationRoleType role){
-        return newRole(role, currentUserName());
+    public OrganisationRole newRole(final OrganisationRoleType role, final Organisation roleOwner){
+        return newRole(role, roleOwner, currentUserName());
     }
     
-    public String validateNewRole(final OrganisationRoleType role){
-        return validateNewRole(role, currentUserName());
+    public String validateNewRole(final OrganisationRoleType role, final Organisation roleOwner){
+        return validateNewRole(role, roleOwner, currentUserName());
     }
     
     public List<OrganisationRole> allRoles() {
@@ -39,21 +39,22 @@ public class OrganisationRoles extends MatchingDomainService<OrganisationRole> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public OrganisationRole newRole(final OrganisationRoleType role, final String userName) {
+    public OrganisationRole newRole(final OrganisationRoleType role, final Organisation roleOwner, final String userName) {
         OrganisationRole newrole = newTransientInstance(OrganisationRole.class);
         newrole.setRole(role);
+        newrole.setRoleOwner(roleOwner);
         newrole.setOwnedBy(userName);
         persist(newrole);
         return newrole;       
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public String validateNewRole(final OrganisationRoleType role, final String userName){
+    public String validateNewRole(final OrganisationRoleType role, final Organisation roleOwner, final String userName){
         QueryDefault<OrganisationRole> query = 
                 QueryDefault.create(
                         OrganisationRole.class, 
                     "findSpecificRole", 
-                    "ownedBy", userName,
+                    "roleOwner", roleOwner,
                     "role", role);        
         return container.firstMatch(query) != null?
         "This role you already have"        
