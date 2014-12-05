@@ -2,7 +2,7 @@ package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.fixture.actor.PersonForFrans;
+import info.matchingservice.fixture.actor.PersonForRembrandt;
 
 import javax.inject.Inject;
 
@@ -12,42 +12,42 @@ public class DemandProfilesForRembrandt extends DemandProfileAbstract {
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForFrans(), executionContext);
-        executeChild(new DemandsForFrans(), executionContext);
+        executeChild(new PersonForRembrandt(), executionContext);
+        executeChild(new DemandsForRembrandt(), executionContext);
         
         createDemandProfile(
-                "Gezocht: profiel 1",
+                "Gezocht: ding met getal 7",
                 10,
-                ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMyDemands().first(),
-                "Mijn getal 10",
+                ProfileType.DEVICE_PROFILE,
+                persons.findPersons("Rijn").get(0).getMyDemands().first(),
+                "Mijn getal 7",
                 10,
-                10,
-                "frans",
+                7,
+                "rembrandt",
                 executionContext
                 );
         
         createDemandProfile(
-                "Gezocht: profiel 2",
+                "Gezocht: cursus met nummer 5",
                 10,
-                ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMyDemands().first(),
-                "Mijn getal 3",
-                10,
-                3,
-                "frans",
-                executionContext
-                );
-        
-        createDemandProfile(
-                "Gezocht: Hulpschilder",
-                10,
-                ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMyDemands().last(),
-                "Getal 5",
+                ProfileType.COURSE_PROFILE,
+                persons.findPersons("Rijn").get(0).getMyDemands().first(),
+                "Mijn getal 5",
                 10,
                 5,
-                "frans",
+                "rembrandt",
+                executionContext
+                );
+        
+        createDemandProfile(
+                "Gezocht: Figurant voor de Nachtwacht",
+                10,
+                ProfileType.PERSON_PROFILE,
+                persons.findPersons("Rijn").get(0).getMyDemands().last(),
+                "Getal 13",
+                10,
+                13,
+                "rembrandt",
                 executionContext
                 );
     }

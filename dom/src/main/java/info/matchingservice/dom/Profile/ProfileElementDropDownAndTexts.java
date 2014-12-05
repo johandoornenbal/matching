@@ -27,6 +27,7 @@ public class ProfileElementDropDownAndTexts extends MatchingDomainService<Profil
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setOptionalDropDownValue(dropDown);
+        newProfileElement.setDisplayValue(dropDown.getValue() + " - " + text);
         newProfileElement.setText(text);
         newProfileElement.setProfileElementType(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);

@@ -1,8 +1,8 @@
 package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-import info.matchingservice.dom.Actor.Actor;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.fixture.MatchingTestsFixture;
@@ -79,6 +79,7 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(persons.findPersonsContains("xyz").size(), is(0));
         }
     }
+    
     
     public static class hideNewPersonMethod extends PersonTest {
         

@@ -26,7 +26,7 @@ public class DemandsForRembrandt extends DemandAbstract {
         createDemand(
                 "Vraagstuk 2",
                 10,
-                DemandSupplyType.GENERIC_DEMANDSUPPLY,
+                DemandSupplyType.EVENT_DEMANDSUPPLY,
                 persons.findPersons("Rijn").get(0),
                 "rembrandt",
                 executionContext
