@@ -1,6 +1,6 @@
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.apache.isis.applib.AbstractService;
 import org.apache.isis.applib.DomainObjectContainer;
@@ -37,7 +36,6 @@ public class ProfileMatchingService extends AbstractService {
     @NotContributed(As.ACTION)
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
-    @Named("Gevonden kandidaten")
     public List<ProfileComparison> showProfileMatches(Profile demandProfile) {
         List<ProfileComparison> matches = new ArrayList<ProfileComparison>();
         //Init Test: Only if there are any Profiles
@@ -45,11 +43,12 @@ public class ProfileMatchingService extends AbstractService {
             return matches;
         }
         //For all Supply Profiles
-        for (Profile profile: profiles.allSupplyProfiles()) {
+        //TODO: Profiles of same type I think...
+        for (Profile profile: profiles.allSupplyProfilesOfType(demandProfile.getProfileType())) {
 
                 
-                //Actually for every ProfileOwner (Actor)
-                Actor tempProfileOwner = profile.getSupplyProfileOwner().getSupplyOwner();
+                //Actually for every Supply Profile
+                Supply tempProfileOwner = profile.getSupplyProfileOwner();
                 
                 //TempElement ProfileComparison with matchingvalue 0
                 //This is a temporary Object that we will transfer the values of to a persistent object
@@ -94,7 +93,7 @@ public class ProfileMatchingService extends AbstractService {
                             for (ElementComparison e: tempListOfElements){
                                 
                                 //only if tempProfileOwner is ProfileOwner
-                                if (e.getMatchingProfileElementActorOwner().equals(tempProfileOwner)){
+                                if (e.getMatchingProfileElementOwner().getSupplyProfileOwner().equals(tempProfileOwner)){
                                     
                                     //Add 1 to elementCounter
                                     elementCounter ++;
@@ -119,7 +118,7 @@ public class ProfileMatchingService extends AbstractService {
                             for (ElementComparison e: tempListOfElements){
                                 
                               //only if tempProfileOwner is ProfileOwner
-                                if (e.getMatchingProfileElementActorOwner().equals(tempProfileOwner)){
+                                if (e.getMatchingProfileElementOwner().getSupplyProfileOwner().equals(tempProfileOwner)){
                                     //Add 1 to elementCounter
                                     elementCounter ++;
                                     //Add to matching value

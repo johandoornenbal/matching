@@ -44,10 +44,20 @@ import org.apache.isis.applib.annotation.Render.Type;
                     + "FROM info.matchingservice.dom.Profile.Profile "
                     + "WHERE supplyProfileOwner != null"),
     @javax.jdo.annotations.Query(
+            name = "allSupplyProfilesOfType", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE supplyProfileOwner != null && profileType == :profileType"),
+    @javax.jdo.annotations.Query(
             name = "allDemandProfiles", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE demandProfileOwner != null")                  
+                    + "WHERE demandProfileOwner != null"),
+    @javax.jdo.annotations.Query(
+            name = "allDemandProfilesOfType", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE demandProfileOwner != null && profileType == :profileType")                    
 })
 public class Profile extends MatchingSecureMutableObject<Profile> {
     

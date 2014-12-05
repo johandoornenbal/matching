@@ -29,6 +29,14 @@ public class Profiles extends MatchingDomainService<Profile> {
         return allMatches("allDemandProfiles");
     }
     
+    public List<Profile> allSupplyProfilesOfType(ProfileType profileType) {
+        return allMatches("allSupplyProfilesOfType","profileType",profileType);
+    }
+    
+    public List<Profile> allDemandProfilesOfType(ProfileType profileType) {
+        return allMatches("allDemandProfilesOfType","profileType",profileType);
+    }
+    
     @Programmatic
     public Profile newDemandProfile(
             final String demandProfileDescription,
