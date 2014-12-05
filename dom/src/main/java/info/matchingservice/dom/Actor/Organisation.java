@@ -43,7 +43,12 @@ import org.apache.isis.applib.util.TitleBuffer;
 @AutoComplete(repository=Organisations.class,  action="autoComplete")
 public class Organisation extends Actor {
     
+    @Override
     public String title() {
+        return getOrganisationName();
+    }
+    
+    public String toString() {
         return organisationName;
     }
     

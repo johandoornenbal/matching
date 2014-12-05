@@ -1,6 +1,7 @@
 package info.matchingservice.fixture;
 
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
+import info.matchingservice.fixture.actor.OrganisationsForFrans;
 import info.matchingservice.fixture.actor.PersonForAntoni;
 import info.matchingservice.fixture.actor.PersonForFrans;
 import info.matchingservice.fixture.actor.PersonForGerard;
@@ -61,6 +62,7 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new SuppliesForFrans(), executionContext);
         executeChild(new SuppliesForMichiel(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
+        executeChild(new OrganisationsForFrans(), executionContext);
     }
 
 }
