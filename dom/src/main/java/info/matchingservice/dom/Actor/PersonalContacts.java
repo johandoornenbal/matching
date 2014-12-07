@@ -126,7 +126,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         contact.setContact(contactPerson.getOwnedBy());
         contact.setOwnerPerson(persons.findPersonUnique(userName));
         contact.setOwnedBy(userName);
-        contact.setLevel(trustLevel);
+        contact.setTrustLevel(trustLevel);
         persist(contact);
         return contact;
     }

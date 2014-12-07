@@ -13,6 +13,7 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Bookmarkable;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
@@ -51,9 +52,10 @@ import org.apache.isis.applib.query.QueryDefault;
                     + "WHERE ownedBy == :ownedBy && contact == :contact")
 })
 @Bookmarkable
+@Immutable
 public class MatchingTrustedContact extends MatchingSecureMutableObject<MatchingTrustedContact> {
     public MatchingTrustedContact() {
-        super("ownedBy");
+        super("contact, trustLevel, ownedBy");
     }
     
     private String ownedBy;
@@ -111,20 +113,20 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
     /**
      * level contains an enum TrustLevel, indicating the circle of trust
      */
-    private TrustLevel level;
+    private TrustLevel trustLevel;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "30")
     @Named("Vertrouwens niveau")
-    public TrustLevel getLevel() {
-        return level;
+    public TrustLevel getTrustLevel() {
+        return trustLevel;
     }
     
-    public void setLevel(final TrustLevel level) {
-        this.level = level;
+    public void setTrustLevel(final TrustLevel level) {
+        this.trustLevel = level;
     }
     
-    public TrustLevel defaultLevel() {
+    public TrustLevel defaultTrustLevel() {
         return TrustLevel.ENTRY_LEVEL;
     }
     
@@ -162,6 +164,17 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
             return false;
         }
         return true;
+    }
+    
+    // Region //Edit TrustLevel
+    
+    public MatchingTrustedContact editTrustlevel(TrustLevel trustLevel) {
+        this.setTrustLevel(trustLevel);
+        return this;
+    }
+    
+    public TrustLevel default0EditTrustlevel(){
+        return getTrustLevel();
     }
     
     

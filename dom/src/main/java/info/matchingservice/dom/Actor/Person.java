@@ -275,7 +275,7 @@ public class Person extends Actor {
         List<Referral> personsReferring = new ArrayList<Referral>();
         for(PersonalContact e: pcontacts.listAll()) {
             if (e.getContactPerson() == this){
-                Referral referral = new Referral(e.getOwnerPerson(), e.getLevel());
+                Referral referral = new Referral(e.getOwnerPerson(), e.getTrustLevel());
                 personsReferring.add(referral);
             }
         }

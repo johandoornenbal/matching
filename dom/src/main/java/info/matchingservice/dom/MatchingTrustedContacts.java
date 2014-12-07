@@ -16,7 +16,7 @@ public class MatchingTrustedContacts extends MatchingDomainService<MatchingTrust
         super(MatchingTrustedContacts.class, MatchingTrustedContact.class);
     }
     
-    @MemberOrder(name = "Pruts Personen", sequence = "30")
+    @MemberOrder(sequence = "30")
     public List<MatchingTrustedContact> allContacts() {
         return allInstances();
     }
@@ -40,7 +40,7 @@ public class MatchingTrustedContacts extends MatchingDomainService<MatchingTrust
                     return null;
                 }
                 if (!container.allMatches(q).isEmpty()) {
-                    TrustLevel rights = container.firstMatch(q).getLevel();
+                    TrustLevel rights = container.firstMatch(q).getTrustLevel();
                     return rights;
                 }
         return null;

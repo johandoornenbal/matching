@@ -1,8 +1,8 @@
 package info.matchingservice.dom.Actor;
 
-import java.util.List;
-
 import info.matchingservice.dom.MatchingTrustedContact;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.InheritanceStrategy;
