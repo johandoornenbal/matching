@@ -1,5 +1,6 @@
 package info.matchingservice.fixture;
 
+import info.matchingservice.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
 import info.matchingservice.fixture.actor.OrganisationsForFrans;
 import info.matchingservice.fixture.actor.PersonForAntoni;
@@ -63,6 +64,7 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new SuppliesForMichiel(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
         executeChild(new OrganisationsForFrans(), executionContext);
+        executeChild(new AssessmentsForRembrandtFixture(), executionContext);
     }
 
 }

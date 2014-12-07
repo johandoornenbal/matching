@@ -19,7 +19,7 @@ public class SuppliesForMichiel extends SupplyAbstract {
                 10,
                 DemandSupplyType.GENERIC_DEMANDSUPPLY,
                 persons.findPersons("Ruyter").get(0),
-                "frans",
+                "michiel",
                 executionContext
                 );
         
@@ -28,7 +28,7 @@ public class SuppliesForMichiel extends SupplyAbstract {
                 10,
                 DemandSupplyType.GENERIC_DEMANDSUPPLY,
                 persons.findPersons("Ruyter").get(0),
-                "frans",
+                "michiel",
                 executionContext
                 );
     }

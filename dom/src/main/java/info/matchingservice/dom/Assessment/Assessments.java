@@ -9,10 +9,13 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.Programmatic;
 
 import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 
 
@@ -30,7 +33,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
     
     @Named("Geef feedback")
     @NotInServiceMenu
-    public Assessment newAssessment(
+    public Assessment newDemandAssessment(
             final Demand targetObject,
             @Named("Titel - korte omschrijving")
             final String description,
@@ -40,6 +43,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
             ){
         final DemandFeedback newAs = newTransientInstance(DemandFeedback.class);
         newAs.setTarget(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getDemandOwner());
         newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);
@@ -48,9 +52,68 @@ public class Assessments extends MatchingDomainService<Assessment> {
         return newAs;
     }
     
+    @Programmatic
+    public Assessment newDemandAssessment(
+            final Demand targetObject,
+            final Actor ownerActor,
+            final String description,
+            final String feedback,
+            final String ownedBy
+            ){
+        final DemandFeedback newAs = newTransientInstance(DemandFeedback.class);
+        newAs.setTarget(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getDemandOwner());
+        newAs.setOwnerActor(ownerActor);
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
+        newAs.setOwnedBy(ownedBy);
+        persist(newAs);
+        return newAs;
+    }
+    
     @Named("Geef feedback")
     @NotInServiceMenu
-    public Assessment newAssessment(
+    public Assessment newSupplyAssessment(
+            final Supply targetObject,
+            @Named("Titel - korte omschrijving")
+            final String description,
+            @Named("Feedback")
+            @MultiLine
+            final String feedback
+            ){
+        final SupplyFeedback newAs = newTransientInstance(SupplyFeedback.class);
+        newAs.setTarget(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getSupplyOwner());
+        newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
+        newAs.setOwnedBy(currentUserName());
+        persist(newAs);
+        return newAs;
+    }
+    
+    @Programmatic
+    public Assessment newSupplyAssessment(
+            final Supply targetObject,
+            final Actor ownerActor,
+            final String description,
+            final String feedback,
+            final String ownedBy
+            ){
+        final SupplyFeedback newAs = newTransientInstance(SupplyFeedback.class);
+        newAs.setTarget(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getSupplyOwner());
+        newAs.setOwnerActor(ownerActor);
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
+        newAs.setOwnedBy(ownedBy);
+        persist(newAs);
+        return newAs;
+    }    
+    
+    @Named("Geef feedback")
+    @NotInServiceMenu
+    public Assessment newProfileAssessment(
             final Profile targetObject,
             @Named("Titel - korte omschrijving")
             final String description,
@@ -60,6 +123,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
             ){
         final ProfileFeedback newAs = newTransientInstance(ProfileFeedback.class);
         newAs.setTarget(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getSupplyProfileOwner().getSupplyOwner());
         newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);

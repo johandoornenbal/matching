@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Demands;
@@ -171,6 +172,38 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     }
     
     //END Region> Saved Matches /////////////////////////////////////////////////////////////
+    
+    //Region> Assessments Given  /////////////////////////////////////////////////////////////
+    
+    private SortedSet<Assessment> assessmentsGivenByMe = new TreeSet<Assessment>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
+    @Named("Feedback die ik gegeven heb")
+    public SortedSet<Assessment> getAssessmentsGivenByMe() {
+        return assessmentsGivenByMe;
+    }
+    
+    public void setAssessmentsGivenByMe(final SortedSet<Assessment> assessmentsGivenByMe){
+        this.assessmentsGivenByMe = assessmentsGivenByMe;
+    }
+    
+    //Region> Assessments Received  /////////////////////////////////////////////////////////////
+    
+    private SortedSet<Assessment> assessmentsReceivedByMe = new TreeSet<Assessment>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "targetOwnerActor", dependentElement = "true")
+    @Named("Feedback die ik ontvangen heb")
+    public SortedSet<Assessment> getAssessmentsReceivedByMe() {
+        return assessmentsReceivedByMe;
+    }
+    
+    public void setAssessmentsReceivedByMe(final SortedSet<Assessment> assessmentsReceivedByMe){
+        this.assessmentsReceivedByMe = assessmentsReceivedByMe;
+    }
+    
+    //END Region> ASSESSMENTS /////////////////////////////////////////////////////////////
     
     // Region>HELPERS ////////////////////////////
     

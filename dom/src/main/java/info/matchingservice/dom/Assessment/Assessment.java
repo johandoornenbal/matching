@@ -47,13 +47,26 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    @Named("doel")
+    @Named("Assessment op")
     public Object getTarget() {
         return target;
     }
     
     public void setTarget(final Object object) {
         this.target = object;
+    }
+    
+    private Actor targetOwnerActor;
+    
+    @Disabled
+    @Named("Gericht aan")
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Actor getTargetOwnerActor(){
+        return targetOwnerActor;
+    }
+    
+    public void setTargetOwnerActor(final Actor owner) {
+        this.targetOwnerActor = owner;
     }
     
     private Actor ownerActor;
