@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
@@ -171,6 +172,10 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.mySavedMatches = mySavedMatches;
     }
     
+    public boolean hideMySavedMatches(){
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }
+    
     //END Region> Saved Matches /////////////////////////////////////////////////////////////
     
     //Region> Assessments Given  /////////////////////////////////////////////////////////////
@@ -188,6 +193,10 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.assessmentsGivenByMe = assessmentsGivenByMe;
     }
     
+    public boolean hideAssessmentsGivenByMe(){
+        return super.allowedTrustLevel(TrustLevel.INTIMATE);
+    }
+    
     //Region> Assessments Received  /////////////////////////////////////////////////////////////
     
     private SortedSet<Assessment> assessmentsReceivedByMe = new TreeSet<Assessment>();
@@ -202,6 +211,10 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public void setAssessmentsReceivedByMe(final SortedSet<Assessment> assessmentsReceivedByMe){
         this.assessmentsReceivedByMe = assessmentsReceivedByMe;
     }
+    
+    public boolean hideAssessmentsReceivedByMe(){
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }    
     
     //END Region> ASSESSMENTS /////////////////////////////////////////////////////////////
     

@@ -4,6 +4,7 @@ import info.matchingservice.assessment.AssessmentsForFransFixture;
 import info.matchingservice.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
 import info.matchingservice.fixture.actor.OrganisationsForFrans;
+import info.matchingservice.fixture.actor.OrganisationsForMichel;
 import info.matchingservice.fixture.actor.PersonForAntoni;
 import info.matchingservice.fixture.actor.PersonForFrans;
 import info.matchingservice.fixture.actor.PersonForGerard;
@@ -68,6 +69,7 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new SuppliesForMichiel(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
         executeChild(new OrganisationsForFrans(), executionContext);
+        executeChild(new OrganisationsForMichel(), executionContext);
         executeChild(new AssessmentsForRembrandtFixture(), executionContext);
         executeChild(new AssessmentsForFransFixture(), executionContext);
         executeChild(new PersonalContactsForFrans(), executionContext);

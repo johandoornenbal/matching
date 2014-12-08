@@ -1,5 +1,6 @@
 package info.matchingservice.dom.Actor;
 
+import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 
 import java.util.ArrayList;
@@ -229,7 +230,8 @@ public class Person extends Actor {
     
     // method myDemands() is on Actor
     public boolean hideMyDemands() {
-        return !getIsPrincipal();
+        
+        return !getIsPrincipal() || super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     
     // method newDemand() is on Actor
@@ -269,9 +271,13 @@ public class Person extends Actor {
         this.personalContacts = personalContacts;
     }
     
+    public boolean hidePersonalContacts(){
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }  
+    
     @Render(Type.EAGERLY)
     @Named("Personen verwijzend naar mij")
-    public List<Referral> getPersonsReferringToMe(){
+    public List<Referral> showPersonsReferringToMe(){
         List<Referral> personsReferring = new ArrayList<Referral>();
         for(PersonalContact e: pcontacts.listAll()) {
             if (e.getContactPerson() == this){
@@ -281,6 +287,10 @@ public class Person extends Actor {
         }
         return personsReferring;
     }
+    
+    public boolean hideShowPersonsReferringToMe(){
+        return super.allowedTrustLevel(TrustLevel.INTIMATE);
+    } 
         
     /////////////////////////////////////////////////////////////////////////////////////
     
