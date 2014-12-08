@@ -1,7 +1,9 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.TrustLevel;
+import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.DemandSupply.Supply;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.NotContributed;
+import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -225,6 +229,77 @@ public class Person extends Actor {
         }
         return tb.toString();
     }
+    
+    //Region> DEMAND /////////////////////////////////////////////////////////////    
+    
+    @Named("Bied jezelf aan")
+    public Supply newPersonsSupply(
+            @MultiLine
+            final String needDescription
+            ){
+        return newSupply(needDescription, 10, DemandSupplyType.PERSONS_DEMANDSUPPLY, this, currentUserName());
+    }
+    
+    public boolean hideNewPersonsSupply(final String needDescription){
+        return hideNewSupply(needDescription, this);
+    }
+    
+    @Named("Biedt cursussen aan")
+    public Supply newCourseSupply(
+            @MultiLine
+            final String needDescription
+            ){
+        return newSupply(needDescription, 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, currentUserName());
+    }
+    
+    public boolean hideNewCourseSupply(final String needDescription){
+        // if you are not the owner
+        if (!this.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        // if you have no ZP Role
+        if (!((Person) this).getIsProfessional()){
+            return true;
+        }        
+        // if there is already a course Supply
+        QueryDefault<Supply> query = 
+                QueryDefault.create(
+                        Supply.class, 
+                    "findSupplyByOwnedByAndType", 
+                    "ownedBy", currentUserName(),
+                    "supplyType", DemandSupplyType.COURSE_DEMANDSUPPLY);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+        
+        return false;        
+    }
+    
+    // Supply helpers
+    @Programmatic
+    public boolean hideNewSupply(final String needDescription, final Actor needOwner){
+        // if you are not the owner
+        if (!needOwner.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        // if you have not Student or ZP Role
+        if (!(((Person) needOwner).getIsStudent() || ((Person) needOwner).getIsProfessional())){
+            return true;
+        }        
+        // if there is already a personal Supply
+        QueryDefault<Supply> query = 
+                QueryDefault.create(
+                        Supply.class, 
+                    "findSupplyByOwnedByAndType", 
+                    "ownedBy", currentUserName(),
+                    "supplyType", DemandSupplyType.PERSONS_DEMANDSUPPLY);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+        
+        return false;
+    }   
+    //END Region> SUPPLIES /////////////////////////////////////////////////////////////    
         
     //Region> DEMAND /////////////////////////////////////////////////////////////
     
@@ -238,6 +313,20 @@ public class Person extends Actor {
     public boolean hideNewDemand(final String needDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
         return hideNewDemand(needDescription, this);
     }
+    
+    @Named("Start nieuwe tafel")
+    public Demand newPersonsDemand(
+            @MultiLine
+            @Named("Omschrijving van het vraagstuk op tafel")
+            final String demandDescription
+            ){
+        return newDemand(demandDescription, 10, DemandSupplyType.PERSONS_DEMANDSUPPLY, this, currentUserName());
+    }
+    
+    public boolean hideNewPersonsDemand(final String demandDescription){
+        return hideNewDemand(demandDescription, this);
+    }
+    
     
     // Demand helpers
     @Programmatic
@@ -277,6 +366,7 @@ public class Person extends Actor {
     
     @Render(Type.EAGERLY)
     @Named("Personen verwijzend naar mij")
+    @NotContributed(As.ACTION)
     public List<Referral> showPersonsReferringToMe(){
         List<Referral> personsReferring = new ArrayList<Referral>();
         for(PersonalContact e: pcontacts.listAll()) {
@@ -461,5 +551,4 @@ public class Person extends Actor {
     
     @Inject
     PersonalContacts pcontacts;
-
 }

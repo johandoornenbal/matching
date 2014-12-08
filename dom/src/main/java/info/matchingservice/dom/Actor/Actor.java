@@ -97,6 +97,14 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.myDemands = myDemands;
     }
     
+    /**
+     * Generic new Demand
+     * @param demandDescription
+     * @param weight
+     * @param demandSupplyType
+     * @return
+     */
+    @Hidden
     public Demand newDemand(
             @MultiLine
             final String demandDescription,
@@ -106,8 +114,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return newDemand(demandDescription, weight, demandSupplyType, this, currentUserName());
     }
     
-    
-    //helpers
+    //helper
     @Programmatic
     public Demand newDemand(
             @MultiLine 
@@ -134,6 +141,14 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.mySupplies = supplies;
     }
     
+    /**
+     * Generic new Supply
+     * @param needDescription
+     * @param weight
+     * @param demandSupplyType
+     * @return
+     */
+    @Hidden
     public Supply newSupply(
             @MultiLine
             final String needDescription,
@@ -142,7 +157,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return newSupply(needDescription, weight, demandSupplyType, this, currentUserName());
     }
     
-    //helpers
+    //helper
     @Programmatic
     public Supply newSupply(
             @MultiLine 

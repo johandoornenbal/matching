@@ -17,7 +17,7 @@ public class SuppliesForAntoni extends SupplyAbstract {
         createSupply(
                 "Aanbod 1",
                 10,
-                DemandSupplyType.GENERIC_DEMANDSUPPLY,
+                DemandSupplyType.PERSONS_DEMANDSUPPLY,
                 persons.findPersons("Leeuw*").get(0),
                 "antoni",
                 executionContext
@@ -26,7 +26,7 @@ public class SuppliesForAntoni extends SupplyAbstract {
         createSupply(
                 "Aanbod 2",
                 10,
-                DemandSupplyType.GENERIC_DEMANDSUPPLY,
+                DemandSupplyType.COURSE_DEMANDSUPPLY,
                 persons.findPersons("Leeuw*").get(0),
                 "antoni",
                 executionContext

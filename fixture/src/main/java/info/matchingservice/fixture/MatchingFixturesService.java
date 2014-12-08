@@ -33,7 +33,7 @@ import org.apache.isis.applib.fixturescripts.SimpleFixtureScript;
  * Enables fixtures to be installed from the application.
  */
 @Named("Prototyping (M-app)")
-@DomainService(menuOrder = "20")
+@DomainService(menuOrder = "200")
 public class MatchingFixturesService extends FixtureScripts {
 
     public MatchingFixturesService() {

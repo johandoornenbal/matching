@@ -20,21 +20,9 @@ public class SupplyProfilesForAntoni extends SupplyProfileAbstract {
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Leeuw*").get(0).getMySupplies().first(),
-                "Mijn getal 6",
+                "Mijn getal 9",
                 10,
-                6,
-                "antoni",
-                executionContext
-                );
-        
-        createSupplyProfile(
-                "Aangeboden: profiel 2",
-                10,
-                ProfileType.PERSON_PROFILE,
-                persons.findPersons("Leeuw*").get(0).getMySupplies().first(),
-                "Mijn getal 4",
-                10,
-                4,
+                9,
                 "antoni",
                 executionContext
                 );
@@ -43,13 +31,26 @@ public class SupplyProfilesForAntoni extends SupplyProfileAbstract {
                 "Aangeboden: wetenschapper",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Leeuw*").get(0).getMySupplies().last(),
+                persons.findPersons("Leeuw*").get(0).getMySupplies().first(),
                 "Getal 13",
                 10,
                 13,
                 "antoni",
                 executionContext
                 );
+        
+        createSupplyProfile(
+                "Aangeboden: cursus met getal 4",
+                10,
+                ProfileType.COURSE_PROFILE,
+                persons.findPersons("Leeuw*").get(0).getMySupplies().last(),
+                "Mijn getal 4",
+                10,
+                4,
+                "antoni",
+                executionContext
+                );
+        
     }
 
     @Inject

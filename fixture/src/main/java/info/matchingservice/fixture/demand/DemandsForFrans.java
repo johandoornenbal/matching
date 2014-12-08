@@ -17,7 +17,7 @@ public class DemandsForFrans extends DemandAbstract {
         createDemand(
                 "Vraagstuk 1",
                 10,
-                DemandSupplyType.GENERIC_DEMANDSUPPLY,
+                DemandSupplyType.PERSONS_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
                 "frans",
                 executionContext
@@ -26,7 +26,7 @@ public class DemandsForFrans extends DemandAbstract {
         createDemand(
                 "Vraagstuk 2",
                 10,
-                DemandSupplyType.EVENT_DEMANDSUPPLY,
+                DemandSupplyType.PERSONS_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
                 "frans",
                 executionContext

@@ -18,6 +18,7 @@ import info.matchingservice.fixture.actor.RolesForFrans;
 import info.matchingservice.fixture.actor.RolesForGerard;
 import info.matchingservice.fixture.actor.RolesForMichiel;
 import info.matchingservice.fixture.actor.RolesForRembrandt;
+import info.matchingservice.fixture.demand.DemandProfileDropDownsForFrans;
 import info.matchingservice.fixture.demand.DemandProfilesForRembrandt;
 import info.matchingservice.fixture.demand.DemandProfilesForFrans;
 import info.matchingservice.fixture.demand.DemandsForFrans;
@@ -75,6 +76,7 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new PersonalContactsForFrans(), executionContext);
         executeChild(new PersonalContactsForRembrandt(), executionContext);
         executeChild(new PersonalContactsForMichiel(), executionContext);
+        executeChild(new DemandProfileDropDownsForFrans(), executionContext);
     }
 
 }

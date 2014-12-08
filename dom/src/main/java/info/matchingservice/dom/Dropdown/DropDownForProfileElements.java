@@ -3,12 +3,14 @@ package info.matchingservice.dom.Dropdown;
 import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.ProfileElementType;
 
 @DomainService(menuOrder = "150", repositoryFor = DropDownForProfileElement.class)
+@Hidden
 public class DropDownForProfileElements extends MatchingDomainService<DropDownForProfileElement> {
 
     public DropDownForProfileElements() {

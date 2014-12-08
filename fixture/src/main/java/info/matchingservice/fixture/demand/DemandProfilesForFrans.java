@@ -16,9 +16,9 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
         executeChild(new DemandsForFrans(), executionContext);
         
         createDemandProfile(
-                "Gezocht: Ding met getal 1",
+                "Gezocht: Persoon met getal 1",
                 10,
-                ProfileType.DEVICE_PROFILE,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Hals").get(0).getMyDemands().first(),
                 "Mijn getal 10",
                 10,
@@ -28,9 +28,9 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
                 );
         
         createDemandProfile(
-                "Gezocht: cursus met getal 3",
+                "Gezocht: Persoon met getal 10",
                 10,
-                ProfileType.COURSE_PROFILE,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Hals").get(0).getMyDemands().first(),
                 "Mijn getal 3",
                 10,
@@ -40,7 +40,7 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
                 );
         
         createDemandProfile(
-                "Gezocht: Hulpschilder met getal 5",
+                "Gezocht: Hulpschilder die out-of-the-box denkt",
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Hals").get(0).getMyDemands().last(),
