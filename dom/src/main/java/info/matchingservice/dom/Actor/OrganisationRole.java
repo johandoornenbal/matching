@@ -25,16 +25,16 @@ import org.apache.isis.applib.query.QueryDefault;
 })
 public class OrganisationRole extends Role {
     
-    private String ownedBy;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-    
-    public void setOwnedBy(final String owner) {
-        this.ownedBy=owner;
-    }
+//    private String ownedBy;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "false")
+//    public String getOwnedBy() {
+//        return ownedBy;
+//    }
+//    
+//    public void setOwnedBy(final String owner) {
+//        this.ownedBy=owner;
+//    }
     
     private Organisation roleOwner;
     

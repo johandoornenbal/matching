@@ -25,17 +25,6 @@ import org.apache.isis.applib.query.QueryDefault;
 })
 public class PersonRole extends Role {
     
-//    private String ownedBy;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "false")
-//    public String getOwnedBy() {
-//        return ownedBy;
-//    }
-//    
-//    public void setOwnedBy(final String owner) {
-//        this.ownedBy=owner;
-//    }
-    
     private PersonRoleType role;
     
     @javax.jdo.annotations.Column(allowsNull = "false")

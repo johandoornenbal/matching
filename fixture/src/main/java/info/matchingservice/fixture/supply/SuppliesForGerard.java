@@ -22,15 +22,6 @@ public class SuppliesForGerard extends SupplyAbstract {
                 "gerard",
                 executionContext
                 );
-        
-        createSupply(
-                "Aanbod 4",
-                10,
-                DemandSupplyType.GENERIC_DEMANDSUPPLY,
-                persons.findPersons("Dou").get(0),
-                "gerard",
-                executionContext
-                );
     }
 
     @Inject

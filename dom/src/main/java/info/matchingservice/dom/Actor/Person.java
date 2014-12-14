@@ -4,6 +4,8 @@ import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -230,23 +232,29 @@ public class Person extends Actor {
         return tb.toString();
     }
     
-    //Region> DEMAND /////////////////////////////////////////////////////////////    
+    //Region> SUPPLIES /////////////////////////////////////////////////////////////   
     
     @Named("Bied jezelf aan")
-    public Supply newPersonsSupply(
-            @MultiLine
-            final String needDescription
-            ){
-        return newSupply(needDescription, 10, DemandSupplyType.PERSONS_DEMANDSUPPLY, this, currentUserName());
+    public Profile newPersonsSupply(){
+        return newSupplyAndProfile("Persoonlijke profiel van " + this.title(), 10, DemandSupplyType.PERSONS_DEMANDSUPPLY, this, "Mijn persoonlijke profiel", 10, ProfileType.PERSON_PROFILE, currentUserName());
     }
     
-    public boolean hideNewPersonsSupply(final String needDescription){
-        return hideNewSupply(needDescription, this);
+    //BUSINESS RULE
+    // Je kunt alleen een Persoonprofiel aanmaken als je
+    // - eigenaar bent
+    // - rol Student of Professional hebt
+    // - nog geen persoonssupply hebt
+    public boolean hideNewPersonsSupply(){
+        return hideNewPersonsSupply("", this);
     }
     
-    @Named("Biedt cursussen aan")
+    public String validateNewPersonsSupply(){
+        return validateNewPersonsSupply("", this);
+    }
+    
+    @Named("Nieuwe cursusaanbod")
     public Supply newCourseSupply(
-            @MultiLine
+            @Named("Naam van het cursusaanbod")
             final String needDescription
             ){
         return newSupply(needDescription, 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, currentUserName());
@@ -260,24 +268,19 @@ public class Person extends Actor {
         // if you have no ZP Role
         if (!((Person) this).getIsProfessional()){
             return true;
-        }        
-        // if there is already a course Supply
-        QueryDefault<Supply> query = 
-                QueryDefault.create(
-                        Supply.class, 
-                    "findSupplyByOwnedByAndType", 
-                    "ownedBy", currentUserName(),
-                    "supplyType", DemandSupplyType.COURSE_DEMANDSUPPLY);
-        if (container.firstMatch(query) != null) {
-            return true;
-        }
+        } 
         
         return false;        
     }
     
     // Supply helpers
+    //BUSINESS RULE
+    // Je kunt alleen een Persoonprofiel aanmaken als je
+    // - eigenaar bent
+    // - rol Student of Professional hebt
+    // - nog geen persoonssupply hebt
     @Programmatic
-    public boolean hideNewSupply(final String needDescription, final Actor needOwner){
+    public boolean hideNewPersonsSupply(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
             return true;
@@ -298,12 +301,52 @@ public class Person extends Actor {
         }
         
         return false;
-    }   
+    }
+    
+    @Programmatic
+    public String validateNewPersonsSupply(final String needDescription, final Actor needOwner){
+        // if you are not the owner
+        if (!needOwner.getOwnedBy().equals(currentUserName())){
+            return "Je bent niet de eigenaar";
+        }
+        // if you have not Student or ZP Role
+        if (!(((Person) needOwner).getIsStudent() || ((Person) needOwner).getIsProfessional())){
+            return "Je bent geen Student of Professional";
+        }        
+        // if there is already a personal Supply
+        QueryDefault<Supply> query = 
+                QueryDefault.create(
+                        Supply.class, 
+                    "findSupplyByOwnedByAndType", 
+                    "ownedBy", currentUserName(),
+                    "supplyType", DemandSupplyType.PERSONS_DEMANDSUPPLY);
+        if (container.firstMatch(query) != null) {
+            return "Je hebt al een persoonlijk profiel";
+        }
+        
+        return null;
+    }
+    
+    //BUSINESS RULE
+    //Als je geen Student of Professional bent, toon dan geen supplies
+    
+    public boolean hideMySupplies(){
+        
+        if (!(getIsStudent() || getIsProfessional() )){
+            return true;
+        }
+        
+        return false;
+    }
+    
     //END Region> SUPPLIES /////////////////////////////////////////////////////////////    
         
     //Region> DEMAND /////////////////////////////////////////////////////////////
     
     // method myDemands() is on Actor
+    //BUSINESS RULE
+    // Als je geen opdrachtegever bent verberg dan de demands
+    // Je moet minimaal INNERCIRCLE zijn om de demands te zien
     public boolean hideMyDemands() {
         
         return !getIsPrincipal() || super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
@@ -367,7 +410,7 @@ public class Person extends Actor {
     @Render(Type.EAGERLY)
     @Named("Personen verwijzend naar mij")
     @NotContributed(As.ACTION)
-    public List<Referral> showPersonsReferringToMe(){
+    public List<Referral> getPersonsReferringToMe(){
         List<Referral> personsReferring = new ArrayList<Referral>();
         for(PersonalContact e: pcontacts.listAll()) {
             if (e.getContactPerson() == this){
@@ -378,7 +421,7 @@ public class Person extends Actor {
         return personsReferring;
     }
     
-    public boolean hideShowPersonsReferringToMe(){
+    public boolean hidePersonsReferringToMe(){
         return super.allowedTrustLevel(TrustLevel.INTIMATE);
     } 
         

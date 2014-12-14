@@ -7,6 +7,13 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findProfileElementDropDownByOwnerProfileAndDropDownValue", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.ProfileElementDropDown "
+                    + "WHERE profileElementOwner == :profileElementOwner && dropDownValue == :dropDownValue")
+})
 public class ProfileElementDropDown extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////

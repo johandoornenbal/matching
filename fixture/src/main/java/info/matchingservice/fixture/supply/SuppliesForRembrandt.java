@@ -22,24 +22,6 @@ public class SuppliesForRembrandt extends SupplyAbstract {
                 "rembrandt",
                 executionContext
                 );
-        
-        createSupply(
-                "Aanbod 8",
-                10,
-                DemandSupplyType.GENERIC_DEMANDSUPPLY,
-                persons.findPersons("Rijn").get(0),
-                "rembrandt",
-                executionContext
-                );
-        
-        createSupply(
-                "Aanbod 9",
-                10,
-                DemandSupplyType.GENERIC_DEMANDSUPPLY,
-                persons.findPersons("Rijn").get(0),
-                "rembrandt",
-                executionContext
-                );
     }
 
     @Inject

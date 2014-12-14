@@ -8,7 +8,7 @@ public class RolesForFrans extends RoleAbstract {
     protected void execute(ExecutionContext executionContext) {
 
         createRole(
-                PersonRoleType.STUDENT, 
+                PersonRoleType.PROFESSIONAL, 
                 "frans",
                 executionContext
                 );

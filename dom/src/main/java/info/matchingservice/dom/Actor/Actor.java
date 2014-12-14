@@ -9,6 +9,9 @@ import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.DemandSupply.Supplies;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Match.ProfileMatch;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -169,6 +172,21 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return supplies.newSupply(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
     }
     
+    @Programmatic
+    public Profile newSupplyAndProfile(
+            @MultiLine 
+            final String demandDescription,
+            final Integer weight,
+            final DemandSupplyType demandSupplyType,
+            final Actor demandOwner,
+            final String supplyProfileDescription,
+            final Integer profileWeight,
+            final ProfileType profileType,
+            final String ownedBy){
+        final Supply supply = supplies.newSupply(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
+        return profiles.newSupplyProfile(supplyProfileDescription, profileWeight, profileType, supply, ownedBy);
+    }
+    
     
     //END Region> SUPPLIES /////////////////////////////////////////////////////////////
     
@@ -249,4 +267,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     @Inject
     Demands demands;    
 
+    @Inject
+    Profiles profiles;
 }

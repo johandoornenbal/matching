@@ -22,15 +22,6 @@ public class SuppliesForAntoni extends SupplyAbstract {
                 "antoni",
                 executionContext
                 );
-        
-        createSupply(
-                "Aanbod 2",
-                10,
-                DemandSupplyType.COURSE_DEMANDSUPPLY,
-                persons.findPersons("Leeuw*").get(0),
-                "antoni",
-                executionContext
-                );
     }
 
     @Inject

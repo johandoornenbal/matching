@@ -3,6 +3,7 @@ package info.matchingservice.dom.DemandSupply;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Assessment.SupplyAssessment;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
@@ -27,6 +28,7 @@ import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.query.QueryDefault;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -149,13 +151,116 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
         this.supplyProfiles = supplyProfile;
     }
     
+   @Hidden
     public Profile newSupplyProfile(
             final String supplyProfileDescription,
             final Integer weight
             ) {
         return newSupplyProfile(supplyProfileDescription, weight, ProfileType.PERSON_PROFILE, this, currentUserName());
     }
+   
+   //Region> Nieuw persoonlijk profiel ////////////////////////////////////////////////////////
+   
+   @Named("Nieuw persoonlijk profiel") 
+   public Profile NewPersonSupplyProfile(){
+       return newSupplyProfile("Persoonlijke profiel van " + this.getSupplyOwner().title(), 10, ProfileType.PERSON_PROFILE, this, currentUserName());
+   }
+   
+   // BUSINESS RULE voor hide en validate van de aktie 'nieuw persoonlijk profiel'
+   // je kunt slechts een 'persoonlijk profiel' hebben (supplyType PERSONS_DEMANDSUPPLY)
+   // alleen tonen op supply van type PERSONS
+   // je kunt alleen een persoonlijk profiel aanmaken als je student of ZP-er bent.
+   
+    public boolean hideNewPersonSupplyProfile(){
+              QueryDefault<Profile> query = 
+              QueryDefault.create(
+                      Profile.class, 
+                  "allSupplyProfilesOfTypeByOwner", 
+                  "ownedBy", currentUserName(),
+                  "profileType", ProfileType.PERSON_PROFILE);
+        if (container.firstMatch(query) != null) {
+          return true;
+        }
+        
+        if (this.getSupplyType() != DemandSupplyType.PERSONS_DEMANDSUPPLY){
+            return true;
+        }
+        
+        if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
+            return true;
+        }
+        
+        return false;
+    }
     
+    public String validateNewPersonSupplyProfile(){
+            QueryDefault<Profile> query = 
+            QueryDefault.create(
+                    Profile.class, 
+                "allSupplyProfilesOfTypeByOwner", 
+                "ownedBy", currentUserName(),
+                "profileType", ProfileType.PERSON_PROFILE);
+          if (container.firstMatch(query) != null) {
+              return "Je hebt al een persoonlijk profiel";
+          }
+          
+          if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
+              return "Om een persoonlijk profiel te maken moet je Professional of Student zijn";
+          }
+          
+          if (this.getSupplyType() != DemandSupplyType.PERSONS_DEMANDSUPPLY){
+              return "Dit kan alleen op een persoonlijk aanbod";
+          }
+          
+          return null;
+          
+          
+    }
+    
+    //End Region> Nieuw persoonlijk profiel ////////////////////////////////////////////////////////
+    
+    //Region> Nieuw cursus profiel ////////////////////////////////////////////////////////
+    
+    @Named("Nieuwe cursus")
+    public Profile newCourseSupplyProfile(
+            @Named("Naam van de cursus")
+            final String supplyProfileDescription
+            ) {
+        return newSupplyProfile(supplyProfileDescription, 10, ProfileType.COURSE_PROFILE, this, currentUserName());
+    }
+    
+    // BUSINESS RULE voor hide en validate van de aktie 'nieuw cursus profiel'
+    // alleen tonen op supply van type cursus
+    // je kunt alleen een cursus profiel aanmaken als je ZP-er bent.
+    
+    public boolean hideNewCourseSupplyProfile(
+            final String supplyProfileDescription
+            ) {
+        if (this.getSupplyType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
+            return true;
+        }
+        
+        if (!((Person) getSupplyOwner()).getIsProfessional()){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public String validateNewCourseSupplyProfile(
+            final String supplyProfileDescription
+            ) {
+        if (this.getSupplyType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
+            return "Kan alleen op type Cursus";
+        }
+        
+        if (!((Person) getSupplyOwner()).getIsProfessional()){
+            return "Je moet ZP-er zijn";
+        }
+        
+        return null;
+    }
+    //End Region> Nieuw cursus profiel ////////////////////////////////////////////////////////
     
     @Programmatic
     public Profile newSupplyProfile(
@@ -166,6 +271,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
             final String ownedBy) {
         return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, weight, profileType, supplyProfileOwner, ownedBy);
     }
+    
     
     // Region> Assessments
     

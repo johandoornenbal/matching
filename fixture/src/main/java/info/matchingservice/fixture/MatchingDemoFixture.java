@@ -29,7 +29,9 @@ import info.matchingservice.fixture.supply.SuppliesForGerard;
 import info.matchingservice.fixture.supply.SuppliesForMichiel;
 import info.matchingservice.fixture.supply.SuppliesForRembrandt;
 import info.matchingservice.fixture.supply.SupplyProfileDropDownsForAntoni;
+import info.matchingservice.fixture.supply.SupplyProfileDropDownsForFrans;
 import info.matchingservice.fixture.supply.SupplyProfilesForAntoni;
+import info.matchingservice.fixture.supply.SupplyProfilesForFrans;
 import info.matchingservice.fixture.supply.SupplyProfilesForGerard;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
@@ -67,6 +69,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new SupplyProfilesForAntoni(), executionContext);
         executeChild(new SupplyProfileDropDownsForAntoni(), executionContext);
         executeChild(new SuppliesForFrans(), executionContext);
+        executeChild(new SupplyProfilesForFrans(), executionContext);
+        executeChild(new SupplyProfileDropDownsForFrans(), executionContext);
         executeChild(new SuppliesForMichiel(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
         executeChild(new OrganisationsForFrans(), executionContext);

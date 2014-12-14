@@ -12,6 +12,12 @@ public class RolesForRembrandt extends RoleAbstract {
                 "rembrandt",
                 executionContext
                 );
+        
+        createRole(
+                PersonRoleType.PROFESSIONAL, 
+                "rembrandt",
+                executionContext
+                );
 
     }
 
