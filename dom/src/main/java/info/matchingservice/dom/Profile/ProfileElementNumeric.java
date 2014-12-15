@@ -1,7 +1,10 @@
 package info.matchingservice.dom.Profile;
 
+import javax.inject.Named;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+
+import org.apache.isis.applib.annotation.Immutable;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -12,6 +15,7 @@ import javax.jdo.annotations.InheritanceStrategy;
                     + "FROM info.matchingservice.dom.Profile.ProfileElementnumeric "
                     + "WHERE profileElementOwner == :profileElementOwner")
 })
+@Immutable
 public class ProfileElementNumeric extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
@@ -25,6 +29,18 @@ public class ProfileElementNumeric extends ProfileElement {
     
     public void setNumericValue(final Integer value){
         this.numericValue = value;
+    }
+    
+    public ProfileElementNumeric EditNumericValue(
+            @Named("Prijs (credits)")
+            final Integer value
+            ){
+        this.setNumericValue(value);
+        return this;
+    }
+    
+    public Integer default0EditNumericValue(){
+        return this.getNumericValue();
     }
 
 }

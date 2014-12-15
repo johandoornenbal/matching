@@ -1,0 +1,44 @@
+{
+  "columns": [
+    {
+      "span": 8,
+      "memberGroups": {
+        "Persoonlijk Contact": {
+          "members": {
+            "referrer": {
+            	"named" : {
+            		"value" : "Verwijzer naar mij"
+            	}
+            },
+            "trustLevel": {
+            	"named" : {
+            		"value" : "Kring van vertrouwen"
+            	},
+            	"typicalLength" : {
+            		"value" : "30"
+            	},
+            	"actions" : {
+            		"editTrustlevel" : {}
+            	}
+            }
+          }
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {               
+      }
+    }
+  ],
+  "actions": {
+  }
+}

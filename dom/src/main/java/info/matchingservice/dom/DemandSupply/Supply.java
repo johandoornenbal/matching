@@ -22,6 +22,7 @@ import javax.jdo.annotations.Persistent;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
@@ -46,6 +47,7 @@ import org.apache.isis.applib.query.QueryDefault;
                     + "FROM info.matchingservice.dom.DemandSupply.Supply "
                     + "WHERE ownedBy == :ownedBy && supplyType == :supplyType")                  
 })
+@Immutable
 public class Supply extends MatchingSecureMutableObject<Supply> {
 
     public Supply() {
@@ -74,6 +76,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
+    @Named("Eigenaar")
     public Actor getSupplyOwner() {
         return supplyOwner;
     }
@@ -82,12 +85,14 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
         this.supplyOwner = supplyOwner;
     }
     
+    @Programmatic
     public Actor getProfileOwnerIsOwnedBy(){
         return getSupplyOwner();
     }
     
     private DemandSupplyType supplyType;
     
+    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
     public DemandSupplyType getSupplyType(){
@@ -103,7 +108,6 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     private String supplyDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @MultiLine
     public String getSupplyDescription(){
         return supplyDescription;
     }
@@ -115,6 +119,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     private Integer weight;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @Hidden
     public Integer getWeight() {
         return weight;
     }
@@ -123,8 +128,37 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
         this.weight = weight;
     }
 
+    //ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public Supply editSupplyDescription(
+            @Named("Omschrijving van het aanbod")
+            @MultiLine
+            final String supplyDescription
+            ){
+        this.setSupplyDescription(supplyDescription);
+        return this;
+    }
+    
+    public String default0EditSupplyDescription(){
+        return this.getSupplyDescription();
+    }
+    
+    @Hidden
+    public Supply editWeight(
+            @Named("Gewicht")
+            final Integer weight
+            ){
+        this.setWeight(weight);
+        return this;
+    }
+    
+    public Integer default0EditWeight(){
+        return this.getWeight();
+    }
+    
     //delete action /////////////////////////////////////////////////////////////////////////////////////
 
+    @Named("Aanbod verwijderen")
     public Actor DeleteSupply(
             @Optional @Named("Verwijderen OK?") boolean areYouSure
             ){
@@ -136,6 +170,9 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     public String validateDeleteSupply(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
+    
+    
+    //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
     
     // Region> aanbod (supply profiles)
     
@@ -159,10 +196,11 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
         return newSupplyProfile(supplyProfileDescription, weight, ProfileType.PERSON_PROFILE, this, currentUserName());
     }
    
+   //XTALUS
    //Region> Nieuw persoonlijk profiel ////////////////////////////////////////////////////////
    
    @Named("Nieuw persoonlijk profiel") 
-   public Profile NewPersonSupplyProfile(){
+   public Profile newPersonSupplyProfile(){
        return newSupplyProfile("Persoonlijke profiel van " + this.getSupplyOwner().title(), 10, ProfileType.PERSON_PROFILE, this, currentUserName());
    }
    
@@ -279,7 +317,6 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "target", dependentElement = "true")
-    @Named("Assessments")
     public SortedSet<SupplyAssessment> getAssessments() {
         return assessments;
     }

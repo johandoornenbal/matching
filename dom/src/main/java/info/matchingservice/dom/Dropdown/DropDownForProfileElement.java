@@ -4,6 +4,8 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.annotation.Immutable;
+
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Profile.ProfileElementType;
 
@@ -19,6 +21,7 @@ import info.matchingservice.dom.Profile.ProfileElementType;
                     + "FROM info.matchingservice.dom.Dropdown.DropDownForProfileElement "
                     + "WHERE type == 'QUALITY' && value.indexOf(:value) >= 0")             
 })
+@Immutable
 public class DropDownForProfileElement extends MatchingDomainObject<DropDownForProfileElement>{
     
     public DropDownForProfileElement(){

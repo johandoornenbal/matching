@@ -21,6 +21,7 @@ import javax.jdo.annotations.Persistent;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
@@ -37,6 +38,14 @@ import org.apache.isis.applib.annotation.Render.Type;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findDemandByOwnedByAndType", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.DemandSupply.Demand "
+                    + "WHERE ownedBy == :ownedBy && demandType == :demandType")                  
+})
+@Immutable
 public class Demand extends MatchingSecureMutableObject<Demand> {
 
     public Demand() {
@@ -73,6 +82,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         this.demandOwner = needOwner;
     }
     
+    @Programmatic
     public Actor getProfileOwnerIsOwnedBy(){
         return getDemandOwner();
     }
@@ -81,6 +91,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
+    @Hidden
     public DemandSupplyType getDemandType(){
         return demandType;
     }
@@ -95,7 +106,6 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MultiLine
-    @Named("Opdracht omschrijving op tafel")
     public String getDemandDescription(){
         return demandDescription;
     }
@@ -107,6 +117,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private Integer weight;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @Hidden
     public Integer getWeight() {
         return weight;
     }
@@ -115,8 +126,37 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         this.weight = weight;
     }
 
+    //ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
+
+    public Demand editDemandDescription(
+            @Named("Omschrijving van de vraag")
+            @MultiLine
+            final String demandDescription
+            ){
+        this.setDemandDescription(demandDescription);
+        return this;
+    }
+    
+    public String default0EditDemandDescription(){
+        return this.getDemandDescription();
+    }
+    
+    @Hidden
+    public Demand editWeight(
+            @Named("Gewicht")
+            final Integer weight
+            ){
+        this.setWeight(weight);
+        return this;
+    }
+    
+    public Integer default0EditWeight(){
+        return this.getWeight();
+    }
+    
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
+    @Named("Vraag verwijderen")
     public Actor DeleteDemand(
             @Optional @Named("Verwijderen OK?") boolean areYouSure
             ){
@@ -128,6 +168,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public String validateDeleteDemand(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
+    
+    //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
+
     
     // Region> Vacancies
     
@@ -143,6 +186,41 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         this.demandProfiles = vac;
     }
     
+    //XTALUS 
+    //Nieuwe cursus gezocht
+    @Named("Nieuwe cursus zoeken")
+    public Profile newCourseDemandProfile(
+            @Named("Omschrijving cursus gezocht")
+            final  String demandProfileDescription
+            ){
+        return newDemandProfile(demandProfileDescription, 10, ProfileType.COURSE_PROFILE, this, currentUserName());
+    }
+    
+    // BUSINESS RULE voor hide en validate van de aktie 'nieuw cursus gezocht'
+    // alleen tonen op demand van type cursus
+    
+    public boolean hideNewCourseDemandProfile(
+            final  String demandProfileDescription
+            ){
+        if (this.getDemandType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public String validateNewCourseDemandProfile(
+            final  String demandProfileDescription
+            ){
+        if (this.getDemandType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
+            return "Alleen op type CURSUS";
+        }
+        
+        return null;
+    }    
+    
+    
+    @Hidden
     public Profile newDemandProfile(
             final  String demandProfileDescription,
             final Integer weight 

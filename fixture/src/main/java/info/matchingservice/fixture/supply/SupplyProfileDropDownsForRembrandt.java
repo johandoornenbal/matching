@@ -3,36 +3,36 @@ package info.matchingservice.fixture.supply;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.fixture.actor.PersonForFrans;
+import info.matchingservice.fixture.actor.PersonForRembrandt;
 
 import javax.inject.Inject;
 
-public class SupplyProfileDropDownsForFrans extends SupplyProfileDropDownAbstract {
+public class SupplyProfileDropDownsForRembrandt extends SupplyProfileDropDownAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForFrans(), executionContext);
-        executeChild(new SuppliesForFrans(), executionContext);
+        executeChild(new PersonForRembrandt(), executionContext);
+        executeChild(new SuppliesForRembrandt(), executionContext);
         
         createDropDownElement(
-                "Kwaliteit ijverig",
+                "Kwaliteit leidinggevend",
                 10,
-                dropDownForProfileElements.findDropDowns("ijverig").get(0),
+                dropDownForProfileElements.findDropDowns("leidinggevend").get(0),
                 ProfileElementType.QUALITY,
-                persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "frans",
+                persons.findPersons("Rijn").get(0).getMySupplies().last().getSupplyProfiles().first(),
+                "rembrandt",
                 executionContext
                 );
         
         createDropDownElement(
-                "Kwaliteit out of the box",
+                "Kwaliteit nieuwsgierig",
                 10,
-                dropDownForProfileElements.findDropDowns("box").get(0),
+                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
                 ProfileElementType.QUALITY,
-                persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "frans",
+                persons.findPersons("Rijn").get(0).getMySupplies().last().getSupplyProfiles().first(),
+                "rembrandt",
                 executionContext
                 );
     }

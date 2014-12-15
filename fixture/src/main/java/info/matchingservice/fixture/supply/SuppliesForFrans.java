@@ -15,22 +15,22 @@ public class SuppliesForFrans extends SupplyAbstract {
         executeChild(new PersonForFrans(), executionContext);
         
         createSupply(
-                "Aanbod 5",
+                "Persoonlijke profiel van Frans Hals",
                 10,
                 DemandSupplyType.PERSONS_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
                 "frans",
                 executionContext
                 );
-        
+       
         createSupply(
-                "Aanbod 6",
+                "Cursusaanbod van Frans Hals",
                 10,
                 DemandSupplyType.COURSE_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
                 "frans",
                 executionContext
-                );
+                ); 
     }
 
     @Inject

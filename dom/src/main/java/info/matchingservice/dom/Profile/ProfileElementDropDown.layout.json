@@ -1,0 +1,77 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Profiel Element": {
+          "members": {
+            "profileElementDescription": {
+            	"named" : {
+            		"value" : "Naam"
+            	},
+            	"multiLine" : {
+            		"numberOfLines" : "3"
+            	},
+            	"actions" : {
+            		"EditProfileDescription" : {
+            			"named" : {
+            				"value" : "Bewerk naam"
+            			}
+            		}
+            	}
+            },
+            "dropDownValue": {
+            	"named" : {
+            		"value" : "Kwaliteit"
+            	},
+           		"actions" : {
+            		"EditDropDownValue" : {
+            			"named" : {
+            				"value" : "Bewerk kwaliteit"
+            			}
+            		}
+            	}            	
+            },            
+            "weight": {
+            	"named" : {
+            		"value" : "Gewicht"
+            	},
+           		"actions" : {
+            		"EditWeight" : {
+            			"named" : {
+            				"value" : "Bewerk gewicht"
+            			}
+            		}
+            	}            	
+            },
+            "profileElementOwner" : {
+            	"named" : {
+            		"value" : "Behorend bij profiel"
+            	}
+            }          
+          }
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {
+        "showDropDownElementMatches": {
+        	"named" : {
+        		"value" : "Gevonden overeenkomende profiel elementen"
+        	}
+        }       
+      }
+    }
+  ],
+  "actions": {	 
+  }
+}

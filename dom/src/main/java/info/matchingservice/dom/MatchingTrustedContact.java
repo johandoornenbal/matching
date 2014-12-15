@@ -91,7 +91,7 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
     /**
      * Temp method to display the owner
      */
-    @Hidden(where=Where.OBJECT_FORMS)
+    @Hidden
     public String getEigenaar() {
         return getOwnedBy();
     }
@@ -117,7 +117,6 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "30")
-    @Named("Vertrouwens niveau")
     public TrustLevel getTrustLevel() {
         return trustLevel;
     }

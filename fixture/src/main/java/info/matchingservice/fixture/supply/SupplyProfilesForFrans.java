@@ -16,13 +16,19 @@ public class SupplyProfilesForFrans extends SupplyProfileAbstract {
         executeChild(new SuppliesForFrans(), executionContext);
         
         createSupplyProfile(
-                "Aangeboden: profiel 1",
+                "Mijn persoonlijke profiel",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMySupplies().first(),
-                "Mijn getal 7",
+                persons.findPersons("Hals").get(0).getMySupplies().last(),
+                "frans",
+                executionContext
+                );
+        
+        createSupplyProfile(
+                "Prince2 cursus",
                 10,
-                7,
+                ProfileType.COURSE_PROFILE,
+                persons.findPersons("Hals").get(0).getMySupplies().first(),
                 "frans",
                 executionContext
                 );

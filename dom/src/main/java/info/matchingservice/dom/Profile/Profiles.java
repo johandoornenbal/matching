@@ -48,6 +48,7 @@ public class Profiles extends MatchingDomainService<Profile> {
         final Profile newDemandProfile = newTransientInstance(Profile.class);
         newDemandProfile.setProfileName(demandProfileDescription);
         newDemandProfile.setWeight(weight);
+        newDemandProfile.setDemandOrSupply(DemandOrSupply.DEMAND);
         newDemandProfile.setProfileType(profileType);
         newDemandProfile.setDemandProfileOwner(demandProfileOwner);
         newDemandProfile.setOwnedBy(ownedBy);
@@ -66,6 +67,7 @@ public class Profiles extends MatchingDomainService<Profile> {
         final Profile newSupplyProfile = newTransientInstance(Profile.class);
         newSupplyProfile.setProfileName(supplyProfileDescription);
         newSupplyProfile.setWeight(weight);
+        newSupplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
         newSupplyProfile.setProfileType(profileType);
         newSupplyProfile.setSupplyProfileOwner(supplyProfileOwner);
         newSupplyProfile.setOwnedBy(ownedBy);

@@ -15,14 +15,24 @@ public class SuppliesForAntoni extends SupplyAbstract {
         executeChild(new PersonForAntoni(), executionContext);
         
         createSupply(
-                "Aanbod 1",
+                "Persoonlijk profiel van Antoni",
                 10,
                 DemandSupplyType.PERSONS_DEMANDSUPPLY,
                 persons.findPersons("Leeuw*").get(0),
                 "antoni",
                 executionContext
                 );
+        
+        createSupply(
+                "Cursusaanbod van Antoni",
+                10,
+                DemandSupplyType.COURSE_DEMANDSUPPLY,
+                persons.findPersons("Leeuw*").get(0),
+                "antoni",
+                executionContext
+                );
     }
+    
 
     @Inject
     private Persons persons;

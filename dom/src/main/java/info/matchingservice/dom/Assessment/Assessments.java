@@ -16,6 +16,7 @@ import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 
 
@@ -31,7 +32,6 @@ public class Assessments extends MatchingDomainService<Assessment> {
         return allInstances();
     }
     
-    @Named("Geef feedback")
     @NotInServiceMenu
     public Assessment newDemandAssessment(
             final Demand targetObject,
@@ -50,6 +50,20 @@ public class Assessments extends MatchingDomainService<Assessment> {
         newAs.setOwnedBy(currentUserName());
         persist(newAs);
         return newAs;
+    }
+    
+    //BUSINESS RULE
+    //Geen feedback op eigen demand
+    public boolean hideNewDemandAssessment(
+            final Demand targetObject,
+            final String description,
+            final String feedback            
+            ){
+        if (targetObject.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        
+        return false;
     }
     
     @Programmatic
@@ -71,7 +85,6 @@ public class Assessments extends MatchingDomainService<Assessment> {
         return newAs;
     }
     
-    @Named("Geef feedback")
     @NotInServiceMenu
     public Assessment newSupplyAssessment(
             final Supply targetObject,
@@ -90,6 +103,20 @@ public class Assessments extends MatchingDomainService<Assessment> {
         newAs.setOwnedBy(currentUserName());
         persist(newAs);
         return newAs;
+    }
+    
+    //BUSINESS RULE
+    //Geen feedback op eigen supply
+    public boolean hideNewSupplyAssessment(
+            final Supply targetObject,
+            final String description,
+            final String feedback            
+            ){
+        if (targetObject.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        
+        return false;
     }
     
     @Programmatic
@@ -111,7 +138,6 @@ public class Assessments extends MatchingDomainService<Assessment> {
         return newAs;
     }    
     
-    @Named("Geef feedback")
     @NotInServiceMenu
     public Assessment newProfileAssessment(
             final Profile targetObject,
@@ -123,13 +149,31 @@ public class Assessments extends MatchingDomainService<Assessment> {
             ){
         final ProfileFeedback newAs = newTransientInstance(ProfileFeedback.class);
         newAs.setTarget(targetObject);
-        newAs.setTargetOwnerActor(targetObject.getSupplyProfileOwner().getSupplyOwner());
+        if (targetObject.getDemandOrSupply().equals(DemandOrSupply.SUPPLY)){
+            newAs.setTargetOwnerActor(targetObject.getSupplyProfileOwner().getSupplyOwner());
+        } else {
+            newAs.setTargetOwnerActor(targetObject.getDemandProfileOwner().getDemandOwner());
+        }
         newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(currentUserName());
         persist(newAs);
         return newAs;
+    }
+    
+    //BUSINESS RULE
+    //Geen feedback op eigen profile
+    public boolean hideNewProfileAssessment(
+            final Profile targetObject,
+            final String description,
+            final String feedback            
+            ){
+        if (targetObject.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        
+        return false;
     }
     
 

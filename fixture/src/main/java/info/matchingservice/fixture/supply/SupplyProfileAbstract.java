@@ -2,8 +2,6 @@ package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementNumerics;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
@@ -20,39 +18,13 @@ public abstract class SupplyProfileAbstract extends FixtureScript {
             Integer weight,
             ProfileType profileType,
             Supply supplyProfileOwner,
-            String elementDescription,
-            Integer elementWeight,
-            Integer elementNumericValue,
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Profile newSupplyProfile = profiles.newSupplyProfile(supplyProfileDescription, weight, profileType, supplyProfileOwner, ownedBy);
-        
-        createNumericElement(
-                elementDescription, 
-                elementWeight, 
-                elementNumericValue,
-                ProfileElementType.NUMERIC,
-                newSupplyProfile,
-                ownedBy,
-                executionContext
-                );
-        
+        Profile newSupplyProfile = profiles.newSupplyProfile(supplyProfileDescription, weight, profileType, supplyProfileOwner, ownedBy);    
         return executionContext.add(this,newSupplyProfile);
     }
     
-    protected ProfileElementNumeric createNumericElement(
-            String description,
-            Integer weight,
-            Integer numericValue,
-            ProfileElementType profileElementCategory,
-            Profile profileOwner,
-            String ownedBy,
-            ExecutionContext executionContext
-            ){
-        ProfileElementNumeric newNumeric = profileElementNumerics.newProfileElementNumeric(description, weight, numericValue, profileElementCategory, profileOwner, ownedBy);
-        return executionContext.add(this,newNumeric);
-    }
     
     //region > injected services
     @javax.inject.Inject

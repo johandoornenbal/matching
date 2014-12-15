@@ -15,6 +15,9 @@ public class ProfileElementDropDownsFixture extends ProfileElementDropDownAbstra
         createDropdown(ProfileElementType.QUALITY, "empatisch", executionContext);
         createDropdown(ProfileElementType.QUALITY, "supercool", executionContext);
         createDropdown(ProfileElementType.QUALITY, "nieuwsgierig", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "oorlogszuchtig", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "doortastend", executionContext);
+        createDropdown(ProfileElementType.QUALITY, "leidinggevend", executionContext);
     }
 
 }

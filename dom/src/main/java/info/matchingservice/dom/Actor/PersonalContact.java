@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.annotation.Disabled;
+import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -50,12 +52,17 @@ public class PersonalContact extends MatchingTrustedContact {
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Disabled
+    @Hidden(where = Where.ALL_TABLES)
     public Person getOwnerPerson() {
         return ownerPerson;
     }
 
     public void setOwnerPerson(final Person ownerPerson) {
         this.ownerPerson = ownerPerson;
+    }
+    
+    public String title(){
+        return "Contact gelegd met " + getContactPerson().title();
     }
     
     @Inject

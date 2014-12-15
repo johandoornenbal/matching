@@ -65,7 +65,6 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    @Named("Profiel")
     @Hidden(where=Where.PARENTED_TABLES)
     public Profile getProfileElementOwner() {
         return profileElementOwner;
@@ -79,6 +78,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
+    @Hidden
     public ProfileElementType getProfileElementType(){
         return profileElementType;
     }
@@ -92,8 +92,6 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     private String profileElementDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Profiel element beschrijving")
-    @MultiLine
     public String getProfileElementDescription(){
         return profileElementDescription;
     }
@@ -103,7 +101,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     }
     
     public ProfileElement EditProfileDescription(
-            @Named("Beschrijving")
+            @Named("Naam")
             @MultiLine
             String newDescr
             ){
@@ -145,14 +143,11 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         return getWeight();
     }
     
-//    public boolean hideEditWeight(){
-//        return (this.getProfileElementOwner() instanceof SupplyProfile);
-//    }
-    
     //Should be set by subClasses
     private String displayValue;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @Hidden(where = Where.OBJECT_FORMS)
     public String getDisplayValue(){
         return displayValue;
     }

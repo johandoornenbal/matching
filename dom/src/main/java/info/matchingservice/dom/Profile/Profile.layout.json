@@ -1,0 +1,95 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Profiel": {
+          "members": {
+            "profileName": {
+            	"named" : {
+            		"value" : "Naam"
+            	},
+            	"actions" : {
+            		"EditProfileName" : {
+            			"named" : {
+            				"value" : "Bewerk naam"
+            			}
+            		}
+            	}
+            },
+            "actorOwner": {
+            	"named" : {
+            		"value" : "Profiel eigenaar"
+            	}
+            },
+            "supplyProfileOwner" : {
+            	"named" : {
+            		"value" : "Behorend bij aanbod"
+            	}
+            },
+            "demandProfileOwner" : {
+            	"named" : {
+            		"value" : "Behorend bij vraag"
+            	}
+            }            
+          }
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {
+        "profileElement": {
+        	"named" : {
+        		"value" : "Profiel elementen"
+        	},
+            "actions": {
+				"newQualityElementDropDown" : {
+					"named" : {
+						"value" : "Nieuwe kwaliteit"
+					}
+				},
+				"newProfileElementPrice" : {
+					"named" : {
+						"value" : "Nieuwe prijs"
+					}
+				}
+            }
+        },
+        "showProfileMatches" : {
+        	"named" : {
+        		"value" : "Gevonden overeenkomende profielen"
+        	}
+        },
+        "assessments": {
+        	"named" : {
+        		"value" : "Onvangen feedback"
+        	},
+          	"actions": {
+        	
+          	}
+        }                 
+      }
+    }
+  ],
+  "actions": {
+  		"DeleteProfile" : {
+      		"named" : {
+      			"value" : "Verwijder profiel"
+      		}
+      	},
+  		"newProfileAssessment" : {
+      		"named" : {
+      			"value" : "Geef feedback"
+      		}
+      	}       	 
+  }
+}

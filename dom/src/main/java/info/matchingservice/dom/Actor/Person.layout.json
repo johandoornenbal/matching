@@ -1,0 +1,83 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Naam": {
+          "members": {
+            "name": {},
+            "firstName": {},
+            "middleName": {},
+            "lastName": {}
+          }
+        },
+        "Rollen": {
+          "members": {
+            "roles": {
+            	"actions" :{
+            		"addRoleStudent": {},
+            		"deleteRoleStudent": {},
+            		"addRoleProfessional": {},
+            		"deleteRoleProfessional": {},
+            		"addRolePrincipal": {},
+            		"deleteRolePrincipal": {}
+            	}
+            }
+          }
+        },
+        "ID": {
+        	"members": {
+        		"uniqueActorId": {}
+        	}
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {
+        "mySupplies": {
+            "actions": {
+            	"newPersonsSupply": {},
+            	"newCourseSupply": {}
+            }
+        },
+        "myDemands": {
+          "actions": {
+          	"newPersonsDemand": {},
+          	"newCourseDemand": {}
+          }
+        },     
+        "mySavedMatches": {
+          "actions": {}
+        },
+        "assessmentsReceivedByMe": {
+          "actions": {}
+        },
+        "personsReferringToMe": {
+        	"actions": {}
+        },
+        "personalContacts": {
+        	"actions": {}
+        },
+       	"assessmentsGivenByMe": {
+        	"actions": {}
+        }                    
+      }
+    }
+  ],
+  "actions": {
+  	"newPersonalContact" : {
+  		"named" : {
+  			"value" : "leg contact"
+  		}
+  	}
+  }
+}

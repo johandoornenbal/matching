@@ -20,6 +20,7 @@ import javax.jdo.annotations.Persistent;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
@@ -53,6 +54,7 @@ import org.apache.isis.applib.util.TitleBuffer;
                     + "WHERE lastName.indexOf(:lastName) >= 0")                    
 })
 @AutoComplete(repository=Persons.class,  action="autoComplete")
+@Immutable
 public class Person extends Actor {
     
     
@@ -254,13 +256,14 @@ public class Person extends Actor {
     
     @Named("Nieuwe cursusaanbod")
     public Supply newCourseSupply(
-            @Named("Naam van het cursusaanbod")
-            final String needDescription
+            @Named("Beschrijving van het cursusaanbod")
+            @MultiLine
+            final String supplyDescription
             ){
-        return newSupply(needDescription, 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, currentUserName());
+        return newSupply(supplyDescription, 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, currentUserName());
     }
     
-    public boolean hideNewCourseSupply(final String needDescription){
+    public boolean hideNewCourseSupply(final String supplyDescription){
         // if you are not the owner
         if (!this.getOwnedBy().equals(currentUserName())){
             return true;
@@ -345,11 +348,9 @@ public class Person extends Actor {
     
     // method myDemands() is on Actor
     //BUSINESS RULE
-    // Als je geen opdrachtegever bent verberg dan de demands
     // Je moet minimaal INNERCIRCLE zijn om de demands te zien
-    public boolean hideMyDemands() {
-        
-        return !getIsPrincipal() || super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    public boolean hideMyDemands() { 
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     
     // method newDemand() is on Actor
@@ -357,6 +358,9 @@ public class Person extends Actor {
         return hideNewDemand(needDescription, this);
     }
     
+    //XTALUS
+    //BUSINESS RULE
+    // Je moet Opdrachtgever zijn om een tafel te starten
     @Named("Start nieuwe tafel")
     public Demand newPersonsDemand(
             @MultiLine
@@ -370,6 +374,54 @@ public class Person extends Actor {
         return hideNewDemand(demandDescription, this);
     }
     
+    public String validateNewPersonsDemand(final String demandDescription){
+        return validateNewDemand(demandDescription, this);
+    }
+    
+    //XTALUS
+    //Business Rule
+    //Er is slecht een demand van type Cursus
+    @Named("Zoek een cursus")
+    public Profile newCourseDemand(
+            @Named("Cursus omschrijving")
+            final String demandProfileDescription
+            ){
+        return newDemandAndProfile("Gezochte cursussen", 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, demandProfileDescription, 10, ProfileType.COURSE_PROFILE, currentUserName());
+    }
+    
+    public boolean hideNewCourseDemand(
+            final String demandProfileDescription
+            ){
+        // if there is already a personal Supply
+        QueryDefault<Demand> query = 
+                QueryDefault.create(
+                        Demand.class, 
+                    "findDemandByOwnedByAndType", 
+                    "ownedBy", currentUserName(),
+                    "demandType", DemandSupplyType.COURSE_DEMANDSUPPLY);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public String validateNewCourseDemand(
+            final String demandProfileDescription
+            ){
+        // if there is already a personal Supply
+        QueryDefault<Demand> query = 
+                QueryDefault.create(
+                        Demand.class, 
+                    "findDemandByOwnedByAndType", 
+                    "ownedBy", currentUserName(),
+                    "demandType", DemandSupplyType.COURSE_DEMANDSUPPLY);
+        if (container.firstMatch(query) != null) {
+            return "Er is al een vraag van type CURSUS";
+        }
+        
+        return null;
+    }
     
     // Demand helpers
     @Programmatic
@@ -384,6 +436,20 @@ public class Person extends Actor {
         }
         
         return false;
+    }
+    
+    @Programmatic
+    public String validateNewDemand(final String needDescription, final Actor needOwner){
+        // if you are not the owner
+        if (!needOwner.getOwnedBy().equals(currentUserName())){
+            return "Je bent geen eigenaar";
+        }
+        // if you have not Principal Role
+        if (!((Person) needOwner).getIsPrincipal()){
+            return "Je bent geen opdachtgever";
+        }
+        
+        return null;
     }   
     //END Region> DEMANDS /////////////////////////////////////////////////////////////
     

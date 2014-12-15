@@ -16,13 +16,19 @@ public class SupplyProfilesForAntoni extends SupplyProfileAbstract {
         executeChild(new SuppliesForAntoni(), executionContext);
         
         createSupplyProfile(
-                "Aangeboden: profiel 1",
+                "Mijn persoonlijke profiel",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Leeuw*").get(0).getMySupplies().first(),
-                "Mijn getal 9",
+                persons.findPersons("Leeuw*").get(0).getMySupplies().last(),
+                "antoni",
+                executionContext
+                );
+        
+        createSupplyProfile(
+                "Wetenschap in de praktijk",
                 10,
-                9,
+                ProfileType.COURSE_PROFILE,
+                persons.findPersons("Leeuw*").get(0).getMySupplies().first(),
                 "antoni",
                 executionContext
                 );

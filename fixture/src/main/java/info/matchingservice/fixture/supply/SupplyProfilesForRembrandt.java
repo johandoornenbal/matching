@@ -2,25 +2,25 @@ package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.fixture.actor.PersonForGerard;
+import info.matchingservice.fixture.actor.PersonForRembrandt;
 
 import javax.inject.Inject;
 
-public class SupplyProfilesForGerard extends SupplyProfileAbstract {
+public class SupplyProfilesForRembrandt extends SupplyProfileAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForGerard(), executionContext);
-        executeChild(new SuppliesForGerard(), executionContext);
+        executeChild(new PersonForRembrandt(), executionContext);
+        executeChild(new SuppliesForRembrandt(), executionContext);
         
         createSupplyProfile(
                 "Mijn persoonlijke profiel",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Dou").get(0).getMySupplies().first(),
-                "gerard",
+                persons.findPersons("Rijn").get(0).getMySupplies().first(),
+                "rembrandt",
                 executionContext
                 );
     }

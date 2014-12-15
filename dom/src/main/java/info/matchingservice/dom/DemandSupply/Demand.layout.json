@@ -1,0 +1,70 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Vraag": {
+          "members": {
+            "demandDescription": {
+            	"named" : {
+            		"value" : "Omschrijving"
+            	},
+            	"multiLine" : {
+            		"numberOfLines" : "3"
+            	},
+            	"actions" : {
+            		"editDemandDescription" : {
+            			"named" : {
+            				"value" : "Bewerk omschrijving"
+            			}
+            		}
+            	}
+            },
+            "demandOwner": {
+            	"named" : {
+            		"value" : "Eigenaar"
+            	}
+            }
+          }
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {
+        "demandProfiles": {
+        	"named" : {
+        		"value" : "Vraag profielen"
+        	},
+            "actions": {
+            	"newPersonSupplyProfile": {},
+            	"newCourseSupplyProfile": {}
+            }
+        },
+        "assessments": {
+        	"named" : {
+        		"value" : "Onvangen feedback"
+        	},
+          	"actions": {
+        	
+          	}
+        }                 
+      }
+    }
+  ],
+  "actions": {
+  		"newDemandAssessment" : {
+      		"named" : {
+      			"value" : "Geef feedback"
+      		}
+      	} 
+  }
+}

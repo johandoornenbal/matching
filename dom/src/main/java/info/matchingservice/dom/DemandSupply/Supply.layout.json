@@ -1,0 +1,68 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "Aanbod": {
+          "members": {
+            "supplyDescription": {
+            	"named" : {
+            		"value" : "Omschrijving"
+            	},
+            	"multiLine" : {
+            		"numberOfLines" : "3"
+            	},
+            	"actions" : {
+            		"editSupplyDescription" : {
+            			"named" : {
+            				"value" : "Bewerk de omschrijving"
+            			}
+            		}
+            	}
+            },
+            "supplyOwner": {
+            	"named" : {
+            		"value" : "Eigenaar"
+            	}
+            }
+          }
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {
+        "supplyProfiles": {
+        	"named" : {
+        		"value" : "Aanbod profielen"
+        	},
+            "actions": {
+            	"newPersonSupplyProfile": {},
+            	"newCourseSupplyProfile": {}
+            }
+        },
+        "assessments": {
+        	"named" : {
+        		"value" : "Onvangen feedback"
+        	},
+          	"actions": {}
+        }                 
+      }
+    }
+  ],
+  "actions": {
+  		"newSupplyAssessment" : {
+      		"named" : {
+      			"value" : "Geef feedback"
+      		}
+      	}   
+  }
+}

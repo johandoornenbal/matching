@@ -15,7 +15,7 @@ public class SuppliesForGerard extends SupplyAbstract {
         executeChild(new PersonForGerard(), executionContext);
         
         createSupply(
-                "Aanbod 3",
+                "Persoonlijke profiel van Gerard Dou",
                 10,
                 DemandSupplyType.PERSONS_DEMANDSUPPLY,
                 persons.findPersons("Dou").get(0),

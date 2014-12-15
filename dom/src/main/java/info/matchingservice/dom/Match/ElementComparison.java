@@ -8,6 +8,8 @@ import info.matchingservice.dom.Profile.ProfileElement;
 import com.google.common.collect.ComparisonChain;
 
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.MemberOrder;
+import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.ViewModel;
 
 @ViewModel
@@ -53,6 +55,7 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     
     private ProfileElement matchingSupplyProfileElement;
     
+    @Hidden
     public ProfileElement getMatchingSupplyProfileElement(){
         return matchingSupplyProfileElement;
     }
@@ -63,6 +66,8 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     
     private Profile matchingProfileElementOwner;
     
+    @MemberOrder(sequence="30")
+    @Named("Profiel")
     public Profile getMatchingProfileElementOwner(){
         return matchingProfileElementOwner;
     }
@@ -73,6 +78,8 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     
     private Actor matchingProfileElementActorOwner;
     
+    @MemberOrder(sequence="20")
+    @Named("Eigenaar")
     public Actor getMatchingProfileElementActorOwner() {
         return matchingProfileElementActorOwner;
     }
@@ -83,6 +90,8 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
     
     private Integer calculatedMatchingValue;
     
+    @Named("Matchingswaarde")
+    @MemberOrder(sequence="10")
     public Integer getCalculatedMatchingValue() {
         return calculatedMatchingValue;
     }

@@ -40,7 +40,6 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     
     @MemberOrder(name = "Personen", sequence = "10")
     @ActionSemantics(Of.NON_IDEMPOTENT)
-    @Named("Personal contact maken")
     public PersonalContact newPersonalContact(
             final @Named("Contact") Person contactPerson) {
         return newPersonalContact(contactPerson, currentUserName()); // see region>helpers

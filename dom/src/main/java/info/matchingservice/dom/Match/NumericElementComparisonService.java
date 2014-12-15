@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.apache.isis.applib.AbstractService;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
@@ -32,7 +30,6 @@ public class NumericElementComparisonService extends AbstractService {
     @NotContributed(As.ACTION)
     @ActionSemantics(Of.SAFE)
     @Render(Type.EAGERLY)
-    @Named("Gevonden matching persoon profiel elementen")
     public List<ElementComparison> showElementMatches(ProfileElementNumeric element){
         
         List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();

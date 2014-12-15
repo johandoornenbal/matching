@@ -23,11 +23,12 @@ import javax.jdo.annotations.Persistent;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -65,6 +66,7 @@ import org.apache.isis.applib.query.QueryDefault;
                     + "FROM info.matchingservice.dom.Profile.Profile "
                     + "WHERE supplyProfileOwner != null && profileType == :profileType && ownedBy == :ownedBy")
 })
+@Immutable
 public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public Profile() {
@@ -91,18 +93,32 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private ProfileType profileType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @Hidden
     public ProfileType getProfileType() {
         return profileType;
     }
     
     public void setProfileType(final ProfileType profileType){
         this.profileType = profileType;
-    }    
+    }
+    
+    private DemandOrSupply demandOrSupply;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Hidden
+    public DemandOrSupply getDemandOrSupply(){
+        return demandOrSupply;
+    }
+    
+    public void setDemandOrSupply(final DemandOrSupply demandOrSupply){
+        this.demandOrSupply = demandOrSupply;
+    }
     
     private Demand demandProfileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Disabled
+    @Hidden(where = Where.ALL_TABLES)
     public Demand getDemandProfileOwner(){
         return demandProfileOwner;
     }
@@ -111,17 +127,44 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         this.demandProfileOwner = demandProfileOwner;
     }
     
+    public boolean hideDemandProfileOwner(){
+        if (getDemandProfileOwner() == null){
+            return true;
+        }
+        
+        return false;
+    }
+    
     private Supply supplyProfileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Disabled
+    @Hidden(where = Where.ALL_TABLES)
     public Supply getSupplyProfileOwner(){
         return supplyProfileOwner;
     }
     
     public void setSupplyProfileOwner(final Supply supplyProfileOwner){
         this.supplyProfileOwner = supplyProfileOwner;
-    }   
+    }
+    
+    public boolean hideSupplyProfileOwner(){
+        if (getSupplyProfileOwner() == null){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    @Named("Eigenaar")
+    @Hidden(where = Where.PARENTED_TABLES)
+    public Actor getActorOwner() {
+        if (this.getDemandOrSupply().equals(DemandOrSupply.DEMAND)){
+            return getDemandProfileOwner().getDemandOwner();
+        } else {
+            return getSupplyProfileOwner().getSupplyOwner();
+        }
+    }
     
     //ProfileName /////////////////////////////////////////////////////////////////////////////////////
     private String profileName;
@@ -137,6 +180,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     private Integer weight;
     
+    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Integer getWeight() {
         return weight;
@@ -156,7 +200,6 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     // alleen tonen op profile van type PERSON
     // 2 dezelfde kwaliteiten kiezen heeft geen zin
     
-    @Named("Nieuwe kwaliteit")
     public Profile newQualityElementDropDown(
             @Named("Gewicht")
             final Integer weight,
@@ -274,7 +317,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     // Region actions
     public Profile EditProfileName(
-            @MultiLine
+            @Named("Naam")
             String newString
             ){
         this.setProfileName(newString);
@@ -285,6 +328,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return getProfileName();
     }
     
+    @Hidden
     public Profile EditWeight(
             Integer newInteger
             ){
@@ -391,7 +435,6 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "profileElementOwner", dependentElement = "true")
-    @Named("Profiel elementen")
     public SortedSet<ProfileElement> getProfileElement() {
         return profileElement;
     }
@@ -405,7 +448,6 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "target", dependentElement = "true")
-    @Named("Assessments")
     public SortedSet<ProfileAssessment> getAssessments() {
         return assessments;
     }

@@ -90,6 +90,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     private SortedSet<Demand> myDemands = new TreeSet<Demand>();
     
+    @Named("Vraag")
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "demandOwner", dependentElement = "true")
     public SortedSet<Demand> getMyDemands() {
@@ -129,11 +130,27 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return demands.newDemand(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
     }
     
+    @Programmatic
+    public Profile newDemandAndProfile(
+            @MultiLine 
+            final String demandDescription,
+            final Integer weight,
+            final DemandSupplyType demandSupplyType,
+            final Actor demandOwner,
+            final String demandProfileDescription,
+            final Integer profileWeight,
+            final ProfileType profileType,
+            final String ownedBy){
+        final Demand demand = demands.newDemand(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
+        return profiles.newDemandProfile(demandProfileDescription, profileWeight, profileType, demand, ownedBy);
+    }
+    
     
     //Region> SUPPLIES /////////////////////////////////////////////////////////////
 
     private SortedSet<Supply> mySupplies = new TreeSet<Supply>();
     
+    @Named("Aanbod")
     @Render(Type.EAGERLY)
     @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
     public SortedSet<Supply> getMySupplies() {
