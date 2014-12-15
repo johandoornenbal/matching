@@ -33,7 +33,11 @@ import info.matchingservice.dom.Profile.Profile;
 public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
 
     public ProfileMatch() {
-        super("ownedBy");
+        super("ownedBy, vacancyCandidate, vacancyProfile, candidateStatus");
+    }
+    
+    public String title(){
+        return "Opgeslagen profiel match van " + this.getVacancyCandidate().title();
     }
     
     private String ownedBy;
@@ -65,7 +69,6 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     
     private Actor vacancyCandidate;
     
-    @Named("Gevonden kandidaat")
     @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
     public Actor getVacancyCandidate() {
@@ -79,7 +82,6 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     private Profile vacancyProfile;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Stoel")
     @Disabled
     public Profile getVacancyProfile() {
         return vacancyProfile;

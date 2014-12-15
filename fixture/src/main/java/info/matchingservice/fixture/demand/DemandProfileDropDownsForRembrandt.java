@@ -3,36 +3,36 @@ package info.matchingservice.fixture.demand;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.fixture.actor.PersonForFrans;
+import info.matchingservice.fixture.actor.PersonForRembrandt;
 
 import javax.inject.Inject;
 
-public class DemandProfileDropDownsForFrans extends DemandProfileDropDownAbstract {
+public class DemandProfileDropDownsForRembrandt extends DemandProfileDropDownAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForFrans(), executionContext);
-        executeChild(new DemandsForFrans(), executionContext);
+        executeChild(new PersonForRembrandt(), executionContext);
+        executeChild(new DemandsForRembrandt(), executionContext);
         
         createDropDownElement(
-                "kwaliteit ijverig",
+                "kwaliteit geduldig",
                 10,
-                dropDownForProfileElements.findDropDowns("ijverig").get(0),
+                dropDownForProfileElements.findDropDowns("geduldig").get(0),
                 ProfileElementType.QUALITY,
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(),
-                "frans",
+                persons.findPersons("Rijn*").get(0).getMyDemands().last().getDemandProfiles().first(),
+                "rembrandt",
                 executionContext
                 );
         
         createDropDownElement(
-                "kwaliteit nieuwsgierig",
+                "kwaliteit oorlogszuchtig",
                 10,
-                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
+                dropDownForProfileElements.findDropDowns("oorlogszuchtig").get(0),
                 ProfileElementType.QUALITY,
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(),
-                "frans",
+                persons.findPersons("Rijn*").get(0).getMyDemands().last().getDemandProfiles().last(),
+                "rembrandt",
                 executionContext
                 );
     }

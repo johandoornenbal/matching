@@ -16,37 +16,28 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
         executeChild(new DemandsForFrans(), executionContext);
         
         createDemandProfile(
-                "Gezocht: Persoon met getal 1",
-                10,
-                ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMyDemands().first(),
-                "Mijn getal 10",
-                10,
-                10,
-                "frans",
-                executionContext
-                );
-        
-        createDemandProfile(
-                "Gezocht: Persoon met getal 10",
-                10,
-                ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMyDemands().first(),
-                "Mijn getal 3",
-                10,
-                3,
-                "frans",
-                executionContext
-                );
-        
-        createDemandProfile(
-                "Gezocht: Hulpschilder die out-of-the-box denkt",
+                "Gezocht: nieuwsgierige persoon",
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Hals").get(0).getMyDemands().last(),
-                "Getal 5",
+                "frans",
+                executionContext
+                );
+        
+        createDemandProfile(
+                "Gezocht: ijverige persoon",
                 10,
-                5,
+                ProfileType.PERSON_PROFILE,
+                persons.findPersons("Hals").get(0).getMyDemands().last(),
+                "frans",
+                executionContext
+                );
+        
+        createDemandProfile(
+                "Gezocht: cursus",
+                10,
+                ProfileType.COURSE_PROFILE,
+                persons.findPersons("Hals").get(0).getMyDemands().first(),
                 "frans",
                 executionContext
                 );

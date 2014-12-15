@@ -15,7 +15,7 @@ public class DemandsForFrans extends DemandAbstract {
         executeChild(new PersonForFrans(), executionContext);
         
         createDemand(
-                "Vraagstuk 1",
+                "Mensen gezocht voor project",
                 10,
                 DemandSupplyType.PERSONS_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
@@ -24,9 +24,9 @@ public class DemandsForFrans extends DemandAbstract {
                 );
         
         createDemand(
-                "Vraagstuk 2",
+                "Cursus gezocht",
                 10,
-                DemandSupplyType.PERSONS_DEMANDSUPPLY,
+                DemandSupplyType.COURSE_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
                 "frans",
                 executionContext

@@ -201,10 +201,10 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     // 2 dezelfde kwaliteiten kiezen heeft geen zin
     
     public Profile newQualityElementDropDown(
-            @Named("Gewicht")
-            final Integer weight,
             @Named("Zoek kwaliteit door te beginnen met typen")
-            final DropDownForProfileElement dropDown
+            final DropDownForProfileElement dropDown,
+            @Named("Gewicht")
+            final Integer weight
             ){
         profileElementDropDowns.newProfileElementDropDown(
                 "kwaliteit " + dropDown.title(), 
@@ -215,13 +215,13 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return this;
     }
     
-    public List<DropDownForProfileElement> autoComplete1NewQualityElementDropDown(String search) {
+    public List<DropDownForProfileElement> autoComplete0NewQualityElementDropDown(String search) {
         return dropDownForProfileElements.findDropDowns(search);
     }
     
     public boolean hideNewQualityElementDropDown(
-            final Integer weight,
-            final DropDownForProfileElement dropDown
+            final DropDownForProfileElement dropDown,
+            final Integer weight
             ){
         
         if (this.getProfileType() != ProfileType.PERSON_PROFILE){
@@ -232,8 +232,8 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     
     public String validateNewQualityElementDropDown(
-            final Integer weight,
-            final DropDownForProfileElement dropDown
+            final DropDownForProfileElement dropDown,
+            final Integer weight
             ){
         
         if (this.getProfileType() != ProfileType.PERSON_PROFILE){

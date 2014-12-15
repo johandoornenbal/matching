@@ -40,10 +40,10 @@ public class NumericElementComparisonService extends AbstractService {
         }
         
         for (ProfileElementNumeric e : container.allInstances(ProfileElementNumeric.class)) {
-            if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementType() == ProfileElementType.NUMERIC){
+            if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.COURSE_PROFILE && e.getProfileElementType() == ProfileElementType.NUMERIC){
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
-                Integer matchValue = 100 - 10*Math.abs(element.getNumericValue() - e.getNumericValue());
+                Integer matchValue = 100 - 1*Math.abs(element.getNumericValue() - e.getNumericValue());
                 if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
                     ElementComparison matchTmp = new ElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue);
                     elementMatches.add(matchTmp);

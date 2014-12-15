@@ -1,0 +1,60 @@
+{
+  "columns": [
+    {
+      "span": 8,
+      "memberGroups": {
+        "Opgeslagen Profiel match": {
+          "members": {
+            "vacancyCandidate": {
+            	"named" : {
+            		"value" : "Gevonden persoon"
+            	}
+            },
+            "candidateStatus" : {
+            	"named" : {
+            		"value" : "Status"
+            	},
+            	"actions" : {
+            		"ChangeStatus" : {
+            			"named" : {
+            				"value" : "Wijzig de status"
+            			}
+            		}
+            	}
+            },            
+            "vacancyProfile" : {
+            	"named": {
+            		"value" : "Gevraagd profiel"
+            	}
+            },
+            "ownerActor": {
+            	"named" : {
+            		"value" : "Match eigenaar"
+            	}
+            },
+            "demandProfileOwner" : {
+            	"named" : {
+            		"value" : "Behorend bij vraag"
+            	}
+            }            
+          }
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "collections": {               
+      }
+    }
+  ],
+  "actions": { 	 
+  }
+}

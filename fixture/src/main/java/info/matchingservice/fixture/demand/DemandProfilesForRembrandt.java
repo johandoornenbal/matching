@@ -16,25 +16,10 @@ public class DemandProfilesForRembrandt extends DemandProfileAbstract {
         executeChild(new DemandsForRembrandt(), executionContext);
         
         createDemandProfile(
-                "Gezocht: ding met getal 7",
+                "Gezocht: soldaat die wil poseren",
                 10,
-                ProfileType.DEVICE_PROFILE,
+                ProfileType.PERSON_PROFILE,
                 persons.findPersons("Rijn").get(0).getMyDemands().first(),
-                "Mijn getal 7",
-                10,
-                7,
-                "rembrandt",
-                executionContext
-                );
-        
-        createDemandProfile(
-                "Gezocht: cursus met nummer 5",
-                10,
-                ProfileType.COURSE_PROFILE,
-                persons.findPersons("Rijn").get(0).getMyDemands().first(),
-                "Mijn getal 5",
-                10,
-                5,
                 "rembrandt",
                 executionContext
                 );
@@ -44,9 +29,6 @@ public class DemandProfilesForRembrandt extends DemandProfileAbstract {
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Rijn").get(0).getMyDemands().last(),
-                "Getal 13",
-                10,
-                13,
                 "rembrandt",
                 executionContext
                 );

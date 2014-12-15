@@ -15,16 +15,7 @@ public class DemandsForRembrandt extends DemandAbstract {
         executeChild(new PersonForRembrandt(), executionContext);
         
         createDemand(
-                "Vraagstuk 1",
-                10,
-                DemandSupplyType.PERSONS_DEMANDSUPPLY,
-                persons.findPersons("Rijn").get(0),
-                "rembrandt",
-                executionContext
-                );
-        
-        createDemand(
-                "Vraagstuk 2",
+                "Hulp gezocht voor De Nachtwacht",
                 10,
                 DemandSupplyType.PERSONS_DEMANDSUPPLY,
                 persons.findPersons("Rijn").get(0),

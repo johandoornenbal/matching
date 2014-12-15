@@ -3,36 +3,36 @@ package info.matchingservice.fixture.demand;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.fixture.actor.PersonForFrans;
+import info.matchingservice.fixture.actor.PersonForMichiel;
 
 import javax.inject.Inject;
 
-public class DemandProfileDropDownsForFrans extends DemandProfileDropDownAbstract {
+public class DemandProfileDropDownsForMichiel extends DemandProfileDropDownAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForFrans(), executionContext);
-        executeChild(new DemandsForFrans(), executionContext);
+        executeChild(new PersonForMichiel(), executionContext);
+        executeChild(new DemandsForMichiel(), executionContext);
         
         createDropDownElement(
-                "kwaliteit ijverig",
+                "kwaliteit out of the box",
                 10,
-                dropDownForProfileElements.findDropDowns("ijverig").get(0),
+                dropDownForProfileElements.findDropDowns("out").get(0),
                 ProfileElementType.QUALITY,
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(),
-                "frans",
+                persons.findPersons("Ruyter*").get(0).getMyDemands().last().getDemandProfiles().first(),
+                "michiel",
                 executionContext
                 );
         
         createDropDownElement(
-                "kwaliteit nieuwsgierig",
+                "kwaliteit dapper",
                 10,
-                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
+                dropDownForProfileElements.findDropDowns("dapper").get(0),
                 ProfileElementType.QUALITY,
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(),
-                "frans",
+                persons.findPersons("Ruyter*").get(0).getMyDemands().last().getDemandProfiles().first(),
+                "michiel",
                 executionContext
                 );
     }

@@ -18,12 +18,6 @@ public class RolesForGerard extends RoleAbstract {
                 "gerard",
                 executionContext
                 );
-        
-        createRole(
-                PersonRoleType.PRINCIPAL, 
-                "gerard",
-                executionContext
-                );
 
     }
 

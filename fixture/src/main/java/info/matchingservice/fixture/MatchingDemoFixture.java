@@ -19,9 +19,14 @@ import info.matchingservice.fixture.actor.RolesForGerard;
 import info.matchingservice.fixture.actor.RolesForMichiel;
 import info.matchingservice.fixture.actor.RolesForRembrandt;
 import info.matchingservice.fixture.demand.DemandProfileDropDownsForFrans;
+import info.matchingservice.fixture.demand.DemandProfileDropDownsForMichiel;
+import info.matchingservice.fixture.demand.DemandProfileDropDownsForRembrandt;
+import info.matchingservice.fixture.demand.DemandProfileNumericsForFrans;
+import info.matchingservice.fixture.demand.DemandProfilesForMichiel;
 import info.matchingservice.fixture.demand.DemandProfilesForRembrandt;
 import info.matchingservice.fixture.demand.DemandProfilesForFrans;
 import info.matchingservice.fixture.demand.DemandsForFrans;
+import info.matchingservice.fixture.demand.DemandsForMichiel;
 import info.matchingservice.fixture.demand.DemandsForRembrandt;
 import info.matchingservice.fixture.supply.SuppliesForAntoni;
 import info.matchingservice.fixture.supply.SuppliesForFrans;
@@ -67,9 +72,15 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new RolesForMichiel(), executionContext);
         executeChild(new RolesForRembrandt(), executionContext);
         executeChild(new DemandsForFrans(), executionContext);
-        executeChild(new DemandProfilesForRembrandt(), executionContext);
         executeChild(new DemandsForRembrandt(), executionContext);
+        executeChild(new DemandsForMichiel(), executionContext);
+        executeChild(new DemandProfilesForRembrandt(), executionContext);
         executeChild(new DemandProfilesForFrans(), executionContext);
+        executeChild(new DemandProfilesForMichiel(), executionContext);
+        executeChild(new DemandProfileDropDownsForFrans(), executionContext);
+        executeChild(new DemandProfileDropDownsForRembrandt(), executionContext);
+        executeChild(new DemandProfileDropDownsForMichiel(), executionContext);
+        executeChild(new DemandProfileNumericsForFrans(), executionContext);
         executeChild(new SuppliesForGerard(), executionContext);
         executeChild(new SuppliesForFrans(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
@@ -94,7 +105,7 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new PersonalContactsForFrans(), executionContext);
         executeChild(new PersonalContactsForRembrandt(), executionContext);
         executeChild(new PersonalContactsForMichiel(), executionContext);
-        executeChild(new DemandProfileDropDownsForFrans(), executionContext);
+        
     }
 
 }
