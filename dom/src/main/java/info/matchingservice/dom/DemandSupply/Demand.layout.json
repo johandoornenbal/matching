@@ -45,8 +45,8 @@
         		"value" : "Vraag profielen"
         	},
             "actions": {
-            	"newPersonSupplyProfile": {},
-            	"newCourseSupplyProfile": {}
+            	"newPersonDemandProfile": {},
+            	"newCourseDemandProfile": {}
             }
         },
         "assessments": {

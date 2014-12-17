@@ -1,19 +1,18 @@
 package info.matchingservice.dom.Match;
 
+import info.matchingservice.dom.MatchingDomainObject;
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Profile.Profile;
+
 import javax.inject.Inject;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 
 import com.google.common.collect.ComparisonChain;
 
-import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Profile.Profile;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.ViewModel;
-import org.apache.isis.applib.query.QueryDefault;
 
 
 @ViewModel
@@ -71,7 +70,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     //Region>Actions ////////////////////////////////////////////////////////
     
     public ProfileMatch SaveMatch(){
-        return profileMatches.newProfileMatch(getDemandProfile().getDemandProfileOwner().getDemandOwner(), getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner(), getDemandProfile());
+        return profileMatches.newProfileMatch(getDemandProfile().getDemandProfileOwner().getDemandOwner(), getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner(), getDemandProfile(), getMatchingSupplyProfile());
     }
 //    
 //    //TODO: uitbreiden met controle (en hideXxx ) of er al een save is gemaakt met deze kenmerken...

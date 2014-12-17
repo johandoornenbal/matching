@@ -3,10 +3,12 @@ package info.matchingservice.dom.Match;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Actor.Actor;
@@ -27,17 +29,17 @@ import info.matchingservice.dom.Profile.Profile;
             name = "findProfileMatchUnique", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Match.ProfileMatch "
-                    + "WHERE ownedBy == :ownedBy && vacancyCandidate == :vacancyCandidate && vacancyProfile == :vacancyProfile")                  
+                    + "WHERE ownedBy == :ownedBy && supplyCandidate == :vacancyCandidate && demandProfile == :vacancyProfile")                  
 })
 @Immutable
 public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
 
     public ProfileMatch() {
-        super("ownedBy, vacancyCandidate, vacancyProfile, candidateStatus");
+        super("ownedBy, supplyCandidate, demandProfile, candidateStatus");
     }
     
     public String title(){
-        return "Opgeslagen profiel match van " + this.getVacancyCandidate().title();
+        return "Opgeslagen profiel match van " + this.getSupplyCandidate().title();
     }
     
     private String ownedBy;
@@ -67,28 +69,28 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
         this.ownerActor = ownerActor;
     }
     
-    private Actor vacancyCandidate;
+    private Actor supplyCandidate;
     
     @Disabled
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public Actor getVacancyCandidate() {
-        return vacancyCandidate;
+    public Actor getSupplyCandidate() {
+        return supplyCandidate;
     }
     
-    public void setVacancyCandidate(final Actor candidate) {
-        this.vacancyCandidate = candidate;
+    public void setSupplyCandidate(final Actor candidate) {
+        this.supplyCandidate = candidate;
     }
     
-    private Profile vacancyProfile;
+    private Profile demandProfile;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    public Profile getVacancyProfile() {
-        return vacancyProfile;
+    public Profile getDemandProfile() {
+        return demandProfile;
     }
     
-    public void setVacancyProfile(final Profile vacancyProfile){
-        this.vacancyProfile = vacancyProfile;
+    public void setDemandProfile(final Profile vacancyProfile){
+        this.demandProfile = vacancyProfile;
     }
     
     private CandidateStatus candidateStatus;
@@ -103,6 +105,17 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
         this.candidateStatus = candidateStatus;
     }
     
+    private Profile matchingSupplyProfile;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public Profile getMatchingSupplyProfile(){
+        return matchingSupplyProfile;
+    }
+    
+    public void setMatchingSupplyProfile(final Profile matchingSupplyProfile){
+        this.matchingSupplyProfile = matchingSupplyProfile;
+    }
+    
     //Region>Actions
     
     public ProfileMatch ChangeStatus(final CandidateStatus status) {
@@ -113,5 +126,21 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     public CandidateStatus default0ChangeStatus(final CandidateStatus status){
         return getCandidateStatus();
     }
+    
+    public Profile deleteMatch(
+            @Optional @Named("Verwijderen OK?") boolean areYouSure
+            ){
+        container.removeIfNotAlready(this);
+        return this.getDemandProfile();
+    }
+    
+    public String validateDeleteMatch(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+    
+// Injects
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
 
 }

@@ -45,8 +45,8 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
             assertThat(p1.getUniqueActorId(), is(UNIQUE_ID));
             assertThat(p1.getOwnedBy(), is(OWNED_BY));
-            assertThat(p1.getIsStudent(), is(true));
-            assertThat(p1.getIsProfessional(), is(false));
+            assertThat(p1.getIsStudent(), is(false));
+            assertThat(p1.getIsProfessional(), is(true));
             assertThat(p1.getIsPrincipal(), is(true));
         }
         
@@ -210,8 +210,8 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p2.getIsStudent(), is(false));
             assertThat(p2.getIsProfessional(), is(false));
             assertThat(p2.getIsPrincipal(), is(false));
-            assertThat(p3.getIsStudent(), is(true));
-            assertThat(p3.getIsProfessional(), is(false));
+            assertThat(p3.getIsStudent(), is(false));
+            assertThat(p3.getIsProfessional(), is(true));
             assertThat(p3.getIsPrincipal(), is(true));
         }
         

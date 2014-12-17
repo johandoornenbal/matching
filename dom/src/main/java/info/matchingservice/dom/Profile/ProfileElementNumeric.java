@@ -12,7 +12,7 @@ import org.apache.isis.applib.annotation.Immutable;
     @javax.jdo.annotations.Query(
             name = "findProfileElementNumericByOwnerProfile", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Profile.ProfileElementnumeric "
+                    + "FROM info.matchingservice.dom.Profile.ProfileElementNumeric "
                     + "WHERE profileElementOwner == :profileElementOwner")
 })
 @Immutable

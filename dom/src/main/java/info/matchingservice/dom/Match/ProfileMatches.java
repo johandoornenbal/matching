@@ -32,9 +32,11 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
             @Named("Gevonden kandidaat")
             Actor vacancyCandidate,
             @Named("Stoel")
-            Profile vacancyProfile
+            Profile vacancyProfile,
+            @Named("Matching aanbod profiel")
+            Profile matchingSupplyProfile
             ){
-        return newProfileMatch(ownerActor, vacancyCandidate, vacancyProfile, currentUserName(), CandidateStatus.CANDIDATE);
+        return newProfileMatch(ownerActor, vacancyCandidate, vacancyProfile, matchingSupplyProfile, currentUserName(), CandidateStatus.CANDIDATE);
     }
     
     //Region> Helpers ///////////////////////////////
@@ -45,15 +47,17 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
     @Programmatic
     public ProfileMatch newProfileMatch(
             Actor ownerActor,
-            Actor vacancyCandidate,
-            Profile vacancyProfile,
+            Actor supplyCandidate,
+            Profile demandProfile,
+            Profile matchingSupplyProfile,
             String owner,
             CandidateStatus candidateStatus
             ){
         ProfileMatch newMatch = newTransientInstance(ProfileMatch.class);
         newMatch.setOwnerActor(ownerActor);
-        newMatch.setVacancyCandidate(vacancyCandidate);
-        newMatch.setVacancyProfile(vacancyProfile);
+        newMatch.setSupplyCandidate(supplyCandidate);
+        newMatch.setDemandProfile(demandProfile);
+        newMatch.setMatchingSupplyProfile(matchingSupplyProfile);
         newMatch.setOwnedBy(owner);
         newMatch.setCandidateStatus(candidateStatus);
         persist(newMatch);

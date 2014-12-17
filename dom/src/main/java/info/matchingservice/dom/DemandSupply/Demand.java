@@ -218,7 +218,39 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         
         return null;
     }    
+
+    //XTALUS 
+    //Nieuwe persoon gezocht
+    @Named("Nieuwe persoon zoeken")
+    public Profile newPersonDemandProfile(
+            @Named("Omschrijving persoon gezocht")
+            final  String demandProfileDescription
+            ){
+        return newDemandProfile(demandProfileDescription, 10, ProfileType.PERSON_PROFILE, this, currentUserName());
+    }
     
+    // BUSINESS RULE voor hide en validate van de aktie 'nieuw persoon gezocht'
+    // alleen tonen op demand van type persoon
+    
+    public boolean hideNewPersonDemandProfile(
+            final  String demandProfileDescription
+            ){
+        if (this.getDemandType() != DemandSupplyType.PERSONS_DEMANDSUPPLY){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public String validateNewPersonDemandProfile(
+            final  String demandProfileDescription
+            ){
+        if (this.getDemandType() != DemandSupplyType.PERSONS_DEMANDSUPPLY){
+            return "Alleen op type PERSOON";
+        }
+        
+        return null;
+    }    
     
     @Hidden
     public Profile newDemandProfile(
