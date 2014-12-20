@@ -5,16 +5,24 @@ import info.matchingservice.dom.Actor.Actor;
 
 import java.util.List;
 
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "50", repositoryFor = Supply.class)
+@DomainService(repositoryFor = Supply.class)
+@DomainServiceLayout(
+        named="Aanbod en vraag",
+        menuBar = DomainServiceLayout.MenuBar.PRIMARY,
+        menuOrder = "30"
+)
 public class Supplies extends MatchingDomainService<Supply> {
 
     public Supplies() {
         super(Supplies.class, Supply.class);
     }
-
+    
+    @ActionLayout(named="Alle aanbod")
     public List<Supply> allSupplies() {
         return allInstances();
     }

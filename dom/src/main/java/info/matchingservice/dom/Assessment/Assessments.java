@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
@@ -20,8 +21,8 @@ import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 
 
-@DomainService(menuOrder = "60", repositoryFor = Assessment.class)
-@Named("Assessments")
+@DomainService(repositoryFor = Assessment.class)
+@Hidden
 public class Assessments extends MatchingDomainService<Assessment> {
 
     public Assessments() {

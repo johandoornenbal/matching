@@ -7,32 +7,46 @@ import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.List;
 
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(menuOrder = "50", repositoryFor = Profile.class)
+@DomainService(repositoryFor = Profile.class)
+@DomainServiceLayout(
+        named="Aanbod en vraag",
+        menuBar = DomainServiceLayout.MenuBar.PRIMARY,
+        menuOrder = "30"
+)
 public class Profiles extends MatchingDomainService<Profile> {
 
     public Profiles() {
         super(Profiles.class, Profile.class);
     }
     
+    @ActionLayout(named="Alle profielen")
+    @Hidden
     public List<Profile> allProfiles() {
         return allInstances();
     }
     
+    @ActionLayout(named="Alle aanbod profielen")
     public List<Profile> allSupplyProfiles() {
         return allMatches("allSupplyProfiles");
     }
     
+    @ActionLayout(named="Alle vraagprofielen")
     public List<Profile> allDemandProfiles() {
         return allMatches("allDemandProfiles");
     }
     
+    @ActionLayout(named="Alle aanbodprofielen van type...")
     public List<Profile> allSupplyProfilesOfType(ProfileType profileType) {
         return allMatches("allSupplyProfilesOfType","profileType",profileType);
     }
     
+    @ActionLayout(named="Alle vraagprofielen van type...")
     public List<Profile> allDemandProfilesOfType(ProfileType profileType) {
         return allMatches("allDemandProfilesOfType","profileType",profileType);
     }
