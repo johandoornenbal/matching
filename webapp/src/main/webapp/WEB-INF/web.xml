@@ -209,7 +209,7 @@
         <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
         <init-param>
             <param-name>applicationClassName</param-name>
-            <param-value>nl.socrates.app.webapp.SocratesApp</param-value>
+            <param-value>nl.matching.app.webapp.MatchingApp</param-value>
         </init-param>
     </filter>
     <filter-mapping>

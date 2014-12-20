@@ -16,7 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package nl.socrates.app.webapp;
+package nl.matching.app.webapp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,13 +54,13 @@ import org.apache.isis.viewer.wicket.viewer.integration.wicket.AuthenticatedWebS
  *    &lt;filter-class>org.apache.wicket.protocol.http.WicketFilter&lt;/filter-class>
  *    &lt;init-param>
  *      &lt;param-name>applicationClassName&lt;/param-name>
- *      &lt;param-value>nl.socrates.app.webapp.SocratesApp&lt;/param-value>
+ *      &lt;param-value>nl.matching.app.webapp.MatchingApp&lt;/param-value>
  *    &lt;/init-param>
  * &lt;/filter>
  * </pre>
  * 
  */
-public class SocratesApp extends IsisWicketApplication {
+public class MatchingApp extends IsisWicketApplication {
 
     private static final long serialVersionUID = 1L;
 
@@ -114,13 +114,13 @@ public class SocratesApp extends IsisWicketApplication {
         final Module simpleOverrides = new AbstractModule() {
             @Override
             protected void configure() {
-                bind(ComponentFactoryRegistrar.class).to(ComponentFactoryRegistrarForSocrates.class);
+                bind(ComponentFactoryRegistrar.class).to(ComponentFactoryRegistrarForMatchingservice.class);
 
-                bind(String.class).annotatedWith(Names.named("applicationName")).toInstance("Socrates App");
+                bind(String.class).annotatedWith(Names.named("applicationName")).toInstance("Matching App");
                 bind(String.class).annotatedWith(Names.named("applicationCss")).toInstance("css/application.css");
                 bind(String.class).annotatedWith(Names.named("applicationJs")).toInstance("scripts/application.js");
                 bind(String.class).annotatedWith(Names.named("welcomeMessage")).toInstance(readLines("welcome.html"));
-                bind(String.class).annotatedWith(Names.named("aboutMessage")).toInstance("Socrates App");
+                bind(String.class).annotatedWith(Names.named("aboutMessage")).toInstance("Matching App");
                 bind(InputStream.class).annotatedWith(Names.named("metaInfManifest")).toProvider(Providers.of(getServletContext().getResourceAsStream("/META-INF/MANIFEST.MF")));
             }
         };
@@ -130,7 +130,7 @@ public class SocratesApp extends IsisWicketApplication {
 
     private static String readLines(final String resourceName) {
         try {
-            List<String> readLines = Resources.readLines(Resources.getResource(SocratesApp.class, resourceName), Charset.defaultCharset());
+            List<String> readLines = Resources.readLines(Resources.getResource(MatchingApp.class, resourceName), Charset.defaultCharset());
             final String aboutText = Joiner.on("\n").join(readLines);
             return aboutText;
         } catch (IOException e) {
