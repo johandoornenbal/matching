@@ -344,11 +344,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public Actor DeleteProfile(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
-        if (this.demandProfileOwner!=null){
-            return this.getDemandProfileOwner().getProfileOwnerIsOwnedBy();
-        } else {
-            return this.getSupplyProfileOwner().getProfileOwnerIsOwnedBy();
-        }
+        return this.getActorOwner();
             
     }
 
