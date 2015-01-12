@@ -1,0 +1,107 @@
+package info.matchingservice.dom.Competence;
+
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.inject.Inject;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
+
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.AutoComplete;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.CollectionLayout.RenderType;
+import org.apache.isis.applib.annotation.Immutable;
+import org.apache.isis.applib.annotation.PropertyLayout;
+
+import info.matchingservice.dom.MatchingMutableObject;
+
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "competenceCategoryContains", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Competence.CompetenceCategory "
+                    + "WHERE competenceCategoryDescription.indexOf(:competenceCategoryDescription) >= 0"),
+    @javax.jdo.annotations.Query(
+            name = "competenceCategoryMatches", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Competence.CompetenceCategory "
+                    + "WHERE competenceCategoryDescription == :competenceCategoryDescription")                     
+})
+@AutoComplete(repository=CompetenceCategories.class,  action="autoComplete")
+@Immutable
+public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory> {
+
+    public CompetenceCategory(){
+        super("competenceCategoryDescription");
+    }
+    
+    public String title(){
+        return this.competenceCategoryDescription;
+    }
+    
+    private String competenceCategoryDescription;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @PropertyLayout(
+            named="Competentie categorie",
+            describedAs="Verzameling van aantal competenties om op te matchen",
+            typicalLength=80)
+    public String getCompetenceCategoryDescription() {
+        return competenceCategoryDescription;
+    }
+    
+    public void setCompetenceCategoryDescription(final String competenceCategoryDescription) {
+        this.competenceCategoryDescription = competenceCategoryDescription;
+    }
+    
+    private SortedSet<Competence> competences = new TreeSet<Competence>();
+    
+    @Persistent(mappedBy = "competenceCategory", dependentElement = "true")
+    @CollectionLayout(render=RenderType.EAGERLY)
+    public SortedSet<Competence> getCompetences() {
+        return competences;
+    }
+    
+    public void setCompetences(final SortedSet<Competence> competences){
+        this.competences = competences;
+    }
+    
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
+    
+    @PropertyLayout(
+            named = "Competentie categorie verwijderen"
+            )
+    public List<CompetenceCategory> DeleteCompetenceCategory(
+            @Optional
+            @ParameterLayout(
+                    named = "Verwijderen OK?"
+                    )
+            boolean areYouSure
+            ){
+        container.removeIfNotAlready(this);
+        container.informUser("Competentie categorie verwijderd");
+        return competenceCategories.allCompetenceCategories();
+    }
+    
+    public String validateDeleteCompetenceCategory(boolean areYouSure) {
+        if (!this.getCompetences().isEmpty()){
+            return "Er zijn nog competenties in deze catagorie. Verwijder deze eerst!";
+        }
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+    
+    //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Inject
+    CompetenceCategories competenceCategories;
+    
+    @Inject
+    private DomainObjectContainer container;
+}
