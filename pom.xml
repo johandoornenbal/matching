@@ -19,8 +19,7 @@
 --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>nl.yodo</groupId>
-    <artifactId>yodo_matching_app</artifactId>
+    <artifactId>matchingservice</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <name>Matching App</name>
@@ -326,17 +325,17 @@
             <!-- this project's own modules -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>yodo_matching_app-dom</artifactId>
+                <artifactId>matchingservice-dom</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>yodo_matching_app-fixture</artifactId>
+                <artifactId>matchingservice-fixture</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>yodo_matching_app-webapp</artifactId>
+                <artifactId>matchingservice-webapp</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -373,4 +372,5 @@
   	<name>YIP&amp;C</name>
   	<url>http://www.yodo.nl</url>
   </organization>
+  <groupId>info.matchingservice</groupId>
 </project>

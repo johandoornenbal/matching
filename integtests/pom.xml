@@ -20,12 +20,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <parent>
-    	<groupId>nl.yodo</groupId>
-        <artifactId>yodo_matching_app</artifactId>
+    	<groupId>info.matchingservice</groupId>
+        <artifactId>matchingservice</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-	<artifactId>yodo_matching_app-integtests</artifactId>
+	<artifactId>matchingservice-integtests</artifactId>
 	<name>Matching App Integration Tests</name>
 
     <build>
@@ -49,7 +49,7 @@
 		<!-- other modules in this project -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>yodo_matching_app-fixture</artifactId>
+			<artifactId>matchingservice-fixture</artifactId>
 		</dependency>
 
         <dependency>
