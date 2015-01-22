@@ -14,9 +14,9 @@ import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.CollectionLayout.RenderType;
 import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
 
 import info.matchingservice.dom.MatchingMutableObject;
 
