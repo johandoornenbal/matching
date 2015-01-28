@@ -5,8 +5,7 @@ public class OrganisationsForMichel extends OrganisationAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
-        createOrganisation(
-                "125", 
+        createOrganisation( 
                 "De Zilveren Vloot",
                 "michiel",
                 executionContext);

@@ -1,6 +1,9 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.List;
 
@@ -177,6 +180,73 @@ public class Organisation extends Actor {
     }  
             
     //END Region> ROLES /////////////////////////////////////////////////
+    
+    //Region> SUPPLIES /////////////////////////////////////////////////////////////   
+    
+    public Profile newOrganisationSupply(){
+        return newSupplyAndProfile("Organisatie profiel van " + this.title(), 10, DemandSupplyType.ORGANISATION_DEMANDSUPPLY, this, "Organisatie profiel", 10, ProfileType.ORGANISATION_PROFILE, currentUserName());
+    }
+    
+    //BUSINESS RULE
+    // Je kunt alleen een Organisatieprofiel aanmaken als je
+    // - eigenaar bent
+    // - nog geen persoonssupply hebt
+    public boolean hideNewOrganisationSupply(){
+        return hideNewOrganisationSupply("", this);
+    }
+    
+    public String validateNewOrganisationSupply(){
+        return validateNewOrganisationSupply("", this);
+    }
+    
+    // Supply helpers
+    //BUSINESS RULE
+    // Je kunt alleen een Persoonprofiel aanmaken als je
+    // - eigenaar bent
+    // - rol Student of Professional hebt
+    // - nog geen persoonssupply hebt
+    @Programmatic
+    public boolean hideNewOrganisationSupply(final String needDescription, final Actor needOwner){
+        // if you are not the owner
+        if (!needOwner.getOwnedBy().equals(currentUserName())){
+            return true;
+        }
+        
+        // if there is already a organsation Supply
+        // TODO: deze werkt nog niet omdat een ownedBy op verschillende organisaties kan slaan van de owner
+        QueryDefault<Supply> query = 
+                QueryDefault.create(
+                        Supply.class, 
+                    "findSupplyByActorOwnerAndType", 
+                    "supplyOwner", needOwner,
+                    "supplyType", DemandSupplyType.ORGANISATION_DEMANDSUPPLY);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    @Programmatic
+    public String validateNewOrganisationSupply(final String needDescription, final Actor needOwner){
+        // if you are not the owner
+        if (!needOwner.getOwnedBy().equals(currentUserName())){
+            return "Je bent niet de eigenaar";
+        }
+     
+        // if there is already a personal Supply
+        QueryDefault<Supply> query = 
+                QueryDefault.create(
+                        Supply.class, 
+                    "findSupplyByActorOwnerAndType", 
+                    "supplyOwner", needOwner,
+                    "supplyType", DemandSupplyType.ORGANISATION_DEMANDSUPPLY);
+        if (container.firstMatch(query) != null) {
+            return "Je hebt al een organisatie profiel";
+        }
+        
+        return null;
+    }
    
     //Region> DEMAND /////////////////////////////////////////////////////////////
     

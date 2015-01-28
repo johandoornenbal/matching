@@ -5,13 +5,13 @@ import info.matchingservice.dom.MatchingDomainService;
 import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.Programmatic;
 
 
-@DomainService(menuOrder = "10", repositoryFor = Actor.class)
-@Named("Actoren")
+@DomainService(repositoryFor = Actor.class)
+@DomainServiceLayout(named="Actoren", menuOrder="10")
 public class Actors extends MatchingDomainService<Actor> {
     
     public Actors() {

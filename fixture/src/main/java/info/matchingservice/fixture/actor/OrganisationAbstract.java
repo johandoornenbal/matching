@@ -16,12 +16,11 @@ public abstract class OrganisationAbstract extends FixtureScript {
     protected abstract void execute(ExecutionContext executionContext);
     
     protected Actor createOrganisation (
-            String uniquePartyId,
             String organisationName,
             String user,
             ExecutionContext executionContext
             ) {
-        Actor newOrganisation = organisations.newOrganisation(uniquePartyId, organisationName, user);
+        Actor newOrganisation = organisations.newOrganisation(organisationName, user);
         createRole(OrganisationRoleType.PRINCIPAL, (Organisation) newOrganisation, user, executionContext);               
         return executionContext.add(this, newOrganisation);
     }

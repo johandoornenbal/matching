@@ -8,7 +8,7 @@ public enum DemandSupplyType implements TitledEnum {
     PERSON_DEMANDSUPPLY("Personen type"),
     COURSE_DEMANDSUPPLY("Cursus type"),
     EVENT_DEMANDSUPPLY("Evenement type"),
-    ORGANISATION_DEMANDSUPPY("Organisatie type");
+    ORGANISATION_DEMANDSUPPLY("Organisatie type");
 
     private String title;
     

@@ -7,8 +7,7 @@ public class PersonForMichiel extends PersonAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
-        createPerson(
-                "114", 
+        createPerson( 
                 "Michiel", 
                 "de", 
                 "Ruyter",

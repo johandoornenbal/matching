@@ -17,23 +17,23 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
+import org.joda.time.LocalDate;
+
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.AutoComplete;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.MultiLine;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.PublishedAction;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
-import org.joda.time.LocalDate;
 
 
 
@@ -56,8 +56,7 @@ import org.joda.time.LocalDate;
                     + "FROM info.matchingservice.dom.Actor.Person "
                     + "WHERE lastName.indexOf(:lastName) >= 0")                    
 })
-@AutoComplete(repository=Persons.class,  action="autoComplete")
-@Immutable
+@DomainObject(editing=Editing.DISABLED, autoCompleteRepository=Persons.class, autoCompleteAction = "autoComplete")
 public class Person extends Actor {
     
     
@@ -75,7 +74,7 @@ public class Person extends Actor {
     
     @MemberOrder(sequence = "10")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Voornaam")
+    @PropertyLayout(named="Voornaam")
     public String getFirstName() {
         return firstName;
     }
@@ -89,7 +88,7 @@ public class Person extends Actor {
     
     @MemberOrder(sequence = "20")
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Named("Tussen")
+    @PropertyLayout(named="Tussen")
     public String getMiddleName() {
         return middleName;
     }
@@ -103,7 +102,7 @@ public class Person extends Actor {
     
     @MemberOrder(sequence = "30")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Achternaam")
+    @PropertyLayout(named="Achternaam")
     public String getLastName() {
         return lastName;
     }
@@ -132,7 +131,7 @@ public class Person extends Actor {
     
     // Role STUDENT 'Clean' code. Makes use of helpers in Helpers region
     
-    @Named("Rol Student")
+    @ActionLayout(named="Rol Student")
     @MemberOrder(sequence = "40")
     public Person addRoleStudent() {
         addRoleStudent(currentUserName());
@@ -143,7 +142,7 @@ public class Person extends Actor {
         return hideAddRoleStudent(this, currentUserName());
     }
     
-    @Named("Geen student meer")
+    @ActionLayout(named="Geen student meer")
     @MemberOrder(sequence = "41")
     public Person deleteRoleStudent() {
         deleteRoleStudent(currentUserName());;
@@ -154,14 +153,14 @@ public class Person extends Actor {
         return hideDeleteRoleStudent(this, currentUserName());
     }
     
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public Boolean getIsStudent() {
         return getIsStudent(this);
     }
 
     // Role PROFESSIONAL 'Clean' code. Makes use of helpers in Helpers region
     
-    @Named("Rol ZP-er")
+    @ActionLayout(named="Rol ZP-er")
     @MemberOrder(sequence = "50")
     public Person addRoleProfessional() {
         addRoleProfessional(currentUserName());
@@ -172,7 +171,7 @@ public class Person extends Actor {
         return hideAddRoleProfessional(this, currentUserName());
     }
     
-    @Named("Geen ZP-er meer")
+    @ActionLayout(named="Geen ZP-er meer")
     @MemberOrder(sequence = "51")
     public Person deleteRoleProfessional() {
         deleteRoleProfessional(currentUserName());
@@ -183,14 +182,14 @@ public class Person extends Actor {
         return hideDeleteRoleProfessional(this, currentUserName());
     }
     
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public Boolean getIsProfessional() {
         return getIsProfessional(this);
     }
     
     // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region
     
-    @Named("Rol Opdrachtgever")
+    @ActionLayout(named="Rol Opdrachtgever")
     @MemberOrder(sequence = "60")
     public Person addRolePrincipal() {
         addRolePrincipal(currentUserName());
@@ -201,7 +200,7 @@ public class Person extends Actor {
         return hideAddRolePrincipal(this, currentUserName());
     }
     
-    @Named("Geen opdrachtgever meer")
+    @ActionLayout(named="Geen opdrachtgever meer")
     @MemberOrder(sequence = "61")
     public Person deleteRolePrincipal() {
         deleteRolePrincipal(currentUserName());
@@ -212,16 +211,15 @@ public class Person extends Actor {
         return hideDeleteRolePrincipal(this, currentUserName());
     }
     
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public Boolean getIsPrincipal() {
         return getIsPrincipal(this);
     }
     
     // ALL My Roles
     
-    @Hidden
+    @CollectionLayout(hidden=Where.EVERYWHERE, render=RenderType.EAGERLY)
     @MemberOrder(sequence = "100")
-    @Render(Type.EAGERLY)
     public List<PersonRole> getAllMyRoles() {
         QueryDefault<PersonRole> query =
                 QueryDefault.create(
@@ -231,8 +229,7 @@ public class Person extends Actor {
         return container.allMatches(query);
     }
     
-    @MultiLine(numberOfLines=2)
-    @Named("Rollen")
+    @PropertyLayout(named="Rollen", multiLine=2)
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsStudent()) {
@@ -255,7 +252,6 @@ public class Person extends Actor {
     
     //Region> SUPPLIES /////////////////////////////////////////////////////////////   
     
-    @Named("Bied jezelf aan")
     public Profile newPersonsSupply(){
         return newSupplyAndProfile("Persoonlijke profiel van " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "Mijn persoonlijke profiel", 10, ProfileType.PERSON_PROFILE, currentUserName());
     }
@@ -273,10 +269,8 @@ public class Person extends Actor {
         return validateNewPersonsSupply("", this);
     }
     
-    @Named("Nieuwe cursusaanbod")
     public Supply newCourseSupply(
-            @Named("Beschrijving van het cursusaanbod")
-            @MultiLine
+            @ParameterLayout(named="supplyDescription", multiLine=3)
             final String supplyDescription
             ){
         return newSupply(supplyDescription, 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, currentUserName());
@@ -380,10 +374,9 @@ public class Person extends Actor {
     //XTALUS
     //BUSINESS RULE
     // Je moet Opdrachtgever zijn om een tafel te starten
-    @Named("Start nieuwe tafel")
+    @ActionLayout(named="Start nieuwe tafel")
     public Demand newPersonsDemand(
-            @MultiLine
-            @Named("Omschrijving van het vraagstuk op tafel")
+            @ParameterLayout(named="demandDescription", multiLine=3)
             final String demandDescription
             ){
         return newDemand(demandDescription, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
@@ -400,9 +393,9 @@ public class Person extends Actor {
     //XTALUS
     //Business Rule
     //Er is slecht een demand van type Cursus
-    @Named("Zoek een cursus")
+    @ActionLayout(named="Zoek een cursus")
     public Profile newCourseDemand(
-            @Named("Cursus omschrijving")
+            @ParameterLayout(named="demandProfileDescription")
             final String demandProfileDescription
             ){
         return newDemandAndProfile("Gezochte cursussen", 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, demandProfileDescription, 10, ProfileType.COURSE_PROFILE, currentUserName());
@@ -477,9 +470,8 @@ public class Person extends Actor {
     
     private SortedSet<PersonalContact> personalContacts = new TreeSet<PersonalContact>();
     
-    @Render(Type.EAGERLY)
     @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
-    @Named("Persoonlijke contacten")
+    @CollectionLayout(named="Persoonlijke contacten", render=RenderType.EAGERLY)
     public SortedSet<PersonalContact> getPersonalContacts() {
         return personalContacts;
     }
@@ -492,8 +484,7 @@ public class Person extends Actor {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }  
     
-    @Render(Type.EAGERLY)
-    @Named("Personen verwijzend naar mij")
+    @CollectionLayout(named="Personen verwijzend naar mij", render=RenderType.EAGERLY)
     @NotContributed(As.ACTION)
     public List<Referral> getPersonsReferringToMe(){
         List<Referral> personsReferring = new ArrayList<Referral>();

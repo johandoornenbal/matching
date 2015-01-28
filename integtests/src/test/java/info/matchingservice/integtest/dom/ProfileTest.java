@@ -70,7 +70,7 @@ public class ProfileTest extends MatchingIntegrationTest {
     	
     	@Before
     	public void setUp() throws Exception {
-    		p1=persons.newPerson("4321", "TESTvn", "", "TESTan", new LocalDate(1962,7,16));
+    		p1=persons.newPerson("TESTvn", "", "TESTan", new LocalDate(1962,7,16));
     		s1=supplies.newSupply("TESTSUP", 10, DemandSupplyType.PERSON_DEMANDSUPPLY, p1, container.getUser().getName());
     		pf1=s1.newPersonSupplyProfile();
     		pf1.newPassion(ELEMENT_PASSIONVALUE, ELEMENT_INTVALUE);

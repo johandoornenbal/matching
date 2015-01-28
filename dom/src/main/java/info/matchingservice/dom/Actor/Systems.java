@@ -4,6 +4,7 @@ import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Utils.StringUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -37,10 +38,9 @@ public class Systems extends MatchingDomainService<System> {
     @ActionSemantics(Of.NON_IDEMPOTENT)
     @Named("Maak je systeem aan in het systeem")
     public System newSystem(
-            final @Named("Uniek ID") String uniquePartyId,
             final @Named("Systeem naam") String systemName
             ) {
-        return newSystem(uniquePartyId, systemName, currentUserName()); // see region>helpers
+        return newSystem(systemName, currentUserName()); // see region>helpers
     }
     
     public boolean hideNewSystem() {
@@ -52,10 +52,9 @@ public class Systems extends MatchingDomainService<System> {
      * 
      */
     public String validateNewSystem(
-            final @Named("Uniek ID") String uniquePartyId,
-            final @Named("Systeem naam") String systemName
+            final String systemName
             ) {
-        return validateNewSystem(uniquePartyId, systemName, currentUserName());
+        return validateNewSystem(systemName, currentUserName());
     }
     
     @MemberOrder(sequence="5")
@@ -121,11 +120,11 @@ public class Systems extends MatchingDomainService<System> {
     
     @Programmatic //userName can now also be set by fixtures
     public System newSystem(
-            final @Named("Uniek ID") String uniquePartyId,
             final @Named("Systeem naam") String systemName,
             final String userName) {
         final System system = newTransientInstance(System.class);
-        system.setUniqueActorId(uniquePartyId);
+        final UUID uuid=UUID.randomUUID();
+        system.setUniqueActorId(uuid);
         system.setSystemName(systemName);
         system.setOwnedBy(userName);
         persist(system);
@@ -146,8 +145,7 @@ public class Systems extends MatchingDomainService<System> {
     
     @Programmatic //userName can now also be set by fixtures
     public String validateNewSystem(
-            final @Named("Uniek ID") String uniquePartyId,
-            final @Named("Systeem naam") String systemName,
+            final String systemName,
             final String userName) {
         
         QueryDefault<System> query = 

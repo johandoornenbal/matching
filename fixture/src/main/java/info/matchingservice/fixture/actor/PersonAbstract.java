@@ -12,7 +12,6 @@ public abstract class PersonAbstract extends FixtureScript {
     protected abstract void execute(ExecutionContext executionContext);
     
     protected Actor createPerson (
-            String uniquePartyId,
             String firstName,
             String middleName,
             String lastName,
@@ -20,7 +19,7 @@ public abstract class PersonAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext
             ) {
-        Actor newPerson = persons.newPerson(uniquePartyId, firstName, middleName, lastName, dateOfBirth, user);
+        Actor newPerson = persons.newPerson(firstName, middleName, lastName, dateOfBirth, user);
                        
         return executionContext.add(this, newPerson);
     }

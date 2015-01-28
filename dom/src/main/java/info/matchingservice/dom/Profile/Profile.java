@@ -23,11 +23,12 @@ import javax.jdo.annotations.Persistent;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
@@ -69,7 +70,7 @@ import org.apache.isis.applib.query.QueryDefault;
                     + "FROM info.matchingservice.dom.Profile.Profile "
                     + "WHERE supplyProfileOwner != null && profileType == :profileType && ownedBy == :ownedBy")
 })
-@Immutable
+@DomainObject(editing = Editing.DISABLED)
 public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public Profile() {
@@ -80,9 +81,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private String ownedBy;
 
     @Override
-    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Property(editing = Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -96,7 +97,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private ProfileType profileType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public ProfileType getProfileType() {
         return profileType;
     }
@@ -108,7 +109,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private DemandOrSupply demandOrSupply;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public DemandOrSupply getDemandOrSupply(){
         return demandOrSupply;
     }
@@ -121,7 +122,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Disabled
-    @Hidden(where = Where.ALL_TABLES)
+    @PropertyLayout(hidden=Where.ALL_TABLES)
     public Demand getDemandProfileOwner(){
         return demandProfileOwner;
     }
@@ -142,7 +143,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Disabled
-    @Hidden(where = Where.ALL_TABLES)
+    @PropertyLayout(hidden=Where.ALL_TABLES)
     public Supply getSupplyProfileOwner(){
         return supplyProfileOwner;
     }
@@ -160,7 +161,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     
     @Named("Eigenaar")
-    @Hidden(where = Where.PARENTED_TABLES)
+    @PropertyLayout(hidden=Where.PARENTED_TABLES)
     public Actor getActorOwner() {
         if (this.getDemandOrSupply().equals(DemandOrSupply.DEMAND)){
             return getDemandProfileOwner().getDemandOwner();
@@ -183,7 +184,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     private Integer weight;
     
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Integer getWeight() {
         return weight;
@@ -201,20 +202,21 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //**PASSIE**//
     //BUSINESSRULE
     // alleen op profile van type PERSON of ORGANISATION
+    // alleen op aanbod profiel
     // slechts 1 per profile
     @ActionLayout(
     		named="Nieuwe passie"
     		)
     public Profile newPassion(
-    		@ParameterLayout(named="Omschrijf je passie")
-    		final String passionText,
-    		@ParameterLayout(named="Gewicht")
+    		@ParameterLayout(named="textValue")
+    		final String textValue,
+    		@ParameterLayout(named="weight")
     		final Integer weight
     		){
     	profileElementTexts.newProfileElementText(
     			"Passie omschrijving", 
     			weight, 
-    			passionText, 
+    			textValue, 
     			ProfileElementType.PASSION, 
     			this);
     	return this;
@@ -226,8 +228,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             final Integer weight
             ){
         
-    	// alleen op profile van type PERSON of ORGANISATION 
-        if (this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE){
+    	// alleen op profile van type PERSON of ORGANISATION
+        // alleen op aanbod profiel
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.DEMAND){
             return true;
         }
         
@@ -251,8 +254,8 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             ){
         
     	// alleen op profile van type PERSON of ORGANISATION
-        if (this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE){
-            return "Alleen op persoons of organisatie profiel";
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.DEMAND){
+            return "Alleen op aanbod en op persoon- of organisatie profiel";
         }
         
         // er  mag hooguit 1 Passie element zijn
@@ -403,7 +406,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return getProfileName();
     }
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public Profile EditWeight(
             Integer newInteger
             ){
@@ -427,7 +430,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     @Named("NewDropDownTest")
     public Profile newProfileElementDropDown(
             final Integer weight,
@@ -447,7 +450,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
 
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     @Named("NewDropDownAndTextTest")
     public ProfileElementDropDownAndText newProfileElementDropDownAndText(
             final String description,
@@ -470,7 +473,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return dropDownForProfileElements.findDropDowns(search);
     }
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     @Named("NewTextTest")
     public ProfileElementText newProfileElementText(
             final String description,
@@ -485,7 +488,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 this);
     }
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     @Named("NewNumericTest")
     public ProfileElementNumeric newProfileElementNumeric(
             final String description,
@@ -541,7 +544,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     @SuppressWarnings("unused")
     private String profileId;
 
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public String getProfileId() {
         if (this.getId() != null) {
             return this.getId();

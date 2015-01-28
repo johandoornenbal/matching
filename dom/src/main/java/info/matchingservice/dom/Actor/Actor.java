@@ -15,6 +15,7 @@ import info.matchingservice.dom.Profile.Profiles;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -25,13 +26,14 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.MultiLine;
-import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -56,15 +58,15 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     }
         
     public String title() {
-        return getUniqueActorId();
+        return getUniqueActorId().toString();
     }
     
     private String ownedBy;
     
     @Override
-    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    @Property(editing=Editing.DISABLED)
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -73,16 +75,16 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.ownedBy = owner;
     }
     
-    private String uniqueActorId;
+    private UUID uniqueActorId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    public String getUniqueActorId() {
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueActorId() {
         return uniqueActorId;
     }
     
-    public void setUniqueActorId(final String id) {
-        this.uniqueActorId = id;
+    public void setUniqueActorId(final UUID uniqueActorId) {
+        this.uniqueActorId = uniqueActorId;
     }
     
     
@@ -90,8 +92,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     private SortedSet<Demand> myDemands = new TreeSet<Demand>();
     
-    @Named("Vraag")
-    @Render(Type.EAGERLY)
+    @CollectionLayout(named="Vraag", render=RenderType.EAGERLY)
     @Persistent(mappedBy = "demandOwner", dependentElement = "true")
     public SortedSet<Demand> getMyDemands() {
         return myDemands;
@@ -108,9 +109,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
      * @param demandSupplyType
      * @return
      */
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public Demand newDemand(
-            @MultiLine
             final String demandDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType
@@ -121,7 +121,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     //helper
     @Programmatic
     public Demand newDemand(
-            @MultiLine 
             final String demandDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
@@ -132,7 +131,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     @Programmatic
     public Profile newDemandAndProfile(
-            @MultiLine 
             final String demandDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
@@ -150,8 +148,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 
     private SortedSet<Supply> mySupplies = new TreeSet<Supply>();
     
-    @Named("Aanbod")
-    @Render(Type.EAGERLY)
+    @CollectionLayout(named="Aanbod", render=RenderType.EAGERLY)
     @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
     public SortedSet<Supply> getMySupplies() {
         return mySupplies;
@@ -163,44 +160,41 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     /**
      * Generic new Supply
-     * @param needDescription
+     * @param supplyDescription
      * @param weight
      * @param demandSupplyType
      * @return
      */
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public Supply newSupply(
-            @MultiLine
-            final String needDescription,
+            final String supplyDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType){
-        return newSupply(needDescription, weight, demandSupplyType, this, currentUserName());
+        return newSupply(supplyDescription, weight, demandSupplyType, this, currentUserName());
     }
     
     //helper
     @Programmatic
     public Supply newSupply(
-            @MultiLine 
-            final String demandDescription,
+            final String supplyDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
-            final Actor demandOwner, 
+            final Actor supplyOwner, 
             final String ownedBy){
-        return supplies.newSupply(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
+        return supplies.newSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
     }
     
     @Programmatic
     public Profile newSupplyAndProfile(
-            @MultiLine 
-            final String demandDescription,
+            final String supplyDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
-            final Actor demandOwner,
+            final Actor supplyOwner,
             final String supplyProfileDescription,
             final Integer profileWeight,
             final ProfileType profileType,
             final String ownedBy){
-        final Supply supply = supplies.newSupply(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
+        final Supply supply = supplies.newSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
         return profiles.newSupplyProfile(supplyProfileDescription, profileWeight, profileType, supply, ownedBy);
     }
     
@@ -211,9 +205,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     private SortedSet<ProfileMatch> mySavedMatches = new TreeSet<ProfileMatch>();
     
-    @Render(Type.EAGERLY)
     @Persistent(mappedBy = "ownerActor", dependentElement = "true")
-    @Named("Mijn bewaarde 'matches'")
+    @CollectionLayout(named="Mijn bewaarde 'matches'", render=RenderType.EAGERLY)
     public SortedSet<ProfileMatch> getMySavedMatches() {
         return mySavedMatches;
     }
@@ -232,9 +225,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     private SortedSet<Assessment> assessmentsGivenByMe = new TreeSet<Assessment>();
     
-    @Render(Type.EAGERLY)
     @Persistent(mappedBy = "ownerActor", dependentElement = "true")
-    @Named("Feedback die ik gegeven heb")
+    @CollectionLayout(named="Feedback die ik gegeven heb", render=RenderType.EAGERLY)
     public SortedSet<Assessment> getAssessmentsGivenByMe() {
         return assessmentsGivenByMe;
     }
@@ -251,9 +243,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     private SortedSet<Assessment> assessmentsReceivedByMe = new TreeSet<Assessment>();
     
-    @Render(Type.EAGERLY)
     @Persistent(mappedBy = "targetOwnerActor", dependentElement = "true")
-    @Named("Feedback die ik ontvangen heb")
+    @CollectionLayout(named="Feedback die ik ontvangen heb", render=RenderType.EAGERLY)
     public SortedSet<Assessment> getAssessmentsReceivedByMe() {
         return assessmentsReceivedByMe;
     }

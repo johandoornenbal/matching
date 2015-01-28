@@ -45,8 +45,16 @@
       "collections": {
         "mySupplies": {
             "actions": {
-            	"newPersonsSupply": {},
-            	"newCourseSupply": {}
+            	"newPersonsSupply": {
+            		"named" : {
+            				"value" : "Bied jezelf aan"
+            			}
+            	},
+            	"newCourseSupply": {
+            	     "named" : {
+            				"value" : "Nieuwe cursusaanbod"
+            			}
+            	}
             }
         },
         "myDemands": {

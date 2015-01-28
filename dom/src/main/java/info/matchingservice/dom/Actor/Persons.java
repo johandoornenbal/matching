@@ -4,6 +4,7 @@ import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Utils.StringUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -25,6 +26,7 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
+
 import org.joda.time.LocalDate;
 
 
@@ -39,14 +41,13 @@ public class Persons extends MatchingDomainService<Person> {
     @ActionSemantics(Of.NON_IDEMPOTENT)
     @Named("Maak jezelf aan als persoon in het systeem")
     public Person newPerson(
-            final @Named("Uniek ID") String uniquePartyId,
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
             final @Named("Achternaam") String lastName,
             @ParameterLayout(named="Geboortedatum")
             final LocalDate dateOfBirth
             ) {
-        return newPerson(uniquePartyId, firstName, middleName, lastName, dateOfBirth, currentUserName()); // see region>helpers
+        return newPerson(firstName, middleName, lastName, dateOfBirth, currentUserName()); // see region>helpers
     }
     
     public boolean hideNewPerson() {
@@ -58,12 +59,11 @@ public class Persons extends MatchingDomainService<Person> {
      * 
      */
     public String validateNewPerson(
-            final @Named("Uniek ID") String uniquePartyId,
-            final @Named("Voornaam") String firstName,
-            final @Optional  @Named("tussen") String middleName,
-            final @Named("Achternaam") String lastName,
+            final String firstName,
+            final String middleName,
+            final String lastName,
             final LocalDate dateOfBirth) {
-        return validateNewPerson(uniquePartyId, firstName, middleName, lastName, dateOfBirth, currentUserName());
+        return validateNewPerson(firstName, middleName, lastName, dateOfBirth, currentUserName());
     }
     
     @MemberOrder(sequence="5")
@@ -129,14 +129,14 @@ public class Persons extends MatchingDomainService<Person> {
     
     @Programmatic //userName can now also be set by fixtures
     public Person newPerson(
-            final @Named("Uniek ID") String uniquePartyId,
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
             final @Named("Achternaam") String lastName,
             final LocalDate dateOfBirth,
             final String userName) {
         final Person person = newTransientInstance(Person.class);
-        person.setUniqueActorId(uniquePartyId);
+        final UUID uuid=UUID.randomUUID();
+        person.setUniqueActorId(uuid);
         person.setFirstName(firstName);
         person.setMiddleName(middleName);
         person.setLastName(lastName);
@@ -160,10 +160,9 @@ public class Persons extends MatchingDomainService<Person> {
     
     @Programmatic //userName can now also be set by fixtures
     public String validateNewPerson(
-            final @Named("Uniek ID") String uniquePartyId,
-            final @Named("Voornaam") String firstName,
-            final @Optional  @Named("tussen") String middleName,
-            final @Named("Achternaam") String lastName,
+            final String firstName,
+            final String middleName,
+            final String lastName,
             final LocalDate dateOfBirth,
             final String userName) {
         

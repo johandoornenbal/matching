@@ -4,6 +4,7 @@ import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Utils.StringUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -35,10 +36,9 @@ public class Organisations extends MatchingDomainService<Organisation> {
     @ActionSemantics(Of.NON_IDEMPOTENT)
     @Named("Maak een organisatie aan in het systeem")
     public Organisation newOrganisation(
-            final @Named("Uniek ID") String uniquePartyId,
             final @Named("Organisatie naam") String organisationName
             ) {
-        return newOrganisation(uniquePartyId, organisationName, currentUserName()); // see region>helpers
+        return newOrganisation(organisationName, currentUserName()); // see region>helpers
     }
     
     @MemberOrder(sequence="5")
@@ -104,11 +104,11 @@ public class Organisations extends MatchingDomainService<Organisation> {
     
     @Programmatic //userName can now also be set by fixtures
     public Organisation newOrganisation(
-            final @Named("Uniek ID") String uniquePartyId,
             final @Named("Organisatie naam") String organisationName,
             final String userName) {
         final Organisation organisation = newTransientInstance(Organisation.class);
-        organisation.setUniqueActorId(uniquePartyId);
+        final UUID uuid=UUID.randomUUID();
+        organisation.setUniqueActorId(uuid);
         organisation.setOrganisationName(organisationName);
         organisation.setOwnedBy(userName);
         persist(organisation);

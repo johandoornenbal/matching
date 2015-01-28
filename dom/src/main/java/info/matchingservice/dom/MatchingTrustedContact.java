@@ -10,13 +10,15 @@ import javax.jdo.annotations.InheritanceStrategy;
 import com.google.common.base.Objects;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Bookmarkable;
-import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
@@ -51,8 +53,8 @@ import org.apache.isis.applib.query.QueryDefault;
                     + "FROM info.matchingservice.dom.MatchingTrustedContact "
                     + "WHERE ownedBy == :ownedBy && contact == :contact")
 })
-@Bookmarkable
-@Immutable
+
+@DomainObject(editing=Editing.DISABLED)
 public class MatchingTrustedContact extends MatchingSecureMutableObject<MatchingTrustedContact> {
     public MatchingTrustedContact() {
         super("contact, trustLevel, ownedBy");
@@ -61,9 +63,9 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
     private String ownedBy;
     
     @Override
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -91,7 +93,7 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
     /**
      * Temp method to display the owner
      */
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public String getEigenaar() {
         return getOwnedBy();
     }
@@ -100,7 +102,7 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
      * contact contains username of the contact
      */
     private String contact;
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "false")
     public String getContact() {
         return contact;
@@ -130,8 +132,12 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
     }
     
     // Region //// Delete action //////////////////////////////
-    @Named("Dit contact verwijderen")
-    public List<MatchingTrustedContact> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) { 
+    @ActionLayout(named="Dit contact verwijderen")
+    public List<MatchingTrustedContact> delete(
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+            boolean areYouSure
+            ) { 
         container.removeIfNotAlready(this);
         
         container.informUser("Contact verwijderd");

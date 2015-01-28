@@ -45,7 +45,12 @@ import org.apache.isis.applib.query.QueryDefault;
             name = "findSupplyByOwnedByAndType", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Supply "
-                    + "WHERE ownedBy == :ownedBy && supplyType == :supplyType")                  
+                    + "WHERE ownedBy == :ownedBy && supplyType == :supplyType"),
+    @javax.jdo.annotations.Query(
+            name = "findSupplyByActorOwnerAndType", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.DemandSupply.Supply "
+                    + "WHERE supplyOwner == :supplyOwner && supplyType == :supplyType")                            
 })
 @Immutable
 public class Supply extends MatchingSecureMutableObject<Supply> {
