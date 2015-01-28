@@ -27,10 +27,13 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.PublishedAction;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
+import org.joda.time.LocalDate;
 
 
 
@@ -104,9 +107,25 @@ public class Person extends Actor {
     public String getLastName() {
         return lastName;
     }
+        
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
+    }
     
-    public void setLastName(final String ln) {
-        this.lastName = ln;
+    //Region> dateOfBirth
+    private LocalDate dateOfBirth;
+
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "60")
+    @PropertyLayout(
+    		named = "Geboortedatum"
+    		)
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     //Region> ROLES /////////////////////////////////////////////////
@@ -238,7 +257,7 @@ public class Person extends Actor {
     
     @Named("Bied jezelf aan")
     public Profile newPersonsSupply(){
-        return newSupplyAndProfile("Persoonlijke profiel van " + this.title(), 10, DemandSupplyType.PERSONS_DEMANDSUPPLY, this, "Mijn persoonlijke profiel", 10, ProfileType.PERSON_PROFILE, currentUserName());
+        return newSupplyAndProfile("Persoonlijke profiel van " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "Mijn persoonlijke profiel", 10, ProfileType.PERSON_PROFILE, currentUserName());
     }
     
     //BUSINESS RULE
@@ -298,7 +317,7 @@ public class Person extends Actor {
                         Supply.class, 
                     "findSupplyByOwnedByAndType", 
                     "ownedBy", currentUserName(),
-                    "supplyType", DemandSupplyType.PERSONS_DEMANDSUPPLY);
+                    "supplyType", DemandSupplyType.PERSON_DEMANDSUPPLY);
         if (container.firstMatch(query) != null) {
             return true;
         }
@@ -322,7 +341,7 @@ public class Person extends Actor {
                         Supply.class, 
                     "findSupplyByOwnedByAndType", 
                     "ownedBy", currentUserName(),
-                    "supplyType", DemandSupplyType.PERSONS_DEMANDSUPPLY);
+                    "supplyType", DemandSupplyType.PERSON_DEMANDSUPPLY);
         if (container.firstMatch(query) != null) {
             return "Je hebt al een persoonlijk profiel";
         }
@@ -367,7 +386,7 @@ public class Person extends Actor {
             @Named("Omschrijving van het vraagstuk op tafel")
             final String demandDescription
             ){
-        return newDemand(demandDescription, 10, DemandSupplyType.PERSONS_DEMANDSUPPLY, this, currentUserName());
+        return newDemand(demandDescription, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
     }
     
     public boolean hideNewPersonsDemand(final String demandDescription){

@@ -10,6 +10,7 @@ import info.matchingservice.integtest.MatchingIntegrationTest;
 
 import javax.inject.Inject;
 
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -99,6 +100,7 @@ public class PersonTest extends MatchingIntegrationTest {
         private static final String LAST_NAME = "Test1";
         private static final String MIDDLE_NAME = "van der";
         private static final String FIRST_NAME = "T.";
+        private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
         private static final String UNIQUE_ID = "321";
         private static final String OWNED_BY = "test1";
         
@@ -108,7 +110,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY);
         }
         
         @Test
@@ -138,12 +140,12 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void shouldNotBeValidNewPerson() throws Exception {
-            assertThat(persons.validateNewPerson("333", "Frans", "van", "Oldenbarneveld","frans").isEmpty(), is(false));
+            assertThat(persons.validateNewPerson("333", "Frans", "van", "Oldenbarneveld", new LocalDate(1962,7,16), "frans").isEmpty(), is(false));
         }
         
         @Test
         public void shouldBeValidNewPerson() throws Exception {
-            assertTrue(persons.validateNewPerson("333", "Johan", "van", "Oldenbarneveld", "johan") == null);
+            assertTrue(persons.validateNewPerson("333", "Johan", "van", "Oldenbarneveld", new LocalDate(1962,7,16), "johan") == null);
         }        
         
     }
@@ -185,6 +187,7 @@ public class PersonTest extends MatchingIntegrationTest {
         private static final String LAST_NAME = "Test1";
         private static final String MIDDLE_NAME = "van der";
         private static final String FIRST_NAME = "T.";
+        private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
         private static final String UNIQUE_ID = "321";
         private static final String OWNED_BY = "test1";
         
@@ -194,8 +197,8 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
-            p2=persons.newPerson("3210", FIRST_NAME, MIDDLE_NAME, LAST_NAME, "different_owner");
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY);
+            p2=persons.newPerson("3210", FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, "different_owner");
             p3=persons.allPersons().get(0);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
@@ -222,6 +225,7 @@ public class PersonTest extends MatchingIntegrationTest {
         private static final String LAST_NAME = "Test1";
         private static final String MIDDLE_NAME = "van der";
         private static final String FIRST_NAME = "T.";
+        private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
         private static final String UNIQUE_ID = "321";
         private static final String OWNED_BY = "test1";
         
@@ -229,7 +233,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
             p1.addRolePrincipal(OWNED_BY);
@@ -256,13 +260,14 @@ public class PersonTest extends MatchingIntegrationTest {
         private static final String MIDDLE_NAME = "van der";
         private static final String FIRST_NAME = "T.";
         private static final String UNIQUE_ID = "321";
+        private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
         private static final String OWNED_BY = "test1";
         
         Person p1; // new person with all roles
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, OWNED_BY);
+            p1=persons.newPerson(UNIQUE_ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
             p1.addRolePrincipal(OWNED_BY);

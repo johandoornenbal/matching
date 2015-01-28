@@ -5,6 +5,7 @@ import info.matchingservice.dom.TitledEnum;
 public enum ProfileType implements TitledEnum {
 
     PERSON_PROFILE("CV"),
+    ORGANISATION_PROFILE("Organisatie profiel"),
     SERVICE_PROFILE("Dienst"),
     DEVICE_PROFILE("Voorwerp"),
     EVENT_PROFILE("Evenement"),

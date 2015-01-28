@@ -2,10 +2,13 @@ package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.DemandSupply.Supplies;
+import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Profile.Profile;
@@ -21,6 +24,8 @@ import info.matchingservice.integtest.MatchingIntegrationTest;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.DomainObjectContainer;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,9 +47,45 @@ public class ProfileTest extends MatchingIntegrationTest {
     @Inject
     DropDownForProfileElements dropDowns;
     
+    @Inject
+    DomainObjectContainer container;
+    
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
         scenarioExecution().install(new MatchingTestsFixture());
+    }
+    
+    //Dit moet een test worden voor passie maar ik kan niet de methode newPassion() los testen lijkt...
+    public static class SupplyProfileWithPassion extends ProfileTest{
+    	Person p1;
+    	Supply s1;
+    	Profile pf1;
+    	ProfileElementText passion;
+    	
+    	private static final String SUPPLY_PROFILE_DESCRIPTION = "Dit is de profielomschrijving";
+    	private static final ProfileType PROFILE_TYPE = ProfileType.PERSON_PROFILE;
+    	private static final Integer WEIGHT = 10;
+    	private static final String ELEMENT_PASSIONVALUE = "Dit is mijn passie";
+    	private static final Integer ELEMENT_INTVALUE = 5;
+    	
+    	@Before
+    	public void setUp() throws Exception {
+    		p1=persons.newPerson("4321", "TESTvn", "", "TESTan", new LocalDate(1962,7,16));
+    		s1=supplies.newSupply("TESTSUP", 10, DemandSupplyType.PERSON_DEMANDSUPPLY, p1, container.getUser().getName());
+    		pf1=s1.newPersonSupplyProfile();
+    		pf1.newPassion(ELEMENT_PASSIONVALUE, ELEMENT_INTVALUE);
+    	}
+    	
+    	@Test
+    	public void newSupplyWithPassion() throws Exception {
+    		assertThat(p1.getFirstName(), is("TESTvn"));
+    		assertThat(s1.getOwnedBy(), is("tester"));
+    		assertThat(s1.getSupplyOwner().toString(), is(p1.toString()) );
+    		assertThat(pf1.getActorOwner().toString(), is(p1.toString()) );
+    		assertThat(pf1.getProfileType(), is(ProfileType.PERSON_PROFILE));
+//    		assertThat(pf1.getProfileElement().isEmpty(), is(false));
+    	}
+    	
     }
     
     public static class NewProfileWithElements extends ProfileTest {

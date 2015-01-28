@@ -220,7 +220,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
           return true;
         }
         
-        if (this.getSupplyType() != DemandSupplyType.PERSONS_DEMANDSUPPLY){
+        if (this.getSupplyType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
             return true;
         }
         
@@ -246,7 +246,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
               return "Om een persoonlijk profiel te maken moet je Professional of Student zijn";
           }
           
-          if (this.getSupplyType() != DemandSupplyType.PERSONS_DEMANDSUPPLY){
+          if (this.getSupplyType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
               return "Dit kan alleen op een persoonlijk aanbod";
           }
           

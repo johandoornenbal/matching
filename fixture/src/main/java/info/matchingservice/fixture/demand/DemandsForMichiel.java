@@ -17,7 +17,7 @@ public class DemandsForMichiel extends DemandAbstract {
         createDemand(
                 "Ik wil een oorlog beginnen",
                 10,
-                DemandSupplyType.PERSONS_DEMANDSUPPLY,
+                DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Ruyter").get(0),
                 "michiel",
                 executionContext

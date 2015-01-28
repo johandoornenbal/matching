@@ -21,11 +21,14 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.Where;
@@ -194,6 +197,78 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     // Region> ProfileElements
     
     //XTALUS VOOR PERSONEN
+    
+    //**PASSIE**//
+    //BUSINESSRULE
+    // alleen op profile van type PERSON of ORGANISATION
+    // slechts 1 per profile
+    @ActionLayout(
+    		named="Nieuwe passie"
+    		)
+    public Profile newPassion(
+    		@ParameterLayout(named="Omschrijf je passie")
+    		final String passionText,
+    		@ParameterLayout(named="Gewicht")
+    		final Integer weight
+    		){
+    	profileElementTexts.newProfileElementText(
+    			"Passie omschrijving", 
+    			weight, 
+    			passionText, 
+    			ProfileElementType.PASSION, 
+    			this);
+    	return this;
+    }
+    
+    
+    public boolean hideNewPassion(
+            final String passionText,
+            final Integer weight
+            ){
+        
+    	// alleen op profile van type PERSON of ORGANISATION 
+        if (this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE){
+            return true;
+        }
+        
+        // er  mag hooguit 1 Passie element zijn
+        QueryDefault<ProfileElementText> query = 
+                QueryDefault.create(
+                        ProfileElementText.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.PASSION,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public String validateNewPassion(
+            final String passionText,
+            final Integer weight
+            ){
+        
+    	// alleen op profile van type PERSON of ORGANISATION
+        if (this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE){
+            return "Alleen op persoons of organisatie profiel";
+        }
+        
+        // er  mag hooguit 1 Passie element zijn
+        QueryDefault<ProfileElementText> query = 
+                QueryDefault.create(
+                        ProfileElementText.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.PASSION,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return "Je hebt al je passie ingevuld; pas deze aan indien nodig";
+        }
+        
+        return null;
+    }    
+    
     
     //**KWALITEITEN*//
     //BUSINESSRULE

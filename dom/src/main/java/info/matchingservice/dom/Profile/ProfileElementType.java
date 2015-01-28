@@ -6,6 +6,7 @@ public enum ProfileElementType implements TitledEnum {
     
     QUALITY("Kwaliteit"),
     TEXT("Tekst"),
+    PASSION("Passie"),
     NUMERIC("Getal");
 
     private String title;

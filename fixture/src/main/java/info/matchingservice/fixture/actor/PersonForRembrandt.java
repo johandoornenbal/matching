@@ -1,5 +1,7 @@
 package info.matchingservice.fixture.actor;
 
+import org.joda.time.LocalDate;
+
 
 public class PersonForRembrandt extends PersonAbstract {
 
@@ -10,6 +12,7 @@ public class PersonForRembrandt extends PersonAbstract {
                 "Rembrandt", 
                 "van", 
                 "Rijn",
+                new LocalDate(1963, 12, 30),
                 "rembrandt",
                 executionContext);
     }

@@ -17,7 +17,7 @@ public class DemandsForFrans extends DemandAbstract {
         createDemand(
                 "Mensen gezocht voor project",
                 10,
-                DemandSupplyType.PERSONS_DEMANDSUPPLY,
+                DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
                 "frans",
                 executionContext

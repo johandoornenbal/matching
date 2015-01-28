@@ -2,7 +2,8 @@ package info.matchingservice.dom;
 
 import javax.jdo.JDOHelper;
 
-import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.Where;
 
 /**
  * A domain object that is mutable and can be changed by multiple users over time,
@@ -37,7 +38,7 @@ public abstract class MatchingMutableObject<T extends MatchingDomainObject<T>>
         super(keyProperties);
     }
     
-    @Hidden
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public String getId() {
         Object objectId = JDOHelper.getObjectId(this);
         if(objectId == null) {
@@ -50,7 +51,7 @@ public abstract class MatchingMutableObject<T extends MatchingDomainObject<T>>
         
     // //////////////////////////////////////
 
-    @Hidden
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public Long getVersionSequence() {
         final Long version = (Long) JDOHelper.getVersion(this);
         return version;

@@ -17,7 +17,7 @@ public class SuppliesForAntoni extends SupplyAbstract {
         createSupply(
                 "Persoonlijk profiel van Antoni",
                 10,
-                DemandSupplyType.PERSONS_DEMANDSUPPLY,
+                DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Leeuw*").get(0),
                 "antoni",
                 executionContext

@@ -235,7 +235,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public boolean hideNewPersonDemandProfile(
             final  String demandProfileDescription
             ){
-        if (this.getDemandType() != DemandSupplyType.PERSONS_DEMANDSUPPLY){
+        if (this.getDemandType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
             return true;
         }
         
@@ -245,7 +245,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public String validateNewPersonDemandProfile(
             final  String demandProfileDescription
             ){
-        if (this.getDemandType() != DemandSupplyType.PERSONS_DEMANDSUPPLY){
+        if (this.getDemandType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
             return "Alleen op type PERSOON";
         }
         

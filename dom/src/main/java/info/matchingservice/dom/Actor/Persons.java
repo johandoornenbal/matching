@@ -19,10 +19,13 @@ import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
+import org.joda.time.LocalDate;
 
 
 @DomainService(menuOrder = "10", repositoryFor = Person.class)
@@ -39,9 +42,11 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Uniek ID") String uniquePartyId,
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
-            final @Named("Achternaam") String lastName
+            final @Named("Achternaam") String lastName,
+            @ParameterLayout(named="Geboortedatum")
+            final LocalDate dateOfBirth
             ) {
-        return newPerson(uniquePartyId, firstName, middleName, lastName, currentUserName()); // see region>helpers
+        return newPerson(uniquePartyId, firstName, middleName, lastName, dateOfBirth, currentUserName()); // see region>helpers
     }
     
     public boolean hideNewPerson() {
@@ -56,8 +61,9 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Uniek ID") String uniquePartyId,
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
-            final @Named("Achternaam") String lastName) {
-        return validateNewPerson(uniquePartyId, firstName, middleName, lastName, currentUserName());
+            final @Named("Achternaam") String lastName,
+            final LocalDate dateOfBirth) {
+        return validateNewPerson(uniquePartyId, firstName, middleName, lastName, dateOfBirth, currentUserName());
     }
     
     @MemberOrder(sequence="5")
@@ -127,12 +133,14 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
             final @Named("Achternaam") String lastName,
+            final LocalDate dateOfBirth,
             final String userName) {
         final Person person = newTransientInstance(Person.class);
         person.setUniqueActorId(uniquePartyId);
         person.setFirstName(firstName);
         person.setMiddleName(middleName);
         person.setLastName(lastName);
+        person.setDateOfBirth(dateOfBirth);
         person.setOwnedBy(userName);
         persist(person);
         return person;
@@ -156,6 +164,7 @@ public class Persons extends MatchingDomainService<Person> {
             final @Named("Voornaam") String firstName,
             final @Optional  @Named("tussen") String middleName,
             final @Named("Achternaam") String lastName,
+            final LocalDate dateOfBirth,
             final String userName) {
         
         QueryDefault<Person> query = 

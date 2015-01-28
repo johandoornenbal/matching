@@ -57,6 +57,11 @@
 						"value" : "Nieuwe kwaliteit"
 					}
 				},
+				"newPassion" : {
+					"named" : {
+						"value" : "Passie"
+					}
+				},
 				"newProfileElementPrice" : {
 					"named" : {
 						"value" : "Nieuwe prijs"

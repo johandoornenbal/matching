@@ -5,7 +5,8 @@ import com.google.common.base.Objects;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.Identifier;
 import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.Where;
 
 /**
  * A Domain object that is secure checks who is the owner of an instance. Only
@@ -67,8 +68,8 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
 
     private String ownedBy;
 
-    @Hidden
     @Disabled
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -93,7 +94,8 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
      * Viewerrights are derived from YodoTrustedContact
      * 
      */
-    @Hidden
+
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public TrustLevel getViewerRights() {
         return trustedContacts.trustLevel(this.getOwnedBy(), container.getUser().getName());
     }
@@ -111,7 +113,7 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
      * @param trustlevel
      * @return
      */
-    @Hidden
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public boolean allowedTrustLevel(final TrustLevel trustlevel) {
         // user is owner
         if (Objects.equal(getOwnedBy(), container.getUser().getName())) {

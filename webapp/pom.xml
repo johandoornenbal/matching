@@ -234,12 +234,7 @@
         uncomment to enable publishing (@PublishedObject, @PublishedAction annotations)
         persisted to database, and using the Restful Objects (JSON) serialization of the event.
         -->
-        <!--
-		<dependency>
-   		 	<groupId>org.isisaddons.module.publishing</groupId>
-    		<artifactId>isis-module-publishing-dom</artifactId>
-		</dependency>
-        -->
+        
 
         <!--
         uncomment to use the AppSettings or UserSettings services
