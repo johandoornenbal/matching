@@ -4,7 +4,9 @@ import com.google.common.base.Objects;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.Identifier;
-import org.apache.isis.applib.annotation.Disabled;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
 
@@ -68,8 +70,12 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
 
     private String ownedBy;
 
-    @Disabled
-    @PropertyLayout(hidden = Where.EVERYWHERE)
+    @PropertyLayout(
+            hidden = Where.EVERYWHERE
+            )
+    @Property(
+            editing = Editing.DISABLED
+            )
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -113,7 +119,7 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
      * @param trustlevel
      * @return
      */
-    @PropertyLayout(hidden = Where.EVERYWHERE)
+    @ActionLayout(hidden = Where.EVERYWHERE)
     public boolean allowedTrustLevel(final TrustLevel trustlevel) {
         // user is owner
         if (Objects.equal(getOwnedBy(), container.getUser().getName())) {
