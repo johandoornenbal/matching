@@ -58,7 +58,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     }
         
     public String title() {
-        return getUniqueActorId().toString();
+        return getUniqueItemId().toString();
     }
     
     private String ownedBy;
@@ -75,16 +75,16 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.ownedBy = owner;
     }
     
-    private UUID uniqueActorId;
+    private UUID uniqueItemId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
-    public UUID getUniqueActorId() {
-        return uniqueActorId;
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
     }
     
-    public void setUniqueActorId(final UUID uniqueActorId) {
-        this.uniqueActorId = uniqueActorId;
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
     }
     
     

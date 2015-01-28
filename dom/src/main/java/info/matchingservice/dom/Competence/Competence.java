@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Competence;
 
+import info.matchingservice.dom.MatchingMutableObject;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -7,15 +9,15 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
-
-import info.matchingservice.dom.MatchingMutableObject;
+import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -31,7 +33,8 @@ import info.matchingservice.dom.MatchingMutableObject;
                         + "FROM info.matchingservice.dom.Competence.Competence "
                         + "WHERE competenceDescription == :competenceDescription")                      
 })
-@Immutable
+
+@DomainObject(editing=Editing.DISABLED)
 public class Competence extends MatchingMutableObject<Competence> {
     
     public Competence() {
@@ -50,7 +53,7 @@ public class Competence extends MatchingMutableObject<Competence> {
             describedAs="Omschrijving in zo min mogelijk woorden; liefst slechts een.",
             typicalLength=80)
     @MemberOrder(sequence="2")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
     public String getCompetenceDescription() {
         return competenceDescription;
     }
@@ -79,8 +82,8 @@ public class Competence extends MatchingMutableObject<Competence> {
     private String displCategory;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    @Hidden
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public String getDisplCategory(){
         return displCategory;
     }
@@ -91,14 +94,10 @@ public class Competence extends MatchingMutableObject<Competence> {
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @PropertyLayout(
-            named = "Competentie verwijderen"
-            )
+    @PropertyLayout(named = "Competentie verwijderen")
     public List<Competence> DeleteCompetence(
-            @Optional
-            @ParameterLayout(
-                    named = "Verwijderen OK?"
-                    )
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
             boolean areYouSure
             ){
         container.removeIfNotAlready(this);

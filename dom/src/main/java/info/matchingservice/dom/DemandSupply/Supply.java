@@ -11,6 +11,7 @@ import info.matchingservice.dom.Profile.Profiles;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -20,15 +21,18 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
-import org.apache.isis.applib.annotation.MultiLine;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
 
@@ -52,11 +56,23 @@ import org.apache.isis.applib.query.QueryDefault;
                     + "FROM info.matchingservice.dom.DemandSupply.Supply "
                     + "WHERE supplyOwner == :supplyOwner && supplyType == :supplyType")                            
 })
-@Immutable
+@DomainObject(editing=Editing.DISABLED)
 public class Supply extends MatchingSecureMutableObject<Supply> {
 
     public Supply() {
-        super("ownedBy, supplyDescription");
+        super("uniqueItemId, ownedBy, supplyDescription, weight");
+    }
+    
+    private UUID uniqueItemId;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
+    }
+    
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
     }
 
     //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
@@ -64,9 +80,9 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     private String ownedBy;
     
     @Override
-    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -80,8 +96,8 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     private Actor supplyOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    @Named("Eigenaar")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(named="Eigenaar")
     public Actor getSupplyOwner() {
         return supplyOwner;
     }
@@ -97,9 +113,9 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     private DemandSupplyType supplyType;
     
-    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public DemandSupplyType getSupplyType(){
         return supplyType;
     }
@@ -113,6 +129,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     private String supplyDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @PropertyLayout(multiLine=4)
     public String getSupplyDescription(){
         return supplyDescription;
     }
@@ -124,7 +141,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     private Integer weight;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public Integer getWeight() {
         return weight;
     }
@@ -136,8 +153,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     //ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
     
     public Supply editSupplyDescription(
-            @Named("Omschrijving van het aanbod")
-            @MultiLine
+            @ParameterLayout(named="supplyDescription", multiLine=4)
             final String supplyDescription
             ){
         this.setSupplyDescription(supplyDescription);
@@ -148,9 +164,9 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
         return this.getSupplyDescription();
     }
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public Supply editWeight(
-            @Named("Gewicht")
+            @ParameterLayout(named="weight")
             final Integer weight
             ){
         this.setWeight(weight);
@@ -163,9 +179,11 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
 
-    @Named("Aanbod verwijderen")
+    @ActionLayout(named="Aanbod verwijderen")
     public Actor DeleteSupply(
-            @Optional @Named("Verwijderen OK?") boolean areYouSure
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+            boolean areYouSure
             ){
         container.removeIfNotAlready(this);
         container.informUser("Supply deleted");
@@ -183,7 +201,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     private SortedSet<Profile> supplyProfiles = new TreeSet<Profile>();
     
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "supplyProfileOwner", dependentElement = "true")
     public SortedSet<Profile> getSupplyProfiles() {
         return supplyProfiles;
@@ -193,7 +211,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
         this.supplyProfiles = supplyProfile;
     }
     
-   @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public Profile newSupplyProfile(
             final String supplyProfileDescription,
             final Integer weight
@@ -204,7 +222,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
    //XTALUS
    //Region> Nieuw persoonlijk profiel ////////////////////////////////////////////////////////
    
-   @Named("Nieuw persoonlijk profiel") 
+   @ActionLayout(named="Nieuw persoonlijk profiel")
    public Profile newPersonSupplyProfile(){
        return newSupplyProfile("Persoonlijke profiel van " + this.getSupplyOwner().title(), 10, ProfileType.PERSON_PROFILE, this, currentUserName());
    }
@@ -264,9 +282,9 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     //Region> Nieuw cursus profiel ////////////////////////////////////////////////////////
     
-    @Named("Nieuwe cursus")
+    @ActionLayout(named="Nieuwe cursus")
     public Profile newCourseSupplyProfile(
-            @Named("Naam van de cursus")
+            @ParameterLayout(named="profileName")
             final String supplyProfileDescription
             ) {
         return newSupplyProfile(supplyProfileDescription, 10, ProfileType.COURSE_PROFILE, this, currentUserName());
@@ -320,7 +338,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     private SortedSet<SupplyAssessment> assessments = new TreeSet<SupplyAssessment>();
     
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
     @Persistent(mappedBy = "target", dependentElement = "true")
     public SortedSet<SupplyAssessment> getAssessments() {
         return assessments;

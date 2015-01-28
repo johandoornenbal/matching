@@ -28,8 +28,6 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
         super("uniqueItemId, ownedBy, assessmentDescription");
     }
     
-    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
-    
     private UUID uniqueItemId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -42,6 +40,7 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
         this.uniqueItemId = uniqueItemId;
     }
     
+    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////   
     private String ownedBy;
     
     @Override

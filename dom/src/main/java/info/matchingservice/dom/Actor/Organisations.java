@@ -111,7 +111,7 @@ public class Organisations extends MatchingDomainService<Organisation> {
             final String userName) {
         final Organisation organisation = newTransientInstance(Organisation.class);
         final UUID uuid=UUID.randomUUID();
-        organisation.setUniqueActorId(uuid);
+        organisation.setUniqueItemId(uuid);
         organisation.setOrganisationName(organisationName);
         organisation.setOwnedBy(userName);
         persist(organisation);

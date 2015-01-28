@@ -116,9 +116,7 @@ public class Person extends Actor {
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "60")
-    @PropertyLayout(
-    		named = "Geboortedatum"
-    		)
+    @PropertyLayout(named = "Geboortedatum")
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }

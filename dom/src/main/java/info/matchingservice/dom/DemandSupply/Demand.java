@@ -10,6 +10,7 @@ import info.matchingservice.dom.Profile.Profiles;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -19,15 +20,18 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
-import org.apache.isis.applib.annotation.MultiLine;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.Where;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -45,11 +49,23 @@ import org.apache.isis.applib.annotation.Render.Type;
                     + "FROM info.matchingservice.dom.DemandSupply.Demand "
                     + "WHERE ownedBy == :ownedBy && demandType == :demandType")                  
 })
-@Immutable
+@DomainObject(editing=Editing.DISABLED)
 public class Demand extends MatchingSecureMutableObject<Demand> {
 
     public Demand() {
-        super("ownedBy, demandDescription, weight");
+        super("uniqueItemId, ownedBy, demandDescription, weight");
+    }
+    
+    private UUID uniqueItemId;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
+    }
+    
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
     }
 
     //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
@@ -57,9 +73,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private String ownedBy;
     
     @Override
-    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -73,7 +89,8 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private Actor demandOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(named="Eigenaar")
     public Actor getDemandOwner() {
         return demandOwner;
     }
@@ -90,8 +107,8 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private DemandSupplyType demandType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    @Hidden
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public DemandSupplyType getDemandType(){
         return demandType;
     }
@@ -105,7 +122,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private String demandDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @MultiLine
+    @PropertyLayout(multiLine=4)
     public String getDemandDescription(){
         return demandDescription;
     }
@@ -117,7 +134,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private Integer weight;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public Integer getWeight() {
         return weight;
     }
@@ -129,8 +146,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     //ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
 
     public Demand editDemandDescription(
-            @Named("Omschrijving van de vraag")
-            @MultiLine
+            @ParameterLayout(named="demandDescription", multiLine=4)
             final String demandDescription
             ){
         this.setDemandDescription(demandDescription);
@@ -141,9 +157,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         return this.getDemandDescription();
     }
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public Demand editWeight(
-            @Named("Gewicht")
+            @ParameterLayout(named="weight")
             final Integer weight
             ){
         this.setWeight(weight);
@@ -156,9 +172,11 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @Named("Vraag verwijderen")
+    @ActionLayout(named="Vraag verwijderen")
     public Actor DeleteDemand(
-            @Optional @Named("Verwijderen OK?") boolean areYouSure
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+            boolean areYouSure
             ){
         container.removeIfNotAlready(this);
         container.informUser("Demand deleted");
@@ -176,7 +194,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     private SortedSet<Profile> demandProfiles = new TreeSet<Profile>();
     
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
     public SortedSet<Profile> getDemandProfiles() {
         return demandProfiles;
@@ -188,9 +206,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     //XTALUS 
     //Nieuwe cursus gezocht
-    @Named("Nieuwe cursus zoeken")
+    @ActionLayout(named="Nieuwe cursus zoeken")
     public Profile newCourseDemandProfile(
-            @Named("Omschrijving cursus gezocht")
+            @ParameterLayout(named="profileName", multiLine=4)
             final  String demandProfileDescription
             ){
         return newDemandProfile(demandProfileDescription, 10, ProfileType.COURSE_PROFILE, this, currentUserName());
@@ -221,9 +239,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 
     //XTALUS 
     //Nieuwe persoon gezocht
-    @Named("Nieuwe persoon zoeken")
+    @ActionLayout(named="Nieuwe persoon zoeken")
     public Profile newPersonDemandProfile(
-            @Named("Omschrijving persoon gezocht")
+            @ParameterLayout(named="profileName")
             final  String demandProfileDescription
             ){
         return newDemandProfile(demandProfileDescription, 10, ProfileType.PERSON_PROFILE, this, currentUserName());
@@ -252,7 +270,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         return null;
     }    
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public Profile newDemandProfile(
             final  String demandProfileDescription,
             final Integer weight 
@@ -275,9 +293,8 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     private SortedSet<DemandAssessment> assessments = new TreeSet<DemandAssessment>();
     
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
     @Persistent(mappedBy = "target", dependentElement = "true")
-    @Named("Assessments")
     public SortedSet<DemandAssessment> getAssessments() {
         return assessments;
     }

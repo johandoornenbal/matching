@@ -4,6 +4,7 @@ import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Actor;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
@@ -35,6 +36,8 @@ public class Supplies extends MatchingDomainService<Supply> {
             final Actor supplyOwner,
             final String ownedBy) {
         final Supply newSupply = newTransientInstance(Supply.class);
+        final UUID uuid=UUID.randomUUID();
+        newSupply.setUniqueItemId(uuid);
         newSupply.setSupplyDescription(supplyDescription);
         newSupply.setSupplyType(demandSupplyType);
         newSupply.setWeight(weight);

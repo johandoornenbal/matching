@@ -1,13 +1,14 @@
 package info.matchingservice.dom.Dropdown;
 
+import info.matchingservice.dom.MatchingDomainObject;
+import info.matchingservice.dom.Profile.ProfileElementType;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.Immutable;
-
-import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.Profile.ProfileElementType;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -21,7 +22,7 @@ import info.matchingservice.dom.Profile.ProfileElementType;
                     + "FROM info.matchingservice.dom.Dropdown.DropDownForProfileElement "
                     + "WHERE type == 'QUALITY' && value.indexOf(:value) >= 0")             
 })
-@Immutable
+@DomainObject(editing=Editing.DISABLED)
 public class DropDownForProfileElement extends MatchingDomainObject<DropDownForProfileElement>{
     
     public DropDownForProfileElement(){

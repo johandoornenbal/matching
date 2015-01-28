@@ -13,9 +13,9 @@ import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(repositoryFor = Competence.class)
 @DomainServiceLayout(
-        named="Competenties",
+        named="Beheer",
         menuBar = DomainServiceLayout.MenuBar.PRIMARY,
-        menuOrder = "30"
+        menuOrder = "80"
 )
 public class Competences extends MatchingDomainService<Competence> {
     
@@ -31,10 +31,10 @@ public class Competences extends MatchingDomainService<Competence> {
     @ActionLayout(named="Nieuwe competentie")
     public CompetenceCategory newCompetence(
             @ParameterLayout(
-                    named = "Competentie category")
+                    named = "competenceCategory")
             final CompetenceCategory competenceCategory,
             @ParameterLayout(
-                    named = "Competentie",
+                    named = "competenceDescription",
                     describedAs="Omschrijving in zo min mogelijk woorden; liefst slechts een.",
                     typicalLength=80
                     )

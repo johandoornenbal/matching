@@ -124,7 +124,7 @@ public class Systems extends MatchingDomainService<System> {
             final String userName) {
         final System system = newTransientInstance(System.class);
         final UUID uuid=UUID.randomUUID();
-        system.setUniqueActorId(uuid);
+        system.setUniqueItemId(uuid);
         system.setSystemName(systemName);
         system.setOwnedBy(userName);
         persist(system);

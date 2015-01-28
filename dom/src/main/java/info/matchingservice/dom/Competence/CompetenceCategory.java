@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Competence;
 
+import info.matchingservice.dom.MatchingMutableObject;
+
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -10,15 +12,14 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Immutable;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
-
-import info.matchingservice.dom.MatchingMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -34,8 +35,7 @@ import info.matchingservice.dom.MatchingMutableObject;
                     + "FROM info.matchingservice.dom.Competence.CompetenceCategory "
                     + "WHERE competenceCategoryDescription == :competenceCategoryDescription")                     
 })
-@AutoComplete(repository=CompetenceCategories.class,  action="autoComplete")
-@Immutable
+@DomainObject(editing=Editing.DISABLED, autoCompleteRepository=CompetenceCategories.class, autoCompleteAction="autoComplete")
 public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory> {
 
     public CompetenceCategory(){
@@ -79,10 +79,8 @@ public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory
             named = "Competentie categorie verwijderen"
             )
     public List<CompetenceCategory> DeleteCompetenceCategory(
-            @Optional
-            @ParameterLayout(
-                    named = "Verwijderen OK?"
-                    )
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
             boolean areYouSure
             ){
         container.removeIfNotAlready(this);
