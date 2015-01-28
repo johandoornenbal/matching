@@ -11,44 +11,47 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionSemantics;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
 
 
-@DomainService(menuOrder = "15", repositoryFor = Organisation.class)
-@Named("Organisaties")
+@DomainService(repositoryFor = Organisation.class)
+@DomainServiceLayout(named="Organisaties", menuOrder="15")
 public class Organisations extends MatchingDomainService<Organisation> {
     
     public Organisations() {
         super(Organisations.class, Organisation.class);
     }
     
-    @ActionSemantics(Of.NON_IDEMPOTENT)
-    @Named("Maak een organisatie aan in het systeem")
+    @ActionLayout(named="Maak een organisatie aan in het systeem")
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Organisation newOrganisation(
-            final @Named("Organisatie naam") String organisationName
+            @ParameterLayout(named="organisationName")
+            final String organisationName
             ) {
         return newOrganisation(organisationName, currentUserName()); // see region>helpers
     }
     
     @MemberOrder(sequence="5")
-    @Named("Dit zijn jouw organisaties ...")
+    @ActionLayout(named="Dit zijn jouw organisaties ...")
     public List<Organisation> thisIsYou() {
         return yourOrganisations(currentUserName());
     }
     
     @MemberOrder(sequence="10")
-    @Named("Alle organisaties")
+    @ActionLayout(named="Alle organisaties")
     public List<Organisation> allOrganisations() {
         return allInstances();
     }
@@ -57,10 +60,9 @@ public class Organisations extends MatchingDomainService<Organisation> {
     //region > otherPersons (contributed collection)
     @MemberOrder(sequence="110")
     @NotInServiceMenu
-    @ActionSemantics(Of.SAFE)
+    @Action(semantics=SemanticsOf.SAFE)
     @NotContributed(As.ACTION)
-    @Render(Type.EAGERLY)
-    @Named("Alle andere organisaties")
+    @ActionLayout(named="Alle andere organisaties")
     public List<Organisation> AllOtherOrganisations(final Organisation organisationMe) {
         final List<Organisation> allOrganisations = allOrganisations();
         return Lists.newArrayList(Iterables.filter(allOrganisations, excluding(organisationMe)));
@@ -79,18 +81,18 @@ public class Organisations extends MatchingDomainService<Organisation> {
    
     
     @MemberOrder(sequence="100")
-    @Named("Vind op organisatie naam")
+    @ActionLayout(named="Vind op organisatie naam")
     public List<Organisation> findOrganisations(
-            @Named("Organisatie naam (wildcards * toegestaan)")
+            @ParameterLayout(named="organisationName")
             final String organisationname
             ) {
         return allMatches("matchOrganisationByOrganisationName", "organisationName", StringUtils.wildcardToCaseInsensitiveRegex(organisationname));
     }
     
     @MemberOrder(sequence="105")
-    @Named("Vind op overeenkomst naam organisatie")
+    @ActionLayout(named="Vind op overeenkomst naam organisatie")
     public List<Organisation> findOrganisationContains(
-            @Named("Organisatie naam (wildcards * toegestaan)")
+            @ParameterLayout(named="organisationName")
             final String organisationname
             ) {
         return allMatches("matchOrganisationByOrganisationNameContains", "organisationName", organisationname);
@@ -104,7 +106,8 @@ public class Organisations extends MatchingDomainService<Organisation> {
     
     @Programmatic //userName can now also be set by fixtures
     public Organisation newOrganisation(
-            final @Named("Organisatie naam") String organisationName,
+            @ParameterLayout(named="organisationName")
+            final String organisationName,
             final String userName) {
         final Organisation organisation = newTransientInstance(Organisation.class);
         final UUID uuid=UUID.randomUUID();

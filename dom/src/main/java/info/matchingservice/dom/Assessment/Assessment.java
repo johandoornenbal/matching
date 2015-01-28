@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Assessment;
 
+import java.util.UUID;
+
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Actor.Actor;
 
@@ -7,29 +9,45 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@Immutable
+@DomainObject(editing=Editing.DISABLED)
 public class Assessment extends MatchingSecureMutableObject<Assessment> {
 
     public Assessment() {
-        super("ownedBy, assessmentDescription");
+        super("uniqueItemId, ownedBy, assessmentDescription");
     }
     
     //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
     
+    private UUID uniqueItemId;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
+    }
+    
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
+    }
+    
     private String ownedBy;
     
     @Override
-    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -46,8 +64,8 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     private Object target;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    @Named("Assessment op")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(named="Assessment op")
     public Object getTarget() {
         return target;
     }
@@ -58,8 +76,8 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     
     private Actor targetOwnerActor;
     
-    @Disabled
-    @Named("Gericht aan")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(named="Gericht aan")
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Actor getTargetOwnerActor(){
         return targetOwnerActor;
@@ -71,8 +89,8 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     
     private Actor ownerActor;
     
-    @Disabled
-    @Named("Afzender")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(named="Afzender")
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Actor getOwnerActor(){
         return ownerActor;
@@ -87,7 +105,7 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     private String assessmentDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Titel - korte omschrijving")
+    @PropertyLayout(named="Titel - korte omschrijving")
     public String getAssessmentDescription() {
         return assessmentDescription;
     }
@@ -98,9 +116,11 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @Named("Verwijder assessment")
+    @ActionLayout(named="Verwijder assessment")
     public void DeleteAssessment(
-            @Optional @Named("Verwijderen OK?") boolean areYouSure
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+            boolean areYouSure
             ){
         container.removeIfNotAlready(this);
         container.informUser("Assessment verwijderd");

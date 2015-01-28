@@ -5,8 +5,7 @@ import java.util.List;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable
@@ -37,7 +36,9 @@ public class PersonRole extends Role {
     }
     
     // Region //// Delete action //////////////////////////////
-    public List<PersonRole> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+    public List<PersonRole> delete(
+            @ParameterLayout(named="areYouSure")
+            boolean areYouSure) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");
         QueryDefault<PersonRole> query =

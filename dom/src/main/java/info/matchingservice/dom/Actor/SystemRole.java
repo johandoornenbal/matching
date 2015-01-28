@@ -5,8 +5,9 @@ import java.util.List;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable
@@ -48,7 +49,10 @@ public class SystemRole extends Role {
     }
     
     // Region //// Delete action //////////////////////////////
-    public List<SystemRole> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+    public List<SystemRole> delete(
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+            boolean areYouSure) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");
         QueryDefault<SystemRole> query =

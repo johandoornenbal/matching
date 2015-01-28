@@ -12,14 +12,14 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.AutoComplete;
-import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.MultiLine;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 
@@ -43,7 +43,8 @@ import org.apache.isis.applib.util.TitleBuffer;
                     + "FROM info.matchingservice.dom.Actor.Organisation "
                     + "WHERE organisationName.indexOf(:organisationName) >= 0")                    
 })
-@AutoComplete(repository=Organisations.class,  action="autoComplete")
+
+@DomainObject(autoCompleteRepository=Organisations.class, autoCompleteAction="autoComplete")
 public class Organisation extends Actor {
     
     @Override
@@ -61,7 +62,7 @@ public class Organisation extends Actor {
     
     @MemberOrder(sequence = "10")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Organisatie naam")
+    @PropertyLayout(named="Organisatie naam")
     public String getOrganisationName() {
         return organisationName;
     }
@@ -75,8 +76,8 @@ public class Organisation extends Actor {
         
     // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region
     
-    @Named("Rol Opdrachtgever")
     @MemberOrder(sequence = "60")
+    @ActionLayout(named="Rol Opdrachtgever")
     public Organisation addRolePrincipal() {
         addRolePrincipal(currentUserName());
         return this;
@@ -85,8 +86,8 @@ public class Organisation extends Actor {
     public boolean hideAddRolePrincipal() {
         return hideAddRolePrincipal(this, currentUserName());
     }
-    
-    @Named("Geen opdrachtgever meer")
+
+    @ActionLayout(named="Geen opdrachtgever meer")
     @MemberOrder(sequence = "61")
     public Organisation deleteRolePrincipal() {
         deleteRolePrincipal(this);
@@ -97,16 +98,15 @@ public class Organisation extends Actor {
         return hideDeleteRolePrincipal(this, currentUserName());
     }
     
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public Boolean getIsPrincipal() {
         return getIsPrincipal(this);
     }
     
     // ALL My Roles
     
-    @Hidden
     @MemberOrder(sequence = "100")
-    @Render(Type.EAGERLY)
+    @CollectionLayout(hidden=Where.EVERYWHERE, render=RenderType.EAGERLY)
     public List<OrganisationRole> getAllMyRoles() {
         QueryDefault<OrganisationRole> query =
                 QueryDefault.create(
@@ -116,8 +116,7 @@ public class Organisation extends Actor {
         return container.allMatches(query);
     }
     
-    @MultiLine(numberOfLines=2)
-    @Named("Rollen")
+    @PropertyLayout(named="Rollen", multiLine=2)
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsPrincipal()) {

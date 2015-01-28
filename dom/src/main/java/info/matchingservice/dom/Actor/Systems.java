@@ -11,34 +11,35 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionSemantics;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
 
 
-@DomainService(menuOrder = "18", repositoryFor = System.class)
-@Named("Systemen")
+@DomainService(repositoryFor = System.class)
 @Hidden
+@DomainServiceLayout(named="Systemen", menuOrder="18")
 public class Systems extends MatchingDomainService<System> {
     
     public Systems() {
         super(Systems.class, System.class);
     }
     
-    @ActionSemantics(Of.NON_IDEMPOTENT)
-    @Named("Maak je systeem aan in het systeem")
+    @ActionLayout(named="Maak je systeem aan in het systeem")
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public System newSystem(
-            final @Named("Systeem naam") String systemName
+            @ParameterLayout(named="systemName")
+            final String systemName
             ) {
         return newSystem(systemName, currentUserName()); // see region>helpers
     }
@@ -58,13 +59,13 @@ public class Systems extends MatchingDomainService<System> {
     }
     
     @MemberOrder(sequence="5")
-    @Named("Dit is jouw systeem ...")
+    @ActionLayout(named="Dit is jouw systeem ...")
     public List<System> thisIsYou() {
         return thisIsYou(currentUserName());
     }
     
     @MemberOrder(sequence="10")
-    @Named("Alle systemen")
+    @ActionLayout(named="Alle systemen")
     public List<System> allSystems() {
         return allInstances();
     }
@@ -73,10 +74,9 @@ public class Systems extends MatchingDomainService<System> {
     //region > otherPersons (contributed collection)
     @MemberOrder(sequence="110")
     @NotInServiceMenu
-    @ActionSemantics(Of.SAFE)
     @NotContributed(As.ACTION)
-    @Render(Type.EAGERLY)
-    @Named("Alle andere systemen")
+    @ActionLayout(named="Alle andere systemen")
+    @Action(semantics=SemanticsOf.SAFE)
     public List<System> AllOtherSystems(final System systemMe) {
         final List<System> allSystems = allSystems();
         return Lists.newArrayList(Iterables.filter(allSystems, excluding(systemMe)));
@@ -95,21 +95,21 @@ public class Systems extends MatchingDomainService<System> {
    
     
     @MemberOrder(sequence="100")
-    @Named("Vind op systeemnaam")
+    @ActionLayout(named="Vind op systeemnaam")
     public List<System> findSystems(
-            @Named("Systeem naam (wildcards * toegestaan)")
-            final String systemname
+            @ParameterLayout(named="systemName")
+            final String systemName
             ) {
-        return allMatches("matchSystemBySystemName", "systemName", StringUtils.wildcardToCaseInsensitiveRegex(systemname));
+        return allMatches("matchSystemBySystemName", "systemName", StringUtils.wildcardToCaseInsensitiveRegex(systemName));
     }
     
     @MemberOrder(sequence="105")
-    @Named("Vind op overeenkomst systeemnaam")
+    @ActionLayout(named="Vind op overeenkomst systeemnaam")
     public List<System> findSystemnameContains(
-            @Named("Systeem naam (wildcards * toegestaan)")
-            final String systemname
+            @ParameterLayout(named="systemName")
+            final String systemName
             ) {
-        return allMatches("matchSystemBySystemNameContains", "systemName", systemname);
+        return allMatches("matchSystemBySystemNameContains", "systemName", systemName);
     }
     
     // Region>helpers ////////////////////////////
@@ -119,8 +119,8 @@ public class Systems extends MatchingDomainService<System> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public System newSystem(
-            final @Named("Systeem naam") String systemName,
+    public System newSystem(           
+            final String systemName,
             final String userName) {
         final System system = newTransientInstance(System.class);
         final UUID uuid=UUID.randomUUID();

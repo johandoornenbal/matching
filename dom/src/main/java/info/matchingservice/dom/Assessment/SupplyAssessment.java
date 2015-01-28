@@ -7,7 +7,9 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.Disabled;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -22,7 +24,8 @@ public class SupplyAssessment extends Assessment {
     private Supply target;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @PropertyLayout(named="Doel")
+    @Property(editing=Editing.DISABLED)
     public Supply getTarget() {
         return target;
     }

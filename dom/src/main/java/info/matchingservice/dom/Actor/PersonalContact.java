@@ -7,8 +7,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable
@@ -35,7 +36,7 @@ public class PersonalContact extends MatchingTrustedContact {
     private Person contactPerson;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
     public Person getContactPerson() {
         return contactPerson;
     }
@@ -51,8 +52,8 @@ public class PersonalContact extends MatchingTrustedContact {
     private Person ownerPerson;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Disabled
-    @Hidden(where = Where.ALL_TABLES)
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.ALL_TABLES)
     public Person getOwnerPerson() {
         return ownerPerson;
     }

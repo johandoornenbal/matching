@@ -10,41 +10,46 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import org.joda.time.LocalDate;
+
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionSemantics;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
 
-import org.joda.time.LocalDate;
 
-
-@DomainService(menuOrder = "10", repositoryFor = Person.class)
-@Named("Personen")
+@DomainService(repositoryFor = Person.class)
+@DomainServiceLayout(named="Personen", menuOrder="10")
 public class Persons extends MatchingDomainService<Person> {
     
     public Persons() {
         super(Persons.class, Person.class);
     }
-    
-    @ActionSemantics(Of.NON_IDEMPOTENT)
-    @Named("Maak jezelf aan als persoon in het systeem")
+   
+    @ActionLayout(named="Maak jezelf aan als persoon in het systeem")
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Person newPerson(
-            final @Named("Voornaam") String firstName,
-            final @Optional  @Named("tussen") String middleName,
-            final @Named("Achternaam") String lastName,
-            @ParameterLayout(named="Geboortedatum")
+            @ParameterLayout(named="firstName")
+            final String firstName,
+            @ParameterLayout(named="middleName")
+            @Parameter(optional=Optionality.TRUE)
+            final String middleName,
+            @ParameterLayout(named="lastName")
+            final String lastName,
+            @ParameterLayout(named="dateOfBirth")
             final LocalDate dateOfBirth
             ) {
         return newPerson(firstName, middleName, lastName, dateOfBirth, currentUserName()); // see region>helpers
@@ -67,13 +72,13 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @MemberOrder(sequence="5")
-    @Named("Dit ben jij ...")
+    @ActionLayout(named="Dit ben jij ...")
     public List<Person> thisIsYou() {
         return thisIsYou(currentUserName());
     }
     
     @MemberOrder(sequence="10")
-    @Named("Alle personen")
+    @ActionLayout(named="Alle personen")
     public List<Person> allPersons() {
         return allInstances();
     }
@@ -82,10 +87,9 @@ public class Persons extends MatchingDomainService<Person> {
     //region > otherPersons (contributed collection)
     @MemberOrder(sequence="110")
     @NotInServiceMenu
-    @ActionSemantics(Of.SAFE)
     @NotContributed(As.ACTION)
-    @Render(Type.EAGERLY)
-    @Named("Alle andere personen")
+    @ActionLayout(named="Alle andere personen")
+    @Action(semantics=SemanticsOf.SAFE)
     public List<Person> AllOtherPersons(final Person personMe) {
         final List<Person> allPersons = allPersons();
         return Lists.newArrayList(Iterables.filter(allPersons, excluding(personMe)));
@@ -104,18 +108,18 @@ public class Persons extends MatchingDomainService<Person> {
    
     
     @MemberOrder(sequence="100")
-    @Named("Vind op achternaam")
+    @ActionLayout(named="Vind op achternaam")
     public List<Person> findPersons(
-            @Named("Achternaam (wildcards * toegestaan)")
+            @ParameterLayout(named="lastName")
             final String lastname
             ) {
         return allMatches("matchPersonByLastName", "lastName", StringUtils.wildcardToCaseInsensitiveRegex(lastname));
     }
     
     @MemberOrder(sequence="105")
-    @Named("Vind op overeenkomst achternaam")
+    @ActionLayout(named="Vind op overeenkomst achternaam")
     public List<Person> findPersonsContains(
-            @Named("Achternaam (wildcards * toegestaan)")
+            @ParameterLayout(named="lastName")
             final String lastname
             ) {
         return allMatches("matchPersonByLastNameContains", "lastName", lastname);
@@ -129,9 +133,9 @@ public class Persons extends MatchingDomainService<Person> {
     
     @Programmatic //userName can now also be set by fixtures
     public Person newPerson(
-            final @Named("Voornaam") String firstName,
-            final @Optional  @Named("tussen") String middleName,
-            final @Named("Achternaam") String lastName,
+            final String firstName,
+            final String middleName,
+            final String lastName,
             final LocalDate dateOfBirth,
             final String userName) {
         final Person person = newTransientInstance(Person.class);

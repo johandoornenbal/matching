@@ -6,14 +6,14 @@ import java.util.List;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.query.QueryDefault;
 
-@DomainService(menuOrder = "20", repositoryFor = OrganisationRole.class)
-@Named("Organisatie Rollen")
+@DomainService(repositoryFor = OrganisationRole.class)
 @Hidden
+@DomainServiceLayout(named="Organisatie Rollen", menuOrder="20")
 public class OrganisationRoles extends MatchingDomainService<OrganisationRole> {
 
     public OrganisationRoles() {

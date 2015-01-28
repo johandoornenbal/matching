@@ -9,14 +9,14 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.AutoComplete;
-import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.MultiLine;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 
@@ -39,7 +39,7 @@ import org.apache.isis.applib.util.TitleBuffer;
                     + "FROM info.matchingservice.dom.Actor.System "
                     + "WHERE systemName.indexOf(:systemName) >= 0")                    
 })
-@AutoComplete(repository=Systems.class,  action="autoComplete")
+@DomainObject(autoCompleteRepository=Systems.class, autoCompleteAction="autoComplete")
 public class System extends Actor {
     
     public String title() {
@@ -52,20 +52,20 @@ public class System extends Actor {
     
     @MemberOrder(sequence = "10")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Named("Organisatie naam")
+    @PropertyLayout(named="Systeem naam")
     public String getSystemName() {
         return systemName;
     }
     
-    public void setSystemName(final String fn) {
-        this.systemName = fn;
+    public void setSystemName(final String systemName) {
+        this.systemName = systemName;
     }
 
     //Region> ROLES /////////////////////////////////////////////////
         
     // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region
     
-    @Named("Rol Opdrachtgever")
+    @ActionLayout(named="Rol Opdrachtgever")
     @MemberOrder(sequence = "60")
     public System addRolePrincipal() {
         addRolePrincipal(currentUserName());
@@ -76,7 +76,7 @@ public class System extends Actor {
         return hideAddRolePrincipal(this, currentUserName());
     }
     
-    @Named("Geen opdrachtgever meer")
+    @ActionLayout(named="Geen opdrachtgever meer")
     @MemberOrder(sequence = "61")
     public System deleteRolePrincipal() {
         deleteRolePrincipal(currentUserName());
@@ -87,16 +87,15 @@ public class System extends Actor {
         return hideDeleteRolePrincipal(this, currentUserName());
     }
     
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public Boolean getIsPrincipal() {
         return getIsPrincipal(this);
     }
     
     // ALL My Roles
     
-    @Hidden
+    @CollectionLayout(hidden=Where.EVERYWHERE, render=RenderType.EAGERLY)
     @MemberOrder(sequence = "100")
-    @Render(Type.EAGERLY)
     public List<SystemRole> getAllMyRoles() {
         QueryDefault<SystemRole> query =
                 QueryDefault.create(
@@ -106,8 +105,7 @@ public class System extends Actor {
         return container.allMatches(query);
     }
     
-    @MultiLine(numberOfLines=2)
-    @Named("Rollen")
+    @PropertyLayout(named="Rollen", multiLine=2)
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsPrincipal()) {

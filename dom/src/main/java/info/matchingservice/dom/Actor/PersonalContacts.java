@@ -1,27 +1,29 @@
 package info.matchingservice.dom.Actor;
 
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.TrustLevel;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import com.google.common.base.Objects;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.TrustLevel;
-
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionSemantics;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
 
 
-@DomainService(menuOrder = "13", repositoryFor = PersonalContact.class)
-@Named("Personal Contacts")
+@DomainService(repositoryFor = PersonalContact.class)
+@DomainServiceLayout(named="Personal Contacts", menuOrder="13")
 public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     
     public PersonalContacts() {
@@ -39,9 +41,10 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     }
     
     @MemberOrder(name = "Personen", sequence = "10")
-    @ActionSemantics(Of.NON_IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public PersonalContact newPersonalContact(
-            final @Named("Contact") Person contactPerson) {
+            @ParameterLayout(named="contactPerson")
+            final Person contactPerson) {
         return newPersonalContact(contactPerson, currentUserName()); // see region>helpers
     }
     
@@ -49,7 +52,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         return persons.findPersonsContains(search);
     }
     
-    public boolean hideNewPersonalContact(final @Named("Contact") Person contactPerson){
+    public boolean hideNewPersonalContact(final Person contactPerson){
         // show in service menu
         if (contactPerson == null) {
             return false;
@@ -90,8 +93,8 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         :null;
     }
     
-    @Named("Alle persoonlijke contacten")
     @NotInServiceMenu
+    @CollectionLayout(named="Alle persoonlijke contacten")
     public List<PersonalContact> listAll() {
         return container.allInstances(PersonalContact.class);
     }
@@ -104,7 +107,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     
     @Programmatic //userName can now also be set by fixtures
     public PersonalContact newPersonalContact(
-            final @Named("Contact") Person contactPerson,
+            final Person contactPerson,
             final String userName) {
         final PersonalContact contact = newTransientInstance(PersonalContact.class);
         contact.setContactPerson(contactPerson);
@@ -117,7 +120,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
 
     @Programmatic //userName and trustLevel can now also be set by fixtures
     public PersonalContact newPersonalContact(
-            final @Named("Contact") Person contactPerson,
+            final Person contactPerson,
             final String userName,
             final TrustLevel trustLevel) {
         final PersonalContact contact = newTransientInstance(PersonalContact.class);

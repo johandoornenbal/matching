@@ -5,8 +5,9 @@ import java.util.List;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable
@@ -24,17 +25,6 @@ import org.apache.isis.applib.query.QueryDefault;
                     + "WHERE roleOwner == :roleOwner && role == :role"),
 })
 public class OrganisationRole extends Role {
-    
-//    private String ownedBy;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "false")
-//    public String getOwnedBy() {
-//        return ownedBy;
-//    }
-//    
-//    public void setOwnedBy(final String owner) {
-//        this.ownedBy=owner;
-//    }
     
     private Organisation roleOwner;
     
@@ -60,8 +50,8 @@ public class OrganisationRole extends Role {
     
     // Region //// Delete action //////////////////////////////
     public List<OrganisationRole> delete(
-            @Optional 
-            @Named("Verwijderen OK?") 
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
             boolean areYouSure,
             Organisation organisation
             ) {
