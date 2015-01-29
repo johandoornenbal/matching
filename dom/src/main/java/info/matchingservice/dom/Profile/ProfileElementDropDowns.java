@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Profile;
 
+import java.util.UUID;
+
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 
@@ -23,6 +25,8 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
             final Profile profileOwner
             ){
         final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
+        final UUID uuid=UUID.randomUUID();
+        newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setDropDownValue(dropDown);
@@ -44,6 +48,8 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
             final String ownedBy
             ){
         final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
+        final UUID uuid=UUID.randomUUID();
+        newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setDropDownValue(dropDown);

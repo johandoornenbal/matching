@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Profile;
 
+import java.util.UUID;
+
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 
@@ -24,6 +26,8 @@ public class ProfileElementDropDownAndTexts extends MatchingDomainService<Profil
             final Profile profileOwner
             ){
         final ProfileElementDropDownAndText newProfileElement = newTransientInstance(ProfileElementDropDownAndText.class);
+        final UUID uuid=UUID.randomUUID();
+        newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setOptionalDropDownValue(dropDown);

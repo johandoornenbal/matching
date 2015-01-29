@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Profile;
 
+import java.util.UUID;
+
 import info.matchingservice.dom.MatchingDomainService;
 
 import org.apache.isis.applib.DomainObjectContainer;
@@ -22,6 +24,8 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
             final Profile profileOwner
             ){
         final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
+        final UUID uuid=UUID.randomUUID();
+        newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setNumericValue(numericValue);
@@ -43,6 +47,8 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
             final String ownedBy
             ){
         final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
+        final UUID uuid=UUID.randomUUID();
+        newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setNumericValue(numericValue);

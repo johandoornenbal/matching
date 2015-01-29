@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Profile;
 
+import java.util.UUID;
+
 import info.matchingservice.dom.MatchingSecureMutableObject;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -42,7 +44,19 @@ import org.apache.isis.applib.annotation.Where;
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
     public ProfileElement() {
-        super("ownedBy, profileElementDescription, profileElementOwner, profileElementId");
+        super("uniqueItemId, ownedBy, profileElementDescription, profileElementOwner, profileElementId");
+    }
+    
+    private UUID uniqueItemId;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
+    }
+    
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
     }
     
     //Override for secure object /////////////////////////////////////////////////////////////////////////////////////

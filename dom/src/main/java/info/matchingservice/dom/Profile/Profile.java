@@ -12,6 +12,7 @@ import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -73,7 +74,19 @@ import org.apache.isis.applib.query.QueryDefault;
 public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public Profile() {
-        super("profileName, ownedBy");
+        super("uniqueItemId, profileName, ownedBy");
+    }
+    
+    private UUID uniqueItemId;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
+    }
+    
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
     }
     
     //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
@@ -537,21 +550,21 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return "Profiel: " + this.profileName;
     }
     
-    // Used in case owner chooses identical vacancyDescription and weight
-    @SuppressWarnings("unused")
-    private String profileId;
-
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public String getProfileId() {
-        if (this.getId() != null) {
-            return this.getId();
-        }
-        return "";
-    }
-    
-    public void setProfileId() {
-        this.profileId = this.getId();
-    }
+//    // Used in case owner chooses identical vacancyDescription and weight
+//    @SuppressWarnings("unused")
+//    private String profileId;
+//
+//    @ActionLayout(hidden=Where.EVERYWHERE)
+//    public String getProfileId() {
+//        if (this.getId() != null) {
+//            return this.getId();
+//        }
+//        return "";
+//    }
+//    
+//    public void setProfileId() {
+//        this.profileId = this.getId();
+//    }
     
     
     // Injects

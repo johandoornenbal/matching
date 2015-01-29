@@ -6,6 +6,7 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
@@ -59,6 +60,8 @@ public class Profiles extends MatchingDomainService<Profile> {
             final String ownedBy
             ){
         final Profile newDemandProfile = newTransientInstance(Profile.class);
+        final UUID uuid=UUID.randomUUID();
+        newDemandProfile.setUniqueItemId(uuid);
         newDemandProfile.setProfileName(demandProfileDescription);
         newDemandProfile.setWeight(weight);
         newDemandProfile.setDemandOrSupply(DemandOrSupply.DEMAND);
@@ -78,6 +81,8 @@ public class Profiles extends MatchingDomainService<Profile> {
             final String ownedBy
             ){
         final Profile newSupplyProfile = newTransientInstance(Profile.class);
+        final UUID uuid=UUID.randomUUID();
+        newSupplyProfile.setUniqueItemId(uuid);
         newSupplyProfile.setProfileName(supplyProfileDescription);
         newSupplyProfile.setWeight(weight);
         newSupplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);

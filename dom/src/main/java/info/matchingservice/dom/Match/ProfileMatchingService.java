@@ -37,6 +37,7 @@ public class ProfileMatchingService extends AbstractService {
     @NotContributed(As.ACTION)
     @Action(semantics=SemanticsOf.SAFE)
     @CollectionLayout(render=RenderType.EAGERLY)
+//    @Render(Type.EAGERLY)
     public List<ProfileComparison> showProfileMatches(Profile demandProfile) {
         List<ProfileComparison> matches = new ArrayList<ProfileComparison>();
         //Init Test: Only if there are any Profiles
