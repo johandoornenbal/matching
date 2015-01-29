@@ -8,12 +8,14 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Disabled;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
-import org.apache.isis.applib.annotation.MultiLine;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -36,7 +38,7 @@ import org.apache.isis.applib.annotation.Where;
                     + "FROM info.matchingservice.dom.Profile.ProfileElement "
                     + "WHERE profileElementOwner == :profileElementOwner && profileElementNature == :profileElementNature")
 })
-@Immutable
+@DomainObject(editing=Editing.DISABLED)
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
     public ProfileElement() {
@@ -48,9 +50,9 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     private String ownedBy;
     
     @Override
-    @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public String getOwnedBy() {
         return ownedBy;
     }
@@ -64,8 +66,8 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     private Profile profileElementOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    @Hidden(where=Where.PARENTED_TABLES)
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.PARENTED_TABLES)
     public Profile getProfileElementOwner() {
         return profileElementOwner;
     }
@@ -77,8 +79,8 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     private ProfileElementType profileElementType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Disabled
-    @Hidden
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     public ProfileElementType getProfileElementType(){
         return profileElementType;
     }
@@ -101,8 +103,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     }
     
     public ProfileElement EditProfileDescription(
-            @Named("Naam")
-            @MultiLine
+            @ParameterLayout(named="profileElementDescription", multiLine=4)
             String newDescr
             ){
         this.setProfileElementDescription(newDescr);
@@ -131,8 +132,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 //    }
     
     public ProfileElement EditWeight(
-            @Named("Gewicht")
-            @MultiLine
+            @ParameterLayout(named="weight")
             Integer newWeight
             ){
         this.setWeight(newWeight);
@@ -147,7 +147,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     private String displayValue;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Hidden(where = Where.OBJECT_FORMS)
+    @PropertyLayout(hidden=Where.OBJECT_FORMS)
     public String getDisplayValue(){
         return displayValue;
     }
@@ -158,9 +158,11 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @Named("Verwijder element")
+    @ActionLayout(named="Verwijder element")
     public Profile DeleteProfileElement(
-            @Optional @Named("Verwijderen OK?") boolean areYouSure
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+            boolean areYouSure
             ){
         container.removeIfNotAlready(this);
         container.informUser("Element verwijderd");
@@ -181,7 +183,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     @SuppressWarnings("unused")
     private String profileElementId;
 
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public String getProfileElementId() {
         if (this.getId() != null) {
             return this.getId();

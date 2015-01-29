@@ -3,8 +3,6 @@ package info.matchingservice.dom.Profile;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.MultiLine;
-import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.ParameterLayout;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)

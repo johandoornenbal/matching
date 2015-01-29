@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Match;
 
+import java.util.UUID;
+
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Profile.Profile;
@@ -10,9 +12,11 @@ import javax.jdo.annotations.IdentityType;
 
 import com.google.common.collect.ComparisonChain;
 
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.ViewModel;
+import org.apache.isis.applib.annotation.Where;
 
 
 @ViewModel
@@ -23,19 +27,31 @@ import org.apache.isis.applib.annotation.ViewModel;
 public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     public ProfileComparison() {
-        super("demandProfile");
+        super("uniqueItemId, demandProfile");
     }
 
     public ProfileComparison(Profile demandProfile, Profile matchingSupplyProfile, Integer value) {
         super("matchInitiator");
         this.demandProfile = demandProfile;
         this.matchingSupplyProfile = matchingSupplyProfile;
-        this.calculatedMatchingValue = value;   
+        this.calculatedMatchingValue = value;
+    }
+    
+    private UUID uniqueItemId;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
+    }
+    
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
     }
     
     private Profile demandProfile;
     
-    @Hidden
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "false")
     public Profile getDemandProfile() {
         return demandProfile;
@@ -107,9 +123,9 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     
     //Region>Helpers ////////////////////////////////////////////////////////
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
+//    private String currentUserName() {
+//        return container.getUser().getName();
+//    }
     
     public String toString() {
         return getDemandProfile().toString() + " vs. " + getMatchingSupplyProfile().toString();
@@ -130,7 +146,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     @Inject
     private ProfileMatches profileMatches;
     
-    @javax.inject.Inject
-    private DomainObjectContainer container;
+//    @javax.inject.Inject
+//    private DomainObjectContainer container;
 
 }

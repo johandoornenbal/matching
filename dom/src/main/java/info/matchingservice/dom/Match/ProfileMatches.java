@@ -1,39 +1,42 @@
 package info.matchingservice.dom.Match;
 
-import java.util.List;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Programmatic;
-
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Profile.Profile;
 
-@DomainService(menuOrder = "100", repositoryFor = ProfileMatch.class)
-@Named("Matches")
+import java.util.List;
+import java.util.UUID;
+
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Where;
+
+@DomainService(repositoryFor = ProfileMatch.class)
+@DomainServiceLayout(named="Matches", menuOrder="100")
 public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
 
     public ProfileMatches() {
         super(ProfileMatches.class, ProfileMatch.class);
     }
 
-    @Named("Alle vastgelegde matches")
+    @ActionLayout(named="Alle vastgelegde matches")
     public List<ProfileMatch> allProfileMatches() {
         return container.allInstances(ProfileMatch.class);
     }
     
-    @Hidden
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public ProfileMatch newProfileMatch(
-            @Named("Eigenaar")
+            @ParameterLayout(named="ownerActor")
             Actor ownerActor,
-            @Named("Gevonden kandidaat")
+            @ParameterLayout(named="supplyCandidate")
             Actor vacancyCandidate,
-            @Named("Stoel")
+            @ParameterLayout(named="demandProfile")
             Profile vacancyProfile,
-            @Named("Matching aanbod profiel")
+            @ParameterLayout(named="matchingSupplyProfile")
             Profile matchingSupplyProfile
             ){
         return newProfileMatch(ownerActor, vacancyCandidate, vacancyProfile, matchingSupplyProfile, currentUserName(), CandidateStatus.CANDIDATE);
@@ -54,6 +57,8 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
             CandidateStatus candidateStatus
             ){
         ProfileMatch newMatch = newTransientInstance(ProfileMatch.class);
+        final UUID uuid=UUID.randomUUID();
+        newMatch.setUniqueItemId(uuid);
         newMatch.setOwnerActor(ownerActor);
         newMatch.setSupplyCandidate(supplyCandidate);
         newMatch.setDemandProfile(demandProfile);

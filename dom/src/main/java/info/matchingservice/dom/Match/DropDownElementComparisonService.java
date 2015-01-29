@@ -12,14 +12,14 @@ import javax.inject.Named;
 
 import org.apache.isis.applib.AbstractService;
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionSemantics;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.NotContributed.As;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 @DomainService
 public class DropDownElementComparisonService extends AbstractService {
@@ -30,8 +30,8 @@ public class DropDownElementComparisonService extends AbstractService {
     //  //return matches on Dropdown ProfileElements only for profiles of Type Supply_Person_Profile
   @NotInServiceMenu
   @NotContributed(As.ACTION)
-  @ActionSemantics(Of.SAFE)
-  @Render(Type.EAGERLY)
+  @CollectionLayout(render=RenderType.EAGERLY)
+  @Action(semantics=SemanticsOf.SAFE)
   @Named("Gevonden matching kwaliteiten op persoon profiel elementen")
   public List<ElementComparison> showDropDownElementMatches(ProfileElementDropDown element){
       

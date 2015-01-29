@@ -10,8 +10,8 @@ import java.util.List;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Where;
 
 @DomainService(repositoryFor = Profile.class)
 @DomainServiceLayout(
@@ -25,8 +25,7 @@ public class Profiles extends MatchingDomainService<Profile> {
         super(Profiles.class, Profile.class);
     }
     
-    @ActionLayout(named="Alle profielen")
-    @Hidden
+    @ActionLayout(named="Alle profielen", hidden=Where.EVERYWHERE)
     public List<Profile> allProfiles() {
         return allInstances();
     }

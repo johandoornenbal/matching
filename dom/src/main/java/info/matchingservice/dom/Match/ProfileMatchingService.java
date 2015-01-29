@@ -11,19 +11,20 @@ import info.matchingservice.dom.Profile.Profiles;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
 import org.apache.isis.applib.AbstractService;
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionSemantics;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 @DomainService
 public class ProfileMatchingService extends AbstractService {
@@ -34,8 +35,8 @@ public class ProfileMatchingService extends AbstractService {
     
     @NotInServiceMenu
     @NotContributed(As.ACTION)
-    @ActionSemantics(Of.SAFE)
-    @Render(Type.EAGERLY)
+    @Action(semantics=SemanticsOf.SAFE)
+    @CollectionLayout(render=RenderType.EAGERLY)
     public List<ProfileComparison> showProfileMatches(Profile demandProfile) {
         List<ProfileComparison> matches = new ArrayList<ProfileComparison>();
         //Init Test: Only if there are any Profiles
@@ -141,6 +142,8 @@ public class ProfileMatchingService extends AbstractService {
                 // drempelwaarde is MATCHING_THRESHOLD
                 if (totalMatchingValue > MATCHING_PROFILE_THRESHOLD){
                     final ProfileComparison defMatch = newTransientInstance(ProfileComparison.class);
+                    final UUID uuid=UUID.randomUUID();
+                    tempMatch.setUniqueItemId(uuid);
                     tempMatch.setDemandProfile(tempMatch.getDemandProfile());
                     tempMatch.setMatchingSupplyProfile(tempMatch.getMatchingSupplyProfile());
                     tempMatch.setCalculatedMatchingValue(totalMatchingValue.intValue());

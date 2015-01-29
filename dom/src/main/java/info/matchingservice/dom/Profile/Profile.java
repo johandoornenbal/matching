@@ -22,16 +22,15 @@ import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Disabled;
+import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
@@ -121,7 +120,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private Demand demandProfileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
     @PropertyLayout(hidden=Where.ALL_TABLES)
     public Demand getDemandProfileOwner(){
         return demandProfileOwner;
@@ -142,7 +141,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     private Supply supplyProfileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Disabled
+    @Property(editing=Editing.DISABLED)
     @PropertyLayout(hidden=Where.ALL_TABLES)
     public Supply getSupplyProfileOwner(){
         return supplyProfileOwner;
@@ -160,8 +159,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return false;
     }
     
-    @Named("Eigenaar")
-    @PropertyLayout(hidden=Where.PARENTED_TABLES)
+    @PropertyLayout(hidden=Where.PARENTED_TABLES, named="Eigenaar")
     public Actor getActorOwner() {
         if (this.getDemandOrSupply().equals(DemandOrSupply.DEMAND)){
             return getDemandProfileOwner().getDemandOwner();
@@ -279,9 +277,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     // 2 dezelfde kwaliteiten kiezen heeft geen zin
     
     public Profile newQualityElementDropDown(
-            @Named("Zoek kwaliteit door te beginnen met typen")
+            @ParameterLayout(named="dropDownValue")
             final DropDownForProfileElement dropDown,
-            @Named("Gewicht")
+            @ParameterLayout(named="weight")
             final Integer weight
             ){
         profileElementDropDowns.newProfileElementDropDown(
@@ -339,9 +337,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //Er kan maar een prijs element zijn
     //Alleen op cursusprofiel
     
-    @Named("Nieuwe prijs")
+    @ActionLayout(named="Nieuwe prijs")
     public ProfileElementNumeric newProfileElementPrice(
-            @Named("Prijs (in hele 'credits'")
+            @ParameterLayout(named="numericValue")
             final Integer numericValue
             ){
         return profileElementNumerics.newProfileElementNumeric(
@@ -395,7 +393,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     // Region actions
     public Profile EditProfileName(
-            @Named("Naam")
+            @ParameterLayout(named="profileName")
             String newString
             ){
         this.setProfileName(newString);
@@ -419,7 +417,10 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
-    public Actor DeleteProfile(@Optional @Named("Verwijderen OK?") boolean areYouSure) {
+    public Actor DeleteProfile( 
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+        boolean areYouSure) {
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
         return this.getActorOwner();
@@ -430,8 +431,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    @Named("NewDropDownTest")
+    @ActionLayout(hidden=Where.EVERYWHERE, named="NewDropDownTest")
     public Profile newProfileElementDropDown(
             final Integer weight,
             final DropDownForProfileElement dropDown
@@ -450,14 +450,13 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
 
     
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    @Named("NewDropDownAndTextTest")
+    @ActionLayout(hidden=Where.EVERYWHERE, named="NewDropDownAndTextTest")
     public ProfileElementDropDownAndText newProfileElementDropDownAndText(
             final String description,
             final Integer weight,
-            @Optional
+            @Parameter(optional=Optionality.TRUE)
             final DropDownForProfileElement dropDown,
-            @Optional
+            @Parameter(optional=Optionality.TRUE)
             final String text
             ){
         return profileElementDropDownsAndTexts.newProfileElementDropDownAndText(
@@ -473,8 +472,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return dropDownForProfileElements.findDropDowns(search);
     }
     
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    @Named("NewTextTest")
+    @ActionLayout(hidden=Where.EVERYWHERE, named="NewTextTest")
     public ProfileElementText newProfileElementText(
             final String description,
             final Integer weight,
@@ -488,8 +486,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 this);
     }
     
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    @Named("NewNumericTest")
+    @ActionLayout(hidden=Where.EVERYWHERE, named="NewNumericTest")
     public ProfileElementNumeric newProfileElementNumeric(
             final String description,
             final Integer weight,
@@ -507,7 +504,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //Profile Elements ///////////////////////////////////////////////////////////////////////////////
     private SortedSet<ProfileElement> profileElement = new TreeSet<ProfileElement>();
 
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "profileElementOwner", dependentElement = "true")
     public SortedSet<ProfileElement> getProfileElement() {
         return profileElement;
@@ -520,7 +517,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //Assessments ///////////////////////////////////////////////////////////////////////////////
     private SortedSet<ProfileAssessment> assessments = new TreeSet<ProfileAssessment>();
 
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "target", dependentElement = "true")
     public SortedSet<ProfileAssessment> getAssessments() {
         return assessments;

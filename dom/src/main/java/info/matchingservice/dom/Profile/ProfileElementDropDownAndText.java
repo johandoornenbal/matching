@@ -5,12 +5,14 @@ import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.Immutable;
-import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Property;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
-@Immutable
+@DomainObject(editing=Editing.DISABLED)
 public class ProfileElementDropDownAndText extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +20,7 @@ public class ProfileElementDropDownAndText extends ProfileElement {
     private DropDownForProfileElement optionalDropDownValue;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Optional
+    @Property(optional=Optionality.TRUE)
     public DropDownForProfileElement getOptionalDropDownValue(){
         return optionalDropDownValue;
     }
@@ -30,7 +32,7 @@ public class ProfileElementDropDownAndText extends ProfileElement {
     private String text;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Optional
+    @Property(optional=Optionality.TRUE)
     public String getText(){
         return text;
     }

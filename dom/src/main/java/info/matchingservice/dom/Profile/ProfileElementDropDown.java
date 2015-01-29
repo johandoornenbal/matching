@@ -5,7 +5,8 @@ import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.Immutable;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -16,7 +17,7 @@ import org.apache.isis.applib.annotation.Immutable;
                     + "FROM info.matchingservice.dom.Profile.ProfileElementDropDown "
                     + "WHERE profileElementOwner == :profileElementOwner && dropDownValue == :dropDownValue")
 })
-@Immutable
+@DomainObject(editing=Editing.DISABLED)
 public class ProfileElementDropDown extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
