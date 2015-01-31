@@ -33,11 +33,11 @@ import info.matchingservice.fixture.supply.SuppliesForFrans;
 import info.matchingservice.fixture.supply.SuppliesForGerard;
 import info.matchingservice.fixture.supply.SuppliesForMichiel;
 import info.matchingservice.fixture.supply.SuppliesForRembrandt;
-import info.matchingservice.fixture.supply.SupplyProfileDropDownsForAntoni;
-import info.matchingservice.fixture.supply.SupplyProfileDropDownsForFrans;
-import info.matchingservice.fixture.supply.SupplyProfileDropDownsForGerard;
-import info.matchingservice.fixture.supply.SupplyProfileDropDownsForMichiel;
-import info.matchingservice.fixture.supply.SupplyProfileDropDownsForRembrandt;
+import info.matchingservice.fixture.supply.SupplyProfileElementsForAntoni;
+import info.matchingservice.fixture.supply.SupplyProfileElementsForFrans;
+import info.matchingservice.fixture.supply.SupplyProfileElementsForGerard;
+import info.matchingservice.fixture.supply.SupplyProfileElementsForMichiel;
+import info.matchingservice.fixture.supply.SupplyProfileElementsForRembrandt;
 import info.matchingservice.fixture.supply.SupplyProfileNumericsForAntoni;
 import info.matchingservice.fixture.supply.SupplyProfileNumericsForFrans;
 import info.matchingservice.fixture.supply.SupplyProfilesForAntoni;
@@ -45,6 +45,8 @@ import info.matchingservice.fixture.supply.SupplyProfilesForFrans;
 import info.matchingservice.fixture.supply.SupplyProfilesForGerard;
 import info.matchingservice.fixture.supply.SupplyProfilesForMichiel;
 import info.matchingservice.fixture.supply.SupplyProfilesForRembrandt;
+import info.matchingservice.fixture.tag.TagCategories;
+import info.matchingservice.fixture.tag.Tags;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -91,11 +93,11 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new SupplyProfilesForFrans(), executionContext);
         executeChild(new SupplyProfilesForRembrandt(), executionContext);
         executeChild(new SupplyProfilesForMichiel(), executionContext);
-        executeChild(new SupplyProfileDropDownsForFrans(), executionContext);
-        executeChild(new SupplyProfileDropDownsForAntoni(), executionContext);        
-        executeChild(new SupplyProfileDropDownsForGerard(), executionContext); 
-        executeChild(new SupplyProfileDropDownsForMichiel(), executionContext); 
-        executeChild(new SupplyProfileDropDownsForRembrandt(), executionContext); 
+        executeChild(new SupplyProfileElementsForFrans(), executionContext);
+        executeChild(new SupplyProfileElementsForAntoni(), executionContext);        
+        executeChild(new SupplyProfileElementsForGerard(), executionContext); 
+        executeChild(new SupplyProfileElementsForMichiel(), executionContext); 
+        executeChild(new SupplyProfileElementsForRembrandt(), executionContext); 
         executeChild(new SupplyProfileNumericsForFrans(), executionContext);
         executeChild(new SupplyProfileNumericsForAntoni(), executionContext);   
         executeChild(new OrganisationsForFrans(), executionContext);
@@ -105,6 +107,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new PersonalContactsForFrans(), executionContext);
         executeChild(new PersonalContactsForRembrandt(), executionContext);
         executeChild(new PersonalContactsForMichiel(), executionContext);
+        executeChild(new TagCategories(), executionContext);
+        executeChild(new Tags(), executionContext);
         
     }
 

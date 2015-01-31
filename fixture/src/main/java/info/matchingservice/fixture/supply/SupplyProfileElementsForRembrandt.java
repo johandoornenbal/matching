@@ -7,7 +7,7 @@ import info.matchingservice.fixture.actor.PersonForRembrandt;
 
 import javax.inject.Inject;
 
-public class SupplyProfileDropDownsForRembrandt extends SupplyProfileDropDownAbstract {
+public class SupplyProfileElementsForRembrandt extends SupplyProfileElementsAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {

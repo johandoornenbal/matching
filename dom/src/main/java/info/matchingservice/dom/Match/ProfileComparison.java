@@ -46,7 +46,7 @@ import org.apache.isis.applib.annotation.Where;
 public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     public ProfileComparison() {
-        super("uniqueItemId, demandProfile");
+        super("demandProfile, uniqueItemId");
     }
 
     public ProfileComparison(Profile demandProfile, Profile matchingSupplyProfile, Integer value) {

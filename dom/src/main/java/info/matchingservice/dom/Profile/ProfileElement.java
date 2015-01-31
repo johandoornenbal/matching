@@ -63,7 +63,7 @@ import org.apache.isis.applib.annotation.Where;
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
     public ProfileElement() {
-        super("uniqueItemId, ownedBy, profileElementDescription, profileElementOwner, profileElementId");
+        super("ownedBy, profileElementDescription, profileElementOwner, profileElementId, uniqueItemId");
     }
     
     private UUID uniqueItemId;

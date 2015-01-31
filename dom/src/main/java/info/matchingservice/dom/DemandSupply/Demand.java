@@ -72,7 +72,7 @@ import org.apache.isis.applib.annotation.Where;
 public class Demand extends MatchingSecureMutableObject<Demand> {
 
     public Demand() {
-        super("uniqueItemId, ownedBy, demandDescription, weight");
+        super("demandDescription, weight, ownedBy, uniqueItemId");
     }
     
     private UUID uniqueItemId;

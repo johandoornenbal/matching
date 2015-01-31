@@ -79,7 +79,7 @@ import org.apache.isis.applib.query.QueryDefault;
 public class Supply extends MatchingSecureMutableObject<Supply> {
 
     public Supply() {
-        super("uniqueItemId, ownedBy, supplyDescription, weight");
+        super("supplyDescription, weight, ownedBy, uniqueItemId");
     }
     
     private UUID uniqueItemId;

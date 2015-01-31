@@ -28,9 +28,11 @@ import info.matchingservice.fixture.supply.SuppliesForFrans;
 import info.matchingservice.fixture.supply.SuppliesForGerard;
 import info.matchingservice.fixture.supply.SuppliesForMichiel;
 import info.matchingservice.fixture.supply.SuppliesForRembrandt;
-import info.matchingservice.fixture.supply.SupplyProfileDropDownsForAntoni;
+import info.matchingservice.fixture.supply.SupplyProfileElementsForAntoni;
 import info.matchingservice.fixture.supply.SupplyProfilesForAntoni;
 import info.matchingservice.fixture.supply.SupplyProfilesForGerard;
+import info.matchingservice.fixture.tag.TagCategories;
+import info.matchingservice.fixture.tag.Tags;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -44,7 +46,7 @@ public class MatchingTestsFixture extends FixtureScript {
     protected void execute(ExecutionContext executionContext) {
         // prereqs
         executeChild(new TeardownFixture(), executionContext);
-        
+   
         // create
         executeChild(new ProfileElementDropDownsFixture(), executionContext);
         executeChild(new PersonForFrans(), executionContext);
@@ -65,7 +67,7 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new SupplyProfilesForGerard(), executionContext);
         executeChild(new SuppliesForAntoni(), executionContext);
         executeChild(new SupplyProfilesForAntoni(), executionContext);
-        executeChild(new SupplyProfileDropDownsForAntoni(), executionContext);
+        executeChild(new SupplyProfileElementsForAntoni(), executionContext);
         executeChild(new SuppliesForFrans(), executionContext);
         executeChild(new SuppliesForMichiel(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
@@ -77,6 +79,8 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new PersonalContactsForRembrandt(), executionContext);
         executeChild(new PersonalContactsForMichiel(), executionContext);
         executeChild(new DemandProfileDropDownsForFrans(), executionContext);
+        executeChild(new TagCategories(), executionContext);
+        executeChild(new Tags(), executionContext);
     }
 
 }

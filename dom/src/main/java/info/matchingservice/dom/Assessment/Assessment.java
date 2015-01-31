@@ -43,7 +43,7 @@ import org.apache.isis.applib.annotation.Where;
 public class Assessment extends MatchingSecureMutableObject<Assessment> {
 
     public Assessment() {
-        super("uniqueItemId, ownedBy, assessmentDescription");
+        super("assessmentDescription, ownedBy, uniqueItemId");
     }
     
     private UUID uniqueItemId;

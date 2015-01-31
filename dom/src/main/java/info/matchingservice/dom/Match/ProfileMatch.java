@@ -59,7 +59,7 @@ import org.apache.isis.applib.annotation.Where;
 public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
 
     public ProfileMatch() {
-        super("ownedBy, supplyCandidate, demandProfile, candidateStatus");
+        super("ownedBy, supplyCandidate, demandProfile, candidateStatus, uniqueItemId");
     }
     
     public String title(){

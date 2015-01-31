@@ -7,7 +7,7 @@ import info.matchingservice.fixture.actor.PersonForAntoni;
 
 import javax.inject.Inject;
 
-public class SupplyProfileDropDownsForAntoni extends SupplyProfileDropDownAbstract {
+public class SupplyProfileElementsForAntoni extends SupplyProfileElementsAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {

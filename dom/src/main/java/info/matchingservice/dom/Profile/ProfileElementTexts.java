@@ -56,6 +56,29 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
         return newProfileElement;
     }
     
+    @Programmatic
+    public ProfileElementText newProfileElementText(
+            final String description,
+            final Integer weight,
+            final String textValue,
+            final ProfileElementType profileElementCategory,
+            final Profile profileOwner,
+            final String ownedBy
+            ){
+        final ProfileElementText newProfileElement = newTransientInstance(ProfileElementText.class);
+        final UUID uuid=UUID.randomUUID();
+        newProfileElement.setUniqueItemId(uuid);
+        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setWeight(weight);
+        newProfileElement.setTextValue(textValue);
+        newProfileElement.setDisplayValue(textValue);
+        newProfileElement.setProfileElementType(profileElementCategory);
+        newProfileElement.setProfileElementOwner(profileOwner);
+        newProfileElement.setOwnedBy(ownedBy);
+        persist(newProfileElement);
+        return newProfileElement;
+    }
+    
     // Region>helpers ///////////////////////////////
     private String currentUserName() {
         return container.getUser().getName();

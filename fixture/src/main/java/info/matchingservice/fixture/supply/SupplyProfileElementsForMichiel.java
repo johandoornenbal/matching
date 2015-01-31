@@ -7,7 +7,7 @@ import info.matchingservice.fixture.actor.PersonForMichiel;
 
 import javax.inject.Inject;
 
-public class SupplyProfileDropDownsForMichiel extends SupplyProfileDropDownAbstract {
+public class SupplyProfileElementsForMichiel extends SupplyProfileElementsAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -45,6 +45,15 @@ public class SupplyProfileDropDownsForMichiel extends SupplyProfileDropDownAbstr
                 "michiel",
                 executionContext
                 );
+        
+        createPassion(
+                "Passie van Michiel", 
+                10, 
+                "Ik ben gek op zeilschepen, wapens in het algemeen en kanonnen in het bijzonder. Strategie ontwikkeling staat centraal in mijn leven.", 
+                ProfileElementType.PASSION, 
+                persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(), 
+                "michiel", 
+                executionContext);
     }
     
         

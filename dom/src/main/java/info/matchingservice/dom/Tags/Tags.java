@@ -93,6 +93,20 @@ public class Tags extends MatchingDomainService<Tag> {
         return allMatches("tagAndCategoryMatches", "tagDescription", tagDescription.toLowerCase(), "tagCategory", tagCategory);
     }
     
+    //For fixtures
+    @Programmatic
+    public Tag newTag(
+            final String tagDescription,
+            final TagCategory tagCategory
+            ){
+        final Tag newTag = newTransientInstance(Tag.class);
+        newTag.setTagDescription(tagDescription.toLowerCase());
+        newTag.setTagCategory(tagCategory);
+        newTag.setDisplCategory(tagCategory.title());
+        persist(newTag);
+        return newTag;
+    }
+    
     @Inject
     TagCategories tagCategories;
 
