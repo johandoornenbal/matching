@@ -72,7 +72,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     
     public Actor() {
-        super("uniqueActorId");
+        super("uniqueItemId");
     }
         
     public String title() {

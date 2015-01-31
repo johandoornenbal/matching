@@ -69,6 +69,25 @@ public class Tag extends MatchingMutableObject<Tag> {
         return this.tagDescription;
     }
     
+    //equals() implementation in order to compare tagCategories in future matching algorythms
+    @Override
+    public boolean equals(Object obj){
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false; 
+        }
+        
+        Tag tag = (Tag) obj;
+        
+        // Case of characters in tagCategoryDescription will be ignored when comparing tagCategories
+        if (tag.getTagDescription().equalsIgnoreCase(this.getTagDescription()) && tag.getTagCategory() == this.getTagCategory()){
+            return true;
+        }
+        return false;
+    }
+    
     private String tagDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
