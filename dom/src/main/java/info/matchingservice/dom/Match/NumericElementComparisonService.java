@@ -19,6 +19,7 @@
 
 package info.matchingservice.dom.Match;
 
+import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
@@ -40,6 +41,19 @@ import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
+/**
+ * Matching Algorithm
+ * returns matches of ProfileElements of ProfileElementType.NUMERIC on SUPPLY Profiles of ProfileType.PERSON_PROFILE
+ * The matchValue for a matching element = 100 - the delta of the Numeric values.
+ * A threshold is defined by MATCHING_ElEMENT_THRESHOLD; under this threshold the element is not taken into account
+ * BUSSINESSRULES
+ * - hidden on SupplyProfileElements (or: only visible on DemandProfileElements)
+ * - element (Actor) owner of the demand should not be the same owner of the supply
+ * 
+ * TODO: how to test this object?
+ * 
+ * @version 0.1 02-02-2015
+ */
 @DomainService
 public class NumericElementComparisonService extends AbstractService {
     // Thresholds
@@ -49,8 +63,8 @@ public class NumericElementComparisonService extends AbstractService {
     //return matches on Numeric ProfileElements only for profiles of Type Supply_Person_Profile
     @NotInServiceMenu
     @NotContributed(As.ACTION)
-//    @CollectionLayout(render=RenderType.EAGERLY)
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Render(Type.EAGERLY) // because of bug @CollectionLayout
     @Action(semantics=SemanticsOf.SAFE)
     public List<ElementComparison> showElementMatches(ProfileElementNumeric element){
         
@@ -62,7 +76,7 @@ public class NumericElementComparisonService extends AbstractService {
         }
         
         for (ProfileElementNumeric e : container.allInstances(ProfileElementNumeric.class)) {
-            if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.COURSE_PROFILE && e.getProfileElementType() == ProfileElementType.NUMERIC){
+            if (e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  e.getProfileElementOwner().getProfileType() == ProfileType.COURSE_PROFILE && e.getProfileElementType() == ProfileElementType.NUMERIC){
                 // uitsluiten van dezelfde owner
                 // drempelwaarde is MATCHING_THRESHOLD
                 Integer matchValue = 100 - 1*Math.abs(element.getNumericValue() - e.getNumericValue());
@@ -79,7 +93,7 @@ public class NumericElementComparisonService extends AbstractService {
     
     // Hide the contributed List except on Profiles of type Demand_Person_Profile
     public boolean hideShowElementMatches(ProfileElementNumeric element){
-        return element.getProfileElementOwner().getDemandProfileOwner()==null;
+        return element.getProfileElementOwner().getDemandOrSupply() != DemandOrSupply.DEMAND;
     }
     
     // Region>injections ////////////////////////////

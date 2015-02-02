@@ -19,6 +19,7 @@
 
 package info.matchingservice.dom.Match;
 
+import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
@@ -42,17 +43,25 @@ import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
+/**
+ * Matching Algorithm
+ * returns matches of ProfileElements of ProfileElementType.QUALITY on SUPPLY Profiles of ProfileType.PERSON_PROFILE
+ * The matchValue for a matching element = 100. Otherwise 0. So no threshol for matchingValue required here.
+ * BUSSINESSRULES
+ * - hidden on SupplyProfileElements (or: only visible on DemandProfileElements)
+ * - element (Actor) owner of the demand should not be the same owner of the supply
+ * 
+ * TODO: how to test this object?
+ * 
+ * @version 0.1 02-02-2015
+ */
 @DomainService
-public class DropDownElementComparisonService extends AbstractService {
-    // Thresholds
-    final Integer MATCHING_ElEMENT_THRESHOLD = 50;
+public class QualityElementComparisonService extends AbstractService {
     
-    //  //DROPDOWNS//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //  //return matches on Dropdown ProfileElements only for profiles of Type Supply_Person_Profile
   @NotInServiceMenu
   @NotContributed(As.ACTION)
-//  @CollectionLayout(render=RenderType.EAGERLY)
-  @Render(Type.EAGERLY)
+  @CollectionLayout(render=RenderType.EAGERLY)
+  @Render(Type.EAGERLY) // because of bug @CollectionLayout
   @Action(semantics=SemanticsOf.SAFE)
   @Named("Gevonden matching kwaliteiten op persoon profiel elementen")
   public List<ElementComparison> showDropDownElementMatches(ProfileElementDropDown element){
@@ -65,14 +74,15 @@ public class DropDownElementComparisonService extends AbstractService {
       }
       
       for (ProfileElementDropDown e : container.allInstances(ProfileElementDropDown.class)) {
-          if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementType() == ProfileElementType.QUALITY){
+          if (e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementType() == ProfileElementType.QUALITY){
               // uitsluiten van dezelfde owner
               // drempelwaarde is MATCHING_THRESHOLD
               Integer matchValue=0;
               if (element.getDropDownValue().equals(e.getDropDownValue())){
                   matchValue=100;
               }
-              if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
+              // Check if profile element is not owned by the actor having the demand 
+              if (!e.getOwnedBy().equals(element.getOwnedBy())) {
                   ElementComparison matchTmp = new ElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner() , e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue);
                   elementMatches.add(matchTmp);
               }
@@ -85,7 +95,7 @@ public class DropDownElementComparisonService extends AbstractService {
   
   // Hide the contributed List except on Profiles of type Demand_Person_Profile
   public boolean hideShowDropDownElementMatches(ProfileElementDropDown element){
-      return element.getProfileElementOwner().getDemandProfileOwner()==null;
+      return element.getProfileElementOwner().getDemandOrSupply() != DemandOrSupply.DEMAND;
   }
     // Region>injections ////////////////////////////
     @javax.inject.Inject

@@ -20,6 +20,7 @@
 package info.matchingservice.dom.Match;
 
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
@@ -48,6 +49,30 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
+/**
+ * Matching Algorithm
+ * This service returns a List of profile comparison objects on a Demand Profile after persisting them first.
+ * It uses the different Element_Comparison_Services to determine the element_comparison_objects for every profile_comparison_object 
+ * and to calculate a calculatedMatchingValue on the profile_comparison_object.
+ * 
+ * Procedure
+ * - First a check if there are any profiles at all (INIT)
+ * - Stage 1: cumulative weight of all demand profile_elements is calculated. 
+ *            Where there is no weight given the average weight of the elements with a given weight is taken.
+ *            If there is no weight given at all then the avarage weight is set to 1.
+ * - Stage 2: Calculate the calculatedMatchingValue and persist the profile_comparison_object (for every profile_comparison_object)
+ * - Stage 3: Return the list of ProfileComparisons (as a contributed collection on the demand profile)         
+ * 
+ * BUSINESSRULES
+ * - only profiles of the same ProfileType are matched
+ * - hidden except on Demand Profiles
+ * - every profile element comparison should have a matchingvalue of at most 100. 
+ * TODO: (This is not enforced or verified anywhere at the moment.)
+ * 
+ * TODO: how to test this object?
+ * 
+ * @version 0.1 02-02-2015
+ */
 @DomainService
 public class ProfileMatchingService extends AbstractService {
     
@@ -58,14 +83,18 @@ public class ProfileMatchingService extends AbstractService {
     @NotInServiceMenu
     @NotContributed(As.ACTION)
     @Action(semantics=SemanticsOf.SAFE)
-//    @CollectionLayout(render=RenderType.EAGERLY)
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Render(Type.EAGERLY) // because of bug @CollectionLayout
     public List<ProfileComparison> showProfileMatches(Profile demandProfile) {
-        List<ProfileComparison> matches = new ArrayList<ProfileComparison>();
+        List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
+        
+        //***********INIT**************//
         //Init Test: Only if there are any Profiles
         if (container.allInstances(Profile.class).isEmpty()) {
-            return matches;
+            return profileComparisons;
         }
+        
+        
         //For all Supply Profiles
         //BUSINESSRULE: we match demand/supply of the same ProfileType here
         for (Profile profile: profiles.allSupplyProfilesOfType(demandProfile.getProfileType())) {
@@ -79,7 +108,7 @@ public class ProfileMatchingService extends AbstractService {
                 ProfileComparison tempMatch = new ProfileComparison(demandProfile, profile, 0);
                 Integer elementCounter = 0;
                 
-                //****WEIGTH CALCULATION *****/
+                //**** STAGE 1 ****WEIGTH CALCULATION *****/
                 // For every figureElement and DropdownElement on Vacancy
                 // We determine the cumulative weight and the avarage weight in case no weight is given
                 // if nowhere a weight is given we will use default 1 for avarage weight;            
@@ -110,8 +139,11 @@ public class ProfileMatchingService extends AbstractService {
                     cumWeight += (elCounter - weightCounter)*avarageWeight;
                 }
                 
-                //****END WEIGTH CALCULATION *****/
+                //**** END STAGE 1 ******** WEIGTH CALCULATION *****/
                 
+                //**** STAGE 2 ****//
+                
+                //**** STAGE 2 ****NUMERIC ELEMENTS: calculate and add to matchingValue *****/
                 // For every NumericElement, DropDownElement and PassionElement on Demand we add to totalMatching value
                 Long totalMatchingValue = (long) 0;
                 for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
@@ -141,6 +173,7 @@ public class ProfileMatchingService extends AbstractService {
                         }
                     }
                     
+                    //**** STAGE 2 ****QUALITY ELEMENTS: calculate and add to matchingValue *****/
                     //Only for elementmatches on DropDownElements with tempProfileOwner as ProfileOwner
                     if (demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY){
                         
@@ -164,6 +197,7 @@ public class ProfileMatchingService extends AbstractService {
                         }
                     }
                     
+                    //**** STAGE 2 ****PASSION ELEMENTS: calculate and add to matchingValue *****/
                     //Only for elementmatches on PassionElements with tempProfileOwner as ProfileOwner
                     if (demandProfileElement.getProfileElementType() == ProfileElementType.PASSION_TAGS){
                         
@@ -188,11 +222,14 @@ public class ProfileMatchingService extends AbstractService {
                     }
                     
                 }
+                
+                //**** STAGE 2 ****Determine the calculatedMatchingValue by taking the total value divided by the number of elements *****/
                 // Divide totalMatchingValue through number of elements if any are found
                 if (elementCounter > 0) {
                     tempMatch.setCalculatedMatchingValue((int) (totalMatchingValue/elementCounter));
                 }
                 
+                //**** STAGE 2 ****Persist the profileComparison object *****/
                 // drempelwaarde is MATCHING_THRESHOLD
                 if (totalMatchingValue > MATCHING_PROFILE_THRESHOLD){
                     final ProfileComparison defMatch = newTransientInstance(ProfileComparison.class);
@@ -202,18 +239,22 @@ public class ProfileMatchingService extends AbstractService {
                     tempMatch.setMatchingSupplyProfile(tempMatch.getMatchingSupplyProfile());
                     tempMatch.setCalculatedMatchingValue(totalMatchingValue.intValue());
                     persistIfNotAlready(defMatch);
-                    matches.add(tempMatch);
+                    profileComparisons.add(tempMatch);
                 }
+                
+                //END **** STAGE 2 ****//
     
         }
-        Collections.sort(matches);
-        Collections.reverse(matches);
-        return matches;
+        
+        //**** STAGE 3 ****//
+        Collections.sort(profileComparisons);
+        Collections.reverse(profileComparisons);
+        return profileComparisons;
     }
     
     // this one is meant for demand profiles only
     public boolean hideShowProfileMatches(Profile demandProfile){
-        return demandProfile.getDemandProfileOwner() == null;
+        return demandProfile.getDemandOrSupply() != DemandOrSupply.DEMAND;
     }
     
 
@@ -225,7 +266,7 @@ public class ProfileMatchingService extends AbstractService {
     private Profiles profiles;
     
     @Inject
-    DropDownElementComparisonService dropDownElementMatches;
+    QualityElementComparisonService dropDownElementMatches;
     
     @Inject
     PassionElementComparisonService passionElementMatches;

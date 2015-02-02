@@ -19,6 +19,7 @@
 
 package info.matchingservice.dom.Match;
 
+import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementType;
@@ -44,20 +45,33 @@ import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
+/**
+ * Matching Algorithm
+ * returns matches of ProfileElements of ProfileElementType.PASSION on SUPPLY Profiles of ProfileType.PERSON_PROFILE
+ * elements of ProfileElementType.PASSION_TAGS on DEMAND profile are measures against the ProfileElements of ProfileElementType.PASSION on SUPPLY Profile
+ * Every tag (in tagholder) that matches 1 or more patterns in textValue on supply profileElement contributes 100 to matchingValue.
+ * Non-matching tags contribute 0 and matchingValue is average in the end.
+ * A threshold is defined by MATCHING_ElEMENT_THRESHOLD; under this threshold the element is not taken into account
+ * BUSSINESSRULES
+ * - hidden on SupplyProfileElements (or: only visible on DemandProfileElements)
+ * - element (Actor) owner of the demand should not be the same owner of the supply
+ * 
+ * TODO: how to test this object?
+ * 
+ * @version 0.1 02-02-2015
+ */
 @DomainService
 public class PassionElementComparisonService extends AbstractService {
     // Thresholds
     final Integer MATCHING_ElEMENT_THRESHOLD = 50;
     
-    //PASSION MATCHES//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //return matches on Profile ProfileElements of type PASSION_TAG and PASSION (the last only for profiles of Type Supply_Person_Profile)
     //the difference here with other comparison services is this
     // - on supplyprofile the (text)element of type PASSION is matched against
     // - every tag (wrapped in TagHolder) on demandprofile with (tag)element of type PASSION_TAG
     @NotInServiceMenu
     @NotContributed(As.ACTION)
-//    @CollectionLayout(render=RenderType.EAGERLY)
-    @Render(Type.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Render(Type.EAGERLY) // because of bug @CollectionLayout
     @Action(semantics=SemanticsOf.SAFE)
     public List<ElementComparison> showElementMatches(ProfileElementTag element){
         
@@ -69,13 +83,12 @@ public class PassionElementComparisonService extends AbstractService {
         }
         
         for (ProfileElementText e : container.allInstances(ProfileElementText.class)) {
-            if (e.getProfileElementOwner().getSupplyProfileOwner()!=null  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementType() == ProfileElementType.PASSION){
+            if (e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementType() == ProfileElementType.PASSION){
                 // uitsluiten van dezelfde owner
                 if (!e.getOwnedBy().equals(element.getOwnedBy())){
                     Integer matchValue = 0;
                     for (final Iterator<TagHolder> it = element.getTagHolders().iterator(); it.hasNext();){
                         Tag tag = it.next().getTag();
-                        //TODO: Afmaken algoritme
                         if (e.getTextValue().toLowerCase().matches("(.*)" + tag.getTagDescription() + "(.*)")){
                             matchValue += 100;
                         }
@@ -97,7 +110,7 @@ public class PassionElementComparisonService extends AbstractService {
     // Hide the contributed List except on Profiles of type Demand_Person_Profile
     // Strictly this should be impossible by other business logic but we leave it here anyway
     public boolean hideShowElementMatches(ProfileElementTag element){
-        return element.getProfileElementOwner().getDemandProfileOwner()==null;
+        return element.getProfileElementOwner().getDemandOrSupply() != DemandOrSupply.DEMAND;
     }
     
     // Region>injections ////////////////////////////
