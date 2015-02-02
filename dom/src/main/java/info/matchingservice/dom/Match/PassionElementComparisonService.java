@@ -47,7 +47,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 
 /**
  * Matching Algorithm
- * returns matches of ProfileElements of ProfileElementType.PASSION on SUPPLY Profiles of ProfileType.PERSON_PROFILE
+ * returns matches of ProfileElements of ProfileElementType.PASSION on SUPPLY Profiles of ProfileType.PERSON_PROFILE of ORGANISARION_PROFILE
  * elements of ProfileElementType.PASSION_TAGS on DEMAND profile are measures against the ProfileElements of ProfileElementType.PASSION on SUPPLY Profile
  * Every tag (in tagholder) that matches 1 or more patterns in textValue on supply profileElement contributes 100 to matchingValue.
  * Non-matching tags contribute 0 and matchingValue is average in the end.
@@ -58,7 +58,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
  * 
  * TODO: how to test this object?
  * 
- * @version 0.1 02-02-2015
+ * @version 0.2 02-02-2015
  */
 @DomainService
 public class PassionElementComparisonService extends AbstractService {
@@ -83,7 +83,7 @@ public class PassionElementComparisonService extends AbstractService {
         }
         
         for (ProfileElementText e : container.allInstances(ProfileElementText.class)) {
-            if (e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE && e.getProfileElementType() == ProfileElementType.PASSION){
+            if (e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  (e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE || e.getProfileElementOwner().getProfileType() == ProfileType.ORGANISATION_PROFILE) && e.getProfileElementType() == ProfileElementType.PASSION){
                 // uitsluiten van dezelfde owner
                 if (!e.getOwnedBy().equals(element.getOwnedBy())){
                     Integer matchValue = 0;
