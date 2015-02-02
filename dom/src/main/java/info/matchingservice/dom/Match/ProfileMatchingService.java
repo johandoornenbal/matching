@@ -43,6 +43,8 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.Render;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
@@ -56,8 +58,8 @@ public class ProfileMatchingService extends AbstractService {
     @NotInServiceMenu
     @NotContributed(As.ACTION)
     @Action(semantics=SemanticsOf.SAFE)
-    @CollectionLayout(render=RenderType.EAGERLY)
-//    @Render(Type.EAGERLY)
+//    @CollectionLayout(render=RenderType.EAGERLY)
+    @Render(Type.EAGERLY)
     public List<ProfileComparison> showProfileMatches(Profile demandProfile) {
         List<ProfileComparison> matches = new ArrayList<ProfileComparison>();
         //Init Test: Only if there are any Profiles

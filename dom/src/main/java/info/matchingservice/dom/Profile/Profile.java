@@ -95,7 +95,7 @@ import org.apache.isis.applib.query.QueryDefault;
 public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public Profile() {
-        super("profileName, ownedBy, uniqueItemId");
+        super("profileName, profileType, ownedBy, uniqueItemId");
     }
     
     private UUID uniqueItemId;

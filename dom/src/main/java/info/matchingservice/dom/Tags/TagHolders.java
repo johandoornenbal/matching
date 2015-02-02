@@ -50,7 +50,7 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     //BUSINESSRULES:
     // only on profile element with ProfileElementType = PASSION_TAGS
     // every tag choice at most once (no doubles)
-    @ActionLayout(named="Nieuwe passie tagholder")
+    @ActionLayout(named="Nieuwe passie tag")
     @NotInServiceMenu
     public ProfileElement newPassionTagHolder(
             @ParameterLayout(

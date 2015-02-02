@@ -18,17 +18,22 @@
  */
 package info.matchingservice.dom.Tags;
 
+import info.matchingservice.dom.MatchingDomainObject;
+import info.matchingservice.dom.Profile.ProfileElement;
+
 import java.util.UUID;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
-
-import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.Profile.ProfileElement;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -80,7 +85,26 @@ public class TagHolder extends MatchingDomainObject<TagHolder> {
         this.tag = tag;       
     }
 
-
+    //delete action /////////////////////////////////////////////////////////////////////////////////////
     
+    @ActionLayout(named="Verwijder tag")
+    public ProfileElement deleteTagHolder(
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+            boolean areYouSure
+            ){
+        container.removeIfNotAlready(this);
+        container.informUser("Element verwijderd");
+        return getOwnerElement();
+    }
+    
+    public String validateDeleteTagHolder(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+    
+    // Injects
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
     
 }

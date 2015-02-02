@@ -37,7 +37,9 @@ import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NotContributed;
+import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.NotContributed.As;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
@@ -54,7 +56,8 @@ public class PassionElementComparisonService extends AbstractService {
     // - every tag (wrapped in TagHolder) on demandprofile with (tag)element of type PASSION_TAG
     @NotInServiceMenu
     @NotContributed(As.ACTION)
-    @CollectionLayout(render=RenderType.EAGERLY)
+//    @CollectionLayout(render=RenderType.EAGERLY)
+    @Render(Type.EAGERLY)
     @Action(semantics=SemanticsOf.SAFE)
     public List<ElementComparison> showElementMatches(ProfileElementTag element){
         
