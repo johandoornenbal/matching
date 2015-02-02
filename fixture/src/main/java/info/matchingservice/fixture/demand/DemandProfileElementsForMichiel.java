@@ -7,7 +7,7 @@ import info.matchingservice.fixture.actor.PersonForMichiel;
 
 import javax.inject.Inject;
 
-public class DemandProfileDropDownsForMichiel extends DemandProfileDropDownAbstract {
+public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {

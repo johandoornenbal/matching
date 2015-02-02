@@ -7,7 +7,7 @@ import info.matchingservice.fixture.actor.PersonForFrans;
 
 import javax.inject.Inject;
 
-public class DemandProfileDropDownsForFrans extends DemandProfileDropDownAbstract {
+public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -17,9 +17,9 @@ public class DemandProfileDropDownsForFrans extends DemandProfileDropDownAbstrac
         executeChild(new DemandsForFrans(), executionContext);
         
         createDropDownElement(
-                "kwaliteit ijverig",
+                "kwaliteit oorlogszuchtig",
                 10,
-                dropDownForProfileElements.findDropDowns("ijverig").get(0),
+                dropDownForProfileElements.findDropDowns("oorlogszuchtig").get(0),
                 ProfileElementType.QUALITY,
                 persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(),
                 "frans",
@@ -33,6 +33,14 @@ public class DemandProfileDropDownsForFrans extends DemandProfileDropDownAbstrac
                 ProfileElementType.QUALITY,
                 persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(),
                 "frans",
+                executionContext
+                );
+        
+        createPassionTagsElement(
+                "Passie steekwoorden", 
+                10, 
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(), 
+                "frans", 
                 executionContext
                 );
     }

@@ -43,7 +43,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 @DomainService
 public class DropDownElementComparisonService extends AbstractService {
     // Thresholds
-    final Integer MATCHING_ElEMENT_THRESHOLD = 70;
+    final Integer MATCHING_ElEMENT_THRESHOLD = 50;
     
     //  //DROPDOWNS//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //  //return matches on Dropdown ProfileElements only for profiles of Type Supply_Person_Profile

@@ -93,6 +93,12 @@ public class Tags extends MatchingDomainService<Tag> {
         return allMatches("tagAndCategoryMatches", "tagDescription", tagDescription.toLowerCase(), "tagCategory", tagCategory);
     }
     
+    @Programmatic
+    public List<Tag> findTagAndCategoryContains(final String tagDescription, final TagCategory tagCategory){
+        return allMatches("tagAndCategoryContains", "tagDescription", tagDescription.toLowerCase(), "tagCategory", tagCategory);
+    }
+    
+    
     //For fixtures
     @Programmatic
     public Tag newTag(

@@ -24,6 +24,7 @@ import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
+import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.Profiles;
 
@@ -49,7 +50,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 public class ProfileMatchingService extends AbstractService {
     
     // Thresholds
-    final Integer MATCHING_PROFILE_THRESHOLD = 50;
+    final Integer MATCHING_PROFILE_THRESHOLD = 30;
 
     
     @NotInServiceMenu
@@ -64,7 +65,7 @@ public class ProfileMatchingService extends AbstractService {
             return matches;
         }
         //For all Supply Profiles
-        //TODO: Profiles of same type I think...
+        //BUSINESSRULE: we match demand/supply of the same ProfileType here
         for (Profile profile: profiles.allSupplyProfilesOfType(demandProfile.getProfileType())) {
 
                 
@@ -72,10 +73,11 @@ public class ProfileMatchingService extends AbstractService {
                 Supply tempProfileOwner = profile.getSupplyProfileOwner();
                 
                 //TempElement ProfileComparison with matchingvalue 0
-                //This is a temporary Object that we will transfer the values of to a persistent object
+                //This is a temporary Object that we will copy the values of into a persistent object
                 ProfileComparison tempMatch = new ProfileComparison(demandProfile, profile, 0);
                 Integer elementCounter = 0;
                 
+                //****WEIGTH CALCULATION *****/
                 // For every figureElement and DropdownElement on Vacancy
                 // We determine the cumulative weight and the avarage weight in case no weight is given
                 // if nowhere a weight is given we will use default 1 for avarage weight;            
@@ -84,8 +86,13 @@ public class ProfileMatchingService extends AbstractService {
                 Integer weightCounter = 0;
                 Integer elCounter = 0;
                 for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
-                    //Only for elements of type figure
-                    if (demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC || demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY){
+                    //Only for elements of type Numeric, type Quality and type PASSION_TAGS
+                    if (
+                            demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC 
+                            || demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY
+                            || demandProfileElement.getProfileElementType() == ProfileElementType.PASSION_TAGS
+                            )
+                    {
                         elCounter ++;
                         if (demandProfileElement.getWeight() != null && demandProfileElement.getWeight()>0){
                             cumWeight+=demandProfileElement.getWeight();
@@ -101,11 +108,13 @@ public class ProfileMatchingService extends AbstractService {
                     cumWeight += (elCounter - weightCounter)*avarageWeight;
                 }
                 
-                // For every figureElement and DropDownElement on Vacancy we add to totalMatching value
+                //****END WEIGTH CALCULATION *****/
+                
+                // For every NumericElement, DropDownElement and PassionElement on Demand we add to totalMatching value
                 Long totalMatchingValue = (long) 0;
                 for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
                     
-                    //Only for elementmatches on figures with tempProfileOwner as ProfileOwner
+                    //Only for elementmatches on NumericElements with tempProfileOwner as ProfileOwner
                     if (demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC){
                         
                         // Get the matching profileElements in ElementComparison Object
@@ -135,6 +144,29 @@ public class ProfileMatchingService extends AbstractService {
                         
                      // Get the matching profileElements in ElementComparison Object
                         List<ElementComparison> tempListOfElements = dropDownElementMatches.showDropDownElementMatches((ProfileElementDropDown) demandProfileElement);
+                        if (!tempListOfElements.isEmpty()){
+                            for (ElementComparison e: tempListOfElements){
+                                
+                              //only if tempProfileOwner is ProfileOwner
+                                if (e.getMatchingProfileElementOwner().getSupplyProfileOwner().equals(tempProfileOwner)){
+                                    //Add 1 to elementCounter
+                                    elementCounter ++;
+                                    //Add to matching value
+                                    if (demandProfileElement.getWeight()!=null && demandProfileElement.getWeight() > 0){
+                                        totalMatchingValue+=e.getCalculatedMatchingValue()*demandProfileElement.getWeight()/cumWeight;
+                                    } else {
+                                        totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
+                                    }                                                              
+                                }
+                            }
+                        }
+                    }
+                    
+                    //Only for elementmatches on PassionElements with tempProfileOwner as ProfileOwner
+                    if (demandProfileElement.getProfileElementType() == ProfileElementType.PASSION_TAGS){
+                        
+                     // Get the matching profileElements in ElementComparison Object
+                        List<ElementComparison> tempListOfElements = passionElementMatches.showElementMatches((ProfileElementTag) demandProfileElement);
                         if (!tempListOfElements.isEmpty()){
                             for (ElementComparison e: tempListOfElements){
                                 
@@ -192,6 +224,9 @@ public class ProfileMatchingService extends AbstractService {
     
     @Inject
     DropDownElementComparisonService dropDownElementMatches;
+    
+    @Inject
+    PassionElementComparisonService passionElementMatches;
     
     @Inject
     NumericElementComparisonService numericElementMatches;

@@ -20,13 +20,13 @@ package info.matchingservice.fixture.tag;
 
 import javax.inject.Inject;
 
-public class Tags extends TagAbstract {
+public class TagsFixture extends TagAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new TagCategories(), executionContext);
+        executeChild(new TagCategoriesFixture(), executionContext);
         
         createTag("zeilschepen", tagCategories.findTagCategoryMatches("passie").get(0), executionContext);
         createTag("schilderen", tagCategories.findTagCategoryMatches("passie").get(0), executionContext);

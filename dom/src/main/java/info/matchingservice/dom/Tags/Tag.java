@@ -19,7 +19,7 @@
 
 package info.matchingservice.dom.Tags;
 
-import info.matchingservice.dom.MatchingMutableObject;
+import info.matchingservice.dom.MatchingDomainObject;
 
 import java.util.List;
 
@@ -55,11 +55,16 @@ import org.apache.isis.applib.annotation.Where;
                 name = "tagAndCategoryMatches", language = "JDOQL",
                 value = "SELECT "
                         + "FROM info.matchingservice.dom.Tags.Tag "
-                        + "WHERE tagDescription == :tagDescription && tagCategory == :tagCategory")                         
+                        + "WHERE tagDescription == :tagDescription && tagCategory == :tagCategory"),
+        @javax.jdo.annotations.Query(
+                name = "tagAndCategoryContains", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM info.matchingservice.dom.Tags.Tag "
+                        + "WHERE tagDescription.indexOf(:tagDescription) >= 0 && tagCategory == :tagCategory")
 })
 
 @DomainObject(editing=Editing.DISABLED)
-public class Tag extends MatchingMutableObject<Tag> {
+public class Tag extends MatchingDomainObject<Tag> {
     
     public Tag() {
         super("tagDescription, tagCategory");

@@ -41,7 +41,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 @DomainService
 public class NumericElementComparisonService extends AbstractService {
     // Thresholds
-    final Integer MATCHING_ElEMENT_THRESHOLD = 70;
+    final Integer MATCHING_ElEMENT_THRESHOLD = 50;
     
     //NUMERIC MATCHES//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //return matches on Numeric ProfileElements only for profiles of Type Supply_Person_Profile

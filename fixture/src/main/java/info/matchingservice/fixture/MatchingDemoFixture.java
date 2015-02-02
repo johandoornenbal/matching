@@ -18,9 +18,9 @@ import info.matchingservice.fixture.actor.RolesForFrans;
 import info.matchingservice.fixture.actor.RolesForGerard;
 import info.matchingservice.fixture.actor.RolesForMichiel;
 import info.matchingservice.fixture.actor.RolesForRembrandt;
-import info.matchingservice.fixture.demand.DemandProfileDropDownsForFrans;
-import info.matchingservice.fixture.demand.DemandProfileDropDownsForMichiel;
-import info.matchingservice.fixture.demand.DemandProfileDropDownsForRembrandt;
+import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
+import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
+import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
 import info.matchingservice.fixture.demand.DemandProfileNumericsForFrans;
 import info.matchingservice.fixture.demand.DemandProfilesForMichiel;
 import info.matchingservice.fixture.demand.DemandProfilesForRembrandt;
@@ -28,6 +28,7 @@ import info.matchingservice.fixture.demand.DemandProfilesForFrans;
 import info.matchingservice.fixture.demand.DemandsForFrans;
 import info.matchingservice.fixture.demand.DemandsForMichiel;
 import info.matchingservice.fixture.demand.DemandsForRembrandt;
+import info.matchingservice.fixture.demand.PassionTagsForFrans;
 import info.matchingservice.fixture.supply.SuppliesForAntoni;
 import info.matchingservice.fixture.supply.SuppliesForFrans;
 import info.matchingservice.fixture.supply.SuppliesForGerard;
@@ -45,8 +46,8 @@ import info.matchingservice.fixture.supply.SupplyProfilesForFrans;
 import info.matchingservice.fixture.supply.SupplyProfilesForGerard;
 import info.matchingservice.fixture.supply.SupplyProfilesForMichiel;
 import info.matchingservice.fixture.supply.SupplyProfilesForRembrandt;
-import info.matchingservice.fixture.tag.TagCategories;
-import info.matchingservice.fixture.tag.Tags;
+import info.matchingservice.fixture.tag.TagCategoriesFixture;
+import info.matchingservice.fixture.tag.TagsFixture;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -79,9 +80,9 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new DemandProfilesForRembrandt(), executionContext);
         executeChild(new DemandProfilesForFrans(), executionContext);
         executeChild(new DemandProfilesForMichiel(), executionContext);
-        executeChild(new DemandProfileDropDownsForFrans(), executionContext);
-        executeChild(new DemandProfileDropDownsForRembrandt(), executionContext);
-        executeChild(new DemandProfileDropDownsForMichiel(), executionContext);
+        executeChild(new DemandProfileElementsForFrans(), executionContext);
+        executeChild(new DemandProfileElementsForRembrandt(), executionContext);
+        executeChild(new DemandProfileElementsForMichiel(), executionContext);
         executeChild(new DemandProfileNumericsForFrans(), executionContext);
         executeChild(new SuppliesForGerard(), executionContext);
         executeChild(new SuppliesForFrans(), executionContext);
@@ -107,8 +108,9 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new PersonalContactsForFrans(), executionContext);
         executeChild(new PersonalContactsForRembrandt(), executionContext);
         executeChild(new PersonalContactsForMichiel(), executionContext);
-        executeChild(new TagCategories(), executionContext);
-        executeChild(new Tags(), executionContext);
+        executeChild(new TagCategoriesFixture(), executionContext);
+        executeChild(new TagsFixture(), executionContext);
+        executeChild(new PassionTagsForFrans(), executionContext);
         
     }
 

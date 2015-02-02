@@ -27,6 +27,8 @@ import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Tags.TagCategories;
+import info.matchingservice.dom.Tags.Tags;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -229,7 +231,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     //XTALUS VOOR PERSONEN
     
-    //**PASSIE**//
+    //**PASSIE** *******SUPPLY PROFILE*******************//
     //BUSINESSRULE
     // alleen op profile van type PERSON of ORGANISATION
     // alleen op aanbod profiel
@@ -300,8 +302,74 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         }
         
         return null;
-    }    
+    }
     
+    //END >> **PASSIE** *******SUPPLY PROFILE*******************//
+    
+    //**PASSIE TAG** *******DEMAND PROFILE*******************//
+    //BUSINESSRULE
+    // only on profile van type PERSON
+    // only on DEMAND PROFILE
+    // At Most one
+    @ActionLayout(
+            named="Passie steekwoorden"
+            )
+    public ProfileElementTag newPassionTagElement(
+            @ParameterLayout(named="weight")
+            final Integer weight
+            ){
+        return profileElementTags.newProfileElementTag(
+                "passie steekwoorden", 
+                weight, 
+                ProfileElementType.PASSION_TAGS, 
+                this);
+    }
+    
+    public boolean hideNewPassionTagElement(final Integer weight){
+        // only on profile van type PERSON
+        // only on DEMAND PROFILE
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
+            return true;
+        }
+        
+     // At Most one
+        QueryDefault<ProfileElementTag> query = 
+                QueryDefault.create(
+                        ProfileElementTag.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.PASSION_TAGS,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public String validateNewPassionTagElement(final Integer weight){
+        // only on profile van type PERSON
+        // only on DEMAND PROFILE
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
+            return "Alleen op gevraagd persoonsprofiel";
+        }
+        
+     // At Most one
+        QueryDefault<ProfileElementTag> query = 
+                QueryDefault.create(
+                        ProfileElementTag.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.PASSION_TAGS,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return "Er mag maar een element met passie steekwoorden zijn";
+        }
+        
+        return null;
+    }
+    
+    
+    
+    //END >> **PASSIE TAG** *******DEMAND PROFILE*******************//
     
     //**KWALITEITEN*//
     //BUSINESSRULE
@@ -596,6 +664,15 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Inject
     ProfileElementDropDowns profileElementDropDowns;
+    
+    @Inject
+    ProfileElementTags profileElementTags;
+    
+    @Inject
+    Tags tags;
+    
+    @Inject
+    TagCategories tagCategories;
     
     @Inject
     ProfileElementDropDownAndTexts profileElementDropDownsAndTexts;

@@ -66,6 +66,11 @@
 					"named" : {
 						"value" : "Nieuwe prijs"
 					}
+				},
+				"newPassionTagElement" : {
+					"named" : {
+						"value" : "Passie steekwoorden"
+					}
 				}
             }
         },

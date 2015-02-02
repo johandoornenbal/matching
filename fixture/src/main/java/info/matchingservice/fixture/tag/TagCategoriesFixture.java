@@ -18,7 +18,7 @@
  */
 package info.matchingservice.fixture.tag;
 
-public class TagCategories extends TagCategoryAbstract {
+public class TagCategoriesFixture extends TagCategoryAbstract {
 
 
     @Override
