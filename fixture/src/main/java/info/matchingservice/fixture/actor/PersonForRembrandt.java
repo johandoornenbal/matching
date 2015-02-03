@@ -13,6 +13,7 @@ public class PersonForRembrandt extends PersonAbstract {
                 "Rijn",
                 new LocalDate(1963, 12, 30),
                 "rembrandt",
+                null,
                 executionContext);
     }
 

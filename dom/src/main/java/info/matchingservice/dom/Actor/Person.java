@@ -48,11 +48,13 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
+import org.apache.isis.applib.value.Blob;
 
 
 
@@ -143,6 +145,25 @@ public class Person extends Actor {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+    
+    private Blob picture;
+
+    @javax.jdo.annotations.Persistent(defaultFetchGroup="false", columns = {
+            @javax.jdo.annotations.Column(name = "picture_name"),
+            @javax.jdo.annotations.Column(name = "picture_mimetype"),
+            @javax.jdo.annotations.Column(name = "picture_bytes", jdbcType = "BLOB", sqlType = "BLOB")
+    })
+    @Property(
+            optional = Optionality.TRUE
+    )
+    public Blob getPicture() {
+        return picture;
+    }
+
+    public void setPicture(final Blob picture) {
+        this.picture = picture;
+    }
+    
 
     //Region> ROLES /////////////////////////////////////////////////
     
@@ -687,9 +708,11 @@ public class Person extends Actor {
     		@ParameterLayout(named="lastName")
     		final String lastName,
     		@ParameterLayout(named="dateOfBirth")
-    		final LocalDate dateOfBirth
+    		final LocalDate dateOfBirth,
+    		@ParameterLayout(named="picture")
+    		final Blob picture
     		){
-    	persons.EditPerson(this, firstName, middleName, lastName, dateOfBirth);
+    	persons.EditPerson(this, firstName, middleName, lastName, dateOfBirth, picture);
     	return this;
     }
     
@@ -707,6 +730,10 @@ public class Person extends Actor {
     
     public LocalDate default3EditPerson(){
     	return getDateOfBirth();
+    }
+    
+    public Blob default4EditPerson(){
+    	return getPicture();
     }
     
     // Region>injections ////////////////////////////

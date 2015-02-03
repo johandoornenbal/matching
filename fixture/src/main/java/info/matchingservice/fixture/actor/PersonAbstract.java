@@ -4,6 +4,7 @@ import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Persons;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.apache.isis.applib.value.Blob;
 import org.joda.time.LocalDate;
 
 public abstract class PersonAbstract extends FixtureScript {
@@ -17,9 +18,10 @@ public abstract class PersonAbstract extends FixtureScript {
             String lastName,
             LocalDate dateOfBirth,
             String user,
+            Blob picture,
             ExecutionContext executionContext
             ) {
-        Actor newPerson = persons.newPerson(firstName, middleName, lastName, dateOfBirth, user);
+        Actor newPerson = persons.newPerson(firstName, middleName, lastName, dateOfBirth, user, picture);
                        
         return executionContext.add(this, newPerson);
     }

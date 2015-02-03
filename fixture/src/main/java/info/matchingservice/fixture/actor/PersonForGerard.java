@@ -12,7 +12,8 @@ public class PersonForGerard extends PersonAbstract {
                 "", 
                 "Dou",
                 new LocalDate(1970, 1, 18),
-                "gerard",                
+                "gerard",
+                null,
                 executionContext);
     }
 

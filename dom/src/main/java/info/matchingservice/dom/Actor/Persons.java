@@ -29,7 +29,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import org.joda.time.LocalDate;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
@@ -47,6 +46,7 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.value.Blob;
 
 
 @DomainService(repositoryFor = Person.class)
@@ -68,9 +68,12 @@ public class Persons extends MatchingDomainService<Person> {
             @ParameterLayout(named="lastName")
             final String lastName,
             @ParameterLayout(named="dateOfBirth")
-            final LocalDate dateOfBirth
+            final LocalDate dateOfBirth,
+            @ParameterLayout(named="picture")
+            @Parameter(optional=Optionality.TRUE)
+            final Blob picture
             ) {
-        return newPerson(firstName, middleName, lastName, dateOfBirth, currentUserName()); // see region>helpers
+        return newPerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture); // see region>helpers
     }
     
     public boolean hideNewPerson() {
@@ -85,8 +88,9 @@ public class Persons extends MatchingDomainService<Person> {
             final String firstName,
             final String middleName,
             final String lastName,
-            final LocalDate dateOfBirth) {
-        return validateNewPerson(firstName, middleName, lastName, dateOfBirth, currentUserName());
+            final LocalDate dateOfBirth,
+            final Blob picture) {
+        return validateNewPerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture);
     }
     
     @MemberOrder(sequence="5")
@@ -155,7 +159,8 @@ public class Persons extends MatchingDomainService<Person> {
             final String middleName,
             final String lastName,
             final LocalDate dateOfBirth,
-            final String userName) {
+            final String userName,
+            final Blob picture) {
         final Person person = newTransientInstance(Person.class);
         final UUID uuid=UUID.randomUUID();
         person.setUniqueItemId(uuid);
@@ -164,6 +169,7 @@ public class Persons extends MatchingDomainService<Person> {
         person.setLastName(lastName);
         person.setDateOfBirth(dateOfBirth);
         person.setOwnedBy(userName);
+        person.setPicture(picture);
         persist(person);
         return person;
     }
@@ -186,7 +192,8 @@ public class Persons extends MatchingDomainService<Person> {
             final String middleName,
             final String lastName,
             final LocalDate dateOfBirth,
-            final String userName) {
+            final String userName,
+            final Blob picture) {
         
         QueryDefault<Person> query = 
                 QueryDefault.create(
@@ -201,16 +208,18 @@ public class Persons extends MatchingDomainService<Person> {
     
     @Programmatic
     public Person EditPerson(
-    		Person person,
-    		String firstName,
-    		String middleName,
-    		String lastName,
-    		LocalDate dateOfBirth
+    		final Person person,
+    		final String firstName,
+    		final String middleName,
+    		final String lastName,
+    		final LocalDate dateOfBirth,
+    		final Blob picture
     		){
     	person.setFirstName(firstName);
     	person.setMiddleName(middleName);
     	person.setLastName(lastName);
     	person.setDateOfBirth(dateOfBirth);
+    	person.setPicture(picture);
     	persistIfNotAlready(person);
     	return person;
     }
