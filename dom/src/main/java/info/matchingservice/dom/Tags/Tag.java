@@ -61,7 +61,12 @@ import org.joda.time.LocalDate;
                 name = "tagAndCategoryContains", language = "JDOQL",
                 value = "SELECT "
                         + "FROM info.matchingservice.dom.Tags.Tag "
-                        + "WHERE tagDescription.indexOf(:tagDescription) >= 0 && tagCategory == :tagCategory")
+                        + "WHERE tagDescription.indexOf(:tagDescription) >= 0 && tagCategory == :tagCategory"),
+        @javax.jdo.annotations.Query(
+                name = "tagAndCategoryThreshold", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM info.matchingservice.dom.Tags.Tag "
+                        + "WHERE tagDescription.indexOf(:tagDescription) >= 0 && tagCategory == :tagCategory && numberOfTimesUsed >= :numberOfTimesUsed")                        
 })
 
 @DomainObject(editing=Editing.DISABLED)

@@ -21,10 +21,7 @@ package info.matchingservice.dom.Tags;
 
 import info.matchingservice.dom.MatchingDomainService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -54,8 +51,7 @@ public class Tags extends MatchingDomainService<Tag> {
     
     @ActionLayout(named="Nieuwe tag")
     public TagCategory newTag(
-            @ParameterLayout(
-                    named = "tagCategory")
+            @ParameterLayout(named = "tagCategory")
             final TagCategory tagCategory,
             @ParameterLayout(
                     named = "tagDescription",
@@ -102,6 +98,22 @@ public class Tags extends MatchingDomainService<Tag> {
     @Programmatic
     public List<Tag> findTagAndCategoryContains(final String tagDescription, final TagCategory tagCategory){
         return allMatches("tagAndCategoryContains", "tagDescription", tagDescription.toLowerCase(), "tagCategory", tagCategory);
+    }
+    
+    //service that returns tags in a tag category that are used at least x (threshold) times
+    public List<Tag> findTagsUsedMoreThanThreshold(
+    		@ParameterLayout(named = "tagDescription")
+    		final String tagDescription,
+    		@ParameterLayout(named = "tagCategoryDescription")
+    		final String tagCategoryDescription,
+    		@ParameterLayout(named = "threshold")
+    		final Integer threshold){
+    	// catch null value
+    	if (tagCategories.findTagCategoryMatches(tagCategoryDescription).isEmpty()){
+    		return null;
+    	}
+    	TagCategory tagCat = tagCategories.findTagCategoryMatches(tagCategoryDescription).get(0);   	
+    	return allMatches("tagAndCategoryThreshold", "tagDescription", tagDescription.toLowerCase(), "tagCategory", tagCat, "numberOfTimesUsed", threshold);
     }
     
     
