@@ -24,6 +24,7 @@ public class TagCategoriesFixture extends TagCategoryAbstract {
     @Override
     protected void execute(ExecutionContext executionContext) {
         createTagCategory("Passie", executionContext);
+        createTagCategory("Branche", executionContext);
         createTagCategory("Algemeen",executionContext);
     }
 

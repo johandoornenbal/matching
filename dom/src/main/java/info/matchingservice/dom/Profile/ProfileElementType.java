@@ -28,6 +28,7 @@ public enum ProfileElementType implements TitledEnum {
     TEXT("Tekst"),
     PASSION("Passie"),
     PASSION_TAGS("Passie steekwoorden"),
+    BRANCHE_TAGS("Branche steekwoorden"),
     NUMERIC("Getal");
 
     private String title;

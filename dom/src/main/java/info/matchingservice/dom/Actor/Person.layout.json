@@ -3,13 +3,19 @@
     {
       "span": 4,
       "memberGroups": {
-        "Naam": {
+        "Persoon details": {
           "members": {
+          	"picture" : {},
             "name": {},
             "firstName": {},
             "middleName": {},
             "lastName": {},
-            "dateOfBirth" : {}
+            "dateOfBirth" : {
+            	"actions" : {
+        				"editPerson" : {}
+        		}
+            }
+            
           }
         },
         "Rollen": {
@@ -29,9 +35,6 @@
         "ID": {
         	"members": {
         		"uniqueItemId": {
-        			"actions" : {
-        				"editPerson" : {}
-        			}
         		}
         	}
         }

@@ -372,6 +372,68 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     //END >> **PASSIE TAG** *******DEMAND PROFILE*******************//
     
+    //**BRANCHE TAG** *******DEMAND/SUPPLY PROFILE*******************//
+    //BUSINESSRULE
+    // only on profile of type PERSON and ORGANISATION
+    // At Most one
+    @ActionLayout(
+            named="Branche steekwoorden"
+            )
+    public ProfileElementTag newBrancheTagElement(
+            @ParameterLayout(named="weight")
+            final Integer weight
+            ){
+        return profileElementTags.newProfileElementTag(
+                "branche steekwoorden", 
+                weight, 
+                ProfileElementType.BRANCHE_TAGS, 
+                this);
+    }
+    
+    public boolean hideNewBrancheTagElement(final Integer weight){
+        // only on profile of type PERSON and ORGANSATION
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+            return true;
+        }
+        
+        // At Most one
+        QueryDefault<ProfileElementTag> query = 
+                QueryDefault.create(
+                        ProfileElementTag.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.BRANCHE_TAGS,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public String validateNewBrancheTagElement(final Integer weight){
+        // only on profile of type PERSON and ORGANSATION
+    	if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+            return "Alleen op persoons- of organisatie profiel";
+        }
+        
+    	// At Most one
+        QueryDefault<ProfileElementTag> query = 
+                QueryDefault.create(
+                        ProfileElementTag.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.BRANCHE_TAGS,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return "Er mag maar een element met branche steekwoorden zijn";
+        }
+        
+        return null;
+    }
+    
+    
+    
+    //END >> **BRANCHE TAG** *******DEMAND/SUPPPLY PROFILE*******************//
+    
     //**KWALITEITEN*//
     //BUSINESSRULE
     // alleen tonen op profile van type PERSON
