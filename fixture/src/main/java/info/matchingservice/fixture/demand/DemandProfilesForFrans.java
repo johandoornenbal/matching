@@ -25,7 +25,7 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
                 );
         
         createDemandProfile(
-                "Gezocht: ijverige persoon",
+                "Gezocht: oorlogszuchtige persoon",
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Hals").get(0).getMyDemands().last(),

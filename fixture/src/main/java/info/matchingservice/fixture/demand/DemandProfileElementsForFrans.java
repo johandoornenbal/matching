@@ -21,7 +21,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
                 10,
                 dropDownForProfileElements.findDropDowns("oorlogszuchtig").get(0),
                 ProfileElementType.QUALITY,
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(),
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(),
                 "frans",
                 executionContext
                 );
@@ -31,7 +31,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
                 10,
                 dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
                 ProfileElementType.QUALITY,
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(),
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(),
                 "frans",
                 executionContext
                 );
@@ -39,7 +39,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         createPassionTagsElement(
                 "Passie steekwoorden", 
                 10, 
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(), 
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(), 
                 "frans", 
                 executionContext
                 );

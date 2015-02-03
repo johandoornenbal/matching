@@ -93,6 +93,13 @@ public class TagHolder extends MatchingDomainObject<TagHolder> {
             @Parameter(optional=Optionality.TRUE)
             boolean areYouSure
             ){
+    	// administration of tag usage
+    	if (getTag().getNumberOfTimesUsed()!=null){
+    		if(getTag().getNumberOfTimesUsed()>0){
+    			getTag().setNumberOfTimesUsed(getTag().getNumberOfTimesUsed()-1);
+    		}
+    	}
+    	// END administration of tag usage
         container.removeIfNotAlready(this);
         container.informUser("Element verwijderd");
         return getOwnerElement();

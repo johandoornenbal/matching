@@ -34,6 +34,7 @@ import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDate;
 
 @DomainService(repositoryFor = TagHolder.class)
 @DomainServiceLayout(
@@ -62,6 +63,16 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
             ){
         final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
         final UUID uuid=UUID.randomUUID();
+        // administration of tag usage
+        tag.setDateLastUsed(LocalDate.now());
+        if (tag.getNumberOfTimesUsed()==null){
+        	tag.setNumberOfTimesUsed(1);
+        }
+        else
+        {
+        	tag.setNumberOfTimesUsed(tag.getNumberOfTimesUsed()+1);
+        }
+        // END administration of tag usage
         newTagHolder.setUniqueItemId(uuid);
         newTagHolder.setOwnerElement(ownerElement);
         newTagHolder.setTag(tag);
@@ -74,7 +85,11 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     }
     
     public boolean hideNewPassionTagHolder(final ProfileElement ownerElement,final Tag tag){
-        // only on profile element with ProfileElementType = PASSION_TAGS
+        // catch null value
+    	if (ownerElement == null){
+    		return true;
+    	}
+    	// only on profile element with ProfileElementType = PASSION_TAGS
         if (ownerElement.getProfileElementType() == ProfileElementType.PASSION_TAGS){
             return false;
         }

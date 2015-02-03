@@ -37,6 +37,7 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
+import org.joda.time.LocalDate;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -140,6 +141,28 @@ public class Tag extends MatchingDomainObject<Tag> {
         this.displCategory = displCategory;
     }
     
+    private LocalDate dateLastUsed;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public LocalDate getDateLastUsed() {
+		return dateLastUsed;
+	}
+
+	public void setDateLastUsed(LocalDate dateLastUsed) {
+		this.dateLastUsed = dateLastUsed;
+	}
+	
+	private Integer numberOfTimesUsed;
+	
+	@javax.jdo.annotations.Column(allowsNull = "true")
+	public Integer getNumberOfTimesUsed() {
+		return numberOfTimesUsed;
+	}
+
+	public void setNumberOfTimesUsed(Integer numberOfTimesUsed) {
+		this.numberOfTimesUsed = numberOfTimesUsed;
+	}
+    
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
     @PropertyLayout(named = "Tag verwijderen")
@@ -158,8 +181,9 @@ public class Tag extends MatchingDomainObject<Tag> {
     }
     
     //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
- 
-    @Inject
+
+
+	@Inject
     private DomainObjectContainer container;
     
     @Inject

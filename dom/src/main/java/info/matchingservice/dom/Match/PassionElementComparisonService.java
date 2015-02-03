@@ -94,7 +94,11 @@ public class PassionElementComparisonService extends AbstractService {
                         }
                     }
                     // take the average matchValue of all Tags
-                    matchValue = matchValue / element.getTagHolders().size();
+                    if (element.getTagHolders().size()>0){
+                    	matchValue = matchValue / element.getTagHolders().size();
+                    } else {
+                    	matchValue =0;
+                    }
                     if (matchValue >= MATCHING_ElEMENT_THRESHOLD){
                         ElementComparison matchTmp = new ElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue);
                         elementMatches.add(matchTmp);

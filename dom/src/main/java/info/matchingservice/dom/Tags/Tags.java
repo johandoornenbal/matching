@@ -19,6 +19,8 @@
 
 package info.matchingservice.dom.Tags;
 
+import info.matchingservice.dom.MatchingDomainService;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,8 +30,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-
-import info.matchingservice.dom.MatchingDomainService;
+import org.joda.time.LocalDate;
 
 @DomainService(repositoryFor = Tag.class)
 @DomainServiceLayout(
@@ -64,6 +65,8 @@ public class Tags extends MatchingDomainService<Tag> {
         newTag.setTagDescription(tagDescription.toLowerCase());
         newTag.setTagCategory(tagCategory);
         newTag.setDisplCategory(tagCategory.title());
+        newTag.setDateLastUsed(LocalDate.now());
+        newTag.setNumberOfTimesUsed(0);
         persist(newTag);
         return tagCategory;
     }
@@ -97,6 +100,7 @@ public class Tags extends MatchingDomainService<Tag> {
     public List<Tag> findTagAndCategoryContains(final String tagDescription, final TagCategory tagCategory){
         return allMatches("tagAndCategoryContains", "tagDescription", tagDescription.toLowerCase(), "tagCategory", tagCategory);
     }
+    
     
     
     //For fixtures

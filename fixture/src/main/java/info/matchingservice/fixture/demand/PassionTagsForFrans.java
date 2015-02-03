@@ -21,12 +21,12 @@ public class PassionTagsForFrans extends PassionTagsAbstract {
         
         
         createTagHolder(
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first().getProfileElement().first(), 
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last().getProfileElement().first(), 
                 tags.findTagMatches("zeilschepen").get(0), 
                 executionContext
                 );
         createTagHolder(
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first().getProfileElement().first(), 
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last().getProfileElement().first(), 
                 tags.findTagMatches("schilderen").get(0), 
                 executionContext
                 );
