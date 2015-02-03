@@ -36,7 +36,6 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.joda.time.LocalDate;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
@@ -44,6 +43,8 @@ import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.NotContributed;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
@@ -674,8 +675,39 @@ public class Person extends Actor {
         }
         //if person has not role Principal
         return !getIsPrincipal(ownerPerson);
-    }  
+    }
     
+    // EDIT ACTION
+    public Person editPerson(
+    		@ParameterLayout(named="firstName")
+    		final String firstName,
+    		@ParameterLayout(named="middleName")
+    		@Parameter(optional=Optionality.TRUE)
+    		final String middleName,
+    		@ParameterLayout(named="lastName")
+    		final String lastName,
+    		@ParameterLayout(named="dateOfBirth")
+    		final LocalDate dateOfBirth
+    		){
+    	persons.EditPerson(this, firstName, middleName, lastName, dateOfBirth);
+    	return this;
+    }
+    
+    public String default0EditPerson(){
+    	return getFirstName();
+    }
+    
+    public String default1EditPerson(){
+    	return getMiddleName();
+    }
+    
+    public String default2EditPerson(){
+    	return getLastName();
+    }
+    
+    public LocalDate default3EditPerson(){
+    	return getDateOfBirth();
+    }
     
     // Region>injections ////////////////////////////
     @javax.inject.Inject
@@ -686,4 +718,7 @@ public class Person extends Actor {
     
     @Inject
     PersonalContacts pcontacts;
+    
+    @Inject
+    Persons persons;
 }

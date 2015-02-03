@@ -24,6 +24,7 @@ import info.matchingservice.dom.TitledEnum;
 public enum ProfileElementType implements TitledEnum {
     
     QUALITY("Kwaliteit"),
+    LOCATION("Postcode"),
     TEXT("Tekst"),
     PASSION("Passie"),
     PASSION_TAGS("Passie steekwoorden"),

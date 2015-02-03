@@ -47,6 +47,9 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
@@ -283,6 +286,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         return container.getUser().getName();
     }
     
+    
     // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;
@@ -295,4 +299,5 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 
     @Inject
     Profiles profiles;
+    
 }

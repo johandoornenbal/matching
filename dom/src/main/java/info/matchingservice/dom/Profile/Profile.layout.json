@@ -71,6 +71,11 @@
 					"named" : {
 						"value" : "Passie steekwoorden"
 					}
+				},
+				"newLocation" : {
+					"named" : {
+						"value" : "Lokatie"
+					}
 				}
             }
         },

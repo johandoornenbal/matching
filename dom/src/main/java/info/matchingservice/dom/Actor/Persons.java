@@ -199,6 +199,22 @@ public class Persons extends MatchingDomainService<Person> {
         
     }
     
+    @Programmatic
+    public Person EditPerson(
+    		Person person,
+    		String firstName,
+    		String middleName,
+    		String lastName,
+    		LocalDate dateOfBirth
+    		){
+    	person.setFirstName(firstName);
+    	person.setMiddleName(middleName);
+    	person.setLastName(lastName);
+    	person.setDateOfBirth(dateOfBirth);
+    	persistIfNotAlready(person);
+    	return person;
+    }
+    
     @Programmatic //userName can now also be set by fixtures
     public List<Person> thisIsYou(final String userName) {
         QueryDefault<Person> query = 

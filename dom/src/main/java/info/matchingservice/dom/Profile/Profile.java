@@ -52,6 +52,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RegEx;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
@@ -430,6 +431,63 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return null;
     }
     
+    // LOKATIE (Postcode)
+    // BUSINESSRULE
+    // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    // er mag er hooguit een van zijn
+    // textValue moet een geldig postcode formaat zijn (4 cijfers , al of niet een spatie, 2 hoofdletters)
+    public Profile newLocation(
+    		@ParameterLayout(named="postcode")
+    		@Parameter(regexPattern="^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")
+    		final String textValue,
+    		@ParameterLayout(named="weight")
+    		final Integer weight
+    		){
+    	profileElementTexts.newProfileElementText("lokatie", weight, textValue, ProfileElementType.LOCATION, this);
+    	return this;
+    }
+    
+    public boolean hideNewLocation(final String textValue, final Integer weight){
+    	
+        QueryDefault<ProfileElementText> query = 
+                QueryDefault.create(
+                        ProfileElementText.class, 
+                    "findProfileElementOfType",
+                    "profileElementOwner", this, "profileElementType", ProfileElementType.LOCATION);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+    	
+    	// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    	if (this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE){
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+    public String validateNewLocation(final String textValue, final Integer weight){
+    	
+        QueryDefault<ProfileElementText> query = 
+                QueryDefault.create(
+                        ProfileElementText.class, 
+                    "findProfileElementOfType",
+                    "profileElementOwner", this, "profileElementType", ProfileElementType.LOCATION);
+        if (container.firstMatch(query) != null) {
+            return "Je hebt al een lokatie opgegeven.";
+        }
+    	
+    	// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+    		return "Alleen op persoons of organisatie profiel.";
+    	}
+    	
+    	//textValue moet een geldig postcode formaat zijn
+    	
+    	
+    	return null;
+    }
+    
     //XTALUS VOOR CURSUSSEN
     
     //**PRIJS*//    
@@ -437,7 +495,6 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //Er kan maar een prijs element zijn
     //Alleen op cursusprofiel
     
-    @ActionLayout(named="Nieuwe prijs")
     public ProfileElementNumeric newProfileElementPrice(
             @ParameterLayout(named="numericValue")
             final Integer numericValue

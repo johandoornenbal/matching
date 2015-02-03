@@ -28,7 +28,11 @@
         },
         "ID": {
         	"members": {
-        		"uniqueActorId": {}
+        		"uniqueItemId": {
+        			"actions" : {
+        				"editPerson" : {}
+        			}
+        		}
         	}
         }
       }

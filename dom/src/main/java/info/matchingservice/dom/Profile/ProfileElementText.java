@@ -22,6 +22,7 @@ package info.matchingservice.dom.Profile;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -48,9 +49,12 @@ public class ProfileElementText extends ProfileElement {
         this.textValue = value;
     }
     
-    public ProfileElement EditTextValue(
+    
+    // BUSINESS RULE
+    // Alleen op type PASSION (Anders komt deze ook bij bijvoorbeeld Postcode)
+    public ProfileElement editPassion(
     		@ParameterLayout(
-    				named = "Passie",
+    				named = "textValue",
     				multiLine = 8
     				)
             String textValue
@@ -60,8 +64,42 @@ public class ProfileElementText extends ProfileElement {
         return this;
     }
     
-    public String default0EditTextValue() {
+    public String default0EditPassion() {
         return getTextValue();
+    }
+    
+    public boolean hideEditPassion(String textValue){
+    	if (getProfileElementType() == ProfileElementType.PASSION){
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+    // BUSINESS RULE
+    // Alleen op type LPOCATION (Anders komt deze ook bij bijvoorbeeld Passie)
+    public ProfileElement editLocation(
+    		@ParameterLayout(
+    				named = "postcode"
+    				)
+    		@Parameter(regexPattern="^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")
+            String textValue
+            ){
+        this.setTextValue(textValue);
+        this.setDisplayValue(textValue);
+        return this;
+    }
+    
+    public String default0EditLocation() {
+        return getTextValue();
+    }
+    
+    public boolean hideEditLocation(String textValue){
+    	if (getProfileElementType() == ProfileElementType.LOCATION){
+    		return false;
+    	}
+    	
+    	return true;
     }
 
 }
