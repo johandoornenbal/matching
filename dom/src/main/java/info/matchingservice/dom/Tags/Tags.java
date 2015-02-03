@@ -21,7 +21,10 @@ package info.matchingservice.dom.Tags;
 
 import info.matchingservice.dom.MatchingDomainService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -100,7 +103,6 @@ public class Tags extends MatchingDomainService<Tag> {
     public List<Tag> findTagAndCategoryContains(final String tagDescription, final TagCategory tagCategory){
         return allMatches("tagAndCategoryContains", "tagDescription", tagDescription.toLowerCase(), "tagCategory", tagCategory);
     }
-    
     
     
     //For fixtures

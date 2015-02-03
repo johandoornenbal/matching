@@ -177,6 +177,9 @@ public class Tag extends MatchingDomainObject<Tag> {
     }
     
     public String validateDeleteTag(boolean areYouSure) {
+    	if (getNumberOfTimesUsed()>0){
+    		return "Oeps! Deze tag is nog in gebruik. Verwijderen gaat nu niet.";
+    	}
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
     

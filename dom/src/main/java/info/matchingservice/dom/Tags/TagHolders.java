@@ -23,6 +23,7 @@ import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +33,7 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.joda.time.LocalDate;
@@ -50,41 +52,82 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     
     //BUSINESSRULES:
     // only on profile element with ProfileElementType = PASSION_TAGS
-    // every tag choice at most once (no doubles)
-    @ActionLayout(named="Nieuwe passie tag")
+    // just one word ...
+    // every tag choice at most once (no doubles)    
     @NotInServiceMenu
     public ProfileElement newPassionTagHolder(
             @ParameterLayout(
                     named = "ownerElement")
             final ProfileElement ownerElement,
             @ParameterLayout(
-                    named = "tag")
-            final Tag tag
-            ){
+                  named = "tagProposalWord")
+            @Parameter(regexPattern="^\\S+$")
+    		final String tagProposalWord
+    		){
+    	Tag newTag;
+    	TagCategory tagCat = tagCategories.findTagCategoryMatches("passie").get(0);
+    	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).isEmpty()){
+    		//make a new tag
+    		newTag = tags.newTag(tagProposalWord, tagCat);
+    	} else {
+    		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).get(0);
+    	}
+    	
         final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
         final UUID uuid=UUID.randomUUID();
         // administration of tag usage
-        tag.setDateLastUsed(LocalDate.now());
-        if (tag.getNumberOfTimesUsed()==null){
-        	tag.setNumberOfTimesUsed(1);
+        newTag.setDateLastUsed(LocalDate.now());
+        if (newTag.getNumberOfTimesUsed()==null){
+        	newTag.setNumberOfTimesUsed(1);
         }
         else
         {
-        	tag.setNumberOfTimesUsed(tag.getNumberOfTimesUsed()+1);
+        	newTag.setNumberOfTimesUsed(newTag.getNumberOfTimesUsed()+1);
         }
         // END administration of tag usage
         newTagHolder.setUniqueItemId(uuid);
         newTagHolder.setOwnerElement(ownerElement);
-        newTagHolder.setTag(tag);
+        newTagHolder.setTag(newTag);
         persist(newTagHolder);
-        return ownerElement;
+    	
+    	return ownerElement;
     }
     
-    public List<Tag> autoComplete1NewPassionTagHolder(final String search) {
-        return tags.findTagAndCategoryContains(search, tagCategories.findTagCategoryMatches("passie").get(0));
-    }
+
+//    @ActionLayout(named="Nieuwe passie tag")
+//    @NotInServiceMenu
+//    public ProfileElement newPassionTagHolder_OLD(
+//            @ParameterLayout(
+//                    named = "ownerElement")
+//            final ProfileElement ownerElement,
+//            @ParameterLayout(
+//                    named = "tag")
+//            final Tag tag
+//            ){
+//        final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
+//        final UUID uuid=UUID.randomUUID();
+//        // administration of tag usage
+//        tag.setDateLastUsed(LocalDate.now());
+//        if (tag.getNumberOfTimesUsed()==null){
+//        	tag.setNumberOfTimesUsed(1);
+//        }
+//        else
+//        {
+//        	tag.setNumberOfTimesUsed(tag.getNumberOfTimesUsed()+1);
+//        }
+//        // END administration of tag usage
+//        newTagHolder.setUniqueItemId(uuid);
+//        newTagHolder.setOwnerElement(ownerElement);
+//        newTagHolder.setTag(tag);
+//        persist(newTagHolder);
+//        return ownerElement;
+//    }
     
-    public boolean hideNewPassionTagHolder(final ProfileElement ownerElement,final Tag tag){
+//    public List<Tag> autoComplete1NewPassionTagHolder(final String search) {
+//        return tags.findTagAndCategoryContains(search, tagCategories.findTagCategoryMatches("passie").get(0));
+//    }
+    
+    public boolean hideNewPassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
         // catch null value
     	if (ownerElement == null){
     		return true;
@@ -97,17 +140,14 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
         return true;
     }
     
-    public String validateNewPassionTagHolder(final ProfileElement ownerElement,final Tag tag){
+    public String validateNewPassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
         // only on profile element with ProfileElementType = PASSION_TAGS
         if (ownerElement.getProfileElementType() == ProfileElementType.PASSION_TAGS){
             return null;
         }
         
         // every tag choice at most once (no doubles)
-        //TODO: werk niet goed
-        if (tagHolders.findTagHolder(ownerElement, tag).get(0).equals(null)){
-            return "Deze tag was er al. Kies een andere.";
-        }
+        //TODO: Nog maken
         
         return "Alleen op een Profiel Element van type 'Passion_tags'";
     }

@@ -1,7 +1,6 @@
 package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.TagHolders;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
@@ -13,10 +12,10 @@ public abstract class PassionTagsAbstract extends FixtureScript {
     
     protected ProfileElement createTagHolder(
             ProfileElement ownerElement,
-            Tag tag,
+            String tagProposal,
             ExecutionContext executionContext 
             ){
-        ProfileElement newHolder = tagHolders.newPassionTagHolder(ownerElement, tag);
+        ProfileElement newHolder = tagHolders.newPassionTagHolder(ownerElement, tagProposal);
         return newHolder;
     }
     
