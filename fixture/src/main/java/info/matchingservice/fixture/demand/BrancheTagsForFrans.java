@@ -2,12 +2,13 @@ package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.fixture.actor.PersonForFrans;
+import info.matchingservice.fixture.tag.BrancheTagsAbstract;
 import info.matchingservice.fixture.tag.PassionTagsAbstract;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
 
 import javax.inject.Inject;
 
-public class PassionTagsForFrans extends PassionTagsAbstract {
+public class BrancheTagsForFrans extends BrancheTagsAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -20,13 +21,18 @@ public class PassionTagsForFrans extends PassionTagsAbstract {
         
         
         createTagHolder(
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last().getProfileElement().first(), 
-                "zeilschepen", 
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first().getProfileElement().first(), 
+                "kunst", 
                 executionContext
                 );
         createTagHolder(
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last().getProfileElement().first(), 
-                "schilderen", 
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first().getProfileElement().first(), 
+                "schilderkunst", 
+                executionContext
+                );
+        createTagHolder(
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first().getProfileElement().first(), 
+                "iets_anders", 
                 executionContext
                 );
     }

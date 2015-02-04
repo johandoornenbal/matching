@@ -10,6 +10,7 @@ import info.matchingservice.dom.Profile.ProfileElementDropDowns;
 import info.matchingservice.dom.Profile.Profiles;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
 
 public abstract class DemandProfileElementsAbstract extends FixtureScript {
 
@@ -38,6 +39,17 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
             ){
         ProfileElementTag newElement = profileElementTags.newProfileElementTag(description, weight, ProfileElementType.PASSION_TAGS, profileOwner, ownedBy);
         return newElement;
+    }
+    
+    protected ProfileElementTag createBrancheTagsElement(
+            String description,
+            Integer weight,
+            Profile profileOwner,
+            String ownedBy,
+            ExecutionContext executionContext 
+            ){
+        ProfileElementTag newElement = profileElementTags.newProfileElementTag(description, weight, ProfileElementType.BRANCHE_TAGS, profileOwner, ownedBy);
+        return executionContext.add(this,newElement);
     }
     
     //region > injected services

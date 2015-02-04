@@ -18,6 +18,7 @@ import info.matchingservice.fixture.actor.RolesForFrans;
 import info.matchingservice.fixture.actor.RolesForGerard;
 import info.matchingservice.fixture.actor.RolesForMichiel;
 import info.matchingservice.fixture.actor.RolesForRembrandt;
+import info.matchingservice.fixture.demand.BrancheTagsForFrans;
 import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
 import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
 import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
@@ -29,6 +30,7 @@ import info.matchingservice.fixture.demand.DemandsForFrans;
 import info.matchingservice.fixture.demand.DemandsForMichiel;
 import info.matchingservice.fixture.demand.DemandsForRembrandt;
 import info.matchingservice.fixture.demand.PassionTagsForFrans;
+import info.matchingservice.fixture.supply.BrancheTagsForGerard;
 import info.matchingservice.fixture.supply.SuppliesForAntoni;
 import info.matchingservice.fixture.supply.SuppliesForFrans;
 import info.matchingservice.fixture.supply.SuppliesForGerard;
@@ -111,6 +113,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new TagCategoriesFixture(), executionContext);
         executeChild(new TagsFixture(), executionContext);
         executeChild(new PassionTagsForFrans(), executionContext);
+        executeChild(new BrancheTagsForGerard(), executionContext);
+        executeChild(new BrancheTagsForFrans(), executionContext);
         
     }
 

@@ -122,6 +122,7 @@ public class ProfileMatchingService extends AbstractService {
                             demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC 
                             || demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY
                             || demandProfileElement.getProfileElementType() == ProfileElementType.PASSION_TAGS
+                            || demandProfileElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS
                             )
                     {
                         elCounter ++;
@@ -221,6 +222,32 @@ public class ProfileMatchingService extends AbstractService {
                         }
                     }
                     
+                
+                
+	                //**** STAGE 2 ****BRANCHE ELEMENTS: calculate and add to matchingValue *****/
+	                //Only for elementmatches on PassionElements with tempProfileOwner as ProfileOwner
+	                if (demandProfileElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS){
+	                    
+	                 // Get the matching profileElements in ElementComparison Object
+	                    List<ElementComparison> tempListOfElements = brancheElementMatches.showElementMatches((ProfileElementTag) demandProfileElement);
+	                    if (!tempListOfElements.isEmpty()){
+	                        for (ElementComparison e: tempListOfElements){
+	                            
+	                          //only if tempProfileOwner is ProfileOwner
+	                            if (e.getMatchingProfileElementOwner().getSupplyProfileOwner().equals(tempProfileOwner)){
+	                                //Add 1 to elementCounter
+	                                elementCounter ++;
+	                                //Add to matching value
+	                                if (demandProfileElement.getWeight()!=null && demandProfileElement.getWeight() > 0){
+	                                    totalMatchingValue+=e.getCalculatedMatchingValue()*demandProfileElement.getWeight()/cumWeight;
+	                                } else {
+	                                    totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
+	                                }                                                              
+	                            }
+	                        }
+	                    }
+	                }
+                
                 }
                 
                 //**** STAGE 2 ****Determine the calculatedMatchingValue by taking the total value divided by the number of elements *****/
@@ -270,6 +297,9 @@ public class ProfileMatchingService extends AbstractService {
     
     @Inject
     PassionElementComparisonService passionElementMatches;
+    
+    @Inject
+    BrancheElementComparisonService brancheElementMatches;
     
     @Inject
     NumericElementComparisonService numericElementMatches;

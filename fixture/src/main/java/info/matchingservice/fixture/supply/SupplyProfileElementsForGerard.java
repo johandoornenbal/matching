@@ -35,6 +35,14 @@ public class SupplyProfileElementsForGerard extends SupplyProfileElementsAbstrac
                 "gerard",
                 executionContext
                 );
+        
+        createBranche(
+        		"Branche voor Gerard", 
+        		10, 
+        		persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first(), 
+        		"gerard", 
+        		executionContext
+        		);
     }
     
         

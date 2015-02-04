@@ -72,6 +72,11 @@
 						"value" : "Passie steekwoorden"
 					}
 				},
+				"newBrancheTagElement" : {
+					"named" : {
+						"value" : "Branche"
+					}
+				},
 				"newLocation" : {
 					"named" : {
 						"value" : "Lokatie"

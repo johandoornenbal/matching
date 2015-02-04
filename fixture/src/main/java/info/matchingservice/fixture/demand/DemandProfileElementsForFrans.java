@@ -26,6 +26,14 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
                 executionContext
                 );
         
+        createPassionTagsElement(
+                "Passie steekwoorden", 
+                10, 
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(), 
+                "frans", 
+                executionContext
+                );
+        
         createDropDownElement(
                 "kwaliteit nieuwsgierig",
                 10,
@@ -36,13 +44,15 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
                 executionContext
                 );
         
-        createPassionTagsElement(
-                "Passie steekwoorden", 
+        createBrancheTagsElement(
+                "Branche steekwoorden", 
                 10, 
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(), 
+                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(), 
                 "frans", 
                 executionContext
                 );
+        
+
     }
         
 
