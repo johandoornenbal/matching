@@ -20,7 +20,7 @@ public abstract class DemandAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Demand newDemand = demands.newDemand(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
+        Demand newDemand = demands.newDemand(demandDescription, "", "", null, weight, demandSupplyType, demandOwner, ownedBy);
         return executionContext.add(this,newDemand);
     }
     

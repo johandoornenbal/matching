@@ -55,6 +55,7 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.value.Blob;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -136,18 +137,24 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final Integer weight,
             final DemandSupplyType demandSupplyType
             ) {
-        return newDemand(demandDescription, weight, demandSupplyType, this, currentUserName());
+        return newDemand(demandDescription, "", "", null, weight, demandSupplyType, this, currentUserName());
     }
     
     //helper
     @Programmatic
     public Demand newDemand(
             final String demandDescription,
+            @Parameter(optional=Optionality.TRUE)
+            final String demandSummary,
+            @Parameter(optional=Optionality.TRUE)
+            final String demandStory,
+            @Parameter(optional=Optionality.TRUE)
+            final Blob demandAttachment,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner, 
             final String ownedBy){
-        return demands.newDemand(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
+        return demands.newDemand(demandDescription, demandSummary, demandStory, demandAttachment, weight, demandSupplyType, demandOwner, ownedBy);
     }
     
     @Programmatic
@@ -160,7 +167,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final Integer profileWeight,
             final ProfileType profileType,
             final String ownedBy){
-        final Demand demand = demands.newDemand(demandDescription, weight, demandSupplyType, demandOwner, ownedBy);
+        final Demand demand = demands.newDemand(demandDescription, "", "", null, weight, demandSupplyType, demandOwner, ownedBy);
         return profiles.newDemandProfile(demandProfileDescription, profileWeight, profileType, demand, ownedBy);
     }
     

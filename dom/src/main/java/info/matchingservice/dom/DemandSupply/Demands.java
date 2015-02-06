@@ -29,6 +29,7 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.value.Blob;
 
 @DomainService(repositoryFor = Demand.class)
 @DomainServiceLayout(
@@ -50,6 +51,9 @@ public class Demands extends MatchingDomainService<Demand> {
     @Programmatic
     public Demand newDemand(
             final String demandDescription,
+            final String demandSummary,
+            final String demandStory,
+            final Blob demandAttachment,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner,
@@ -58,6 +62,9 @@ public class Demands extends MatchingDomainService<Demand> {
         final UUID uuid=UUID.randomUUID();
         newNeed.setUniqueItemId(uuid);
         newNeed.setDemandDescription(demandDescription);
+        newNeed.setDemandSummary(demandSummary);
+        newNeed.setDemandStory(demandStory);
+        newNeed.setDemandAttachment(demandAttachment);
         newNeed.setWeight(weight);
         newNeed.setDemandType(demandSupplyType);
         newNeed.setDemandOwner(demandOwner);

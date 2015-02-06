@@ -414,17 +414,36 @@ public class Person extends Actor {
     // Je moet Opdrachtgever zijn om een tafel te starten
     @ActionLayout(named="Start nieuwe tafel")
     public Demand newPersonsDemand(
-            @ParameterLayout(named="demandDescription", multiLine=3)
-            final String demandDescription
+            @ParameterLayout(named="demandDescription")
+            final String demandDescription,
+            @ParameterLayout(named="demandSummary", multiLine=3)
+            @Parameter(optional=Optionality.TRUE)
+            final String demandSummary,
+            @ParameterLayout(named="demandStory", multiLine=8)
+            @Parameter(optional=Optionality.TRUE)
+            final String demandStory,
+            @ParameterLayout(named="demandAttachment")
+            @Parameter(optional=Optionality.TRUE)
+            final Blob demandAttachment
             ){
-        return newDemand(demandDescription, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
+        return newDemand(demandDescription, demandSummary, demandStory, demandAttachment, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
     }
     
-    public boolean hideNewPersonsDemand(final String demandDescription){
+    public boolean hideNewPersonsDemand(
+    		final String demandDescription,
+    		final String demandSummary,
+    		final String demandStory,
+    		final Blob demandAttachment
+    		){
         return hideNewDemand(demandDescription, this);
     }
     
-    public String validateNewPersonsDemand(final String demandDescription){
+    public String validateNewPersonsDemand(
+    		final String demandDescription,
+    		final String demandSummary,
+    		final String demandStory,
+    		final Blob demandAttachment
+    		){
         return validateNewDemand(demandDescription, this);
     }
     

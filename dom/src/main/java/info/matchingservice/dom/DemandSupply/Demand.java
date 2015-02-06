@@ -51,6 +51,7 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.value.Blob;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -141,7 +142,6 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private String demandDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(multiLine=4)
     public String getDemandDescription(){
         return demandDescription;
     }
@@ -149,6 +149,50 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public void setDemandDescription(final String description) {
         this.demandDescription = description;
     }
+    
+    private String demandSummary;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @PropertyLayout(multiLine=4)
+    public String getDemandSummary() {
+		return demandSummary;
+	}
+
+	public void setDemandSummary(String demandSummary) {
+		this.demandSummary = demandSummary;
+	}
+	
+
+	private String demandStory;
+    
+	@javax.jdo.annotations.Column(allowsNull = "true")
+    @PropertyLayout(multiLine=8)
+	public String getDemandStory() {
+		return demandStory;
+	}
+
+	public void setDemandStory(String demandStory) {
+		this.demandStory = demandStory;
+	}
+	
+	private Blob demandAttachment;
+	
+    @javax.jdo.annotations.Persistent(defaultFetchGroup="false", columns = {
+            @javax.jdo.annotations.Column(name = "demandAttachment_name"),
+            @javax.jdo.annotations.Column(name = "demandAttachment_mimetype"),
+            @javax.jdo.annotations.Column(name = "demandAttachment_bytes", jdbcType = "BLOB", sqlType = "BLOB")
+    })
+    @Property(
+            optional = Optionality.TRUE
+    )
+	public Blob getDemandAttachment(){
+		return demandAttachment;
+	}
+	
+	public void setDemandAttachment(Blob demandAttachment) {
+		this.demandAttachment = demandAttachment;
+	}
+
     
     private Integer weight;
     
@@ -164,16 +208,37 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 
     //ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
 
-    public Demand editDemandDescription(
-            @ParameterLayout(named="demandDescription", multiLine=4)
-            final String demandDescription
+    public Demand editDemand(
+            @ParameterLayout(named="demandDescription")
+            final String demandDescription,
+            @ParameterLayout(named="demandSummary", multiLine=3)
+            @Parameter(optional=Optionality.TRUE)
+            final String demandSummary,
+            @ParameterLayout(named="demandStory", multiLine=8)
+            @Parameter(optional=Optionality.TRUE)
+            final String demandStory,
+            @ParameterLayout(named="demandAttachment")
+            @Parameter(optional=Optionality.TRUE)
+            final Blob demandAttachment         
             ){
         this.setDemandDescription(demandDescription);
         return this;
     }
     
-    public String default0EditDemandDescription(){
+    public String default0EditDemand(){
         return this.getDemandDescription();
+    }
+    
+    public String default1EditDemand(){
+        return this.getDemandSummary();
+    }
+    
+    public String default2EditDemand(){
+        return this.getDemandStory();
+    }
+    
+    public Blob default3EditDemand(){
+        return this.getDemandAttachment();
     }
     
     @ActionLayout(hidden=Where.EVERYWHERE)
@@ -336,8 +401,8 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     }
     
     // Injects
-    
-    @javax.inject.Inject
+
+	@javax.inject.Inject
     private DomainObjectContainer container;
     
     @Inject

@@ -51,7 +51,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            d1=demands.newDemand(DEMAND_DESCRIPTION, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
+            d1=demands.newDemand(DEMAND_DESCRIPTION, "", "" , null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
         }
         
         @Test
@@ -114,7 +114,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void setUp() throws Exception {
             numberOfDemandProfiles=profiles.allDemandProfiles().size();
             numberOfSupplyProfiles=profiles.allSupplyProfiles().size();
-            d1=demands.newDemand(DEMAND_DESCRIPTION, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
+            d1=demands.newDemand(DEMAND_DESCRIPTION, "", "", null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
             d1.newDemandProfile(DEMAND_PROFILE_DESCRIPTION, WEIGHT, PROFILE_TYPE, d1, OWNED_BY);
         }
         
@@ -221,7 +221,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            d1=demands.newDemand(DEMAND_DESCRIPTION, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
+            d1=demands.newDemand(DEMAND_DESCRIPTION, "", "", null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
             numberOfdemands=demands.allDemands().size();
             d1.newDemandProfile(DEMAND_PROFILE_DESCRIPTION, WEIGHT, PROFILE_TYPE, d1, OWNED_BY);
             numberOfDemandProfiles=profiles.allDemandProfiles().size();
