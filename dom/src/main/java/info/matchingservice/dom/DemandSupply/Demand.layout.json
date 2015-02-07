@@ -11,19 +11,22 @@
             	},
             	"multiLine" : {
             		"numberOfLines" : "3"
-            	},
-            	"actions" : {
-            		"editDemandDescription" : {
-            			"named" : {
-            				"value" : "Bewerk omschrijving"
-            			}
-            		}
             	}
             },
+            "demandSummary" : {},
+            "demandStory" : {},
+            "demandAttachment" : {},
             "demandOwner": {
             	"named" : {
             		"value" : "Eigenaar"
-            	}
+            	},
+             	"actions" : {
+            		"editDemand" : {
+            			"named" : {
+            				"value" : "Bewerk vraag gegevens"
+            			}
+            		}
+            	}           	
             }
           }
         }

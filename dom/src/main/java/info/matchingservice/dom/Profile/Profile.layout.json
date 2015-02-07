@@ -52,9 +52,9 @@
         		"value" : "Profiel elementen"
         	},
             "actions": {
-				"newQualityElementDropDown" : {
+				"newQualityTagElement" : {
 					"named" : {
-						"value" : "Nieuwe kwaliteit"
+						"value" : "Kwaliteiten"
 					}
 				},
 				"newPassion" : {

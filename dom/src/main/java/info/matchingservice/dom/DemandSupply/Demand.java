@@ -222,6 +222,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             final Blob demandAttachment         
             ){
         this.setDemandDescription(demandDescription);
+        this.setDemandSummary(demandSummary);
+        this.setDemandStory(demandStory);
+        this.setDemandAttachment(demandAttachment);
         return this;
     }
     
