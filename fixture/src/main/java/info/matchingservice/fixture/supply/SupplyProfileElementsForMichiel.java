@@ -16,35 +16,43 @@ public class SupplyProfileElementsForMichiel extends SupplyProfileElementsAbstra
         executeChild(new PersonForMichiel(), executionContext);
         executeChild(new SuppliesForMichiel(), executionContext);
         
-        createDropDownElement(
-                "Kwaliteit doortastend",
-                10,
-                dropDownForProfileElements.findDropDowns("doortastend").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "michiel",
-                executionContext
-                );
+//        createDropDownElement(
+//                "Kwaliteit doortastend",
+//                10,
+//                dropDownForProfileElements.findDropDowns("doortastend").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "michiel",
+//                executionContext
+//                );
+//        
+//        createDropDownElement(
+//                "Kwaliteit oorlogszuchtig",
+//                10,
+//                dropDownForProfileElements.findDropDowns("oorlogszuchtig").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "michiel",
+//                executionContext
+//                );
+//        
+//        createDropDownElement(
+//                "Kwaliteit leidinggevend",
+//                10,
+//                dropDownForProfileElements.findDropDowns("leidinggevend").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "michiel",
+//                executionContext
+//                );
         
-        createDropDownElement(
-                "Kwaliteit oorlogszuchtig",
-                10,
-                dropDownForProfileElements.findDropDowns("oorlogszuchtig").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(),
+        createQualityTagsElement(
+        		"Mijn kwaliteiten",
+        		10,
+        		persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(),
                 "michiel",
-                executionContext
-                );
-        
-        createDropDownElement(
-                "Kwaliteit leidinggevend",
-                10,
-                dropDownForProfileElements.findDropDowns("leidinggevend").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "michiel",
-                executionContext
-                );
+        		executionContext
+        		);
         
         createPassion(
                 "Passie van Michiel", 

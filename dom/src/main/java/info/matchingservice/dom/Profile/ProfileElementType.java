@@ -26,10 +26,11 @@ public enum ProfileElementType implements TitledEnum {
     QUALITY("Kwaliteit"),
     LOCATION("Postcode"),
     TEXT("Tekst"),
+    NUMERIC("Getal"), 
     PASSION("Passie"),
     PASSION_TAGS("Passie steekwoorden"),
     BRANCHE_TAGS("Branche steekwoorden"),
-    NUMERIC("Getal");
+    QUALITY_TAGS ("kwaliteiten");
 
     private String title;
     

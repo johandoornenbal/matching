@@ -2,12 +2,12 @@ package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.fixture.actor.PersonForGerard;
-import info.matchingservice.fixture.tag.BrancheTagsAbstract;
+import info.matchingservice.fixture.tag.TagsAbstract;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
 
 import javax.inject.Inject;
 
-public class BrancheTagsForGerard extends BrancheTagsAbstract {
+public class BrancheTagsForGerard extends TagsAbstract {
 
 	@Override
 	protected void execute(ExecutionContext executionContext) {
@@ -18,22 +18,22 @@ public class BrancheTagsForGerard extends BrancheTagsAbstract {
         executeChild(new SupplyProfileElementsForGerard(), executionContext);
 		executeChild(new TagCategoriesFixture(), executionContext);
 		
-		createTagHolder(
+		createBranchTagHolder(
 				persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first().getProfileElement().first(), 
 				"schilderkunst", 
 				executionContext
 				);
-		createTagHolder(
+		createBranchTagHolder(
 				persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first().getProfileElement().first(), 
 				"portretteerkunst", 
 				executionContext
 				);
-		createTagHolder(
+		createBranchTagHolder(
 				persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first().getProfileElement().first(), 
 				"kunst", 
 				executionContext
 				);
-		createTagHolder(
+		createBranchTagHolder(
 				persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first().getProfileElement().first(), 
 				"zelfstandig", 
 				executionContext

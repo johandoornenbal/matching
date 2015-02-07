@@ -58,6 +58,17 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
         return executionContext.add(this,newElement);
     }
     
+    protected ProfileElementTag createQualityTagsElement(
+            String description,
+            Integer weight,
+            Profile profileOwner,
+            String ownedBy,
+            ExecutionContext executionContext 
+            ){
+        ProfileElementTag newElement = profileElementTags.newProfileElementTag(description, weight, ProfileElementType.QUALITY_TAGS, profileOwner, ownedBy);
+        return executionContext.add(this,newElement);
+    }
+    
     
     //region > injected services
     @javax.inject.Inject

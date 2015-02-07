@@ -18,25 +18,33 @@ public class SupplyProfileElementsForFrans extends SupplyProfileElementsAbstract
         executeChild(new PersonForFrans(), executionContext);
         executeChild(new SuppliesForFrans(), executionContext);
         
-        createDropDownElement(
-                "Kwaliteit ijverig",
-                10,
-                dropDownForProfileElements.findDropDowns("ijverig").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "frans",
-                executionContext
-                );
+//        createDropDownElement(
+//                "Kwaliteit ijverig",
+//                10,
+//                dropDownForProfileElements.findDropDowns("ijverig").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "frans",
+//                executionContext
+//                );
+//        
+//        createDropDownElement(
+//                "Kwaliteit out of the box",
+//                10,
+//                dropDownForProfileElements.findDropDowns("box").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "frans",
+//                executionContext
+//                );
         
-        createDropDownElement(
-                "Kwaliteit out of the box",
-                10,
-                dropDownForProfileElements.findDropDowns("box").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "frans",
-                executionContext
-                );
+        createQualityTagsElement(
+        		"Mijn kwaliteiten",
+        		10,
+        		persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(),
+        		"frans",
+        		executionContext
+        		);
         
         createPassion(
                 "Passie van Frans", 

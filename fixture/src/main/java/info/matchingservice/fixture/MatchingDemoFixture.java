@@ -29,7 +29,6 @@ import info.matchingservice.fixture.demand.DemandProfilesForFrans;
 import info.matchingservice.fixture.demand.DemandsForFrans;
 import info.matchingservice.fixture.demand.DemandsForMichiel;
 import info.matchingservice.fixture.demand.DemandsForRembrandt;
-import info.matchingservice.fixture.demand.PassionTagsForFrans;
 import info.matchingservice.fixture.supply.BrancheTagsForGerard;
 import info.matchingservice.fixture.supply.SuppliesForAntoni;
 import info.matchingservice.fixture.supply.SuppliesForFrans;
@@ -50,6 +49,8 @@ import info.matchingservice.fixture.supply.SupplyProfilesForMichiel;
 import info.matchingservice.fixture.supply.SupplyProfilesForRembrandt;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
 import info.matchingservice.fixture.tag.TagsFixture;
+import info.matchingservice.fixture.tag.TagsForFrans;
+import info.matchingservice.fixture.tag.TagsForMichiel;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -112,7 +113,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new PersonalContactsForMichiel(), executionContext);
         executeChild(new TagCategoriesFixture(), executionContext);
         executeChild(new TagsFixture(), executionContext);
-        executeChild(new PassionTagsForFrans(), executionContext);
+        executeChild(new TagsForFrans(), executionContext);
+        executeChild(new TagsForMichiel(), executionContext);
         executeChild(new BrancheTagsForGerard(), executionContext);
         executeChild(new BrancheTagsForFrans(), executionContext);
         

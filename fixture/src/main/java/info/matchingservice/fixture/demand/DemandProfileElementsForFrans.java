@@ -16,15 +16,24 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         executeChild(new PersonForFrans(), executionContext);
         executeChild(new DemandsForFrans(), executionContext);
         
-        createDropDownElement(
-                "kwaliteit oorlogszuchtig",
-                10,
-                dropDownForProfileElements.findDropDowns("oorlogszuchtig").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(),
-                "frans",
-                executionContext
-                );
+//        createDropDownElement(
+//                "kwaliteit oorlogszuchtig",
+//                10,
+//                dropDownForProfileElements.findDropDowns("oorlogszuchtig").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(),
+//                "frans",
+//                executionContext
+//                );
+        
+        createQualityTagsElement(
+        		"kwaliteit oorlogszuchtig",
+        		10,
+        		persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().last(),
+        		"frans",
+        		executionContext
+        		);
+        
         
         createPassionTagsElement(
                 "Passie steekwoorden", 
@@ -34,15 +43,23 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
                 executionContext
                 );
         
-        createDropDownElement(
-                "kwaliteit nieuwsgierig",
-                10,
-                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(),
-                "frans",
-                executionContext
-                );
+//        createDropDownElement(
+//                "kwaliteit nieuwsgierig",
+//                10,
+//                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(),
+//                "frans",
+//                executionContext
+//                );
+        
+        createQualityTagsElement(
+        		"kwaliteit nieuwsgierig",
+        		10,
+        		persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first(),
+        		"frans",
+        		executionContext
+        		);
         
         createBrancheTagsElement(
                 "Branche steekwoorden", 

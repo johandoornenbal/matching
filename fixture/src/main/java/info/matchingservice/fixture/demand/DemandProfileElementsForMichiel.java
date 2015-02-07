@@ -16,25 +16,33 @@ public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstra
         executeChild(new PersonForMichiel(), executionContext);
         executeChild(new DemandsForMichiel(), executionContext);
         
-        createDropDownElement(
-                "kwaliteit out of the box",
-                10,
-                dropDownForProfileElements.findDropDowns("out").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Ruyter*").get(0).getMyDemands().last().getDemandProfiles().first(),
-                "michiel",
-                executionContext
-                );
+//        createDropDownElement(
+//                "kwaliteit out of the box",
+//                10,
+//                dropDownForProfileElements.findDropDowns("out").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Ruyter*").get(0).getMyDemands().last().getDemandProfiles().first(),
+//                "michiel",
+//                executionContext
+//                );
+//        
+//        createDropDownElement(
+//                "kwaliteit dapper",
+//                10,
+//                dropDownForProfileElements.findDropDowns("dapper").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Ruyter*").get(0).getMyDemands().last().getDemandProfiles().first(),
+//                "michiel",
+//                executionContext
+//                );
         
-        createDropDownElement(
-                "kwaliteit dapper",
-                10,
-                dropDownForProfileElements.findDropDowns("dapper").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Ruyter*").get(0).getMyDemands().last().getDemandProfiles().first(),
-                "michiel",
-                executionContext
-                );
+        createQualityTagsElement(
+        		"kwaliteit out of the box en dapper",
+        		10,
+        		persons.findPersons("Ruyter*").get(0).getMyDemands().last().getDemandProfiles().first(),
+        		"michiel",
+        		executionContext
+        		);
     }
         
 

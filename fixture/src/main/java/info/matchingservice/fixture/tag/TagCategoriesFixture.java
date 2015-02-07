@@ -25,6 +25,7 @@ public class TagCategoriesFixture extends TagCategoryAbstract {
     protected void execute(ExecutionContext executionContext) {
         createTagCategory("Passie", executionContext);
         createTagCategory("Branche", executionContext);
+        createTagCategory("Kwaliteit",executionContext);
         createTagCategory("Algemeen",executionContext);
     }
 

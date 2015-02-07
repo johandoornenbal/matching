@@ -16,25 +16,33 @@ public class SupplyProfileElementsForGerard extends SupplyProfileElementsAbstrac
         executeChild(new PersonForGerard(), executionContext);
         executeChild(new SuppliesForGerard(), executionContext);
         
-        createDropDownElement(
-                "Kwaliteit empatisch",
-                10,
-                dropDownForProfileElements.findDropDowns("empatisch").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "gerard",
-                executionContext
-                );
+//        createDropDownElement(
+//                "Kwaliteit empatisch",
+//                10,
+//                dropDownForProfileElements.findDropDowns("empatisch").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "gerard",
+//                executionContext
+//                );
+//        
+//        createDropDownElement(
+//                "Kwaliteit nieuwsgierig",
+//                10,
+//                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "gerard",
+//                executionContext
+//                );
         
-        createDropDownElement(
-                "Kwaliteit nieuwsgierig",
-                10,
-                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first(),
+        createQualityTagsElement(
+        		"Mijn kwaliteiten",
+        		10,
+        		persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first(),
                 "gerard",
-                executionContext
-                );
+        		executionContext
+        		);
         
         createBranche(
         		"Branche voor Gerard", 

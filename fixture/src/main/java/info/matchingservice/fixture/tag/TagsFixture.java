@@ -33,7 +33,10 @@ public class TagsFixture extends TagAbstract {
         createTag("strategie", tagCategories.findTagCategoryMatches("passie").get(0), executionContext);
         createTag("mooi", tagCategories.findTagCategoryMatches("algemeen").get(0), executionContext);
         createTag("lelijk", tagCategories.findTagCategoryMatches("algemeen").get(0), executionContext);
-        
+        createTag("oorlogszuchtig", tagCategories.findTagCategoryMatches("kwaliteit").get(0), executionContext);
+        createTag("ijverig", tagCategories.findTagCategoryMatches("kwaliteit").get(0), executionContext);
+        createTag("nieuwsgierig", tagCategories.findTagCategoryMatches("kwaliteit").get(0), executionContext);
+        createTag("empatisch", tagCategories.findTagCategoryMatches("kwaliteit").get(0), executionContext);
     }
     
     @Inject

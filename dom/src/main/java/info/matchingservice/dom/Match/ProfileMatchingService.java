@@ -117,12 +117,13 @@ public class ProfileMatchingService extends AbstractService {
                 Integer weightCounter = 0;
                 Integer elCounter = 0;
                 for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
-                    //Only for elements of type Numeric, type Quality and type PASSION_TAGS
+                    
                     if (
                             demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC 
-                            || demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY
+//                            || demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY
                             || demandProfileElement.getProfileElementType() == ProfileElementType.PASSION_TAGS
                             || demandProfileElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS
+                            || demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS
                             )
                     {
                         elCounter ++;
@@ -144,11 +145,10 @@ public class ProfileMatchingService extends AbstractService {
                 
                 //**** STAGE 2 ****//
                 
-                //**** STAGE 2 ****NUMERIC ELEMENTS: calculate and add to matchingValue *****/
-                // For every NumericElement, DropDownElement and PassionElement on Demand we add to totalMatching value
                 Long totalMatchingValue = (long) 0;
                 for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
                     
+                	//**** STAGE 2 ****NUMERIC ELEMENTS: calculate and add to matchingValue *****/
                     //Only for elementmatches on NumericElements with tempProfileOwner as ProfileOwner
                     if (demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC){
                         
@@ -174,29 +174,32 @@ public class ProfileMatchingService extends AbstractService {
                         }
                     }
                     
-                    //**** STAGE 2 ****QUALITY ELEMENTS: calculate and add to matchingValue *****/
-                    //Only for elementmatches on DropDownElements with tempProfileOwner as ProfileOwner
-                    if (demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY){
-                        
-                     // Get the matching profileElements in ElementComparison Object
-                        List<ElementComparison> tempListOfElements = dropDownElementMatches.showDropDownElementMatches((ProfileElementDropDown) demandProfileElement);
-                        if (!tempListOfElements.isEmpty()){
-                            for (ElementComparison e: tempListOfElements){
-                                
-                              //only if tempProfileOwner is ProfileOwner
-                                if (e.getMatchingProfileElementOwner().getSupplyProfileOwner().equals(tempProfileOwner)){
-                                    //Add 1 to elementCounter
-                                    elementCounter ++;
-                                    //Add to matching value
-                                    if (demandProfileElement.getWeight()!=null && demandProfileElement.getWeight() > 0){
-                                        totalMatchingValue+=e.getCalculatedMatchingValue()*demandProfileElement.getWeight()/cumWeight;
-                                    } else {
-                                        totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
-                                    }                                                              
-                                }
-                            }
-                        }
-                    }
+                    //END >>**** STAGE 2 ****NUMERIC ELEMENTS: calculate and add to matchingValue *****/
+                    
+//                    //**** STAGE 2 ****QUALITY ELEMENTS: calculate and add to matchingValue *****/
+//                    //Only for elementmatches on DropDownElements with tempProfileOwner as ProfileOwner
+//                    if (demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY){
+//                        
+//                     // Get the matching profileElements in ElementComparison Object
+//                        List<ElementComparison> tempListOfElements = dropDownElementMatches.showDropDownElementMatches((ProfileElementDropDown) demandProfileElement);
+//                        if (!tempListOfElements.isEmpty()){
+//                            for (ElementComparison e: tempListOfElements){
+//                                
+//                              //only if tempProfileOwner is ProfileOwner
+//                                if (e.getMatchingProfileElementOwner().getSupplyProfileOwner().equals(tempProfileOwner)){
+//                                    //Add 1 to elementCounter
+//                                    elementCounter ++;
+//                                    //Add to matching value
+//                                    if (demandProfileElement.getWeight()!=null && demandProfileElement.getWeight() > 0){
+//                                        totalMatchingValue+=e.getCalculatedMatchingValue()*demandProfileElement.getWeight()/cumWeight;
+//                                    } else {
+//                                        totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
+//                                    }                                                              
+//                                }
+//                            }
+//                        }
+//                    }
+//                    //END >>**** STAGE 2 ****QUALITY ELEMENTS: calculate and add to matchingValue *****/
                     
                     //**** STAGE 2 ****PASSION ELEMENTS: calculate and add to matchingValue *****/
                     //Only for elementmatches on PassionElements with tempProfileOwner as ProfileOwner
@@ -222,11 +225,15 @@ public class ProfileMatchingService extends AbstractService {
                         }
                     }
                     
+                    // END >>**** STAGE 2 ****PASSION ELEMENTS: calculate and add to matchingValue *****/
+                    
                 
                 
 	                //**** STAGE 2 ****BRANCHE ELEMENTS: calculate and add to matchingValue *****/
 	                //Only for elementmatches on PassionElements with tempProfileOwner as ProfileOwner
-	                if (demandProfileElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS){
+	                if (demandProfileElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS ||
+	                		demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS
+	                		){
 	                    
 	                 // Get the matching profileElements in ElementComparison Object
 	                    List<ElementComparison> tempListOfElements = brancheElementMatches.showElementMatches((ProfileElementTag) demandProfileElement);
@@ -247,8 +254,36 @@ public class ProfileMatchingService extends AbstractService {
 	                        }
 	                    }
 	                }
+	                // END>>**** STAGE 2 ****BRANCHE ELEMENTS: calculate and add to matchingValue *****/
+	                
+//	                //**** STAGE 2 ****QUALITY ELEMENTS: calculate and add to matchingValue *****/
+//	                //Only for elementmatches on PassionElements with tempProfileOwner as ProfileOwner
+//	                if (demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS){
+//	                    
+//	                 // Get the matching profileElements in ElementComparison Object
+//	                    List<ElementComparison> tempListOfElements = brancheElementMatches.showElementMatches((ProfileElementTag) demandProfileElement);
+//	                    if (!tempListOfElements.isEmpty()){
+//	                        for (ElementComparison e: tempListOfElements){
+//	                            
+//	                          //only if tempProfileOwner is ProfileOwner
+//	                            if (e.getMatchingProfileElementOwner().getSupplyProfileOwner().equals(tempProfileOwner)){
+//	                                //Add 1 to elementCounter
+//	                                elementCounter ++;
+//	                                //Add to matching value
+//	                                if (demandProfileElement.getWeight()!=null && demandProfileElement.getWeight() > 0){
+//	                                    totalMatchingValue+=e.getCalculatedMatchingValue()*demandProfileElement.getWeight()/cumWeight;
+//	                                } else {
+//	                                    totalMatchingValue+=e.getCalculatedMatchingValue()*avarageWeight/cumWeight;
+//	                                }                                                              
+//	                            }
+//	                        }
+//	                    }
+//	                }
+//	                // END>>**** STAGE 2 ****QUALITY ELEMENTS: calculate and add to matchingValue *****/
                 
                 }
+                
+                
                 
                 //**** STAGE 2 ****Determine the calculatedMatchingValue by taking the total value divided by the number of elements *****/
                 // Divide totalMatchingValue through number of elements if any are found
@@ -292,14 +327,14 @@ public class ProfileMatchingService extends AbstractService {
     @javax.inject.Inject
     private Profiles profiles;
     
-    @Inject
-    QualityElementComparisonService dropDownElementMatches;
+//    @Inject
+//    QualityElementComparisonService dropDownElementMatches;
     
     @Inject
     PassionElementComparisonService passionElementMatches;
     
     @Inject
-    BrancheElementComparisonService brancheElementMatches;
+    TagElementComparisonService brancheElementMatches;
     
     @Inject
     NumericElementComparisonService numericElementMatches;

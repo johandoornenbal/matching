@@ -63,7 +63,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 @DomainService
 public class PassionElementComparisonService extends AbstractService {
     // Thresholds
-    final Integer MATCHING_ElEMENT_THRESHOLD = 50;
+    final Integer MATCHING_ElEMENT_THRESHOLD = 20;
     
     //the difference here with other comparison services is this
     // - on supplyprofile the (text)element of type PASSION is matched against
@@ -77,13 +77,17 @@ public class PassionElementComparisonService extends AbstractService {
         
         List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
         
-        //Init Test: Only if there are any Profiles
-        if (container.allInstances(ProfileElementText.class).isEmpty()) {
+       //Init Test: Only if there are any ProfileElements
+        if (container.allInstances(ProfileElementTag.class).isEmpty()) {
             return elementMatches;
         }
         
         for (ProfileElementText e : container.allInstances(ProfileElementText.class)) {
-            if (e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  (e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE || e.getProfileElementOwner().getProfileType() == ProfileType.ORGANISATION_PROFILE) && e.getProfileElementType() == ProfileElementType.PASSION){
+            if (
+            		e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  
+            		(e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE || 
+            		e.getProfileElementOwner().getProfileType() == ProfileType.ORGANISATION_PROFILE) && 
+            		e.getProfileElementType() == ProfileElementType.PASSION){
                 // uitsluiten van dezelfde owner
                 if (!e.getOwnedBy().equals(element.getOwnedBy())){
                     Integer matchValue = 0;

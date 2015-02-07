@@ -2,13 +2,12 @@ package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.fixture.actor.PersonForFrans;
-import info.matchingservice.fixture.tag.BrancheTagsAbstract;
-import info.matchingservice.fixture.tag.PassionTagsAbstract;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
+import info.matchingservice.fixture.tag.TagsAbstract;
 
 import javax.inject.Inject;
 
-public class BrancheTagsForFrans extends BrancheTagsAbstract {
+public class BrancheTagsForFrans extends TagsAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -20,17 +19,17 @@ public class BrancheTagsForFrans extends BrancheTagsAbstract {
         executeChild(new TagCategoriesFixture(), executionContext);
         
         
-        createTagHolder(
+        createBranchTagHolder(
                 persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first().getProfileElement().first(), 
                 "kunst", 
                 executionContext
                 );
-        createTagHolder(
+        createBranchTagHolder(
                 persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first().getProfileElement().first(), 
                 "schilderkunst", 
                 executionContext
                 );
-        createTagHolder(
+        createBranchTagHolder(
                 persons.findPersons("Hals*").get(0).getMyDemands().last().getDemandProfiles().first().getProfileElement().first(), 
                 "iets_anders", 
                 executionContext

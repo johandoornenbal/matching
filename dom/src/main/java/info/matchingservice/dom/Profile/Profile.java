@@ -90,7 +90,12 @@ import org.apache.isis.applib.query.QueryDefault;
             name = "allSupplyProfilesOfTypeByOwner", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE supplyProfileOwner != null && profileType == :profileType && ownedBy == :ownedBy")
+                    + "WHERE supplyProfileOwner != null && profileType == :profileType && ownedBy == :ownedBy"),
+    @javax.jdo.annotations.Query(
+            name = "searchNameOfProfilesOfTypeByOwner", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE demandOrSupply == :demandOrSupply && profileType == :profileType && ownedBy == :ownedBy && profileName.indexOf(:profileName) >= 0")                    
 })
 @DomainObject(editing = Editing.DISABLED)
 public class Profile extends MatchingSecureMutableObject<Profile> {
@@ -434,64 +439,129 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     //END >> **BRANCHE TAG** *******DEMAND/SUPPPLY PROFILE*******************//
     
-    //**KWALITEITEN*//
+    // **QUALITY TAG** *******DEMAND/SUPPPLY PROFILE*******************//
     //BUSINESSRULE
-    // alleen tonen op profile van type PERSON
-    // 2 dezelfde kwaliteiten kiezen heeft geen zin
+    // only on profile of type PERSON and ORGANISATION
+    // At Most one
+    // 2 dezelfde kwaliteiten kiezen heeft geen zin => TODO: Deze moet in zijn algemeenheid worden opgelost bij tags denk ik
     
-    public Profile newQualityElementDropDown(
-            @ParameterLayout(named="dropDownValue")
-            final DropDownForProfileElement dropDown,
+    
+    @ActionLayout(
+            named="Kwaliteiten"
+            )
+    public ProfileElementTag newQualityTagElement(
             @ParameterLayout(named="weight")
             final Integer weight
             ){
-        profileElementDropDowns.newProfileElementDropDown(
-                "kwaliteit " + dropDown.title(), 
-                weight,
-                dropDown,
-                ProfileElementType.QUALITY, 
+        return profileElementTags.newProfileElementTag(
+                "kwaliteiten", 
+                weight, 
+                ProfileElementType.QUALITY_TAGS, 
                 this);
-        return this;
     }
     
-    public List<DropDownForProfileElement> autoComplete0NewQualityElementDropDown(String search) {
-        return dropDownForProfileElements.findDropDowns(search);
-    }
-    
-    public boolean hideNewQualityElementDropDown(
-            final DropDownForProfileElement dropDown,
-            final Integer weight
-            ){
+    public boolean hideNewQualityTagElement(final Integer weight){
+        // only on profile of type PERSON and ORGANSATION
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+            return true;
+        }
         
-        if (this.getProfileType() != ProfileType.PERSON_PROFILE){
+        // At Most one
+        QueryDefault<ProfileElementTag> query = 
+                QueryDefault.create(
+                        ProfileElementTag.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.QUALITY_TAGS,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
             return true;
         }
         
         return false;
     }
     
-    public String validateNewQualityElementDropDown(
-            final DropDownForProfileElement dropDown,
-            final Integer weight
-            ){
-        
-        if (this.getProfileType() != ProfileType.PERSON_PROFILE){
-            return "Alleen op persoons profiel";
+    public String validateNewQualityTagElement(final Integer weight){
+        // only on profile of type PERSON and ORGANSATION
+    	if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+            return "Alleen op persoons- of organisatie profiel";
         }
         
-        // twee dezelfde kwaliteiten heeft geen zin
-        QueryDefault<ProfileElementDropDown> query = 
+    	// At Most one
+        QueryDefault<ProfileElementTag> query = 
                 QueryDefault.create(
-                        ProfileElementDropDown.class, 
-                    "findProfileElementDropDownByOwnerProfileAndDropDownValue", 
-                    "dropDownValue", dropDown,
+                        ProfileElementTag.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.QUALITY_TAGS,
                     "profileElementOwner", this);
         if (container.firstMatch(query) != null) {
-            return "Deze kwaliteit heb je al gekozen";
+            return "Er mag maar een element met kwaliteiten zijn";
         }
         
         return null;
     }
+        
+    
+    
+    //END >> **QUALITY TAG** *******DEMAND/SUPPPLY PROFILE*******************//
+    
+//    //**KWALITEITEN*//
+//    //BUSINESSRULE
+//    // alleen tonen op profile van type PERSON
+//    // 2 dezelfde kwaliteiten kiezen heeft geen zin
+//    
+//    public Profile newQualityElementDropDown(
+//            @ParameterLayout(named="dropDownValue")
+//            final DropDownForProfileElement dropDown,
+//            @ParameterLayout(named="weight")
+//            final Integer weight
+//            ){
+//        profileElementDropDowns.newProfileElementDropDown(
+//                "kwaliteit " + dropDown.title(), 
+//                weight,
+//                dropDown,
+//                ProfileElementType.QUALITY, 
+//                this);
+//        return this;
+//    }
+//    
+//    public List<DropDownForProfileElement> autoComplete0NewQualityElementDropDown(String search) {
+//        return dropDownForProfileElements.findDropDowns(search);
+//    }
+//    
+//    public boolean hideNewQualityElementDropDown(
+//            final DropDownForProfileElement dropDown,
+//            final Integer weight
+//            ){
+//        
+//        if (this.getProfileType() != ProfileType.PERSON_PROFILE){
+//            return true;
+//        }
+//        
+//        return false;
+//    }
+//    
+//    public String validateNewQualityElementDropDown(
+//            final DropDownForProfileElement dropDown,
+//            final Integer weight
+//            ){
+//        
+//        if (this.getProfileType() != ProfileType.PERSON_PROFILE){
+//            return "Alleen op persoons profiel";
+//        }
+//        
+//        // twee dezelfde kwaliteiten heeft geen zin
+//        QueryDefault<ProfileElementDropDown> query = 
+//                QueryDefault.create(
+//                        ProfileElementDropDown.class, 
+//                    "findProfileElementDropDownByOwnerProfileAndDropDownValue", 
+//                    "dropDownValue", dropDown,
+//                    "profileElementOwner", this);
+//        if (container.firstMatch(query) != null) {
+//            return "Deze kwaliteit heb je al gekozen";
+//        }
+//        
+//        return null;
+//    }
     
     // LOKATIE (Postcode)
     // BUSINESSRULE

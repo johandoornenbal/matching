@@ -95,40 +95,6 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     	return ownerElement;
     }
     
-
-//    @ActionLayout(named="Nieuwe passie tag")
-//    @NotInServiceMenu
-//    public ProfileElement newPassionTagHolder_OLD(
-//            @ParameterLayout(
-//                    named = "ownerElement")
-//            final ProfileElement ownerElement,
-//            @ParameterLayout(
-//                    named = "tag")
-//            final Tag tag
-//            ){
-//        final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
-//        final UUID uuid=UUID.randomUUID();
-//        // administration of tag usage
-//        tag.setDateLastUsed(LocalDate.now());
-//        if (tag.getNumberOfTimesUsed()==null){
-//        	tag.setNumberOfTimesUsed(1);
-//        }
-//        else
-//        {
-//        	tag.setNumberOfTimesUsed(tag.getNumberOfTimesUsed()+1);
-//        }
-//        // END administration of tag usage
-//        newTagHolder.setUniqueItemId(uuid);
-//        newTagHolder.setOwnerElement(ownerElement);
-//        newTagHolder.setTag(tag);
-//        persist(newTagHolder);
-//        return ownerElement;
-//    }
-    
-//    public List<Tag> autoComplete1NewPassionTagHolder(final String search) {
-//        return tags.findTagAndCategoryContains(search, tagCategories.findTagCategoryMatches("passie").get(0));
-//    }
-    
     public boolean hideNewPassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
         // catch null value
     	if (ownerElement == null){
@@ -225,6 +191,76 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     }
     
     //END ************BRANCHE TAGS************************//
+    
+    //************QUALITY TAGS************************//
+    
+    //BUSINESSRULES:
+    // only on profile element with ProfileElementType = QUALITY_TAGS
+    // every tag choice at most once (no doubles)    TODO: nog maken voor tags in algemeenheid
+    @NotInServiceMenu
+    public ProfileElement newQualityTagHolder(
+            @ParameterLayout(
+                    named = "ownerElement")
+            final ProfileElement ownerElement,
+            @ParameterLayout(
+                  named = "tagProposalWord")
+    		final String tagProposalWord
+    		){
+    	Tag newTag;
+    	TagCategory tagCat = tagCategories.findTagCategoryMatches("kwaliteit").get(0);
+    	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).isEmpty()){
+    		//make a new tag
+    		newTag = tags.newTag(tagProposalWord, tagCat);
+    	} else {
+    		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).get(0);
+    	}
+    	
+        final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
+        final UUID uuid=UUID.randomUUID();
+        // administration of tag usage
+        newTag.setDateLastUsed(LocalDate.now());
+        if (newTag.getNumberOfTimesUsed()==null){
+        	newTag.setNumberOfTimesUsed(1);
+        }
+        else
+        {
+        	newTag.setNumberOfTimesUsed(newTag.getNumberOfTimesUsed()+1);
+        }
+        // END administration of tag usage
+        newTagHolder.setUniqueItemId(uuid);
+        newTagHolder.setOwnerElement(ownerElement);
+        newTagHolder.setTag(newTag);
+        persist(newTagHolder);
+    	
+    	return ownerElement;
+    }
+    
+    public boolean hideNewQualityTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
+        // catch null value
+    	if (ownerElement == null){
+    		return true;
+    	}
+    	// only on profile element with ProfileElementType = QUALITY_TAGS
+        if (ownerElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public String validateNewQualityTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
+        // only on profile element with ProfileElementType = QUALITY_TAGS
+        if (ownerElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS){
+            return null;
+        }
+        
+        // every tag choice at most once (no doubles)
+        //TODO: Nog maken
+        
+        return "Alleen op een Profiel Element van type 'QUALITY_TAGS'";
+    }
+    
+    //END ************QUALITY TAGS************************//
     
     @Programmatic
     public List<TagHolder> findTagHolder(final ProfileElement ownerElement, final Tag tag){

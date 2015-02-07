@@ -70,6 +70,16 @@ public class Profiles extends MatchingDomainService<Profile> {
         return allMatches("allDemandProfilesOfType","profileType",profileType);
     }
     
+    @ActionLayout(named="Zoek profiel ...")
+    @Programmatic
+    public List<Profile> searchNameOfProfilesOfTypeByOwner(String profileName, DemandOrSupply demandOrSupply, ProfileType profileType, String ownedBy) {
+        return allMatches("searchNameOfProfilesOfTypeByOwner",
+        		"profileName", profileName,
+        		"demandOrSupply", demandOrSupply ,
+        		"profileType",profileType, 
+        		"ownedBy", ownedBy);
+    }
+    
     @Programmatic
     public Profile newDemandProfile(
             final String demandProfileDescription,

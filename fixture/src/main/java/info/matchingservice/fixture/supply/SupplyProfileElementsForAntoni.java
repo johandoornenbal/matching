@@ -16,15 +16,23 @@ public class SupplyProfileElementsForAntoni extends SupplyProfileElementsAbstrac
         executeChild(new PersonForAntoni(), executionContext);
         executeChild(new SuppliesForAntoni(), executionContext);
         
-        createDropDownElement(
-                "Kwaliteit 1",
-                10,
-                dropDownForProfileElements.findDropDowns("box").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Leeuw*").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "antoni",
-                executionContext
-                );
+//        createDropDownElement(
+//                "Kwaliteit 1",
+//                10,
+//                dropDownForProfileElements.findDropDowns("box").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Leeuw*").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "antoni",
+//                executionContext
+//                );
+        
+        createQualityTagsElement(
+        		"Mijn kwaliteiten",
+        		10,
+        		persons.findPersons("Leeuw*").get(0).getMySupplies().last().getSupplyProfiles().first(),
+        		"antoni",
+        		executionContext
+        		);
     }
         
 

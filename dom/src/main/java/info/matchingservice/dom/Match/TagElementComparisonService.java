@@ -21,7 +21,6 @@ package info.matchingservice.dom.Match;
 
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementTag;
-import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Tags.Tag;
@@ -38,10 +37,10 @@ import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.NotContributed.As;
-import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.Render;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
@@ -60,28 +59,34 @@ import org.apache.isis.applib.annotation.SemanticsOf;
  * @version 0.1 04-02-2015
  */
 @DomainService
-public class BrancheElementComparisonService extends AbstractService {
+public class TagElementComparisonService extends AbstractService {
     // Thresholds
-    final Integer MATCHING_ElEMENT_THRESHOLD = 30;
+    final Integer MATCHING_ElEMENT_THRESHOLD = 20;
     
     @NotInServiceMenu
     @NotContributed(As.ACTION)
     @CollectionLayout(render=RenderType.EAGERLY)
-//    @Render(Type.EAGERLY) // because of bug @CollectionLayout
+    @Render(Type.EAGERLY) // because of bug @CollectionLayout
     @Action(semantics=SemanticsOf.SAFE)
     // Notabene: element is the profileElement on the DEMAND profile
     public List<ElementComparison> showElementMatches(ProfileElementTag element){
         
         List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
         
-        //Init Test: Only if there are any Profiles
-        if (container.allInstances(ProfileElementText.class).isEmpty()) {
+        //Init Test: Only if there are any ProfileElements
+        if (container.allInstances(ProfileElementTag.class).isEmpty()) {
             return elementMatches;
         }
         
         // look at all the corresponding profileELements on SUPPLY profiles
         for (ProfileElementTag e : container.allInstances(ProfileElementTag.class)) {
-            if (e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  (e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE || e.getProfileElementOwner().getProfileType() == ProfileType.ORGANISATION_PROFILE) && e.getProfileElementType() == ProfileElementType.BRANCHE_TAGS){
+            if (
+            		e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  
+            		(e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE || 
+            		e.getProfileElementOwner().getProfileType() == ProfileType.ORGANISATION_PROFILE) && 
+            		(e.getProfileElementType() == ProfileElementType.BRANCHE_TAGS || 
+            		e.getProfileElementType() == ProfileElementType.QUALITY_TAGS)
+            		){
                 // uitsluiten van dezelfde owner
                 if (!e.getOwnedBy().equals(element.getOwnedBy())){
                     Integer matchValue = 0;

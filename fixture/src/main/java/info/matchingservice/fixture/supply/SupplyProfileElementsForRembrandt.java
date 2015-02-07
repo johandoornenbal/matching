@@ -15,26 +15,34 @@ public class SupplyProfileElementsForRembrandt extends SupplyProfileElementsAbst
         //preqs
         executeChild(new PersonForRembrandt(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
+//        
+//        createDropDownElement(
+//                "Kwaliteit leidinggevend",
+//                10,
+//                dropDownForProfileElements.findDropDowns("leidinggevend").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Rijn").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "rembrandt",
+//                executionContext
+//                );
+//        
+//        createDropDownElement(
+//                "Kwaliteit nieuwsgierig",
+//                10,
+//                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
+//                ProfileElementType.QUALITY,
+//                persons.findPersons("Rijn").get(0).getMySupplies().last().getSupplyProfiles().first(),
+//                "rembrandt",
+//                executionContext
+//                );
         
-        createDropDownElement(
-                "Kwaliteit leidinggevend",
-                10,
-                dropDownForProfileElements.findDropDowns("leidinggevend").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Rijn").get(0).getMySupplies().last().getSupplyProfiles().first(),
+        createQualityTagsElement(
+        		"Mijn kwaliteiten",
+        		10,
+        		persons.findPersons("Rijn").get(0).getMySupplies().last().getSupplyProfiles().first(),
                 "rembrandt",
-                executionContext
-                );
-        
-        createDropDownElement(
-                "Kwaliteit nieuwsgierig",
-                10,
-                dropDownForProfileElements.findDropDowns("nieuwsgierig").get(0),
-                ProfileElementType.QUALITY,
-                persons.findPersons("Rijn").get(0).getMySupplies().last().getSupplyProfiles().first(),
-                "rembrandt",
-                executionContext
-                );
+        		executionContext
+        		);
     }
     
         
