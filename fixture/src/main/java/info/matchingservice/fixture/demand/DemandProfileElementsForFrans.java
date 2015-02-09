@@ -20,7 +20,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         createQualityTagsElement(
         		"kwaliteit oorlogszuchtig",
         		10,
-        		persons.findPersons("Hals").get(0).getDemandsOfActor().last().getDemandProfiles().last(),
+        		persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().last(),
         		"frans",
         		executionContext
         		);
@@ -29,7 +29,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         createPassionTagsElement(
                 "Passie steekwoorden", 
                 10, 
-                persons.findPersons("Hals").get(0).getDemandsOfActor().last().getDemandProfiles().last(), 
+                persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().last(), 
                 "frans", 
                 executionContext
                 );
@@ -38,7 +38,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         createQualityTagsElement(
         		"kwaliteit nieuwsgierig",
         		10,
-        		persons.findPersons("Hals").get(0).getDemandsOfActor().last().getDemandProfiles().first(),
+        		persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().first(),
         		"frans",
         		executionContext
         		);
@@ -46,7 +46,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         createBrancheTagsElement(
                 "Branche steekwoorden", 
                 10, 
-                persons.findPersons("Hals").get(0).getDemandsOfActor().last().getDemandProfiles().first(), 
+                persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().first(), 
                 "frans", 
                 executionContext
                 );

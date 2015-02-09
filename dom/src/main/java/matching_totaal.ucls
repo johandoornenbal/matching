@@ -437,7 +437,7 @@
   </association>  
   <association id="91">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="92" name="supplyAssessments"/>      
+      <attribute id="92" name="collectSupplyAssessments"/>      
       <multiplicity id="93" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
@@ -473,7 +473,7 @@
   </association>  
   <association id="104">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="105" name="supplyProfiles"/>      
+      <attribute id="105" name="collectSupplyProfiles"/>      
       <multiplicity id="106" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="19" navigable="true"/>    

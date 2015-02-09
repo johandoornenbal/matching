@@ -19,7 +19,7 @@ public class SupplyProfilesForFrans extends SupplyProfileAbstract {
                 "Mijn persoonlijke profiel",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getSuppliesOfActor().last(),
+                persons.findPersons("Hals").get(0).getCollectSupplies().last(),
                 "frans",
                 executionContext
                 );

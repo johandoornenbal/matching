@@ -20,7 +20,7 @@ public abstract class AssessmentAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Assessment newAssessment = assessments.newDemandAssessment(targetObject, ownerActor, description, feedback, ownedBy);
+        Assessment newAssessment = assessments.createDemandAssessment(targetObject, ownerActor, description, feedback, ownedBy);
         
         return executionContext.add(this, newAssessment);
     }

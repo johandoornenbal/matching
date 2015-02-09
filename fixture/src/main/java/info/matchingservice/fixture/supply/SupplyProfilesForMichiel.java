@@ -19,7 +19,7 @@ public class SupplyProfilesForMichiel extends SupplyProfileAbstract {
                 "Mijn persoonlijke profiel",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Ruyter").get(0).getSuppliesOfActor().first(),
+                persons.findPersons("Ruyter").get(0).getCollectSupplies().first(),
                 "michiel",
                 executionContext
                 );

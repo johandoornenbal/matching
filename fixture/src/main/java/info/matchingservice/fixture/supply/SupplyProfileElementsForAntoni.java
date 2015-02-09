@@ -20,7 +20,7 @@ public class SupplyProfileElementsForAntoni extends SupplyProfileElementsAbstrac
         createQualityTagsElement(
         		"Mijn kwaliteiten",
         		10,
-        		persons.findPersons("Leeuw").get(0).getSuppliesOfActor().last().getSupplyProfiles().first(),
+        		persons.findPersons("Leeuw").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first(),
         		"antoni",
         		executionContext
         		);

@@ -19,7 +19,7 @@ public class DemandProfilesForRembrandt extends DemandProfileAbstract {
                 "Gezocht: soldaat die wil poseren",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Rijn").get(0).getDemandsOfActor().first(),
+                persons.findPersons("Rijn").get(0).getCollectDemands().first(),
                 "rembrandt",
                 executionContext
                 );
@@ -28,7 +28,7 @@ public class DemandProfilesForRembrandt extends DemandProfileAbstract {
                 "Gezocht: Figurant voor de Nachtwacht",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Rijn").get(0).getDemandsOfActor().last(),
+                persons.findPersons("Rijn").get(0).getCollectDemands().last(),
                 "rembrandt",
                 executionContext
                 );

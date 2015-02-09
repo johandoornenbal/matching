@@ -19,7 +19,7 @@ public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstra
         createQualityTagsElement(
         		"kwaliteit out of the box en dapper",
         		10,
-        		persons.findPersons("Ruyter").get(0).getDemandsOfActor().last().getDemandProfiles().first(),
+        		persons.findPersons("Ruyter").get(0).getCollectDemands().last().getCollectDemandProfiles().first(),
         		"michiel",
         		executionContext
         		);

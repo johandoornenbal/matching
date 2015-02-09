@@ -20,7 +20,7 @@ public class DemandProfileElementsForRembrandt extends DemandProfileElementsAbst
         createQualityTagsElement(
         		"kwaliteit geduldig en oorlogszuchtig",
         		10,
-        		persons.findPersons("Rijn").get(0).getDemandsOfActor().last().getDemandProfiles().last(),
+        		persons.findPersons("Rijn").get(0).getCollectDemands().last().getCollectDemandProfiles().last(),
         		"rembrandt",
         		executionContext
         		);

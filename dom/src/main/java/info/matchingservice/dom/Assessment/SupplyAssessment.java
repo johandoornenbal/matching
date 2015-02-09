@@ -40,6 +40,7 @@ import org.apache.isis.applib.annotation.PropertyLayout;
         column = "discriminator")
 public class SupplyAssessment extends Assessment {
     
+	//** API: PROPERTIES **//
     private Supply target;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -52,5 +53,5 @@ public class SupplyAssessment extends Assessment {
     public void setTarget(final Supply object) {
         this.target = object;
     }       
-
+  	//-- API: PROPERTIES --//
 }

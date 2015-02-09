@@ -122,7 +122,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void findProfile() throws Exception {
             Integer maxindex = demands.allDemands().size() - 1;
             d1 = demands.allDemands().get(maxindex);
-            pf1=d1.getDemandProfiles().first();
+            pf1=d1.getCollectDemandProfiles().first();
             assertThat(pf1.getProfileName(), is(DEMAND_PROFILE_DESCRIPTION));  
             assertThat(pf1.getWeight(), is(WEIGHT)); 
             assertThat(pf1.getProfileType(), is(PROFILE_TYPE));
@@ -160,7 +160,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void findProfile() throws Exception {
             Integer maxindex = supplies.allSupplies().size() - 1;
             s1 = supplies.allSupplies().get(maxindex);
-            pf1=s1.getSupplyProfiles().first();
+            pf1=s1.getCollectSupplyProfiles().first();
             assertThat(pf1.getProfileName(), is(SUPPLY_PROFILE_DESCRIPTION));  
             assertThat(pf1.getWeight(), is(WEIGHT)); 
             assertThat(pf1.getProfileType(), is(PROFILE_TYPE));

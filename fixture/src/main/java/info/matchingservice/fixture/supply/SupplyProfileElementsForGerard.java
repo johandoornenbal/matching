@@ -39,7 +39,7 @@ public class SupplyProfileElementsForGerard extends SupplyProfileElementsAbstrac
         createQualityTagsElement(
         		"Mijn kwaliteiten",
         		10,
-        		persons.findPersons("Dou").get(0).getSuppliesOfActor().last().getSupplyProfiles().first(),
+        		persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first(),
                 "gerard",
         		executionContext
         		);
@@ -47,7 +47,7 @@ public class SupplyProfileElementsForGerard extends SupplyProfileElementsAbstrac
         createBranche(
         		"Branche voor Gerard", 
         		10, 
-        		persons.findPersons("Dou").get(0).getSuppliesOfActor().last().getSupplyProfiles().first(), 
+        		persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first(), 
         		"gerard", 
         		executionContext
         		);

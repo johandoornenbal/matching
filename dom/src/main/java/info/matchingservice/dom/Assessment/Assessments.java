@@ -33,26 +33,27 @@ import javax.inject.Inject;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 
 
-@DomainService(repositoryFor = Assessment.class)
-@Hidden
+@DomainService(repositoryFor = Assessment.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 public class Assessments extends MatchingDomainService<Assessment> {
 
     public Assessments() {
         super(Assessments.class, Assessment.class);
     }
     
+    @Programmatic
     public List<Assessment> allAssessments(){
         return allInstances();
     }
     
-    @NotInServiceMenu
-    public Assessment newDemandAssessment(
+    //** API: ACTIONS **//
+    
+    //** createDemandAssessment **//
+    public Assessment createDemandAssessment(
             @ParameterLayout(named="target")
             final Demand target,
             @ParameterLayout(named="assessmentDescription")
@@ -60,22 +61,12 @@ public class Assessments extends MatchingDomainService<Assessment> {
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-        final DemandFeedback newAs = newTransientInstance(DemandFeedback.class);
-        final UUID uuid=UUID.randomUUID();
-        newAs.setUniqueItemId(uuid);
-        newAs.setTarget(target);
-        newAs.setTargetOwnerActor(target.getDemandOwner());
-        newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
-        newAs.setAssessmentDescription(assessmentDescription);
-        newAs.setFeedback(feedback);
-        newAs.setOwnedBy(currentUserName());
-        persist(newAs);
-        return newAs;
+    	return createDemandAssessment(target, target.getDemandOwner(), assessmentDescription, feedback, currentUserName());
     }
     
-    //BUSINESS RULE
-    //Geen feedback op eigen demand
-    public boolean hideNewDemandAssessment(
+    // Business rule:
+    // No feedback on own demand
+    public boolean hideCreateDemandAssessment(
             final Demand target,
             final String assessmentDescription,
             final String feedback            
@@ -86,30 +77,10 @@ public class Assessments extends MatchingDomainService<Assessment> {
         
         return false;
     }
+    //-- createDemandAssessment --//
     
-    @Programmatic
-    public Assessment newDemandAssessment(
-            final Demand targetObject,
-            final Actor ownerActor,
-            final String description,
-            final String feedback,
-            final String ownedBy
-            ){
-        final DemandFeedback newAs = newTransientInstance(DemandFeedback.class);
-        final UUID uuid=UUID.randomUUID();
-        newAs.setUniqueItemId(uuid);
-        newAs.setTarget(targetObject);
-        newAs.setTargetOwnerActor(targetObject.getDemandOwner());
-        newAs.setOwnerActor(ownerActor);
-        newAs.setAssessmentDescription(description);
-        newAs.setFeedback(feedback);
-        newAs.setOwnedBy(ownedBy);
-        persist(newAs);
-        return newAs;
-    }
-    
-    @NotInServiceMenu
-    public Assessment newSupplyAssessment(
+    //** createSupplyAssessment **//
+    public Assessment createSupplyAssessment(
             @ParameterLayout(named="target")
             final Supply target,
             @ParameterLayout(named="assessmentDescription")
@@ -117,22 +88,12 @@ public class Assessments extends MatchingDomainService<Assessment> {
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-        final SupplyFeedback newAs = newTransientInstance(SupplyFeedback.class);
-        final UUID uuid=UUID.randomUUID();
-        newAs.setUniqueItemId(uuid);
-        newAs.setTarget(target);
-        newAs.setTargetOwnerActor(target.getSupplyOwner());
-        newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
-        newAs.setAssessmentDescription(assessmentDescription);
-        newAs.setFeedback(feedback);
-        newAs.setOwnedBy(currentUserName());
-        persist(newAs);
-        return newAs;
+        return createSupplyAssessment(target, target.getSupplyOwner(), assessmentDescription, feedback, currentUserName());
     }
     
     //BUSINESS RULE
     //Geen feedback op eigen supply
-    public boolean hideNewSupplyAssessment(
+    public boolean hideCreateSupplyAssessment(
             final Supply targetObject,
             final String description,
             final String feedback            
@@ -143,30 +104,10 @@ public class Assessments extends MatchingDomainService<Assessment> {
         
         return false;
     }
+    //-- createSupplyAssessment --//
     
-    @Programmatic
-    public Assessment newSupplyAssessment(
-            final Supply targetObject,
-            final Actor ownerActor,
-            final String description,
-            final String feedback,
-            final String ownedBy
-            ){
-        final SupplyFeedback newAs = newTransientInstance(SupplyFeedback.class);
-        final UUID uuid=UUID.randomUUID();
-        newAs.setUniqueItemId(uuid);
-        newAs.setTarget(targetObject);
-        newAs.setTargetOwnerActor(targetObject.getSupplyOwner());
-        newAs.setOwnerActor(ownerActor);
-        newAs.setAssessmentDescription(description);
-        newAs.setFeedback(feedback);
-        newAs.setOwnedBy(ownedBy);
-        persist(newAs);
-        return newAs;
-    }    
-    
-    @NotInServiceMenu
-    public Assessment newProfileAssessment(
+    //** createProfileAssessment **//
+    public Assessment createProfileAssessment(
             @ParameterLayout(named="target")
             final Profile target,
             @ParameterLayout(named="assessmentDescription")
@@ -193,7 +134,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
     
     //BUSINESS RULE
     //Geen feedback op eigen profile
-    public boolean hideNewProfileAssessment(
+    public boolean hideCreateProfileAssessment(
             final Profile targetObject,
             final String description,
             final String feedback            
@@ -204,20 +145,70 @@ public class Assessments extends MatchingDomainService<Assessment> {
         
         return false;
     }
+    //-- createProfileAssessment --//
     
+    //-- API: ACTIONS --//
 
-    
-    
-    //Region> Helpers ///////////////////////////////
+    //** HELPERS **//
+    //** HELPERS: generic service helpers **//
     private String currentUserName() {
         return container.getUser().getName();
     }
+    //-- HELPERS: generic service helpers --//
+    //** HELPERS: programmatic actions **//
     
-    // Region>injections ////////////////////////////
+    @Programmatic
+    public Assessment createDemandAssessment(
+            final Demand targetObject,
+            final Actor ownerActor,
+            final String description,
+            final String feedback,
+            final String ownedBy
+            ){
+        final DemandFeedback newAs = newTransientInstance(DemandFeedback.class);
+        final UUID uuid=UUID.randomUUID();
+        newAs.setUniqueItemId(uuid);
+        newAs.setTarget(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getDemandOwner());
+        newAs.setOwnerActor(ownerActor);
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
+        newAs.setOwnedBy(ownedBy);
+        persist(newAs);
+        return newAs;
+    }
+    
+    @Programmatic
+    public Assessment createSupplyAssessment(
+            final Supply targetObject,
+            final Actor ownerActor,
+            final String description,
+            final String feedback,
+            final String ownedBy
+            ){
+        final SupplyFeedback newAs = newTransientInstance(SupplyFeedback.class);
+        final UUID uuid=UUID.randomUUID();
+        newAs.setUniqueItemId(uuid);
+        newAs.setTarget(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getSupplyOwner());
+        newAs.setOwnerActor(ownerActor);
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
+        newAs.setOwnedBy(ownedBy);
+        persist(newAs);
+        return newAs;
+    }    
+    
+  	//-- HELPERS: programmatic actions --// 
+    
+    //-- HELPERS --//
+    
+	//** INJECTIONS **//
     @javax.inject.Inject
     private DomainObjectContainer container;
     
     @Inject
     private Persons persons;
+	//-- INJECTIONS --//
 
 }

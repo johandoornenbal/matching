@@ -200,7 +200,7 @@ public class Organisation extends Actor {
     
     //Region> SUPPLIES /////////////////////////////////////////////////////////////   
     
-    public Profile newOrganisationSupply(){
+    public Profile createOrganisationSupply(){
         return createSupplyAndProfile("Organisatie profiel van " + this.title(), 10, DemandSupplyType.ORGANISATION_DEMANDSUPPLY, this, "Organisatie profiel", 10, null, null, ProfileType.ORGANISATION_PROFILE, currentUserName());
     }
     
@@ -208,11 +208,11 @@ public class Organisation extends Actor {
     // Je kunt alleen een Organisatieprofiel aanmaken als je
     // - eigenaar bent
     // - nog geen persoonssupply hebt
-    public boolean hideNewOrganisationSupply(){
+    public boolean hideCreateOrganisationSupply(){
         return hideNewOrganisationSupply("", this);
     }
     
-    public String validateNewOrganisationSupply(){
+    public String validateCreateOrganisationSupply(){
         return validateNewOrganisationSupply("", this);
     }
     
@@ -268,7 +268,7 @@ public class Organisation extends Actor {
     //Region> DEMAND /////////////////////////////////////////////////////////////
     
     // method myDemands() is on Actor
-    public boolean hideDemandsOfActor() {
+    public boolean hideCollectDemands() {
         return !getIsPrincipal();
     }
     

@@ -39,6 +39,7 @@ import org.apache.isis.applib.annotation.PropertyLayout;
         column = "discriminator")
 public class DemandAssessment extends Assessment {
     
+	//** API: PROPERTIES **//
     private Demand target;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -51,5 +52,5 @@ public class DemandAssessment extends Assessment {
     public void setTarget(final Demand object) {
         this.target = object;
     }       
-
+	//-- API: PROPERTIES --//
 }

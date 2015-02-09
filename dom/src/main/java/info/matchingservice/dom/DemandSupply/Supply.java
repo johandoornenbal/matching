@@ -130,35 +130,35 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
 	//** API: COLLECTIONS **//
     
     //** supplyProfiles **//
-    private SortedSet<Profile> supplyProfiles = new TreeSet<Profile>();
+    private SortedSet<Profile> collectSupplyProfiles = new TreeSet<Profile>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "supplyProfileOwner", dependentElement = "true")
-    public SortedSet<Profile> getSupplyProfiles() {
-        return supplyProfiles;
+    public SortedSet<Profile> getCollectSupplyProfiles() {
+        return collectSupplyProfiles;
     }
     
-    public void setSupplyProfiles(final SortedSet<Profile> supplyProfile){
-        this.supplyProfiles = supplyProfile;
+    public void setCollectSupplyProfiles(final SortedSet<Profile> supplyProfile){
+        this.collectSupplyProfiles = supplyProfile;
     }
     //-- supplyProfiles --//
     
     //** supplyAssessments **//
-    private SortedSet<SupplyAssessment> supplyAssessments = new TreeSet<SupplyAssessment>();
+    private SortedSet<SupplyAssessment> collectSupplyAssessments = new TreeSet<SupplyAssessment>();
     
     @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
     @Persistent(mappedBy = "target", dependentElement = "true")
-    public SortedSet<SupplyAssessment> getSupplyAssessments() {
-        return supplyAssessments;
+    public SortedSet<SupplyAssessment> getCollectSupplyAssessments() {
+        return collectSupplyAssessments;
     }
    
-    public void setSupplyAssessments(final SortedSet<SupplyAssessment> assessment) {
-        this.supplyAssessments = assessment;
+    public void setCollectSupplyAssessments(final SortedSet<SupplyAssessment> assessment) {
+        this.collectSupplyAssessments = assessment;
     }
     
     // Business rule: 
     // only visible for inner-circle
-    public boolean hideSupplyAssessments() {
+    public boolean hideCollectSupplyAssessments() {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- supplyAssessments --//

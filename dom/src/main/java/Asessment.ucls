@@ -110,7 +110,7 @@
   </generalization>  
   <association id="15">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="16" name="supplyAssessments"/>      
+      <attribute id="16" name="collectSupplyAssessments"/>      
       <multiplicity id="17" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    

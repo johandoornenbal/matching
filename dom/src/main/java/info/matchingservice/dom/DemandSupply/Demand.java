@@ -172,35 +172,35 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 	//** API: COLLECTIONS **//
 	
 	//** demandProfiles **//
-    private SortedSet<Profile> demandProfiles = new TreeSet<Profile>();
+    private SortedSet<Profile> collectDemandProfiles = new TreeSet<Profile>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
-    public SortedSet<Profile> getDemandProfiles() {
-        return demandProfiles;
+    public SortedSet<Profile> getCollectDemandProfiles() {
+        return collectDemandProfiles;
     }
     
-    public void setDemandProfiles(final SortedSet<Profile> vac){
-        this.demandProfiles = vac;
+    public void setCollectDemandProfiles(final SortedSet<Profile> vac){
+        this.collectDemandProfiles = vac;
     }
     //-- demandProfiles --//
     
     //** demandAssessments **//
-    private SortedSet<DemandAssessment> demandAssessments = new TreeSet<DemandAssessment>();
+    private SortedSet<DemandAssessment> collectDemandAssessments = new TreeSet<DemandAssessment>();
     
     @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
     @Persistent(mappedBy = "target", dependentElement = "true")
-    public SortedSet<DemandAssessment> getDemandAssessments() {
-        return demandAssessments;
+    public SortedSet<DemandAssessment> getCollectDemandAssessments() {
+        return collectDemandAssessments;
     }
    
-    public void setDemandAssessments(final SortedSet<DemandAssessment> demandAssessment) {
-        this.demandAssessments = demandAssessment;
+    public void setCollectDemandAssessments(final SortedSet<DemandAssessment> demandAssessment) {
+        this.collectDemandAssessments = demandAssessment;
     }
     
     // Business rule: 
     // only visible for inner-circle
-    public boolean hideDemandAssessments() {
+    public boolean hideCollectDemandAssessments() {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }  
     //-- demandAssessments --//

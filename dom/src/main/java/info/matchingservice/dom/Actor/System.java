@@ -193,7 +193,7 @@ public class System extends Actor {
     //Region> DEMAND /////////////////////////////////////////////////////////////
     
     // method myDemands() is on Actor
-    public boolean hideDemandsOfActor() {
+    public boolean hideCollectDemands() {
         return !getIsPrincipal();
     }
     

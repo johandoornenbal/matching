@@ -182,34 +182,34 @@ public class Person extends Actor {
     //** API: COLLECTIONS **//
     
     //** personalContacts **//
-    private SortedSet<PersonalContact> personalContacts = new TreeSet<PersonalContact>();
+    private SortedSet<PersonalContact> collectPersonalContacts = new TreeSet<PersonalContact>();
     
     @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
     @CollectionLayout(named="Persoonlijke contacten", render=RenderType.EAGERLY)
-    public SortedSet<PersonalContact> getPersonalContacts() {
-        return personalContacts;
+    public SortedSet<PersonalContact> getCollectPersonalContacts() {
+        return collectPersonalContacts;
     }
     
-    public void setPersonalContacts(final SortedSet<PersonalContact> personalContacts) {
-        this.personalContacts = personalContacts;
+    public void setCollectPersonalContacts(final SortedSet<PersonalContact> personalContacts) {
+        this.collectPersonalContacts = personalContacts;
     }
     
     // Business rule: 
     // only visible for inner-circle
-    public boolean hidePersonalContacts(){
+    public boolean hideCollectPersonalContacts(){
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- personalContacts --//
     
     //** personsReferringToActiveUser **//
     @CollectionLayout(named="Personen verwijzend naar mij", render=RenderType.EAGERLY)
-    public List<PersonalContact> getPersonsReferringToActiveUser(){
+    public List<PersonalContact> getCollectPersonsReferringToActiveUser(){
     	return pcontacts.allPersonalContactsReferringToUser(currentUserName());
     }
     
     // business rule:
     // show only on person object of Active User
-    public boolean hidePersonsReferringToActiveUser(){
+    public boolean hideCollectPersonsReferringToActiveUser(){
     	if (getOwnedBy().equals(currentUserName())){
     		return false;
     	} else {
@@ -222,7 +222,7 @@ public class Person extends Actor {
     //** suppliesOfActor **//
     // Business rule:
     // - hide if not role student or professional
-    public boolean hideSuppliesOfActor(){
+    public boolean hideCollectSupplies(){
         
         if (!(getIsStudent() || getIsProfessional() )){
             return true;
@@ -235,7 +235,7 @@ public class Person extends Actor {
     //** demandsOfActor **//
     // Business rule:
     // Je moet minimaal INNERCIRCLE zijn om de demands te zien
-    public boolean hideDemandsOfActor() { 
+    public boolean hideCollectDemands() { 
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- demandsOfActor --//
@@ -286,7 +286,7 @@ public class Person extends Actor {
     
     //** newPersonsSupplyAndProfile **//
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public Profile newPersonsSupplyAndProfile(){
+    public Profile createPersonsSupplyAndProfile(){
         return createSupplyAndProfile("Persoonlijke profiel van " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "Mijn persoonlijke profiel", 10, null, null, ProfileType.PERSON_PROFILE, currentUserName());
     }
     
@@ -295,11 +295,11 @@ public class Person extends Actor {
     // - eigenaar bent
     // - rol Student of Professional hebt
     // - nog geen persoonssupply hebt
-    public boolean hideNewPersonsSupplyAndProfile(){
+    public boolean hideCreatePersonsSupplyAndProfile(){
         return hideNewPersonsSupplyAndProfile("", this);
     }
     
-    public String validateNewPersonsSupplyAndProfile(){
+    public String validateCreatePersonsSupplyAndProfile(){
         return validateNewPersonsSupplyAndProfile("", this);
     }
     //-- newPersonsSupplyAndProfile --//
@@ -308,7 +308,7 @@ public class Person extends Actor {
     // Business rule: 
     // Je moet Opdrachtgever zijn om een tafel te starten
     @ActionLayout(named="Start nieuwe tafel")
-    public Demand newPersonsDemand(
+    public Demand createPersonsDemand(
             @ParameterLayout(named="demandDescription")
             final String demandDescription,
             @ParameterLayout(named="demandSummary", multiLine=3)
@@ -324,7 +324,7 @@ public class Person extends Actor {
         return createDemand(demandDescription, demandSummary, demandStory, demandAttachment, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
     }
     
-    public boolean hideNewPersonsDemand(
+    public boolean hideCreatePersonsDemand(
     		final String demandDescription,
     		final String demandSummary,
     		final String demandStory,
@@ -333,7 +333,7 @@ public class Person extends Actor {
         return hideCreateDemand(demandDescription, this);
     }
     
-    public String validateNewPersonsDemand(
+    public String validateCreatePersonsDemand(
     		final String demandDescription,
     		final String demandSummary,
     		final String demandStory,

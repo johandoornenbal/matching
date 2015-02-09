@@ -19,7 +19,7 @@ public class DemandProfilesForMichiel extends DemandProfileAbstract {
                 "Gezocht: wie maar wil",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Ruyter").get(0).getDemandsOfActor().first(),
+                persons.findPersons("Ruyter").get(0).getCollectDemands().first(),
                 "michiel",
                 executionContext
                 );

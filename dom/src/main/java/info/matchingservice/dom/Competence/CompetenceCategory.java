@@ -83,16 +83,16 @@ public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory
         this.competenceCategoryDescription = competenceCategoryDescription;
     }
     
-    private SortedSet<Competence> competences = new TreeSet<Competence>();
+    private SortedSet<Competence> collectCompetences = new TreeSet<Competence>();
     
     @Persistent(mappedBy = "competenceCategory", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<Competence> getCompetences() {
-        return competences;
+    public SortedSet<Competence> getCollectCompetences() {
+        return collectCompetences;
     }
     
-    public void setCompetences(final SortedSet<Competence> competences){
-        this.competences = competences;
+    public void setCollectCompetences(final SortedSet<Competence> competences){
+        this.collectCompetences = competences;
     }
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory
     }
     
     public String validateDeleteCompetenceCategory(boolean areYouSure) {
-        if (!this.getCompetences().isEmpty()){
+        if (!this.getCollectCompetences().isEmpty()){
             return "Er zijn nog competenties in deze catagorie. Verwijder deze eerst!";
         }
         return areYouSure? null:"Geef aan of je wilt verwijderen";

@@ -40,6 +40,7 @@ import org.apache.isis.applib.annotation.PropertyLayout;
         column = "discriminator")
 public class ProfileAssessment extends Assessment {
     
+	//** API: PROPERTIES **//
     private Profile target;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -52,5 +53,5 @@ public class ProfileAssessment extends Assessment {
     public void setTarget(final Profile object) {
         this.target = object;
     }       
-
+    //-- API: PROPERTIES --//
 }

@@ -20,17 +20,17 @@ public class BrancheTagsForFrans extends TagsAbstract {
         
         
         createBranchTagHolder(
-                persons.findPersons("Hals").get(0).getDemandsOfActor().last().getDemandProfiles().first().getProfileElement().first(), 
+                persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().first().getProfileElement().first(), 
                 "kunst", 
                 executionContext
                 );
         createBranchTagHolder(
-                persons.findPersons("Hals").get(0).getDemandsOfActor().last().getDemandProfiles().first().getProfileElement().first(), 
+                persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().first().getProfileElement().first(), 
                 "schilderkunst", 
                 executionContext
                 );
         createBranchTagHolder(
-                persons.findPersons("Hals").get(0).getDemandsOfActor().last().getDemandProfiles().first().getProfileElement().first(), 
+                persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().first().getProfileElement().first(), 
                 "iets_anders", 
                 executionContext
                 );

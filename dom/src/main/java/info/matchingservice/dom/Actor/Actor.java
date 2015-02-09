@@ -44,17 +44,12 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.value.Blob;
 import org.joda.time.LocalDate;
@@ -95,89 +90,89 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 	//** API: COLLECTIONS **//
 	
 	//** demandsOfActor **//
-    private SortedSet<Demand> demandsOfActor = new TreeSet<Demand>();
+    private SortedSet<Demand> collectDemands = new TreeSet<Demand>();
     
     @CollectionLayout(named="Vraag", render=RenderType.EAGERLY)
     @Persistent(mappedBy = "demandOwner", dependentElement = "true")
-    public SortedSet<Demand> getDemandsOfActor() {
-        return demandsOfActor;
+    public SortedSet<Demand> getCollectDemands() {
+        return collectDemands;
     }
    
-    public void setDemandsOfActor(final SortedSet<Demand> demandsOfActor) {
-        this.demandsOfActor = demandsOfActor;
+    public void setCollectDemands(final SortedSet<Demand> demandsOfActor) {
+        this.collectDemands = demandsOfActor;
     }   
     //-- demandsOfActor --//
     
     //** suppliesOfActor **//
-    private SortedSet<Supply> suppliesOfActor = new TreeSet<Supply>();
+    private SortedSet<Supply> collectSupplies = new TreeSet<Supply>();
     
     @CollectionLayout(named="Aanbod", render=RenderType.EAGERLY)
     @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
-    public SortedSet<Supply> getSuppliesOfActor() {
-        return suppliesOfActor;
+    public SortedSet<Supply> getCollectSupplies() {
+        return collectSupplies;
     }
    
-    public void setSuppliesOfActor(final SortedSet<Supply> suppliesOfActor) {
-        this.suppliesOfActor = suppliesOfActor;
+    public void setCollectSupplies(final SortedSet<Supply> suppliesOfActor) {
+        this.collectSupplies = suppliesOfActor;
     }
     //-- suppliesOfActor --//
     
     //** savedMatchesOfActor **//
-    private SortedSet<ProfileMatch> savedMatchesOfActor = new TreeSet<ProfileMatch>();
+    private SortedSet<ProfileMatch> collectSavedMatches = new TreeSet<ProfileMatch>();
     
     @Persistent(mappedBy = "ownerActor", dependentElement = "true")
     @CollectionLayout(named="Mijn bewaarde 'matches'", render=RenderType.EAGERLY)
-    public SortedSet<ProfileMatch> getSavedMatchesOfActor() {
-        return savedMatchesOfActor;
+    public SortedSet<ProfileMatch> getCollectSavedMatches() {
+        return collectSavedMatches;
     }
     
-    public void setSavedMatchesOfActor(final SortedSet<ProfileMatch> savedMatchesOfActor){
-        this.savedMatchesOfActor = savedMatchesOfActor;
+    public void setCollectSavedMatches(final SortedSet<ProfileMatch> savedMatchesOfActor){
+        this.collectSavedMatches = savedMatchesOfActor;
     }
     
     //Business rule: 
     //only visible for inner-circle
-    public boolean hideSavedMatchesOfActor(){
+    public boolean hideCollectSavedMatches(){
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- savedMatchesOfActor --//
     
     //** assessmentsGivenByActor **//
-    private SortedSet<Assessment> assessmentsGivenByActor = new TreeSet<Assessment>();
+    private SortedSet<Assessment> collectAssessmentsGivenByActor = new TreeSet<Assessment>();
     
     @Persistent(mappedBy = "ownerActor", dependentElement = "true")
     @CollectionLayout(named="Feedback die ik gegeven heb", render=RenderType.EAGERLY)
-    public SortedSet<Assessment> getAssessmentsGivenByActor() {
-        return assessmentsGivenByActor;
+    public SortedSet<Assessment> getCollectAssessmentsGivenByActor() {
+        return collectAssessmentsGivenByActor;
     }
     
-    public void setAssessmentsGivenByActor(final SortedSet<Assessment> assessmentsGivenByActor){
-        this.assessmentsGivenByActor = assessmentsGivenByActor;
+    public void setCollectAssessmentsGivenByActor(final SortedSet<Assessment> assessmentsGivenByActor){
+        this.collectAssessmentsGivenByActor = assessmentsGivenByActor;
     }
     
     //Business rule: 
     //only visible for intimate-circle
-    public boolean hideAssessmentsGivenByActor(){
+    public boolean hideCollectAssessmentsGivenByActor(){
         return super.allowedTrustLevel(TrustLevel.INTIMATE);
     }
     //-- assessmentsGivenByActor --//
     
     //** assessmentsGivenByActor **//
-    private SortedSet<Assessment> assessmentsReceivedByActor = new TreeSet<Assessment>();
+    private SortedSet<Assessment> collectAssessmentsReceivedByActor = new TreeSet<Assessment>();
     
     @Persistent(mappedBy = "targetOwnerActor", dependentElement = "true")
     @CollectionLayout(named="Feedback die ik ontvangen heb", render=RenderType.EAGERLY)
-    public SortedSet<Assessment> getAssessmentsReceivedByActor() {
-        return assessmentsReceivedByActor;
+    public SortedSet<Assessment> getCollectAssessmentsReceivedByActor() {
+        return collectAssessmentsReceivedByActor;
     }
     
-    public void setAssessmentsReceivedByActor(final SortedSet<Assessment> assessmentsReceivedByActor){
-        this.assessmentsReceivedByActor = assessmentsReceivedByActor;
+    public void setCollectAssessmentsReceivedByActor(final SortedSet<Assessment> assessmentsReceivedByActor){
+        this.collectAssessmentsReceivedByActor = assessmentsReceivedByActor;
     }
     
     // Business rule: 
     // only visible for inner-circle
-    public boolean hideAssessmentsReceivedByActor(){
+    public boolean hideCollectAssessmentsReceivedByActor(){
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }    
     //-- assessmentsGivenByActor --//

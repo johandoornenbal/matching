@@ -29,6 +29,7 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 
 public class SupplyFeedback extends SupplyAssessment {
     
+	//** API: PROPERTIES **//
     private String feedback;
     
     @PropertyLayout(multiLine=3)
@@ -40,5 +41,5 @@ public class SupplyFeedback extends SupplyAssessment {
     public void setFeedback(final String feedback) {
         this.feedback = feedback;
     }
-
+    //-- API: PROPERTIES --//
 }
