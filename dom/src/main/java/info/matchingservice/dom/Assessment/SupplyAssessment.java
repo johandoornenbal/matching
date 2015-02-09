@@ -41,17 +41,17 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 public class SupplyAssessment extends Assessment {
     
 	//** API: PROPERTIES **//
-    private Supply target;
+    private Supply targetOfAssessment;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Doel")
+    @PropertyLayout()
     @Property(editing=Editing.DISABLED)
-    public Supply getTarget() {
-        return target;
+    public Supply getTargetOfAssessment() {
+        return targetOfAssessment;
     }
     
-    public void setTarget(final Supply object) {
-        this.target = object;
+    public void setTargetOfAssessment(final Supply object) {
+        this.targetOfAssessment = object;
     }       
   	//-- API: PROPERTIES --//
 }

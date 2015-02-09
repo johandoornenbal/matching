@@ -24,28 +24,26 @@ import java.util.List;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.query.QueryDefault;
 
-@DomainService(repositoryFor = OrganisationRole.class)
-@Hidden
-@DomainServiceLayout(named="Organisatie Rollen", menuOrder="20")
+@DomainService(repositoryFor = OrganisationRole.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 public class OrganisationRoles extends MatchingDomainService<OrganisationRole> {
 
     public OrganisationRoles() {
         super(OrganisationRoles.class, OrganisationRole.class);
     }
     
-    public OrganisationRole newRole(final OrganisationRoleType role, final Organisation roleOwner){
-        return newRole(role, roleOwner, currentUserName());
+    public OrganisationRole createRole(final OrganisationRoleType role, final Organisation roleOwner){
+        return createRole(role, roleOwner, currentUserName());
     }
     
-    public String validateNewRole(final OrganisationRoleType role, final Organisation roleOwner){
-        return validateNewRole(role, roleOwner, currentUserName());
+    public String validateCreateRole(final OrganisationRoleType role, final Organisation roleOwner){
+        return validateCreateRole(role, roleOwner, currentUserName());
     }
     
+    @Programmatic
     public List<OrganisationRole> allRoles() {
         return container.allInstances(OrganisationRole.class);
     }
@@ -57,7 +55,7 @@ public class OrganisationRoles extends MatchingDomainService<OrganisationRole> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public OrganisationRole newRole(final OrganisationRoleType role, final Organisation roleOwner, final String userName) {
+    public OrganisationRole createRole(final OrganisationRoleType role, final Organisation roleOwner, final String userName) {
         OrganisationRole newrole = newTransientInstance(OrganisationRole.class);
         newrole.setRole(role);
         newrole.setRoleOwner(roleOwner);
@@ -67,7 +65,7 @@ public class OrganisationRoles extends MatchingDomainService<OrganisationRole> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public String validateNewRole(final OrganisationRoleType role, final Organisation roleOwner, final String userName){
+    public String validateCreateRole(final OrganisationRoleType role, final Organisation roleOwner, final String userName){
         QueryDefault<OrganisationRole> query = 
                 QueryDefault.create(
                         OrganisationRole.class, 
@@ -75,7 +73,7 @@ public class OrganisationRoles extends MatchingDomainService<OrganisationRole> {
                     "roleOwner", roleOwner,
                     "role", role);        
         return container.firstMatch(query) != null?
-        "This role you already have"        
+        "ONE_INSTANCE_AT_MOST"        
         :null;
     }
     

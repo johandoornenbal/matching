@@ -147,7 +147,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     private SortedSet<SupplyAssessment> collectSupplyAssessments = new TreeSet<SupplyAssessment>();
     
     @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
-    @Persistent(mappedBy = "target", dependentElement = "true")
+    @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
     public SortedSet<SupplyAssessment> getCollectSupplyAssessments() {
         return collectSupplyAssessments;
     }
@@ -185,17 +185,17 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     @ActionLayout(named="Aanbod verwijderen")
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Actor deleteSupply(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         container.informUser("Supply deleted");
         return getSupplyOwner();
     }
     
-    public String validateDeleteSupply(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDeleteSupply(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     //-- deleteSupply --//
     

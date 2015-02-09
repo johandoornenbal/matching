@@ -72,7 +72,6 @@ public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout(
-            named="Competentie categorie",
             describedAs="Verzameling van aantal competenties om op te matchen",
             typicalLength=80)
     public String getCompetenceCategoryDescription() {
@@ -97,25 +96,23 @@ public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @ActionLayout(
-            named = "Competentie categorie verwijderen"
-            )
+    @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public List<CompetenceCategory> DeleteCompetenceCategory(
-            @ParameterLayout(named="areYouSure")
+    public List<CompetenceCategory> deleteCompetenceCategory(
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         container.informUser("Competentie categorie verwijderd");
         return competenceCategories.allCompetenceCategories();
     }
     
-    public String validateDeleteCompetenceCategory(boolean areYouSure) {
+    public String validateDeleteCompetenceCategory(boolean confirmDelete) {
         if (!this.getCollectCompetences().isEmpty()){
-            return "Er zijn nog competenties in deze catagorie. Verwijder deze eerst!";
+            return "REMOVE_DEPENDENCIES_FIRST";
         }
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////

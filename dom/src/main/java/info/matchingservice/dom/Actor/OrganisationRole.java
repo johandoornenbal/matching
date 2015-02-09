@@ -68,9 +68,9 @@ public class OrganisationRole extends Role {
     
     // Region //// Delete action //////////////////////////////
     public List<OrganisationRole> delete(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure,
+            boolean confirmDelete,
             Organisation organisation
             ) {
         container.removeIfNotAlready(this);
@@ -83,8 +83,8 @@ public class OrganisationRole extends Role {
         return container.allMatches(query);
     }
     
-    public String validateDelete(boolean areYouSure, Organisation organisation) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDelete(boolean confirmDelete, Organisation organisation) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     // Region //// injections ///////////////////////////////////

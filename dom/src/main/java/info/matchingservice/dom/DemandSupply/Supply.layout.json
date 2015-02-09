@@ -13,11 +13,12 @@
             		"numberOfLines" : "3"
             	},
             	"actions" : {
-            		"editSupplyDescription" : {
+            		"updateSupply" : {
             			"named" : {
-            				"value" : "Bewerk de omschrijving"
+            				"value" : "Bewerk het aanbod"
             			}
-            		}
+            		},
+            		"deleteSupply" : {}
             	}
             },
             "supplyOwner": {
@@ -40,7 +41,7 @@
     {
       "span": 8,
       "collections": {
-        "supplyProfiles": {
+        "collectSupplyProfiles": {
         	"named" : {
         		"value" : "Aanbod profielen"
         	},
@@ -49,7 +50,7 @@
             	"newCourseSupplyProfile": {}
             }
         },
-        "assessments": {
+        "collectSupplyAssessments": {
         	"named" : {
         		"value" : "Onvangen feedback"
         	},
@@ -59,7 +60,7 @@
     }
   ],
   "actions": {
-  		"newSupplyAssessment" : {
+  		"createSupplyAssessment" : {
       		"named" : {
       			"value" : "Geef feedback"
       		}

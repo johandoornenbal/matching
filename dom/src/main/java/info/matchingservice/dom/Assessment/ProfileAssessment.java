@@ -41,17 +41,17 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 public class ProfileAssessment extends Assessment {
     
 	//** API: PROPERTIES **//
-    private Profile target;
+    private Profile targetOfAssessment;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Doel")
+    @PropertyLayout()
     @Property(editing=Editing.DISABLED)
-    public Profile getTarget() {
-        return target;
+    public Profile getTargetOfAssessment() {
+        return targetOfAssessment;
     }
     
-    public void setTarget(final Profile object) {
-        this.target = object;
+    public void setTargetOfAssessment(final Profile object) {
+        this.targetOfAssessment = object;
     }       
     //-- API: PROPERTIES --//
 }

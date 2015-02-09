@@ -42,7 +42,7 @@ import org.apache.isis.applib.query.QueryDefault;
 import com.google.common.base.Objects;
 
 @DomainService(repositoryFor = PersonalContact.class, nature=NatureOfService.DOMAIN)
-@DomainServiceLayout(named="Personal Contacts", menuOrder="13")
+@DomainServiceLayout(menuOrder="13")
 public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     
     public PersonalContacts() {
@@ -167,7 +167,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     public String validateCreatePersonalContact(final Person contactPerson) {
         
         if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
-            return "Contact maken met jezelf heeft geen zin.";
+            return "NO_USE";
         }
         
         QueryDefault<PersonalContact> query = 
@@ -177,7 +177,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
                     "ownedBy", currentUserName(),
                     "contact", contactPerson.getOwnedBy());
         return container.firstMatch(query) != null?
-        "Dit contact heb je al gemaakt. Pas het eventueel aan in plaats van een nieuwe te maken."        
+        "ONE_INSTANCE_AT_MOST"        
         :null;
     }
     //-- HIDDEN: ACTIONS --//    

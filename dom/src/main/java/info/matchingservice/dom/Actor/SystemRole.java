@@ -44,17 +44,6 @@ import org.apache.isis.applib.query.QueryDefault;
 })
 public class SystemRole extends Role {
     
-//    private String ownedBy;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "false")
-//    public String getOwnedBy() {
-//        return ownedBy;
-//    }
-//    
-//    public void setOwnedBy(final String owner) {
-//        this.ownedBy=owner;
-//    }
-    
     private SystemRoleType role;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -68,9 +57,9 @@ public class SystemRole extends Role {
     
     // Region //// Delete action //////////////////////////////
     public List<SystemRole> delete(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure) {
+            boolean confirmDelete) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");
         QueryDefault<SystemRole> query =
@@ -81,8 +70,8 @@ public class SystemRole extends Role {
         return container.allMatches(query);
     }
     
-    public String validateDelete(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDelete(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     // Region //// injections ///////////////////////////////////

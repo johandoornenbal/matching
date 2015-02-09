@@ -164,16 +164,16 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     }
     
     public Profile deleteMatch(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         return this.getDemandProfile();
     }
     
-    public String validateDeleteMatch(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDeleteMatch(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
 // Injects

@@ -47,14 +47,14 @@ import com.google.common.collect.Lists;
 
 
 @DomainService(repositoryFor = Person.class, nature=NatureOfService.DOMAIN)
-@DomainServiceLayout(named="Personen", menuOrder="10")
+@DomainServiceLayout(menuOrder="10")
 public class Persons extends MatchingDomainService<Person> {
     
     public Persons() {
         super(Persons.class, Person.class);
     }
    
-    @ActionLayout(named="Maak jezelf aan als persoon in het systeem")
+    @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Person createPerson(
             @ParameterLayout(named="firstName")
@@ -91,13 +91,12 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @MemberOrder(sequence="5")
-    @ActionLayout(named="Dit ben jij ...", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     public List<Person> activePerson() {
         return activePerson(currentUserName());
     }
     
-    @MemberOrder(sequence="10")
-    @ActionLayout(named="Alle personen", hidden=Where.ANYWHERE)
+    @Programmatic
     public List<Person> allPersons() {
         return allInstances();
     }
@@ -105,7 +104,7 @@ public class Persons extends MatchingDomainService<Person> {
     
     //region > otherPersons (contributed collection)
     @MemberOrder(sequence="110")
-    @ActionLayout(named="Alle andere personen", hidden=Where.ANYWHERE, contributed=Contributed.AS_ASSOCIATION)
+    @ActionLayout(hidden=Where.ANYWHERE, contributed=Contributed.AS_ASSOCIATION)
     @Action(semantics=SemanticsOf.SAFE)
     public List<Person> AllOtherPersons(final Person personMe) {
         final List<Person> allPersons = allPersons();
@@ -123,7 +122,7 @@ public class Persons extends MatchingDomainService<Person> {
     
     
     @MemberOrder(sequence="105")
-    @ActionLayout(named="Vind op overeenkomst achternaam", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     public List<Person> findPersons(
             @ParameterLayout(named="searchInLastName")
             final String lastName
@@ -186,7 +185,7 @@ public class Persons extends MatchingDomainService<Person> {
                     "findPersonUnique", 
                     "ownedBy", userName);        
         return container.firstMatch(query) != null?
-        "Je hebt jezelf al aangemaakt. Pas je gegevens eventueel aan in plaats van hier een nieuwe te maken."        
+        "ONE_INSTANCE_AT_MOST"        
         :null;
         
     }

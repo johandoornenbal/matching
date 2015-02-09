@@ -27,7 +27,7 @@ import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.query.QueryDefault;
 
 @DomainService(repositoryFor = MatchingTrustedContact.class)
-@DomainServiceLayout(named="Contacts", menuOrder="40")
+@DomainServiceLayout(menuOrder="40")
 public class MatchingTrustedContacts extends MatchingDomainService<MatchingTrustedContact> {
     
     public MatchingTrustedContacts() {

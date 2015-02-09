@@ -189,7 +189,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private SortedSet<DemandAssessment> collectDemandAssessments = new TreeSet<DemandAssessment>();
     
     @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
-    @Persistent(mappedBy = "target", dependentElement = "true")
+    @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
     public SortedSet<DemandAssessment> getCollectDemandAssessments() {
         return collectDemandAssessments;
     }
@@ -252,17 +252,17 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     @ActionLayout(named="Vraag verwijderen")
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Actor deleteDemand(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         container.informUser("Demand deleted");
         return getDemandOwner();
     }
     
-    public String validateDeleteDemand(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDeleteDemand(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     //-- DeleteDemand --//
     

@@ -62,17 +62,17 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     /**
      * Should be overridden for use on specific Object Type
      */
-    private Object target;
+    private Object targetOfAssessment;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
-    @PropertyLayout(named="Assessment op")
-    public Object getTarget() {
-        return target;
+    @PropertyLayout()
+    public Object getTargetOfAssessment() {
+        return targetOfAssessment;
     }
     
-    public void setTarget(final Object object) {
-        this.target = object;
+    public void setTargetOfAssessment(final Object object) {
+        this.targetOfAssessment = object;
     }
     //-- target --//
     
@@ -80,7 +80,7 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     private Actor targetOwnerActor;
     
     @Property(editing=Editing.DISABLED)
-    @PropertyLayout(named="Gericht aan")
+    @PropertyLayout()
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Actor getTargetOwnerActor(){
         return targetOwnerActor;
@@ -92,17 +92,17 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     //-- targetOwnerActor --//	
     
     //** ownerActor **//
-    private Actor ownerActor;
+    private Actor assessmentOwnerActor;
     
     @Property(editing=Editing.DISABLED)
-    @PropertyLayout(named="Afzender")
+    @PropertyLayout()
     @javax.jdo.annotations.Column(allowsNull = "true")
-    public Actor getOwnerActor(){
-        return ownerActor;
+    public Actor getAssessmentOwnerActor(){
+        return assessmentOwnerActor;
     }
     
-    public void setOwnerActor(final Actor owner) {
-        this.ownerActor = owner;
+    public void setAssessmentOwnerActor(final Actor owner) {
+        this.assessmentOwnerActor = owner;
     }
     //-- ownerActor --//
     
@@ -110,7 +110,7 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     private String assessmentDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Titel - korte omschrijving")
+    @PropertyLayout()
     public String getAssessmentDescription() {
         return assessmentDescription;
     }
@@ -126,18 +126,18 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
 	//** API: ACTIONS **//
     
     //** deleteAssessment **//
-    @ActionLayout(named="Verwijder assessment")
+    @ActionLayout()
     public void deleteAssessment(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         container.informUser("Assessment verwijderd");
     }
     
-    public String validateDeleteAssessment(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDeleteAssessment(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     //-- deleteAssessment --//
     
@@ -165,7 +165,7 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
 	//** HELPERS **//
     //** HELPERS: generic object helpers **//
     public String title() {
-        return getTarget().toString() + " - " + getAssessmentDescription();
+        return getTargetOfAssessment().toString() + " - " + getAssessmentDescription();
     }
 	//-- HELPERS: generic object helpers --//
 	//** HELPERS: programmatic actions **//

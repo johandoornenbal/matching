@@ -133,7 +133,7 @@
   </generalization>  
   <association id="14">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="15" name="profileElement"/>      
+      <attribute id="15" name="collectProfileElements"/>      
       <multiplicity id="16" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    

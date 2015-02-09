@@ -24,36 +24,36 @@ public class TagsForMichiel extends TagsAbstract {
         
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
                 "dapper", 
                 executionContext
                 );
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
                 "out of the box", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getProfileElement().first(),
+        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(),
                 "bloeddorstig", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
                 "doortastend", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
                 "leidinggevend", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
                 "oorlogszuchtig", 
                 executionContext
                 );

@@ -172,20 +172,20 @@ public class Tag extends MatchingDomainObject<Tag> {
     
     @PropertyLayout(named = "Tag verwijderen")
     public List<Tag> DeleteTag(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         container.informUser("Tag verwijderd");
         return tags.allTags();
     }
     
-    public String validateDeleteTag(boolean areYouSure) {
+    public String validateDeleteTag(boolean confirmDelete) {
     	if (getNumberOfTimesUsed()>0){
     		return "Oeps! Deze tag is nog in gebruik. Verwijderen gaat nu niet.";
     	}
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////

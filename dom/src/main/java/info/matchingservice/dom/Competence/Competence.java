@@ -71,7 +71,6 @@ public class Competence extends MatchingMutableObject<Competence> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout(
-            named="Competentie",
             describedAs="Omschrijving in zo min mogelijk woorden; liefst slechts een.",
             typicalLength=80)
     @MemberOrder(sequence="2")
@@ -88,7 +87,6 @@ public class Competence extends MatchingMutableObject<Competence> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout(
-            named="Competentie categorie",
             describedAs="Kies de categorie")
     @MemberOrder(sequence="3")
     public CompetenceCategory getCompetenceCategory(){
@@ -116,20 +114,20 @@ public class Competence extends MatchingMutableObject<Competence> {
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @ActionLayout(named = "Competentie verwijderen")
+    @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public List<Competence> DeleteCompetence(
-            @ParameterLayout(named="areYouSure")
+    public List<Competence> deleteCompetence(
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         container.informUser("Competentie verwijderd");
         return competences.allCompetences();
     }
     
-    public String validateDeleteCompetence(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDeleteCompetence(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////

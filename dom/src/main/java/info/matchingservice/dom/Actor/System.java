@@ -18,8 +18,6 @@
  */
 package info.matchingservice.dom.Actor;
 
-import info.matchingservice.dom.DemandSupply.DemandSupplyType;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -70,7 +68,7 @@ public class System extends Actor {
     
     @MemberOrder(sequence = "10")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Systeem naam")
+    @PropertyLayout()
     public String getSystemName() {
         return systemName;
     }
@@ -83,7 +81,7 @@ public class System extends Actor {
         
     // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region
     
-    @ActionLayout(named="Rol Opdrachtgever")
+    @ActionLayout()
     @MemberOrder(sequence = "60")
     public System addRolePrincipal() {
         addRolePrincipal(currentUserName());
@@ -94,7 +92,7 @@ public class System extends Actor {
         return hideAddRolePrincipal(this, currentUserName());
     }
     
-    @ActionLayout(named="Geen opdrachtgever meer")
+    @ActionLayout()
     @MemberOrder(sequence = "61")
     public System deleteRolePrincipal() {
         deleteRolePrincipal(currentUserName());
@@ -123,7 +121,7 @@ public class System extends Actor {
         return container.allMatches(query);
     }
     
-    @PropertyLayout(named="Rollen", multiLine=2)
+    @PropertyLayout(multiLine=2)
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsPrincipal()) {
@@ -150,7 +148,7 @@ public class System extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void addRolePrincipal(String ownedBy) {
-        roles.newRole(SystemRoleType.PRINCIPAL, ownedBy);
+        roles.createRole(SystemRoleType.PRINCIPAL, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures

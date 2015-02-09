@@ -31,7 +31,7 @@ public abstract class OrganisationAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext   
             ) {
-        OrganisationRole newRole = roles.newRole(role, roleOwner, user);
+        OrganisationRole newRole = roles.createRole(role, roleOwner, user);
         return executionContext.add(this,newRole);
     }
     

@@ -50,7 +50,7 @@ public class RoleTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            r1 = roles.newRole(ROLE, USERNAME);
+            r1 = roles.createRole(ROLE, USERNAME);
         }
         
         @Test
@@ -73,13 +73,13 @@ public class RoleTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            r1 = roles.newRole(ROLE, USERNAME);
+            r1 = roles.createRole(ROLE, USERNAME);
         }
         
         @Test
-        public void testValidateNewRole() throws Exception {
-            assertThat(roles.validateNewRole(ROLE, USERNAME), is("This role you already have"));
-            assertTrue(roles.validateNewRole(ROLE, "xyz") == null);
+        public void testValidateCreateRole() throws Exception {
+            assertThat(roles.validateCreateRole(ROLE, USERNAME), is("ONE_INSTANCE_AT_MOST"));
+            assertTrue(roles.validateCreateRole(ROLE, "xyz") == null);
         }
     }
     

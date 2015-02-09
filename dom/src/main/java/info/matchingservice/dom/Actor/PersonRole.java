@@ -55,8 +55,8 @@ public class PersonRole extends Role {
     
     // Region //// Delete action //////////////////////////////
     public List<PersonRole> delete(
-            @ParameterLayout(named="areYouSure")
-            boolean areYouSure) {
+            @ParameterLayout(named="confirmDelete")
+            boolean confirmDelete) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");
         QueryDefault<PersonRole> query =
@@ -67,8 +67,8 @@ public class PersonRole extends Role {
         return container.allMatches(query);
     }
     
-    public String validateDelete(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDelete(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     // Region //// injections ///////////////////////////////////

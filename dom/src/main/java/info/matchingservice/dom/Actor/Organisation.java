@@ -23,24 +23,19 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
-
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -64,23 +59,14 @@ import org.apache.isis.applib.util.TitleBuffer;
 
 @DomainObject(autoCompleteRepository=Organisations.class, autoCompleteAction="autoComplete")
 public class Organisation extends Actor {
-    
-    @Override
-    public String title() {
-        return getOrganisationName();
-    }
-    
-    public String toString() {
-        return organisationName;
-    }
-    
-    
-    //Region> organisationName /////////////////////////////////////////////////
+ 
+	//** API: PROPERTIES **//
+	
+	//** organisationName **//
     private String organisationName;
     
     @MemberOrder(sequence = "10")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Organisatie naam")
     public String getOrganisationName() {
         return organisationName;
     }
@@ -88,53 +74,10 @@ public class Organisation extends Actor {
     public void setOrganisationName(final String fn) {
         this.organisationName = fn;
     }
+    //-- organisationName --//
     
-
-    //Region> ROLES /////////////////////////////////////////////////
-        
-    // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region
-    
-    @MemberOrder(sequence = "60")
-    @ActionLayout(named="Rol Opdrachtgever")
-    public Organisation addRolePrincipal() {
-        addRolePrincipal(currentUserName());
-        return this;
-    }
-    
-    public boolean hideAddRolePrincipal() {
-        return hideAddRolePrincipal(this, currentUserName());
-    }
-
-    @ActionLayout(named="Geen opdrachtgever meer")
-    @MemberOrder(sequence = "61")
-    public Organisation deleteRolePrincipal() {
-        deleteRolePrincipal(this);
-        return this;
-    }
-    
-    public boolean hideDeleteRolePrincipal() {
-        return hideDeleteRolePrincipal(this, currentUserName());
-    }
-    
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public Boolean getIsPrincipal() {
-        return getIsPrincipal(this);
-    }
-    
-    // ALL My Roles
-    
-    @MemberOrder(sequence = "100")
-    @CollectionLayout(hidden=Where.EVERYWHERE, render=RenderType.EAGERLY)
-    public List<OrganisationRole> getAllMyRoles() {
-        QueryDefault<OrganisationRole> query =
-                QueryDefault.create(
-                        OrganisationRole.class,
-                        "findMyRoles",
-                        "roleOwner", this);
-        return container.allMatches(query);
-    }
-    
-    @PropertyLayout(named="Rollen", multiLine=2)
+    //** roles **//
+    @PropertyLayout(multiLine=2)
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsPrincipal()) {
@@ -145,8 +88,58 @@ public class Organisation extends Actor {
         }
         return tb.toString();
     }
+    //-- roles --//
     
-    // Role PRINCIPAL helpers
+	//-- API: PROPERTIES --//
+    
+	//** API: COLLECTIONS **//
+    
+    // method CollectDemands() is on Actor
+    public boolean hideCollectDemands() {
+        return !getIsPrincipal();
+    }
+    
+	//-- API: COLLECTIONS --//
+    
+	//** API: ACTIONS **//
+    
+    //** createOrganisationSupply **//
+    public Profile createOrganisationSupply(){
+        return createSupplyAndProfile("ORGANISATION_SUPPLY_OF " + this.title(), 10, DemandSupplyType.ORGANISATION_DEMANDSUPPLY, this, "ORGANISATION_PROFILE", 10, null, null, ProfileType.ORGANISATION_PROFILE, currentUserName());
+    }
+    
+    // Business rule:
+    // Je kunt alleen een Organisatieprofiel aanmaken als je
+    // - eigenaar bent
+    // - nog geen persoonssupply hebt
+    public boolean hideCreateOrganisationSupply(){
+        return hideCreateOrganisationSupply("", this);
+    }
+    
+    public String validateCreateOrganisationSupply(){
+        return validateCreateOrganisationSupply("", this);
+    }
+    //-- createOrganisationSupply --//
+
+	//-- API: ACTIONS --//
+
+    
+	//** HELPERS **//
+    
+    //** HELPERS: generic object helpers **//
+    
+    @Override
+    public String title() {
+        return getOrganisationName();
+    }
+    
+    public String toString() {
+        return organisationName;
+    }
+	
+    //-- HELPERS: generic object helpers --//
+	
+    //** HELPERS: programmatic actions **//
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsPrincipal(Organisation ownerOrganisation) {
@@ -161,7 +154,7 @@ public class Organisation extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void addRolePrincipal(String ownedBy) {
-        roles.newRole(OrganisationRoleType.PRINCIPAL, this, ownedBy);
+        roles.createRole(OrganisationRoleType.PRINCIPAL, this, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -194,36 +187,10 @@ public class Organisation extends Actor {
         }
         //if person has not role Principal
         return !getIsPrincipal(ownerPerson);
-    }  
-            
-    //END Region> ROLES /////////////////////////////////////////////////
-    
-    //Region> SUPPLIES /////////////////////////////////////////////////////////////   
-    
-    public Profile createOrganisationSupply(){
-        return createSupplyAndProfile("Organisatie profiel van " + this.title(), 10, DemandSupplyType.ORGANISATION_DEMANDSUPPLY, this, "Organisatie profiel", 10, null, null, ProfileType.ORGANISATION_PROFILE, currentUserName());
     }
     
-    //BUSINESS RULE
-    // Je kunt alleen een Organisatieprofiel aanmaken als je
-    // - eigenaar bent
-    // - nog geen persoonssupply hebt
-    public boolean hideCreateOrganisationSupply(){
-        return hideNewOrganisationSupply("", this);
-    }
-    
-    public String validateCreateOrganisationSupply(){
-        return validateNewOrganisationSupply("", this);
-    }
-    
-    // Supply helpers
-    //BUSINESS RULE
-    // Je kunt alleen een Persoonprofiel aanmaken als je
-    // - eigenaar bent
-    // - rol Student of Professional hebt
-    // - nog geen persoonssupply hebt
     @Programmatic
-    public boolean hideNewOrganisationSupply(final String needDescription, final Actor needOwner){
+    public boolean hideCreateOrganisationSupply(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
             return true;
@@ -245,10 +212,10 @@ public class Organisation extends Actor {
     }
     
     @Programmatic
-    public String validateNewOrganisationSupply(final String needDescription, final Actor needOwner){
+    public String validateCreateOrganisationSupply(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
-            return "Je bent niet de eigenaar";
+            return "NOT_THE_OWNER";
         }
      
         // if there is already a personal Supply
@@ -259,42 +226,65 @@ public class Organisation extends Actor {
                     "supplyOwner", needOwner,
                     "supplyType", DemandSupplyType.ORGANISATION_DEMANDSUPPLY);
         if (container.firstMatch(query) != null) {
-            return "Je hebt al een organisatie profiel";
+            return "ONE_INSTANCE_AT_MOST";
         }
         
         return null;
     }
-   
-    //Region> DEMAND /////////////////////////////////////////////////////////////
     
-    // method myDemands() is on Actor
-    public boolean hideCollectDemands() {
-        return !getIsPrincipal();
+    
+	//-- HELPERS: programmatic actions --// 
+	//-- HELPERS --//
+	//** INJECTIONS **//
+	//-- INJECTIONS --//
+    
+	//** HIDDEN: PROPERTIES **//
+    
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public Boolean getIsPrincipal() {
+        return getIsPrincipal(this);
+    }
+	
+    //-- HIDDEN: PROPERTIES --//
+	
+    //** HIDDEN: ACTIONS **//
+    
+    @MemberOrder(sequence = "60")
+    @ActionLayout(hidden=Where.ANYWHERE)
+    public Organisation addRolePrincipal() {
+        addRolePrincipal(currentUserName());
+        return this;
     }
     
-    // method NewDemand() is on Actor
-//    public boolean hideCreateDemand(final String needDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
-//        return hideCreateDemand(needDescription, this);
+    public boolean hideAddRolePrincipal() {
+        return hideAddRolePrincipal(this, currentUserName());
+    }
+
+    @ActionLayout(hidden=Where.ANYWHERE)
+    @MemberOrder(sequence = "61")
+    public Organisation deleteRolePrincipal() {
+        deleteRolePrincipal(this);
+        return this;
+    }
+    
+    public boolean hideDeleteRolePrincipal() {
+        return hideDeleteRolePrincipal(this, currentUserName());
+    }
+
+	//-- HIDDEN: ACTIONS --//
+
+//    @MemberOrder(sequence = "100")
+//    @CollectionLayout(hidden=Where.EVERYWHERE, render=RenderType.EAGERLY)
+//    public List<OrganisationRole> getAllMyRoles() {
+//        QueryDefault<OrganisationRole> query =
+//                QueryDefault.create(
+//                        OrganisationRole.class,
+//                        "findMyRoles",
+//                        "roleOwner", this);
+//        return container.allMatches(query);
 //    }
-        
-    //Need helpers
     
-    @Programmatic
-    public boolean hideCreateDemand(final String demandDescription, final Actor demandOwner){
-        // if you are not the owner
-        if (!demandOwner.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        // if you have not Principal Role
-        if (!((Organisation) demandOwner).getIsPrincipal()){
-            return true;
-        }
-        return false;
-    }
-    
-    //END Region> DEMAND /////////////////////////////////////////////////////////////
-    
-    // Region>HELPERS ////////////////////////////
+
     
     private String currentUserName() {
         return container.getUser().getName();

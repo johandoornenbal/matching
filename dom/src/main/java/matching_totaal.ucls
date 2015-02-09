@@ -245,7 +245,7 @@
   </generalization>  
   <association id="25">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="26" name="target"/>      
+      <attribute id="26" name="targetOfAssessment"/>      
       <multiplicity id="27" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="20" navigable="true"/>    
@@ -315,166 +315,158 @@
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="50">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="51" name="ownerActor"/>      
-      <multiplicity id="52" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="53">    
+  <generalization id="50">    
     <end type="SOURCE" refId="10"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <association id="54">    
+  <association id="51">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="55" name="supplyOwner"/>      
-      <multiplicity id="56" minimum="0" maximum="1"/>    
+      <attribute id="52" name="supplyOwner"/>      
+      <multiplicity id="53" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="57">    
+  <generalization id="54">    
     <end type="SOURCE" refId="14"/>    
     <end type="TARGET" refId="13"/>  
   </generalization>  
-  <generalization id="58">    
+  <generalization id="55">    
     <end type="SOURCE" refId="15"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <association id="59">    
+  <association id="56">    
     <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="60" name="supplyProfileOwner"/>      
-      <multiplicity id="61" minimum="0" maximum="1"/>    
+      <attribute id="57" name="supplyProfileOwner"/>      
+      <multiplicity id="58" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="62">    
+  <generalization id="59">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="6"/>  
   </generalization>  
-  <generalization id="63">    
+  <generalization id="60">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <association id="64">    
+  <association id="61">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="65" name="target"/>      
-      <multiplicity id="66" minimum="0" maximum="1"/>    
+      <attribute id="62" name="targetOfAssessment"/>      
+      <multiplicity id="63" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="67">    
+  <association id="64">    
     <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="68" name="profileElement"/>      
-      <multiplicity id="69" minimum="0" maximum="2147483647"/>    
+      <attribute id="65" name="collectProfileElements"/>      
+      <multiplicity id="66" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="70">    
+  <association id="67">    
     <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="71" name="matchingProfileElementOwner"/>      
-      <multiplicity id="72" minimum="0" maximum="1"/>    
+      <attribute id="68" name="matchingProfileElementOwner"/>      
+      <multiplicity id="69" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="73">    
+  <generalization id="70">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <association id="74">    
+  <association id="71">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="75" name="target"/>      
-      <multiplicity id="76" minimum="0" maximum="1"/>    
+      <attribute id="72" name="targetOfAssessment"/>      
+      <multiplicity id="73" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="77">    
+  <association id="74">    
     <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="78" name="demandProfiles"/>      
-      <multiplicity id="79" minimum="0" maximum="2147483647"/>    
+      <attribute id="75" name="demandProfiles"/>      
+      <multiplicity id="76" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="80">    
+  <generalization id="77">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <generalization id="81">    
+  <generalization id="78">    
     <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="15"/>  
   </generalization>  
-  <association id="82">    
+  <association id="79">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="83" name="profileElementOwner"/>      
-      <multiplicity id="84" minimum="0" maximum="1"/>    
+      <attribute id="80" name="profileElementOwner"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="85">    
+  <association id="82">    
     <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="86" name="assessments"/>      
-      <multiplicity id="87" minimum="0" maximum="2147483647"/>    
+      <attribute id="83" name="collectAssessments"/>      
+      <multiplicity id="84" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="88">    
+  <association id="85">    
     <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="89" name="demandOwner"/>      
-      <multiplicity id="90" minimum="0" maximum="1"/>    
+      <attribute id="86" name="demandOwner"/>      
+      <multiplicity id="87" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="91">    
+  <association id="88">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="92" name="collectSupplyAssessments"/>      
-      <multiplicity id="93" minimum="0" maximum="2147483647"/>    
+      <attribute id="89" name="collectSupplyAssessments"/>      
+      <multiplicity id="90" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="94">    
+  <generalization id="91">    
     <end type="SOURCE" refId="16"/>    
     <end type="TARGET" refId="6"/>  
   </generalization>  
-  <association id="95">    
+  <association id="92">    
     <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="96" name="demandProfileOwner"/>      
-      <multiplicity id="97" minimum="0" maximum="1"/>    
+      <attribute id="93" name="demandProfileOwner"/>      
+      <multiplicity id="94" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="98">    
+  <association id="95">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="99" name="mySupplies"/>      
-      <multiplicity id="100" minimum="0" maximum="2147483647"/>    
+      <attribute id="96" name="mySupplies"/>      
+      <multiplicity id="97" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="101">    
+  <association id="98">    
     <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="102" name="demandProfileElement"/>      
-      <multiplicity id="103" minimum="0" maximum="1"/>    
+      <attribute id="99" name="demandProfileElement"/>      
+      <multiplicity id="100" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="104">    
+  <association id="101">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="105" name="collectSupplyProfiles"/>      
-      <multiplicity id="106" minimum="0" maximum="2147483647"/>    
+      <attribute id="102" name="collectSupplyProfiles"/>      
+      <multiplicity id="103" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  

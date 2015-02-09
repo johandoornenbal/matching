@@ -92,7 +92,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 	//** demandsOfActor **//
     private SortedSet<Demand> collectDemands = new TreeSet<Demand>();
     
-    @CollectionLayout(named="Vraag", render=RenderType.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "demandOwner", dependentElement = "true")
     public SortedSet<Demand> getCollectDemands() {
         return collectDemands;
@@ -106,7 +106,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     //** suppliesOfActor **//
     private SortedSet<Supply> collectSupplies = new TreeSet<Supply>();
     
-    @CollectionLayout(named="Aanbod", render=RenderType.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
     public SortedSet<Supply> getCollectSupplies() {
         return collectSupplies;
@@ -121,7 +121,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     private SortedSet<ProfileMatch> collectSavedMatches = new TreeSet<ProfileMatch>();
     
     @Persistent(mappedBy = "ownerActor", dependentElement = "true")
-    @CollectionLayout(named="Mijn bewaarde 'matches'", render=RenderType.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     public SortedSet<ProfileMatch> getCollectSavedMatches() {
         return collectSavedMatches;
     }
@@ -140,8 +140,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     //** assessmentsGivenByActor **//
     private SortedSet<Assessment> collectAssessmentsGivenByActor = new TreeSet<Assessment>();
     
-    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
-    @CollectionLayout(named="Feedback die ik gegeven heb", render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "assessmentOwnerActor", dependentElement = "true")
+    @CollectionLayout(render=RenderType.EAGERLY)
     public SortedSet<Assessment> getCollectAssessmentsGivenByActor() {
         return collectAssessmentsGivenByActor;
     }
@@ -161,7 +161,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     private SortedSet<Assessment> collectAssessmentsReceivedByActor = new TreeSet<Assessment>();
     
     @Persistent(mappedBy = "targetOwnerActor", dependentElement = "true")
-    @CollectionLayout(named="Feedback die ik ontvangen heb", render=RenderType.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     public SortedSet<Assessment> getCollectAssessmentsReceivedByActor() {
         return collectAssessmentsReceivedByActor;
     }

@@ -731,17 +731,17 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     public Actor DeleteProfile( 
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-        boolean areYouSure) {
+        boolean confirmDelete) {
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
         return this.getActorOwner();
             
     }
 
-    public String validateDeleteProfile(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDeleteProfile(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     @ActionLayout(hidden=Where.EVERYWHERE, named="NewDropDownTest")
@@ -815,32 +815,32 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
        
     
     //Profile Elements ///////////////////////////////////////////////////////////////////////////////
-    private SortedSet<ProfileElement> profileElement = new TreeSet<ProfileElement>();
+    private SortedSet<ProfileElement> collectProfileElements = new TreeSet<ProfileElement>();
 
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "profileElementOwner", dependentElement = "true")
-    public SortedSet<ProfileElement> getProfileElement() {
-        return profileElement;
+    public SortedSet<ProfileElement> getCollectProfileElements() {
+        return collectProfileElements;
     }
     
-    public void setProfileElement(final SortedSet<ProfileElement> vac) {
-        this.profileElement = vac;
+    public void setCollectProfileElements(final SortedSet<ProfileElement> vac) {
+        this.collectProfileElements = vac;
     }
 
     //Assessments ///////////////////////////////////////////////////////////////////////////////
-    private SortedSet<ProfileAssessment> assessments = new TreeSet<ProfileAssessment>();
+    private SortedSet<ProfileAssessment> collectAssessments = new TreeSet<ProfileAssessment>();
 
     @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "target", dependentElement = "true")
-    public SortedSet<ProfileAssessment> getAssessments() {
-        return assessments;
+    @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
+    public SortedSet<ProfileAssessment> getCollectAssessments() {
+        return collectAssessments;
     }
 
-    public void setAssessments(final SortedSet<ProfileAssessment> assessment) {
-        this.assessments = assessment;
+    public void setCollectAssessments(final SortedSet<ProfileAssessment> assessment) {
+        this.collectAssessments = assessment;
     }
 
-    public boolean hideAssessments() {
+    public boolean hideCollectAssessments() {
         return this.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
    

@@ -29,7 +29,7 @@ import org.apache.isis.applib.annotation.Programmatic;
 
 
 @DomainService(repositoryFor = Actor.class, nature=NatureOfService.DOMAIN)
-@DomainServiceLayout(named="Actoren", menuOrder="10")
+@DomainServiceLayout(menuOrder="10")
 public class Actors extends MatchingDomainService<Actor> {
     
     public Actors() {

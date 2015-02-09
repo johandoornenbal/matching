@@ -51,39 +51,39 @@
     {
       "span": 8,
       "collections": {
-        "suppliesOfActor": {
+        "collectSupplies": {
             "actions": {
-            	"newPersonsSupplyAndProfile": {
+            	"createPersonsSupplyAndProfile": {
             		"named" : {
             				"value" : "Bied jezelf aan"
             			}
             	},
-            	"newCourseSupply": {
+            	"createCourseSupply": {
             	     "named" : {
             				"value" : "Nieuwe cursusaanbod"
             			}
             	}
             }
         },
-        "demandsOfActor": {
+        "collectDemands": {
           "actions": {
-          	"newPersonsDemand": {},
-          	"newCourseDemand": {}
+          	"createPersonsDemand": {},
+          	"createCourseDemand": {}
           }
         },     
-        "savedMatchesOfActor": {
+        "collectSavedMatches": {
           "actions": {}
         },
-        "assessmentsReceivedByActor": {
+        "collectAssessmentsReceivedByActor": {
           "actions": {}
         },
-        "personsReferringToMe": {
+        "collectPersonsReferringToActiveUser": {
         	"actions": {}
         },
-        "personalContacts": {
+        "collectPersonalContacts": {
         	"actions": {}
         },
-       	"assessmentsGivenByActor": {
+       	"collectAssessmentsGivenByActor": {
         	"actions": {}
         }                    
       }

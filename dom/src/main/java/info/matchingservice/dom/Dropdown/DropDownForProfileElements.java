@@ -29,10 +29,12 @@ import javax.inject.Inject;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Where;
 
-@DomainService(repositoryFor = DropDownForProfileElement.class)
+@DomainService(repositoryFor = DropDownForProfileElement.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
         named="Beheer",
         menuBar = DomainServiceLayout.MenuBar.PRIMARY,
@@ -44,12 +46,13 @@ public class DropDownForProfileElements extends MatchingDomainService<DropDownFo
         super(DropDownForProfileElements.class, DropDownForProfileElement.class);
     }
     
+    @Programmatic
     public List<DropDownForProfileElement> allProfileElementDropDowns(){
         return allInstances(DropDownForProfileElement.class);
     }
     
+    @Programmatic
     public List<DropDownForProfileElement> findDropDowns(
-            @ParameterLayout(named="value")
             final String value
             ) {
         return allMatches("matchDropDownByKeyWord", "value", value);
@@ -67,7 +70,7 @@ public class DropDownForProfileElements extends MatchingDomainService<DropDownFo
         return newProfileElementDropDown;
     }
     
-    @ActionLayout(named="Nieuwe kwaliteit")
+    @ActionLayout(named="Nieuwe kwaliteit", hidden=Where.EVERYWHERE)
     public DropDownForProfileElement newQualityDropDown(
             @ParameterLayout(named="value")
             final String value

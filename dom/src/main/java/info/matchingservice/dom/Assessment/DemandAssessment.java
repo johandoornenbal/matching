@@ -40,17 +40,17 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 public class DemandAssessment extends Assessment {
     
 	//** API: PROPERTIES **//
-    private Demand target;
+    private Demand targetOfAssessment;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Doel")
+    @PropertyLayout()
     @Property(editing=Editing.DISABLED)
-    public Demand getTarget() {
-        return target;
+    public Demand getTargetOfAssessment() {
+        return targetOfAssessment;
     }
     
-    public void setTarget(final Demand object) {
-        this.target = object;
+    public void setTargetOfAssessment(final Demand object) {
+        this.targetOfAssessment = object;
     }       
 	//-- API: PROPERTIES --//
 }

@@ -19,43 +19,33 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Utils.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.annotation.NotContributed.As;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
 
 @DomainService(repositoryFor = Organisation.class, nature=NatureOfService.DOMAIN)
-@DomainServiceLayout(named="Organisaties", menuOrder="15")
+@DomainServiceLayout(menuOrder="15")
 public class Organisations extends MatchingDomainService<Organisation> {
     
     public Organisations() {
         super(Organisations.class, Organisation.class);
     }
     
-    @ActionLayout(named="Maak een organisatie aan in het systeem", hidden=Where.EVERYWHERE)
+    @ActionLayout(hidden=Where.EVERYWHERE)
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Organisation createOrganisation(
             @ParameterLayout(named="organisationName")
@@ -66,14 +56,14 @@ public class Organisations extends MatchingDomainService<Organisation> {
     
     @MemberOrder(sequence="5")
     @Action(semantics=SemanticsOf.SAFE)
-    @ActionLayout(named="Dit zijn jouw organisaties ...", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     public List<Organisation> activePersonsOrganisations() {
         return activePersonsOrganisations(currentUserName());
     }
     
     @MemberOrder(sequence="10")
     @Action(semantics=SemanticsOf.SAFE)
-    @ActionLayout(named="Alle organisaties", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     public List<Organisation> allOrganisations() {
         return allInstances();
     }

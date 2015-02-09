@@ -89,9 +89,9 @@ public class TagHolder extends MatchingDomainObject<TagHolder> {
     
     @ActionLayout(named="Verwijder tag")
     public ProfileElement deleteTagHolder(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
     	// administration of tag usage
     	if (getTag().getNumberOfTimesUsed()!=null){
@@ -105,8 +105,8 @@ public class TagHolder extends MatchingDomainObject<TagHolder> {
         return getOwnerElement();
     }
     
-    public String validateDeleteTagHolder(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDeleteTagHolder(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     // Injects

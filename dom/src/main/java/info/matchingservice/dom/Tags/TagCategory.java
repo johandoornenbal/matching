@@ -117,9 +117,9 @@ public class TagCategory extends MatchingMutableObject<TagCategory> {
             named = "Tag categorie verwijderen"
             )
     public List<TagCategory> DeleteTagCategory(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         container.informUser("Competentie categorie verwijderd");
@@ -127,11 +127,11 @@ public class TagCategory extends MatchingMutableObject<TagCategory> {
     }
     
     //Businessrule: only an empty tagCategory can be deleted
-    public String validateDeleteTagCategory(boolean areYouSure) {
+    public String validateDeleteTagCategory(boolean confirmDelete) {
         if (!this.getTags().isEmpty()){
             return "Er zijn nog tags in deze catagorie. Verwijder deze eerst!";
         }
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////

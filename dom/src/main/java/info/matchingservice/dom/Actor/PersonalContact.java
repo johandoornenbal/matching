@@ -99,7 +99,7 @@ public class PersonalContact extends MatchingTrustedContact {
 	//** HELPERS **//
     //** HELPERS: generic object helpers **//
     public String title(){
-        return "Contact gelegd met " + getContactPerson().title();
+        return "CONTACT_WITH " + getContactPerson().title();
     }
 	//-- HELPERS: generic object helpers --//
 	//** HELPERS: programmatic actions **//

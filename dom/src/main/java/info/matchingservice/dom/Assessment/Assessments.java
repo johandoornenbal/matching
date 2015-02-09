@@ -54,24 +54,24 @@ public class Assessments extends MatchingDomainService<Assessment> {
     
     //** createDemandAssessment **//
     public Assessment createDemandAssessment(
-            @ParameterLayout(named="target")
-            final Demand target,
+            @ParameterLayout(named="targetOfAssessment")
+            final Demand targetOfAssessment,
             @ParameterLayout(named="assessmentDescription")
             final String assessmentDescription,
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-    	return createDemandAssessment(target, target.getDemandOwner(), assessmentDescription, feedback, currentUserName());
+    	return createDemandAssessment(targetOfAssessment, targetOfAssessment.getDemandOwner(), assessmentDescription, feedback, currentUserName());
     }
     
     // Business rule:
     // No feedback on own demand
     public boolean hideCreateDemandAssessment(
-            final Demand target,
+            final Demand targetOfAssessment,
             final String assessmentDescription,
             final String feedback            
             ){
-        if (target.getOwnedBy().equals(currentUserName())){
+        if (targetOfAssessment.getOwnedBy().equals(currentUserName())){
             return true;
         }
         
@@ -81,14 +81,14 @@ public class Assessments extends MatchingDomainService<Assessment> {
     
     //** createSupplyAssessment **//
     public Assessment createSupplyAssessment(
-            @ParameterLayout(named="target")
-            final Supply target,
+            @ParameterLayout(named="targetOfAssessment")
+            final Supply targetOfAssessment,
             @ParameterLayout(named="assessmentDescription")
             final String assessmentDescription,
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-        return createSupplyAssessment(target, target.getSupplyOwner(), assessmentDescription, feedback, currentUserName());
+        return createSupplyAssessment(targetOfAssessment, targetOfAssessment.getSupplyOwner(), assessmentDescription, feedback, currentUserName());
     }
     
     //BUSINESS RULE
@@ -108,8 +108,8 @@ public class Assessments extends MatchingDomainService<Assessment> {
     
     //** createProfileAssessment **//
     public Assessment createProfileAssessment(
-            @ParameterLayout(named="target")
-            final Profile target,
+            @ParameterLayout(named="targetOfAssessment")
+            final Profile targetOfAssessment,
             @ParameterLayout(named="assessmentDescription")
             final String assessmentDescription,
             @ParameterLayout(named="feedback", multiLine=3)
@@ -118,13 +118,13 @@ public class Assessments extends MatchingDomainService<Assessment> {
         final ProfileFeedback newAs = newTransientInstance(ProfileFeedback.class);
         final UUID uuid=UUID.randomUUID();
         newAs.setUniqueItemId(uuid);
-        newAs.setTarget(target);
-        if (target.getDemandOrSupply().equals(DemandOrSupply.SUPPLY)){
-            newAs.setTargetOwnerActor(target.getSupplyProfileOwner().getSupplyOwner());
+        newAs.setTargetOfAssessment(targetOfAssessment);
+        if (targetOfAssessment.getDemandOrSupply().equals(DemandOrSupply.SUPPLY)){
+            newAs.setTargetOwnerActor(targetOfAssessment.getSupplyProfileOwner().getSupplyOwner());
         } else {
-            newAs.setTargetOwnerActor(target.getDemandProfileOwner().getDemandOwner());
+            newAs.setTargetOwnerActor(targetOfAssessment.getDemandProfileOwner().getDemandOwner());
         }
-        newAs.setOwnerActor(persons.findPersonUnique(currentUserName()));
+        newAs.setAssessmentOwnerActor(persons.findPersonUnique(currentUserName()));
         newAs.setAssessmentDescription(assessmentDescription);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(currentUserName());
@@ -168,9 +168,9 @@ public class Assessments extends MatchingDomainService<Assessment> {
         final DemandFeedback newAs = newTransientInstance(DemandFeedback.class);
         final UUID uuid=UUID.randomUUID();
         newAs.setUniqueItemId(uuid);
-        newAs.setTarget(targetObject);
+        newAs.setTargetOfAssessment(targetObject);
         newAs.setTargetOwnerActor(targetObject.getDemandOwner());
-        newAs.setOwnerActor(ownerActor);
+        newAs.setAssessmentOwnerActor(ownerActor);
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(ownedBy);
@@ -189,9 +189,9 @@ public class Assessments extends MatchingDomainService<Assessment> {
         final SupplyFeedback newAs = newTransientInstance(SupplyFeedback.class);
         final UUID uuid=UUID.randomUUID();
         newAs.setUniqueItemId(uuid);
-        newAs.setTarget(targetObject);
+        newAs.setTargetOfAssessment(targetObject);
         newAs.setTargetOwnerActor(targetObject.getSupplyOwner());
-        newAs.setOwnerActor(ownerActor);
+        newAs.setAssessmentOwnerActor(ownerActor);
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(ownedBy);

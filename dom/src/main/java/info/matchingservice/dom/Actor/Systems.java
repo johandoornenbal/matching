@@ -24,96 +24,66 @@ import info.matchingservice.dom.Utils.StringUtils;
 import java.util.List;
 import java.util.UUID;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.annotation.NotContributed.As;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
 
 
-@DomainService(repositoryFor = System.class)
-@Hidden
-@DomainServiceLayout(named="Systemen", menuOrder="18")
+@DomainService(repositoryFor = System.class, nature=NatureOfService.DOMAIN)
+@DomainServiceLayout(menuOrder="18")
 public class Systems extends MatchingDomainService<System> {
     
     public Systems() {
         super(Systems.class, System.class);
     }
     
-    @ActionLayout(named="Maak je systeem aan in het systeem")
+    @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public System newSystem(
+    public System createSystem(
             @ParameterLayout(named="systemName")
             final String systemName
             ) {
-        return newSystem(systemName, currentUserName()); // see region>helpers
+        return createSystem(systemName, currentUserName()); // see region>helpers
     }
     
-    public boolean hideNewSystem() {
-        return hideNewSystem(currentUserName());
+    public boolean hideCreateSystem() {
+        return hideCreateSystem(currentUserName());
     }
     
     /**
      * There should be at most 1 instance for each owner - contact combination.
      * 
      */
-    public String validateNewSystem(
+    public String validateCreateSystem(
             final String systemName
             ) {
-        return validateNewSystem(systemName, currentUserName());
+        return validateCreateSystem(systemName, currentUserName());
     }
     
     @MemberOrder(sequence="5")
-    @ActionLayout(named="Dit is jouw systeem ...")
-    public List<System> thisIsYou() {
-        return thisIsYou(currentUserName());
+    @ActionLayout()
+    public List<System> activePersonsSystems() {
+        return activePersonsSystems(currentUserName());
     }
     
-    @MemberOrder(sequence="10")
-    @ActionLayout(named="Alle systemen")
+    @Programmatic
     public List<System> allSystems() {
         return allInstances();
     }
     
-    
-    //region > otherPersons (contributed collection)
-    @MemberOrder(sequence="110")
-    @NotInServiceMenu
-    @NotContributed(As.ACTION)
-    @ActionLayout(named="Alle andere systemen")
-    @Action(semantics=SemanticsOf.SAFE)
-    public List<System> AllOtherSystems(final System systemMe) {
-        final List<System> allSystems = allSystems();
-        return Lists.newArrayList(Iterables.filter(allSystems, excluding(systemMe)));
-    }
-
-    private static Predicate<System> excluding(final System system) {
-        return new Predicate<System>() {
-            @Override
-            public boolean apply(System input) {
-                return input != system;
-            }
-        };
-    }
     //endregion
     
    
     
-    @MemberOrder(sequence="100")
-    @ActionLayout(named="Vind op systeemnaam")
+    @Programmatic
     public List<System> findSystems(
             @ParameterLayout(named="systemName")
             final String systemName
@@ -121,8 +91,7 @@ public class Systems extends MatchingDomainService<System> {
         return allMatches("matchSystemBySystemName", "systemName", StringUtils.wildcardToCaseInsensitiveRegex(systemName));
     }
     
-    @MemberOrder(sequence="105")
-    @ActionLayout(named="Vind op overeenkomst systeemnaam")
+    @Programmatic
     public List<System> findSystemnameContains(
             @ParameterLayout(named="systemName")
             final String systemName
@@ -137,7 +106,7 @@ public class Systems extends MatchingDomainService<System> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public System newSystem(           
+    public System createSystem(           
             final String systemName,
             final String userName) {
         final System system = newTransientInstance(System.class);
@@ -150,7 +119,7 @@ public class Systems extends MatchingDomainService<System> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public boolean hideNewSystem(String userName) {
+    public boolean hideCreateSystem(String userName) {
         QueryDefault<System> query = 
                 QueryDefault.create(
                         System.class, 
@@ -162,7 +131,7 @@ public class Systems extends MatchingDomainService<System> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public String validateNewSystem(
+    public String validateCreateSystem(
             final String systemName,
             final String userName) {
         
@@ -172,13 +141,13 @@ public class Systems extends MatchingDomainService<System> {
                     "findSystemUnique", 
                     "ownedBy", userName);        
         return container.firstMatch(query) != null?
-        "Dit systeem is al aangemaakt. Pas je gegevens eventueel aan in plaats van hier een nieuwe te maken."        
+        "ONE_INSTANCE_AT_MOST"        
         :null;
         
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public List<System> thisIsYou(final String userName) {
+    public List<System> activePersonsSystems(final String userName) {
         QueryDefault<System> query = 
                 QueryDefault.create(
                         System.class, 

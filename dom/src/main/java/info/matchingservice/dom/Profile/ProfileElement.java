@@ -193,17 +193,17 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
     @ActionLayout(named="Verwijder element")
     public Profile DeleteProfileElement(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
         container.informUser("Element verwijderd");
         return getProfileElementOwner();
     }
     
-    public String validateDeleteProfileElement(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDeleteProfileElement(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
         
     // Helpers

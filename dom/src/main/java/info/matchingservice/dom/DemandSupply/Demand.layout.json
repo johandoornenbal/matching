@@ -21,11 +21,12 @@
             		"value" : "Eigenaar"
             	},
              	"actions" : {
-            		"editDemand" : {
+            		"updateDemand" : {
             			"named" : {
             				"value" : "Bewerk vraag gegevens"
             			}
-            		}
+            		},
+            		"deleteDemand" : {}
             	}           	
             }
           }
@@ -43,7 +44,7 @@
     {
       "span": 8,
       "collections": {
-        "demandProfiles": {
+        "collectDemandProfiles": {
         	"named" : {
         		"value" : "Vraag profielen"
         	},
@@ -52,7 +53,7 @@
             	"newCourseDemandProfile": {}
             }
         },
-        "assessments": {
+        "collectDemandAssessments": {
         	"named" : {
         		"value" : "Onvangen feedback"
         	},
@@ -64,7 +65,7 @@
     }
   ],
   "actions": {
-  		"newDemandAssessment" : {
+  		"createDemandAssessment" : {
       		"named" : {
       			"value" : "Geef feedback"
       		}

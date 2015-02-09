@@ -19,22 +19,22 @@ public class BrancheTagsForGerard extends TagsAbstract {
 		executeChild(new TagCategoriesFixture(), executionContext);
 		
 		createBranchTagHolder(
-				persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first().getProfileElement().first(), 
+				persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first().getCollectProfileElements().first(), 
 				"schilderkunst", 
 				executionContext
 				);
 		createBranchTagHolder(
-				persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first().getProfileElement().first(), 
+				persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first().getCollectProfileElements().first(), 
 				"portretteerkunst", 
 				executionContext
 				);
 		createBranchTagHolder(
-				persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first().getProfileElement().first(), 
+				persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first().getCollectProfileElements().first(), 
 				"kunst", 
 				executionContext
 				);
 		createBranchTagHolder(
-				persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first().getProfileElement().first(), 
+				persons.findPersons("Dou").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first().getCollectProfileElements().first(), 
 				"zelfstandig", 
 				executionContext
 				);

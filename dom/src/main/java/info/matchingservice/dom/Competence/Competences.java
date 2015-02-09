@@ -19,20 +19,19 @@
 
 package info.matchingservice.dom.Competence;
 
+import info.matchingservice.dom.MatchingDomainService;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Where;
-
-import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(repositoryFor = Competence.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -46,12 +45,12 @@ public class Competences extends MatchingDomainService<Competence> {
         super(Competences.class, Competence.class);
     }
     
-    @ActionLayout(named="Alle competenties", hidden=Where.ANYWHERE)
+    @Programmatic
     public List<Competence> allCompetences() {
         return allInstances();
     }
     
-    @ActionLayout(named="Nieuwe competentie", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     public CompetenceCategory createCompetence(
             @ParameterLayout(
                     named = "competenceCategory")
@@ -77,19 +76,17 @@ public class Competences extends MatchingDomainService<Competence> {
     
     public String validateCreateCompetence(final CompetenceCategory competenceCategory, final String competenceDescription){
         if (!this.findCompetenceMatches(competenceDescription).isEmpty()){
-            return "Deze competentie is al eerder ingevoerd";
+            return "ONE_INSTANCE_AT_MOST";
         }
         return null;
     }
     
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(hidden=Where.ANYWHERE)
+    @Programmatic
     public List<Competence> findCompetenceContains(final String competenceDescription){
         return allMatches("competenceContains", "competenceDescription", competenceDescription.toLowerCase());
     }
     
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(hidden=Where.ANYWHERE)
+    @Programmatic
     public List<Competence> findCompetenceMatches(final String competenceDescription){
         return allMatches("competenceMatches", "competenceDescription", competenceDescription.toLowerCase());
     }    

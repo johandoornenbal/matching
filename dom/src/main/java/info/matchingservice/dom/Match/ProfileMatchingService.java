@@ -116,7 +116,7 @@ public class ProfileMatchingService extends AbstractService {
                 Integer avarageWeight = 1;
                 Integer weightCounter = 0;
                 Integer elCounter = 0;
-                for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
+                for (ProfileElement demandProfileElement: demandProfile.getCollectProfileElements()){
                     
                     if (
                             demandProfileElement.getProfileElementType() == ProfileElementType.NUMERIC 
@@ -146,7 +146,7 @@ public class ProfileMatchingService extends AbstractService {
                 //**** STAGE 2 ****//
                 
                 Long totalMatchingValue = (long) 0;
-                for (ProfileElement demandProfileElement: demandProfile.getProfileElement()){
+                for (ProfileElement demandProfileElement: demandProfile.getCollectProfileElements()){
                     
                 	//**** STAGE 2 ****NUMERIC ELEMENTS: calculate and add to matchingValue *****/
                     //Only for elementmatches on NumericElements with tempProfileOwner as ProfileOwner

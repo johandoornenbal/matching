@@ -23,7 +23,7 @@ import info.matchingservice.dom.TitledEnum;
 public enum PersonRoleType implements TitledEnum {
 
     STUDENT("student"),
-    PROFESSIONAL("zelfstandig professional"),
+    PROFESSIONAL("professional"),
     PRINCIPAL("opdrachtgever");
 
     private String title;

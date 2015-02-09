@@ -24,30 +24,30 @@ public class TagsForFrans extends TagsAbstract {
         
         
         createPassionTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().first(), 
                 "zeilschepen", 
                 executionContext
                 );
         createPassionTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().first(), 
                 "schilderen", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).getProfileElement().last(),
+        		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().last(),
                 "oorlogszuchtig", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().first(), 
                 "ijverig", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getProfileElement().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().first(), 
                 "out of the box", 
                 executionContext
                 );

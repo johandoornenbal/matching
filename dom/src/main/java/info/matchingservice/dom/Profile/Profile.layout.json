@@ -10,7 +10,7 @@
             		"value" : "Naam"
             	},
             	"actions" : {
-            		"EditProfileName" : {
+            		"UpdateProfile" : {
             			"named" : {
             				"value" : "Bewerk naam"
             			}
@@ -47,49 +47,49 @@
     {
       "span": 8,
       "collections": {
-        "profileElement": {
+        "collectProfileElements": {
         	"named" : {
         		"value" : "Profiel elementen"
         	},
             "actions": {
-				"newQualityTagElement" : {
+				"createQualityTagElement" : {
 					"named" : {
 						"value" : "Kwaliteiten"
 					}
 				},
-				"newPassion" : {
+				"createPassion" : {
 					"named" : {
 						"value" : "Passie"
 					}
 				},
-				"newProfileElementPrice" : {
+				"createProfileElementPrice" : {
 					"named" : {
 						"value" : "Nieuwe prijs"
 					}
 				},
-				"newPassionTagElement" : {
+				"createPassionTagElement" : {
 					"named" : {
 						"value" : "Passie steekwoorden"
 					}
 				},
-				"newBrancheTagElement" : {
+				"createBrancheTagElement" : {
 					"named" : {
 						"value" : "Branche"
 					}
 				},
-				"newLocation" : {
+				"createLocation" : {
 					"named" : {
 						"value" : "Lokatie"
 					}
 				}
             }
         },
-        "showProfileMatches" : {
+        "collectProfileMatches" : {
         	"named" : {
         		"value" : "Gevonden overeenkomende profielen"
         	}
         },
-        "assessments": {
+        "collectAssessments": {
         	"named" : {
         		"value" : "Onvangen feedback"
         	},
@@ -101,12 +101,12 @@
     }
   ],
   "actions": {
-  		"DeleteProfile" : {
+  		"deleteProfile" : {
       		"named" : {
       			"value" : "Verwijder profiel"
       		}
       	},
-  		"newProfileAssessment" : {
+  		"createProfileAssessment" : {
       		"named" : {
       			"value" : "Geef feedback"
       		}

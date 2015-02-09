@@ -154,11 +154,11 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
     }
     
     // Region //// Delete action //////////////////////////////
-    @ActionLayout(named="Dit contact verwijderen")
+    @ActionLayout()
     public List<MatchingTrustedContact> delete(
-            @ParameterLayout(named="areYouSure")
+            @ParameterLayout(named="confirmDelete")
             @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
+            boolean confirmDelete
             ) { 
         container.removeIfNotAlready(this);
         
@@ -173,8 +173,8 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
         return (List<MatchingTrustedContact>) container.allMatches(query);   
     }
     
-    public String validateDelete(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    public String validateDelete(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
     }
     
     /**

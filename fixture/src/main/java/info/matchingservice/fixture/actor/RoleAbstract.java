@@ -16,7 +16,7 @@ public abstract class RoleAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext
             ) {
-        PersonRole newRole = roles.newRole(role, user);
+        PersonRole newRole = roles.createRole(role, user);
         return executionContext.add(this,newRole);
     }
     

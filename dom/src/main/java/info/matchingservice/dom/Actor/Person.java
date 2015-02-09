@@ -85,7 +85,7 @@ public class Person extends Actor {
     
     @MemberOrder(sequence = "10")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Voornaam")
+    @PropertyLayout()
     public String getFirstName() {
         return firstName;
     }
@@ -99,7 +99,7 @@ public class Person extends Actor {
     
     @MemberOrder(sequence = "20")
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @PropertyLayout(named="Tussen")
+    @PropertyLayout()
     public String getMiddleName() {
         return middleName;
     }
@@ -113,7 +113,7 @@ public class Person extends Actor {
     
     @MemberOrder(sequence = "30")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Achternaam")
+    @PropertyLayout()
     public String getLastName() {
         return lastName;
     }
@@ -127,7 +127,7 @@ public class Person extends Actor {
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "60")
-    @PropertyLayout(named = "Geboortedatum")
+    @PropertyLayout()
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -156,7 +156,7 @@ public class Person extends Actor {
     }
     
     //Region> roles /////////////////////////////////////////////////
-    @PropertyLayout(named="Rollen", multiLine=2)
+    @PropertyLayout(multiLine=2)
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
         if (getIsStudent()) {
@@ -185,7 +185,7 @@ public class Person extends Actor {
     private SortedSet<PersonalContact> collectPersonalContacts = new TreeSet<PersonalContact>();
     
     @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
-    @CollectionLayout(named="Persoonlijke contacten", render=RenderType.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     public SortedSet<PersonalContact> getCollectPersonalContacts() {
         return collectPersonalContacts;
     }
@@ -202,7 +202,7 @@ public class Person extends Actor {
     //-- personalContacts --//
     
     //** personsReferringToActiveUser **//
-    @CollectionLayout(named="Personen verwijzend naar mij", render=RenderType.EAGERLY)
+    @CollectionLayout(render=RenderType.EAGERLY)
     public List<PersonalContact> getCollectPersonsReferringToActiveUser(){
     	return pcontacts.allPersonalContactsReferringToUser(currentUserName());
     }
@@ -287,7 +287,7 @@ public class Person extends Actor {
     //** newPersonsSupplyAndProfile **//
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile createPersonsSupplyAndProfile(){
-        return createSupplyAndProfile("Persoonlijke profiel van " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "Mijn persoonlijke profiel", 10, null, null, ProfileType.PERSON_PROFILE, currentUserName());
+        return createSupplyAndProfile("PERSON_SUPPLY_OF " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "PERSON_PROFILE", 10, null, null, ProfileType.PERSON_PROFILE, currentUserName());
     }
     
     // Business rule: 
@@ -307,7 +307,7 @@ public class Person extends Actor {
     //** newPersonsDemand **//
     // Business rule: 
     // Je moet Opdrachtgever zijn om een tafel te starten
-    @ActionLayout(named="Start nieuwe tafel")
+    @ActionLayout()
     public Demand createPersonsDemand(
             @ParameterLayout(named="demandDescription")
             final String demandDescription,
@@ -394,11 +394,11 @@ public class Person extends Actor {
     public String validateNewPersonsSupplyAndProfile(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
-            return "Je bent niet de eigenaar";
+            return "NOT_THE_OWNER";
         }
         // if you have not Student or ZP Role
         if (!(((Person) needOwner).getIsStudent() || ((Person) needOwner).getIsProfessional())){
-            return "Je bent geen Student of Professional";
+            return "NO_STUDENT_OR_PROFESSIONAL";
         }        
         // if there is already a personal Supply
         QueryDefault<Supply> query = 
@@ -408,7 +408,7 @@ public class Person extends Actor {
                     "ownedBy", currentUserName(),
                     "supplyType", DemandSupplyType.PERSON_DEMANDSUPPLY);
         if (container.firstMatch(query) != null) {
-            return "Je hebt al een persoonlijk profiel";
+            return "ONE_INSTANCE_AT_MOST";
         }
         
         return null;
@@ -432,11 +432,11 @@ public class Person extends Actor {
     public String validateNewDemand(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
-            return "Je bent geen eigenaar";
+            return "NOT_THE_OWNER";
         }
         // if you have not Principal Role
         if (!((Person) needOwner).getIsPrincipal()){
-            return "Je bent geen opdachtgever";
+            return "ONE_INSTANCE_AT_MOST";
         }
         
         return null;
@@ -455,7 +455,7 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void addRoleStudent(String ownedBy) {
-        roles.newRole(PersonRoleType.STUDENT, ownedBy);
+        roles.createRole(PersonRoleType.STUDENT, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -503,7 +503,7 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void addRoleProfessional(String ownedBy) {
-        roles.newRole(PersonRoleType.PROFESSIONAL, ownedBy);
+        roles.createRole(PersonRoleType.PROFESSIONAL, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -551,7 +551,7 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public void addRolePrincipal(String ownedBy) {
-        roles.newRole(PersonRoleType.PRINCIPAL, ownedBy);
+        roles.createRole(PersonRoleType.PRINCIPAL, ownedBy);
     }
     
     @Programmatic // now values can be set by fixtures
@@ -609,7 +609,7 @@ public class Person extends Actor {
     //** HIDDEN ACTIONS **//
     
     // Role STUDENT 'Clean' code. Makes use of helpers in Helpers region   
-    @ActionLayout(named="Rol Student", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     @MemberOrder(sequence = "40")
     public Person addRoleStudent() {
         addRoleStudent(currentUserName());
@@ -620,7 +620,7 @@ public class Person extends Actor {
         return hideAddRoleStudent(this, currentUserName());
     }
     
-    @ActionLayout(named="Geen student meer", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     @MemberOrder(sequence = "41")
     public Person deleteRoleStudent() {
         deleteRoleStudent(currentUserName());;
@@ -637,7 +637,7 @@ public class Person extends Actor {
     }
 
     // Role PROFESSIONAL 'Clean' code. Makes use of helpers in Helpers region   
-    @ActionLayout(named="Rol ZP-er", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     @MemberOrder(sequence = "50")
     public Person addRoleProfessional() {
         addRoleProfessional(currentUserName());
@@ -648,7 +648,7 @@ public class Person extends Actor {
         return hideAddRoleProfessional(this, currentUserName());
     }
     
-    @ActionLayout(named="Geen ZP-er meer", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     @MemberOrder(sequence = "51")
     public Person deleteRoleProfessional() {
         deleteRoleProfessional(currentUserName());
@@ -665,7 +665,7 @@ public class Person extends Actor {
     }
     
     // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region   
-    @ActionLayout(named="Rol Opdrachtgever", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     @MemberOrder(sequence = "60")
     public Person addRolePrincipal() {
         addRolePrincipal(currentUserName());
@@ -676,7 +676,7 @@ public class Person extends Actor {
         return hideAddRolePrincipal(this, currentUserName());
     }
     
-    @ActionLayout(named="Geen opdrachtgever meer", hidden=Where.ANYWHERE)
+    @ActionLayout(hidden=Where.ANYWHERE)
     @MemberOrder(sequence = "61")
     public Person deleteRolePrincipal() {
         deleteRolePrincipal(currentUserName());
