@@ -32,6 +32,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Where;
+import org.joda.time.LocalDate;
 
 @DomainService(repositoryFor = Profile.class)
 @DomainServiceLayout(
@@ -81,11 +82,13 @@ public class Profiles extends MatchingDomainService<Profile> {
     }
     
     @Programmatic
-    public Profile newDemandProfile(
+    public Profile createDemandProfile(
             final String demandProfileDescription,
             final Integer weight,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
-            final Demand demandProfileOwner,
+            final Demand demandProfileOwner,            
             final String ownedBy
             ){
         final Profile newDemandProfile = newTransientInstance(Profile.class);
@@ -93,6 +96,8 @@ public class Profiles extends MatchingDomainService<Profile> {
         newDemandProfile.setUniqueItemId(uuid);
         newDemandProfile.setProfileName(demandProfileDescription);
         newDemandProfile.setWeight(weight);
+        newDemandProfile.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
+        newDemandProfile.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
         newDemandProfile.setDemandOrSupply(DemandOrSupply.DEMAND);
         newDemandProfile.setProfileType(profileType);
         newDemandProfile.setDemandProfileOwner(demandProfileOwner);
@@ -105,6 +110,8 @@ public class Profiles extends MatchingDomainService<Profile> {
     public Profile newSupplyProfile(
             final String supplyProfileDescription,
             final Integer weight,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final Supply supplyProfileOwner,
             final String ownedBy
@@ -114,6 +121,8 @@ public class Profiles extends MatchingDomainService<Profile> {
         newSupplyProfile.setUniqueItemId(uuid);
         newSupplyProfile.setProfileName(supplyProfileDescription);
         newSupplyProfile.setWeight(weight);
+        newSupplyProfile.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
+        newSupplyProfile.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
         newSupplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
         newSupplyProfile.setProfileType(profileType);
         newSupplyProfile.setSupplyProfileOwner(supplyProfileOwner);

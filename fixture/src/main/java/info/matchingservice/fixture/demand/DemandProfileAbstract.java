@@ -20,7 +20,7 @@ public abstract class DemandProfileAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Profile newDemandProfile = profiles.newDemandProfile(demandProfileDescription, weight, profileType, demandProfileOwner, ownedBy);
+        Profile newDemandProfile = profiles.createDemandProfile(demandProfileDescription, weight, null, null, profileType, demandProfileOwner, ownedBy);
         
         return executionContext.add(this,newDemandProfile);
     }

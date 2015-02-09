@@ -19,19 +19,19 @@ public class SupplyProfilesForFrans extends SupplyProfileAbstract {
                 "Mijn persoonlijke profiel",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMySupplies().last(),
+                persons.findPersons("Hals").get(0).getSuppliesOfActor().last(),
                 "frans",
                 executionContext
                 );
         
-        createSupplyProfile(
-                "Prince2 cursus",
-                10,
-                ProfileType.COURSE_PROFILE,
-                persons.findPersons("Hals").get(0).getMySupplies().first(),
-                "frans",
-                executionContext
-                );
+//        createSupplyProfile(
+//                "Prince2 cursus",
+//                10,
+//                ProfileType.COURSE_PROFILE,
+//                persons.findPersons("Hals").get(0).getSuppliesOfActor().first(),
+//                "frans",
+//                executionContext
+//                );
     }
 
     @Inject

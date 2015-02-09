@@ -18,7 +18,7 @@ public abstract class PersonalContactAbstract extends FixtureScript {
             TrustLevel trustLevel,
             ExecutionContext executionContext
             ) {
-        PersonalContact newPersonalContact = personalsContacts.newPersonalContact(contactPerson, ownedBy, trustLevel);
+        PersonalContact newPersonalContact = personalsContacts.createPersonalContact(contactPerson, ownedBy, trustLevel);
                        
         return executionContext.add(this, newPersonalContact);
     }

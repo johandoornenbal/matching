@@ -201,7 +201,7 @@ public class Organisation extends Actor {
     //Region> SUPPLIES /////////////////////////////////////////////////////////////   
     
     public Profile newOrganisationSupply(){
-        return newSupplyAndProfile("Organisatie profiel van " + this.title(), 10, DemandSupplyType.ORGANISATION_DEMANDSUPPLY, this, "Organisatie profiel", 10, ProfileType.ORGANISATION_PROFILE, currentUserName());
+        return createSupplyAndProfile("Organisatie profiel van " + this.title(), 10, DemandSupplyType.ORGANISATION_DEMANDSUPPLY, this, "Organisatie profiel", 10, null, null, ProfileType.ORGANISATION_PROFILE, currentUserName());
     }
     
     //BUSINESS RULE
@@ -268,19 +268,19 @@ public class Organisation extends Actor {
     //Region> DEMAND /////////////////////////////////////////////////////////////
     
     // method myDemands() is on Actor
-    public boolean hideMyDemands() {
+    public boolean hideDemandsOfActor() {
         return !getIsPrincipal();
     }
     
     // method NewDemand() is on Actor
-    public boolean hideNewDemand(final String needDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
-        return hideNewDemand(needDescription, this);
-    }
+//    public boolean hideCreateDemand(final String needDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
+//        return hideCreateDemand(needDescription, this);
+//    }
         
     //Need helpers
     
     @Programmatic
-    public boolean hideNewDemand(final String demandDescription, final Actor demandOwner){
+    public boolean hideCreateDemand(final String demandDescription, final Actor demandOwner){
         // if you are not the owner
         if (!demandOwner.getOwnedBy().equals(currentUserName())){
             return true;

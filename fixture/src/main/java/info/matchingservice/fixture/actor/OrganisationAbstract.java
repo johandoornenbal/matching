@@ -20,7 +20,7 @@ public abstract class OrganisationAbstract extends FixtureScript {
             String user,
             ExecutionContext executionContext
             ) {
-        Actor newOrganisation = organisations.newOrganisation(organisationName, user);
+        Actor newOrganisation = organisations.createOrganisation(organisationName, user);
         createRole(OrganisationRoleType.PRINCIPAL, (Organisation) newOrganisation, user, executionContext);               
         return executionContext.add(this, newOrganisation);
     }

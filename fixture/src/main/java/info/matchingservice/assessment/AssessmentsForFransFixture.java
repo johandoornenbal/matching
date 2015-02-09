@@ -18,8 +18,8 @@ public class AssessmentsForFransFixture extends AssessmentAbstract {
 
         Demand demandOfRembrandt;
         Demand demandOfMichiel;
-        demandOfRembrandt=persons.findPersons("Rijn").get(0).getMyDemands().first();
-        demandOfMichiel=persons.findPersons("Ruyter").get(0).getMyDemands().first();
+        demandOfRembrandt=persons.findPersons("Rijn").get(0).getDemandsOfActor().first();
+        demandOfMichiel=persons.findPersons("Ruyter").get(0).getDemandsOfActor().first();
         
         createAssessment(
                 demandOfRembrandt,

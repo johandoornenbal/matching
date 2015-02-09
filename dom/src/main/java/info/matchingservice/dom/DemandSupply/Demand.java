@@ -39,6 +39,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
@@ -50,8 +51,10 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -71,11 +74,10 @@ import org.apache.isis.applib.value.Blob;
 })
 @DomainObject(editing=Editing.DISABLED)
 public class Demand extends MatchingSecureMutableObject<Demand> {
-
-    public Demand() {
-        super("demandDescription, weight, ownedBy, uniqueItemId");
-    }
-    
+	
+	//** API: PROPERTIES **//
+	
+	//** uniqueItemId **//
     private UUID uniqueItemId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -87,25 +89,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public void setUniqueItemId(final UUID uniqueItemId) {
         this.uniqueItemId = uniqueItemId;
     }
-
-    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
-  
-    private String ownedBy;
+    //-- uniqueItemId --//
     
-    @Override
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(final String owner) {
-        this.ownedBy = owner;
-    }
-
-    //Immutables /////////////////////////////////////////////////////////////////////////////////////
-    
+    //** demandOwner **//
     private Actor demandOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -118,27 +104,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public void setDemandOwner(final Actor needOwner) {
         this.demandOwner = needOwner;
     }
+    //-- demandOwner --//
     
-    @Programmatic
-    public Actor getProfileOwnerIsOwnedBy(){
-        return getDemandOwner();
-    }
-    
-    private DemandSupplyType demandType;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public DemandSupplyType getDemandType(){
-        return demandType;
-    }
-    
-    public void setDemandType(final DemandSupplyType demandType){
-        this.demandType = demandType;
-    }
- 
-    //END Immutables /////////////////////////////////////////////////////////////////////////////////////
-
+    //** demandDescription **//
     private String demandDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -149,7 +117,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public void setDemandDescription(final String description) {
         this.demandDescription = description;
     }
+    //-- demandDescription --//
     
+    //** demandSummary **//
     private String demandSummary;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -161,8 +131,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 	public void setDemandSummary(String demandSummary) {
 		this.demandSummary = demandSummary;
 	}
-	
+	//-- demandSummary --//
 
+	//** demandStory **//
 	private String demandStory;
     
 	@javax.jdo.annotations.Column(allowsNull = "true")
@@ -174,7 +145,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 	public void setDemandStory(String demandStory) {
 		this.demandStory = demandStory;
 	}
+	//-- demandStory--//
 	
+	//** demandAttachment **//
 	private Blob demandAttachment;
 	
     @javax.jdo.annotations.Persistent(defaultFetchGroup="false", columns = {
@@ -192,23 +165,53 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 	public void setDemandAttachment(Blob demandAttachment) {
 		this.demandAttachment = demandAttachment;
 	}
-
+	//-- demandAttachment --//
     
-    private Integer weight;
+	//-- API: PROPERTIES --//
+	
+	//** API: COLLECTIONS **//
+	
+	//** demandProfiles **//
+    private SortedSet<Profile> demandProfiles = new TreeSet<Profile>();
     
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public Integer getWeight() {
-        return weight;
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
+    public SortedSet<Profile> getDemandProfiles() {
+        return demandProfiles;
     }
     
-    public void setWeight(final Integer weight) {
-        this.weight = weight;
+    public void setDemandProfiles(final SortedSet<Profile> vac){
+        this.demandProfiles = vac;
     }
-
-    //ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
-
-    public Demand editDemand(
+    //-- demandProfiles --//
+    
+    //** demandAssessments **//
+    private SortedSet<DemandAssessment> demandAssessments = new TreeSet<DemandAssessment>();
+    
+    @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
+    @Persistent(mappedBy = "target", dependentElement = "true")
+    public SortedSet<DemandAssessment> getDemandAssessments() {
+        return demandAssessments;
+    }
+   
+    public void setDemandAssessments(final SortedSet<DemandAssessment> demandAssessment) {
+        this.demandAssessments = demandAssessment;
+    }
+    
+    // Business rule: 
+    // only visible for inner-circle
+    public boolean hideDemandAssessments() {
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }  
+    //-- demandAssessments --//
+    
+	//-- API: COLLECTIONS --//
+    
+	//** API: ACTIONS **//
+	
+	//** updateDemand **//
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public Demand updateDemand(
             @ParameterLayout(named="demandDescription")
             final String demandDescription,
             @ParameterLayout(named="demandSummary", multiLine=3)
@@ -228,39 +231,27 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         return this;
     }
     
-    public String default0EditDemand(){
+    public String default0UpdateDemand(){
         return this.getDemandDescription();
     }
     
-    public String default1EditDemand(){
+    public String default1UpdateDemand(){
         return this.getDemandSummary();
     }
     
-    public String default2EditDemand(){
+    public String default2UpdateDemand(){
         return this.getDemandStory();
     }
     
-    public Blob default3EditDemand(){
+    public Blob default3UpdateDemand(){
         return this.getDemandAttachment();
     }
+    //-- updateDemand --//
     
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public Demand editWeight(
-            @ParameterLayout(named="weight")
-            final Integer weight
-            ){
-        this.setWeight(weight);
-        return this;
-    }
-    
-    public Integer default0EditWeight(){
-        return this.getWeight();
-    }
-    
-    //delete action /////////////////////////////////////////////////////////////////////////////////////
-    
+    //** deleteDemand **//
     @ActionLayout(named="Vraag verwijderen")
-    public Actor DeleteDemand(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Actor deleteDemand(
             @ParameterLayout(named="areYouSure")
             @Parameter(optional=Optionality.TRUE)
             boolean areYouSure
@@ -273,71 +264,22 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public String validateDeleteDemand(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
+    //-- DeleteDemand --//
     
-    //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
-
-    
-    // Region> Vacancies
-    
-    private SortedSet<Profile> demandProfiles = new TreeSet<Profile>();
-    
-    @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
-    public SortedSet<Profile> getDemandProfiles() {
-        return demandProfiles;
-    }
-    
-    public void setDemandProfiles(final SortedSet<Profile> vac){
-        this.demandProfiles = vac;
-    }
-    
-    //XTALUS 
-    //Nieuwe cursus gezocht
-    @ActionLayout(named="Nieuwe cursus zoeken")
-    public Profile newCourseDemandProfile(
-            @ParameterLayout(named="profileName", multiLine=4)
-            final  String demandProfileDescription
-            ){
-        return newDemandProfile(demandProfileDescription, 10, ProfileType.COURSE_PROFILE, this, currentUserName());
-    }
-    
-    // BUSINESS RULE voor hide en validate van de aktie 'nieuw cursus gezocht'
-    // alleen tonen op demand van type cursus
-    
-    public boolean hideNewCourseDemandProfile(
-            final  String demandProfileDescription
-            ){
-        if (this.getDemandType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
-            return true;
-        }
-        
-        return false;
-    }
-    
-    public String validateNewCourseDemandProfile(
-            final  String demandProfileDescription
-            ){
-        if (this.getDemandType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
-            return "Alleen op type CURSUS";
-        }
-        
-        return null;
-    }    
-
-    //XTALUS 
-    //Nieuwe persoon gezocht
+    //** createPersonDemandProfile **//
     @ActionLayout(named="Nieuwe persoon zoeken")
-    public Profile newPersonDemandProfile(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createPersonDemandProfile(
             @ParameterLayout(named="profileName")
             final  String demandProfileDescription
             ){
-        return newDemandProfile(demandProfileDescription, 10, ProfileType.PERSON_PROFILE, this, currentUserName());
+        return createDemandProfile(demandProfileDescription, 10, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
     }
     
-    // BUSINESS RULE voor hide en validate van de aktie 'nieuw persoon gezocht'
+    // Business rule: 
     // alleen tonen op demand van type persoon
     
-    public boolean hideNewPersonDemandProfile(
+    public boolean hideCreatePersonDemandProfile(
             final  String demandProfileDescription
             ){
         if (this.getDemandType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
@@ -347,7 +289,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         return false;
     }
     
-    public String validateNewPersonDemandProfile(
+    public String validateCreatePersonDemandProfile(
             final  String demandProfileDescription
             ){
         if (this.getDemandType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
@@ -355,46 +297,35 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         }
         
         return null;
-    }    
+    }
+    //-- createPersonDemandProfile --//
     
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public Profile newDemandProfile(
-            final  String demandProfileDescription,
-            final Integer weight 
-            ) {
-        return newDemandProfile(demandProfileDescription, weight, ProfileType.PERSON_PROFILE, this, currentUserName());
+	//-- API: ACTIONS --//
+	//** GENERIC OBJECT STUFF **//
+	
+	//** constructor **//
+    public Demand() {
+        super("demandDescription, weight, ownedBy, uniqueItemId");
     }
     
+    //** ownedBy - Override for secure object **//
+    private String ownedBy;
     
-    @Programmatic
-    public Profile newDemandProfile(
-            final String demandProfileDescription,
-            final Integer weight,
-            final ProfileType profileType,
-            final Demand demandProfileOwner, 
-            final String ownedBy) {
-        return allDemandProfiles.newDemandProfile(demandProfileDescription, weight, profileType, demandProfileOwner, ownedBy);
+    @Override
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public String getOwnedBy() {
+        return ownedBy;
     }
-    
-    // Region> Assessments
-    
-    private SortedSet<DemandAssessment> assessments = new TreeSet<DemandAssessment>();
-    
-    @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
-    @Persistent(mappedBy = "target", dependentElement = "true")
-    public SortedSet<DemandAssessment> getAssessments() {
-        return assessments;
-    }
-   
-    public void setAssessments(final SortedSet<DemandAssessment> assessment) {
-        this.assessments = assessment;
-    }
-    
-    public boolean hideAssessments() {
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-    }  
 
-    // Helpers
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
+    }
+
+	//-- GENERIC OBJECT STUFF --//
+	//** HELPERS **//
+    //** HELPERS: generic object helpers **//
     private String currentUserName() {
         return container.getUser().getName();
     }
@@ -402,13 +333,130 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public String toString() {
         return getDemandDescription() + " - " + getDemandOwner().title();
     }
-    
-    // Injects
 
+	//-- HELPERS: generic object helpers --//
+	//** HELPERS: programmatic actions **//
+    @Programmatic
+    public Actor getProfileOwnerIsOwnedBy(){
+        return getDemandOwner();
+    }
+    
+    @Programmatic
+    public Profile createDemandProfile(
+            final String demandProfileDescription,
+            final Integer weight,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
+            final ProfileType profileType,
+            final Demand demandProfileOwner, 
+            final String ownedBy) {
+        return allDemandProfiles.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demandProfileOwner, ownedBy);
+    }
+	//-- HELPERS: programmatic actions --// 
+	//-- HELPERS --//
+	//** INJECTIONS **//
 	@javax.inject.Inject
     private DomainObjectContainer container;
     
     @Inject
     Profiles allDemandProfiles;
+
+	//-- INJECTIONS --//
+    //** HIDDEN: PROPERTIES **//
     
+    //** demandType **//
+    private DemandSupplyType demandType;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public DemandSupplyType getDemandType(){
+        return demandType;
+    }
+    
+    public void setDemandType(final DemandSupplyType demandType){
+        this.demandType = demandType;
+    }
+    //-- demandType --//
+    
+    //** weight **//
+    private Integer weight;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight) {
+        this.weight = weight;
+    }
+    //-- weight --//
+  	
+    //-- HIDDEN: PROPERTIES --//
+    
+    //** HIDDEN: ACTIONS **//
+    
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public Demand updateWeight(
+            @ParameterLayout(named="weight")
+            final Integer weight
+            ){
+        this.setWeight(weight);
+        return this;
+    }
+    
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public Integer default0UpdateWeight(){
+        return this.getWeight();
+    }
+    
+  	//-- HIDDEN: ACTIONS --//
+    
+    
+    //XTALUS 
+    //Nieuwe cursus gezocht
+//    @ActionLayout(named="Nieuwe cursus zoeken", hidden=Where.ANYWHERE)
+//    public Profile newCourseDemandProfile(
+//            @ParameterLayout(named="profileName", multiLine=4)
+//            final  String demandProfileDescription
+//            ){
+//        return createDemandProfile(demandProfileDescription, 10, null, null, ProfileType.COURSE_PROFILE, this, currentUserName());
+//    }
+//    
+//    // BUSINESS RULE voor hide en validate van de aktie 'nieuw cursus gezocht'
+//    // alleen tonen op demand van type cursus
+//    
+//    public boolean hideNewCourseDemandProfile(
+//            final  String demandProfileDescription
+//            ){
+//        if (this.getDemandType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
+//            return true;
+//        }
+//        
+//        return false;
+//    }
+//    
+//    public String validateNewCourseDemandProfile(
+//            final  String demandProfileDescription
+//            ){
+//        if (this.getDemandType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
+//            return "Alleen op type CURSUS";
+//        }
+//        
+//        return null;
+//    }    
+
+    //XTALUS 
+    //Nieuwe persoon gezocht
+
+    
+//    @ActionLayout(hidden=Where.EVERYWHERE)
+//    public Profile newDemandProfile(
+//            final  String demandProfileDescription,
+//            final Integer weight 
+//            ) {
+//        return createDemandProfile(demandProfileDescription, weight, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
+//    }
+
 }

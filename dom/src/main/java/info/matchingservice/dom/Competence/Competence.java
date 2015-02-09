@@ -28,6 +28,8 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
@@ -36,6 +38,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -113,7 +116,8 @@ public class Competence extends MatchingMutableObject<Competence> {
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @PropertyLayout(named = "Competentie verwijderen")
+    @ActionLayout(named = "Competentie verwijderen")
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public List<Competence> DeleteCompetence(
             @ParameterLayout(named="areYouSure")
             @Parameter(optional=Optionality.TRUE)

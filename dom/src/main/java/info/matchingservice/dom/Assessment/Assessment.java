@@ -41,11 +41,10 @@ import org.apache.isis.applib.annotation.Where;
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @DomainObject(editing=Editing.DISABLED)
 public class Assessment extends MatchingSecureMutableObject<Assessment> {
-
-    public Assessment() {
-        super("assessmentDescription, ownedBy, uniqueItemId");
-    }
-    
+	
+	//** API: PROPERTIES **//
+	
+	//** uniqueItemId **//
     private UUID uniqueItemId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -57,24 +56,9 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     public void setUniqueItemId(final UUID uniqueItemId) {
         this.uniqueItemId = uniqueItemId;
     }
+    //-- uniqueItemId --//
     
-    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////   
-    private String ownedBy;
-    
-    @Override
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(final String owner) {
-        this.ownedBy = owner;
-    }
-
-    // Immutables //////////////////////////////////////////////////////////////////////////////////////////////////
-    
+    //** target **//
     /**
      * Should be overridden for use on specific Object Type
      */
@@ -90,7 +74,9 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     public void setTarget(final Object object) {
         this.target = object;
     }
+    //-- target --//
     
+    //** targetOwnerActor **//
     private Actor targetOwnerActor;
     
     @Property(editing=Editing.DISABLED)
@@ -103,7 +89,9 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     public void setTargetOwnerActor(final Actor owner) {
         this.targetOwnerActor = owner;
     }
+    //-- targetOwnerActor --//	
     
+    //** ownerActor **//
     private Actor ownerActor;
     
     @Property(editing=Editing.DISABLED)
@@ -116,9 +104,9 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     public void setOwnerActor(final Actor owner) {
         this.ownerActor = owner;
     }
+    //-- ownerActor --//
     
-    //description /////////////////////////////////////////////////////////////////////////////////////
-    
+    //** assessmentDescription **//
     private String assessmentDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -130,11 +118,16 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     public void setAssessmentDescription(final String assessmentDescription){
         this.assessmentDescription = assessmentDescription;
     }
+    //-- assessmentDescription --//
+
+	//-- API: PROPERTIES --//
+	//** API: COLLECTIONS **//
+	//-- API: COLLECTIONS --//
+	//** API: ACTIONS **//
     
-    //delete action /////////////////////////////////////////////////////////////////////////////////////
-    
+    //** deleteAssessment **//
     @ActionLayout(named="Verwijder assessment")
-    public void DeleteAssessment(
+    public void deleteAssessment(
             @ParameterLayout(named="areYouSure")
             @Parameter(optional=Optionality.TRUE)
             boolean areYouSure
@@ -146,16 +139,45 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     public String validateDeleteAssessment(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
+    //-- deleteAssessment --//
     
-    //helpers ////////////////
+	//-- API: ACTIONS --//
+	//** GENERIC OBJECT STUFF **//
+	//** constructor **//
+    public Assessment() {
+        super("assessmentDescription, ownedBy, uniqueItemId");
+    }
+	//** ownedBy - Override for secure object **//
+    private String ownedBy;
     
+    @Override
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
+    }
+	//-- GENERIC OBJECT STUFF --//
+	//** HELPERS **//
+    //** HELPERS: generic object helpers **//
     public String title() {
         return getTarget().toString() + " - " + getAssessmentDescription();
     }
-    
-    // Region>injections ////////////////////////////
+	//-- HELPERS: generic object helpers --//
+	//** HELPERS: programmatic actions **//
+	//-- HELPERS: programmatic actions --// 
+	//-- HELPERS --//
+	//** INJECTIONS **//
     @javax.inject.Inject
     private DomainObjectContainer container;
-
+	//-- INJECTIONS --//
+	//** HIDDEN: PROPERTIES **//
+	//-- HIDDEN: PROPERTIES --//
+	//** HIDDEN: ACTIONS **//
+	//-- HIDDEN: ACTIONS --//
 }
 

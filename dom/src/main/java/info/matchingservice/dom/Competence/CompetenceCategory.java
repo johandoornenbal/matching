@@ -31,6 +31,8 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
@@ -39,6 +41,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -94,9 +97,10 @@ public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @PropertyLayout(
+    @ActionLayout(
             named = "Competentie categorie verwijderen"
             )
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public List<CompetenceCategory> DeleteCompetenceCategory(
             @ParameterLayout(named="areYouSure")
             @Parameter(optional=Optionality.TRUE)

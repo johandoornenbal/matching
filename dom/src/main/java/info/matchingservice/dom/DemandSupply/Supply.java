@@ -40,6 +40,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
@@ -51,8 +52,10 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
+import org.joda.time.LocalDate;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -78,10 +81,9 @@ import org.apache.isis.applib.query.QueryDefault;
 @DomainObject(editing=Editing.DISABLED)
 public class Supply extends MatchingSecureMutableObject<Supply> {
 
-    public Supply() {
-        super("supplyDescription, weight, ownedBy, uniqueItemId");
-    }
-    
+	//** API: PROPERTIES **//
+	
+	//** uniqueItemId **//
     private UUID uniqueItemId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -93,9 +95,177 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     public void setUniqueItemId(final UUID uniqueItemId) {
         this.uniqueItemId = uniqueItemId;
     }
-
-    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
-  
+    //-- uniqueItemId --//
+    
+    //** supplyOwner **//
+    private Actor supplyOwner;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(named="Eigenaar")
+    public Actor getSupplyOwner() {
+        return supplyOwner;
+    }
+    
+    public void setSupplyOwner(final Actor supplyOwner) {
+        this.supplyOwner = supplyOwner;
+    }
+    //-- supplyOwner --//
+    
+    //** supplyDescription **//
+    private String supplyDescription;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @PropertyLayout(multiLine=4)
+    public String getSupplyDescription(){
+        return supplyDescription;
+    }
+    
+    public void setSupplyDescription(final String description) {
+        this.supplyDescription = description;
+    }
+    //-- supplyDescription --//
+    
+	//-- API: PROPERTIES --//
+	//** API: COLLECTIONS **//
+    
+    //** supplyProfiles **//
+    private SortedSet<Profile> supplyProfiles = new TreeSet<Profile>();
+    
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "supplyProfileOwner", dependentElement = "true")
+    public SortedSet<Profile> getSupplyProfiles() {
+        return supplyProfiles;
+    }
+    
+    public void setSupplyProfiles(final SortedSet<Profile> supplyProfile){
+        this.supplyProfiles = supplyProfile;
+    }
+    //-- supplyProfiles --//
+    
+    //** supplyAssessments **//
+    private SortedSet<SupplyAssessment> supplyAssessments = new TreeSet<SupplyAssessment>();
+    
+    @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
+    @Persistent(mappedBy = "target", dependentElement = "true")
+    public SortedSet<SupplyAssessment> getSupplyAssessments() {
+        return supplyAssessments;
+    }
+   
+    public void setSupplyAssessments(final SortedSet<SupplyAssessment> assessment) {
+        this.supplyAssessments = assessment;
+    }
+    
+    // Business rule: 
+    // only visible for inner-circle
+    public boolean hideSupplyAssessments() {
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }
+    //-- supplyAssessments --//
+    
+	//-- API: COLLECTIONS --//
+	//** API: ACTIONS **//
+    
+    //** updateSupply **//
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public Supply updateSupply(
+            @ParameterLayout(named="supplyDescription", multiLine=4)
+            final String supplyDescription
+            ){
+        this.setSupplyDescription(supplyDescription);
+        return this;
+    }
+    
+    public String default0UpdateSupply(){
+        return this.getSupplyDescription();
+    }
+    //-- updateSupply --//
+    
+    //** deleteSupply **//
+    @ActionLayout(named="Aanbod verwijderen")
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Actor deleteSupply(
+            @ParameterLayout(named="areYouSure")
+            @Parameter(optional=Optionality.TRUE)
+            boolean areYouSure
+            ){
+        container.removeIfNotAlready(this);
+        container.informUser("Supply deleted");
+        return getSupplyOwner();
+    }
+    
+    public String validateDeleteSupply(boolean areYouSure) {
+        return areYouSure? null:"Geef aan of je wilt verwijderen";
+    }
+    //-- deleteSupply --//
+    
+    //** createPersonSupplyProfile **//
+    @ActionLayout(named="Nieuw persoonlijk profiel")
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createPersonSupplyProfile(){
+        return createSupplyProfile("Persoonlijke profiel van " + this.getSupplyOwner().title(), 10, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
+    }
+    
+    // Business rule:
+    // je kunt slechts een 'persoonlijk profiel' hebben (supplyType PERSONS_DEMANDSUPPLY)
+    // alleen tonen op supply van type PERSONS
+    // je kunt alleen een persoonlijk profiel aanmaken als je student of ZP-er bent.
+    
+     public boolean hideCreatePersonSupplyProfile(){
+               QueryDefault<Profile> query = 
+               QueryDefault.create(
+                       Profile.class, 
+                   "allSupplyProfilesOfTypeByOwner", 
+                   "ownedBy", currentUserName(),
+                   "profileType", ProfileType.PERSON_PROFILE);
+         if (container.firstMatch(query) != null) {
+           return true;
+         }
+         
+         if (this.getSupplyType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
+             return true;
+         }
+         
+         if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
+             return true;
+         }
+         
+         return false;
+     }
+     
+     public String validateCreatePersonSupplyProfile(){
+             QueryDefault<Profile> query = 
+             QueryDefault.create(
+                     Profile.class, 
+                 "allSupplyProfilesOfTypeByOwner", 
+                 "ownedBy", currentUserName(),
+                 "profileType", ProfileType.PERSON_PROFILE);
+           if (container.firstMatch(query) != null) {
+               return "Je hebt al een persoonlijk profiel";
+           }
+           
+           if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
+               return "Om een persoonlijk profiel te maken moet je Professional of Student zijn";
+           }
+           
+           if (this.getSupplyType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
+               return "Dit kan alleen op een persoonlijk aanbod";
+           }
+           
+           return null;
+           
+           
+     }
+     //-- createPersonSupplyProfile --//
+    
+    
+	//-- API: ACTIONS --//
+	//** GENERIC OBJECT STUFF **//
+	//** constructor **//
+    public Supply() {
+        super("supplyDescription, weight, ownedBy, uniqueItemId");
+    }
+	//** ownedBy - Override for secure object **//
     private String ownedBy;
     
     @Override
@@ -109,27 +279,46 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
-
-    //Immutables /////////////////////////////////////////////////////////////////////////////////////
-    
-    private Actor supplyOwner;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    @PropertyLayout(named="Eigenaar")
-    public Actor getSupplyOwner() {
-        return supplyOwner;
+	//-- GENERIC OBJECT STUFF --//
+	//** HELPERS **//
+    //** HELPERS: generic object helpers **//
+    private String currentUserName() {
+        return container.getUser().getName();
     }
     
-    public void setSupplyOwner(final Actor supplyOwner) {
-        this.supplyOwner = supplyOwner;
+    public String toString() {
+        return getSupplyDescription() + " - " + getSupplyOwner().title();
     }
-    
+	//-- HELPERS: generic object helpers --//
+	//** HELPERS: programmatic actions **//
     @Programmatic
     public Actor getProfileOwnerIsOwnedBy(){
         return getSupplyOwner();
     }
     
+    @Programmatic
+    public Profile createSupplyProfile(
+            final String supplyProfileDescription,
+            final Integer weight,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
+            final ProfileType profileType,
+            final Supply supplyProfileOwner, 
+            final String ownedBy) {
+        return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supplyProfileOwner, ownedBy);
+    }
+	//-- HELPERS: programmatic actions --// 
+	//-- HELPERS --//
+	//** INJECTIONS **//
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+    
+    @Inject
+    Profiles allSupplyProfiles;
+	//-- INJECTIONS --//
+	//** HIDDEN: PROPERTIES **//
+    
+    //** supplyType **//
     private DemandSupplyType supplyType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -142,21 +331,9 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     public void setSupplyType(final DemandSupplyType supplyType){
         this.supplyType = supplyType;
     }
- 
-    //END Immutables /////////////////////////////////////////////////////////////////////////////////////
-
-    private String supplyDescription;
+    //-- supplyType --//
     
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(multiLine=4)
-    public String getSupplyDescription(){
-        return supplyDescription;
-    }
-    
-    public void setSupplyDescription(final String description) {
-        this.supplyDescription = description;
-    }
-    
+    //** weight **//
     private Integer weight;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -168,23 +345,13 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     public void setWeight(final Integer weight) {
         this.weight = weight;
     }
-
-    //ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
+    //-- weight --//
     
-    public Supply editSupplyDescription(
-            @ParameterLayout(named="supplyDescription", multiLine=4)
-            final String supplyDescription
-            ){
-        this.setSupplyDescription(supplyDescription);
-        return this;
-    }
-    
-    public String default0EditSupplyDescription(){
-        return this.getSupplyDescription();
-    }
-    
+	//-- HIDDEN: PROPERTIES --//
+	//** HIDDEN: ACTIONS **//
     @ActionLayout(hidden=Where.EVERYWHERE)
-    public Supply editWeight(
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public Supply updateWeight(
             @ParameterLayout(named="weight")
             final Integer weight
             ){
@@ -192,200 +359,62 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
         return this;
     }
     
-    public Integer default0EditWeight(){
+    public Integer default0UpdateWeight(){
         return this.getWeight();
     }
-    
-    //delete action /////////////////////////////////////////////////////////////////////////////////////
+	//-- HIDDEN: ACTIONS --//
 
-    @ActionLayout(named="Aanbod verwijderen")
-    public Actor DeleteSupply(
-            @ParameterLayout(named="areYouSure")
-            @Parameter(optional=Optionality.TRUE)
-            boolean areYouSure
-            ){
-        container.removeIfNotAlready(this);
-        container.informUser("Supply deleted");
-        return getSupplyOwner();
-    }
     
-    public String validateDeleteSupply(boolean areYouSure) {
-        return areYouSure? null:"Geef aan of je wilt verwijderen";
-    }
-    
-    
-    //END ACTIONS ////////////////////////////////////////////////////////////////////////////////////////////
-    
-    // Region> aanbod (supply profiles)
-    
-    private SortedSet<Profile> supplyProfiles = new TreeSet<Profile>();
-    
-    @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "supplyProfileOwner", dependentElement = "true")
-    public SortedSet<Profile> getSupplyProfiles() {
-        return supplyProfiles;
-    }
-    
-    public void setSupplyProfiles(final SortedSet<Profile> supplyProfile){
-        this.supplyProfiles = supplyProfile;
-    }
-    
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public Profile newSupplyProfile(
-            final String supplyProfileDescription,
-            final Integer weight
-            ) {
-        return newSupplyProfile(supplyProfileDescription, weight, ProfileType.PERSON_PROFILE, this, currentUserName());
-    }
+//    @ActionLayout(hidden=Where.EVERYWHERE)
+//    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+//    public Profile createSupplyProfile(
+//            final String supplyProfileDescription,
+//            final Integer weight
+//            ) {
+//        return createSupplyProfile(supplyProfileDescription, weight, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
+//    }
    
-   //XTALUS
-   //Region> Nieuw persoonlijk profiel ////////////////////////////////////////////////////////
-   
-   @ActionLayout(named="Nieuw persoonlijk profiel")
-   public Profile newPersonSupplyProfile(){
-       return newSupplyProfile("Persoonlijke profiel van " + this.getSupplyOwner().title(), 10, ProfileType.PERSON_PROFILE, this, currentUserName());
-   }
-   
-   // BUSINESS RULE voor hide en validate van de aktie 'nieuw persoonlijk profiel'
-   // je kunt slechts een 'persoonlijk profiel' hebben (supplyType PERSONS_DEMANDSUPPLY)
-   // alleen tonen op supply van type PERSONS
-   // je kunt alleen een persoonlijk profiel aanmaken als je student of ZP-er bent.
-   
-    public boolean hideNewPersonSupplyProfile(){
-              QueryDefault<Profile> query = 
-              QueryDefault.create(
-                      Profile.class, 
-                  "allSupplyProfilesOfTypeByOwner", 
-                  "ownedBy", currentUserName(),
-                  "profileType", ProfileType.PERSON_PROFILE);
-        if (container.firstMatch(query) != null) {
-          return true;
-        }
-        
-        if (this.getSupplyType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
-            return true;
-        }
-        
-        if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
-            return true;
-        }
-        
-        return false;
-    }
-    
-    public String validateNewPersonSupplyProfile(){
-            QueryDefault<Profile> query = 
-            QueryDefault.create(
-                    Profile.class, 
-                "allSupplyProfilesOfTypeByOwner", 
-                "ownedBy", currentUserName(),
-                "profileType", ProfileType.PERSON_PROFILE);
-          if (container.firstMatch(query) != null) {
-              return "Je hebt al een persoonlijk profiel";
-          }
-          
-          if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
-              return "Om een persoonlijk profiel te maken moet je Professional of Student zijn";
-          }
-          
-          if (this.getSupplyType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
-              return "Dit kan alleen op een persoonlijk aanbod";
-          }
-          
-          return null;
-          
-          
-    }
-    
-    //End Region> Nieuw persoonlijk profiel ////////////////////////////////////////////////////////
-    
-    //Region> Nieuw cursus profiel ////////////////////////////////////////////////////////
-    
-    @ActionLayout(named="Nieuwe cursus")
-    public Profile newCourseSupplyProfile(
-            @ParameterLayout(named="profileName")
-            final String supplyProfileDescription
-            ) {
-        return newSupplyProfile(supplyProfileDescription, 10, ProfileType.COURSE_PROFILE, this, currentUserName());
-    }
-    
-    // BUSINESS RULE voor hide en validate van de aktie 'nieuw cursus profiel'
-    // alleen tonen op supply van type cursus
-    // je kunt alleen een cursus profiel aanmaken als je ZP-er bent.
-    
-    public boolean hideNewCourseSupplyProfile(
-            final String supplyProfileDescription
-            ) {
-        if (this.getSupplyType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
-            return true;
-        }
-        
-        if (!((Person) getSupplyOwner()).getIsProfessional()){
-            return true;
-        }
-        
-        return false;
-    }
-    
-    public String validateNewCourseSupplyProfile(
-            final String supplyProfileDescription
-            ) {
-        if (this.getSupplyType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
-            return "Kan alleen op type Cursus";
-        }
-        
-        if (!((Person) getSupplyOwner()).getIsProfessional()){
-            return "Je moet ZP-er zijn";
-        }
-        
-        return null;
-    }
-    //End Region> Nieuw cursus profiel ////////////////////////////////////////////////////////
-    
-    @Programmatic
-    public Profile newSupplyProfile(
-            final String supplyProfileDescription,
-            final Integer weight,
-            final ProfileType profileType,
-            final Supply supplyProfileOwner, 
-            final String ownedBy) {
-        return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, weight, profileType, supplyProfileOwner, ownedBy);
-    }
-    
-    
-    // Region> Assessments
-    
-    private SortedSet<SupplyAssessment> assessments = new TreeSet<SupplyAssessment>();
-    
-    @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
-    @Persistent(mappedBy = "target", dependentElement = "true")
-    public SortedSet<SupplyAssessment> getAssessments() {
-        return assessments;
-    }
-   
-    public void setAssessments(final SortedSet<SupplyAssessment> assessment) {
-        this.assessments = assessment;
-    }
-    
-    public boolean hideAssessments() {
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-    }  
 
-    // Helpers
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
     
-    public String toString() {
-        return getSupplyDescription() + " - " + getSupplyOwner().title();
-    }
-    
-    // Injects
-    
-    @javax.inject.Inject
-    private DomainObjectContainer container;
-    
-    @Inject
-    Profiles allSupplyProfiles;
-    
+//    @ActionLayout(named="Nieuwe cursus", hidden=Where.EVERYWHERE)
+//    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+//    public Profile createCourseSupplyProfile(
+//            @ParameterLayout(named="profileName")
+//            final String supplyProfileDescription
+//            ) {
+//        return createSupplyProfile(supplyProfileDescription, 10, null, null, ProfileType.COURSE_PROFILE, this, currentUserName());
+//    }
+//    
+//    // BUSINESS RULE voor hide en validate van de aktie 'nieuw cursus profiel'
+//    // alleen tonen op supply van type cursus
+//    // je kunt alleen een cursus profiel aanmaken als je ZP-er bent.
+//    
+//    public boolean hideCreateCourseSupplyProfile(
+//            final String supplyProfileDescription
+//            ) {
+//        if (this.getSupplyType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
+//            return true;
+//        }
+//        
+//        if (!((Person) getSupplyOwner()).getIsProfessional()){
+//            return true;
+//        }
+//        
+//        return false;
+//    }
+//    
+//    public String validateCreateCourseSupplyProfile(
+//            final String supplyProfileDescription
+//            ) {
+//        if (this.getSupplyType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
+//            return "Kan alleen op type Cursus";
+//        }
+//        
+//        if (!((Person) getSupplyOwner()).getIsProfessional()){
+//            return "Je moet ZP-er zijn";
+//        }
+//        
+//        return null;
+//    }
+
 }

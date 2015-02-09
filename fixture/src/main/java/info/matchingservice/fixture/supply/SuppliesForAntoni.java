@@ -18,19 +18,19 @@ public class SuppliesForAntoni extends SupplyAbstract {
                 "Persoonlijk profiel van Antoni",
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
-                persons.findPersons("Leeuw*").get(0),
+                persons.findPersons("Leeuw").get(0),
                 "antoni",
                 executionContext
                 );
         
-        createSupply(
-                "Cursusaanbod van Antoni",
-                10,
-                DemandSupplyType.COURSE_DEMANDSUPPLY,
-                persons.findPersons("Leeuw*").get(0),
-                "antoni",
-                executionContext
-                );
+//        createSupply(
+//                "Cursusaanbod van Antoni",
+//                10,
+//                DemandSupplyType.COURSE_DEMANDSUPPLY,
+//                persons.findPersons("Leeuw").get(0),
+//                "antoni",
+//                executionContext
+//                );
     }
     
 

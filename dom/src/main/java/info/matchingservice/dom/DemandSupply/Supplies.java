@@ -25,12 +25,16 @@ import info.matchingservice.dom.Actor.Actor;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 
-@DomainService(repositoryFor = Supply.class)
+@DomainService(repositoryFor = Supply.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
         named="Aanbod en vraag",
         menuBar = DomainServiceLayout.MenuBar.PRIMARY,
@@ -42,13 +46,14 @@ public class Supplies extends MatchingDomainService<Supply> {
         super(Supplies.class, Supply.class);
     }
     
-    @ActionLayout(named="Alle aanbod")
+    @ActionLayout(named="Alle aanbod", hidden=Where.ANYWHERE)
+    @Action(semantics=SemanticsOf.SAFE)
     public List<Supply> allSupplies() {
         return allInstances();
     }
 
     @Programmatic
-    public Supply newSupply(
+    public Supply createSupply(
             final String supplyDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType,

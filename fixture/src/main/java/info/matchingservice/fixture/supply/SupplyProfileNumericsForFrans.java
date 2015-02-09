@@ -15,15 +15,15 @@ public class SupplyProfileNumericsForFrans extends SupplyProfileNumericAbstract 
         executeChild(new PersonForFrans(), executionContext);
         executeChild(new SuppliesForFrans(), executionContext);
         
-        createNumericElement(
-                "Prijs (credits)",
-                10,
-                100,
-                ProfileElementType.NUMERIC,
-                persons.findPersons("Hals").get(0).getMySupplies().first().getSupplyProfiles().first(),
-                "frans",
-                executionContext
-                );
+//        createNumericElement(
+//                "Prijs (credits)",
+//                10,
+//                100,
+//                ProfileElementType.NUMERIC,
+//                persons.findPersons("Hals").get(0).getSuppliesOfActor().first().getSupplyProfiles().first(),
+//                "frans",
+//                executionContext
+//                );
     }
     
     @Inject

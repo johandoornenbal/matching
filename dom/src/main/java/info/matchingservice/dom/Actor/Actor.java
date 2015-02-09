@@ -44,18 +44,20 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -74,15 +76,122 @@ import org.apache.isis.applib.value.Blob;
 })
 public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
+	//** API: PROPERTIES **//
+	
+    private UUID uniqueItemId;
     
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
+    }
+    
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
+    }
+	
+	//-- API: PROPERTIES --//
+	
+	//** API: COLLECTIONS **//
+	
+	//** demandsOfActor **//
+    private SortedSet<Demand> demandsOfActor = new TreeSet<Demand>();
+    
+    @CollectionLayout(named="Vraag", render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "demandOwner", dependentElement = "true")
+    public SortedSet<Demand> getDemandsOfActor() {
+        return demandsOfActor;
+    }
+   
+    public void setDemandsOfActor(final SortedSet<Demand> demandsOfActor) {
+        this.demandsOfActor = demandsOfActor;
+    }   
+    //-- demandsOfActor --//
+    
+    //** suppliesOfActor **//
+    private SortedSet<Supply> suppliesOfActor = new TreeSet<Supply>();
+    
+    @CollectionLayout(named="Aanbod", render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
+    public SortedSet<Supply> getSuppliesOfActor() {
+        return suppliesOfActor;
+    }
+   
+    public void setSuppliesOfActor(final SortedSet<Supply> suppliesOfActor) {
+        this.suppliesOfActor = suppliesOfActor;
+    }
+    //-- suppliesOfActor --//
+    
+    //** savedMatchesOfActor **//
+    private SortedSet<ProfileMatch> savedMatchesOfActor = new TreeSet<ProfileMatch>();
+    
+    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
+    @CollectionLayout(named="Mijn bewaarde 'matches'", render=RenderType.EAGERLY)
+    public SortedSet<ProfileMatch> getSavedMatchesOfActor() {
+        return savedMatchesOfActor;
+    }
+    
+    public void setSavedMatchesOfActor(final SortedSet<ProfileMatch> savedMatchesOfActor){
+        this.savedMatchesOfActor = savedMatchesOfActor;
+    }
+    
+    //Business rule: 
+    //only visible for inner-circle
+    public boolean hideSavedMatchesOfActor(){
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }
+    //-- savedMatchesOfActor --//
+    
+    //** assessmentsGivenByActor **//
+    private SortedSet<Assessment> assessmentsGivenByActor = new TreeSet<Assessment>();
+    
+    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
+    @CollectionLayout(named="Feedback die ik gegeven heb", render=RenderType.EAGERLY)
+    public SortedSet<Assessment> getAssessmentsGivenByActor() {
+        return assessmentsGivenByActor;
+    }
+    
+    public void setAssessmentsGivenByActor(final SortedSet<Assessment> assessmentsGivenByActor){
+        this.assessmentsGivenByActor = assessmentsGivenByActor;
+    }
+    
+    //Business rule: 
+    //only visible for intimate-circle
+    public boolean hideAssessmentsGivenByActor(){
+        return super.allowedTrustLevel(TrustLevel.INTIMATE);
+    }
+    //-- assessmentsGivenByActor --//
+    
+    //** assessmentsGivenByActor **//
+    private SortedSet<Assessment> assessmentsReceivedByActor = new TreeSet<Assessment>();
+    
+    @Persistent(mappedBy = "targetOwnerActor", dependentElement = "true")
+    @CollectionLayout(named="Feedback die ik ontvangen heb", render=RenderType.EAGERLY)
+    public SortedSet<Assessment> getAssessmentsReceivedByActor() {
+        return assessmentsReceivedByActor;
+    }
+    
+    public void setAssessmentsReceivedByActor(final SortedSet<Assessment> assessmentsReceivedByActor){
+        this.assessmentsReceivedByActor = assessmentsReceivedByActor;
+    }
+    
+    // Business rule: 
+    // only visible for inner-circle
+    public boolean hideAssessmentsReceivedByActor(){
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }    
+    //-- assessmentsGivenByActor --//
+    
+    //-- END API: COLLECTIONS --//
+    
+    //** GENERIC OBJECT STUFF **//
+    
+    //** Constructor **//
     public Actor() {
         super("uniqueItemId");
     }
         
-    public String title() {
-        return getUniqueItemId().toString();
-    }
-    
+    //** ownedBy - Override for secure object **//
     private String ownedBy;
     
     @Override
@@ -97,204 +206,80 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.ownedBy = owner;
     }
     
-    private UUID uniqueItemId;
+    //-- GENERIC OBJECT STUFF --//
     
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    public UUID getUniqueItemId() {
-        return uniqueItemId;
+    //** HELPERS **//
+    //** HELPERS: generic object helpers **//
+    public String title() {
+        return getUniqueItemId().toString();
     }
     
-    public void setUniqueItemId(final UUID uniqueItemId) {
-        this.uniqueItemId = uniqueItemId;
+    private String currentUserName() {
+        return container.getUser().getName();
     }
+    //-- HELPERS: generic object helpers --//
     
-    
-    //Region> DEMANDS /////////////////////////////////////////////////////////////
-    
-    private SortedSet<Demand> myDemands = new TreeSet<Demand>();
-    
-    @CollectionLayout(named="Vraag", render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "demandOwner", dependentElement = "true")
-    public SortedSet<Demand> getMyDemands() {
-        return myDemands;
-    }
-   
-    public void setMyDemands(final SortedSet<Demand> myDemands) {
-        this.myDemands = myDemands;
-    }
-    
-    /**
-     * Generic new Demand
-     * @param demandDescription
-     * @param weight
-     * @param demandSupplyType
-     * @return
-     */
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public Demand newDemand(
-            final String demandDescription,
-            final Integer weight,
-            final DemandSupplyType demandSupplyType
-            ) {
-        return newDemand(demandDescription, "", "", null, weight, demandSupplyType, this, currentUserName());
-    }
-    
-    //helper
+    //** HELPERS: programmatic actions **//   
     @Programmatic
-    public Demand newDemand(
+    public Demand createDemand(
             final String demandDescription,
-            @Parameter(optional=Optionality.TRUE)
             final String demandSummary,
-            @Parameter(optional=Optionality.TRUE)
             final String demandStory,
-            @Parameter(optional=Optionality.TRUE)
             final Blob demandAttachment,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner, 
             final String ownedBy){
-        return demands.newDemand(demandDescription, demandSummary, demandStory, demandAttachment, weight, demandSupplyType, demandOwner, ownedBy);
+        return demands.createDemand(demandDescription, demandSummary, demandStory, demandAttachment, weight, demandSupplyType, demandOwner, ownedBy);
     }
     
     @Programmatic
-    public Profile newDemandAndProfile(
+    public Profile createDemandAndProfile(
             final String demandDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner,
             final String demandProfileDescription,
             final Integer profileWeight,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final String ownedBy){
-        final Demand demand = demands.newDemand(demandDescription, "", "", null, weight, demandSupplyType, demandOwner, ownedBy);
-        return profiles.newDemandProfile(demandProfileDescription, profileWeight, profileType, demand, ownedBy);
+        final Demand demand = demands.createDemand(demandDescription, "", "", null, weight, demandSupplyType, demandOwner, ownedBy);
+        return profiles.createDemandProfile(demandProfileDescription, profileWeight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demand, ownedBy);
     }
-    
-    
-    //Region> SUPPLIES /////////////////////////////////////////////////////////////
 
-    private SortedSet<Supply> mySupplies = new TreeSet<Supply>();
-    
-    @CollectionLayout(named="Aanbod", render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
-    public SortedSet<Supply> getMySupplies() {
-        return mySupplies;
-    }
-   
-    public void setMySupplies(final SortedSet<Supply> supplies) {
-        this.mySupplies = supplies;
-    }
-    
-    /**
-     * Generic new Supply
-     * @param supplyDescription
-     * @param weight
-     * @param demandSupplyType
-     * @return
-     */
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public Supply newSupply(
-            final String supplyDescription,
-            final Integer weight,
-            final DemandSupplyType demandSupplyType){
-        return newSupply(supplyDescription, weight, demandSupplyType, this, currentUserName());
-    }
-    
-    //helper
     @Programmatic
-    public Supply newSupply(
+    public Supply createSupply(
             final String supplyDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor supplyOwner, 
             final String ownedBy){
-        return supplies.newSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
+        return supplies.createSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
     }
     
     @Programmatic
-    public Profile newSupplyAndProfile(
+    public Profile createSupplyAndProfile(
             final String supplyDescription,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor supplyOwner,
             final String supplyProfileDescription,
             final Integer profileWeight,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final String ownedBy){
-        final Supply supply = supplies.newSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
-        return profiles.newSupplyProfile(supplyProfileDescription, profileWeight, profileType, supply, ownedBy);
+        final Supply supply = supplies.createSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
+        return profiles.newSupplyProfile(supplyProfileDescription, profileWeight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supply, ownedBy);
     }
+    //-- HELPERS: programmatic actions --//
     
-    
-    //END Region> SUPPLIES /////////////////////////////////////////////////////////////
-    
-    //Region> Saved Matches /////////////////////////////////////////////////////////////
-    
-    private SortedSet<ProfileMatch> mySavedMatches = new TreeSet<ProfileMatch>();
-    
-    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
-    @CollectionLayout(named="Mijn bewaarde 'matches'", render=RenderType.EAGERLY)
-    public SortedSet<ProfileMatch> getMySavedMatches() {
-        return mySavedMatches;
-    }
-    
-    public void setMySavedMatches(final SortedSet<ProfileMatch> mySavedMatches){
-        this.mySavedMatches = mySavedMatches;
-    }
-    
-    public boolean hideMySavedMatches(){
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-    }
-    
-    //END Region> Saved Matches /////////////////////////////////////////////////////////////
-    
-    //Region> Assessments Given  /////////////////////////////////////////////////////////////
-    
-    private SortedSet<Assessment> assessmentsGivenByMe = new TreeSet<Assessment>();
-    
-    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
-    @CollectionLayout(named="Feedback die ik gegeven heb", render=RenderType.EAGERLY)
-    public SortedSet<Assessment> getAssessmentsGivenByMe() {
-        return assessmentsGivenByMe;
-    }
-    
-    public void setAssessmentsGivenByMe(final SortedSet<Assessment> assessmentsGivenByMe){
-        this.assessmentsGivenByMe = assessmentsGivenByMe;
-    }
-    
-    public boolean hideAssessmentsGivenByMe(){
-        return super.allowedTrustLevel(TrustLevel.INTIMATE);
-    }
-    
-    //Region> Assessments Received  /////////////////////////////////////////////////////////////
-    
-    private SortedSet<Assessment> assessmentsReceivedByMe = new TreeSet<Assessment>();
-    
-    @Persistent(mappedBy = "targetOwnerActor", dependentElement = "true")
-    @CollectionLayout(named="Feedback die ik ontvangen heb", render=RenderType.EAGERLY)
-    public SortedSet<Assessment> getAssessmentsReceivedByMe() {
-        return assessmentsReceivedByMe;
-    }
-    
-    public void setAssessmentsReceivedByMe(final SortedSet<Assessment> assessmentsReceivedByMe){
-        this.assessmentsReceivedByMe = assessmentsReceivedByMe;
-    }
-    
-    public boolean hideAssessmentsReceivedByMe(){
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-    }    
-    
-    //END Region> ASSESSMENTS /////////////////////////////////////////////////////////////
-    
-    // Region>HELPERS ////////////////////////////
-    
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
-    
-    
-    // Region>injections ////////////////////////////
+    //-- HELPERS --//
+
+    //** INJECTIONS **//
+
     @javax.inject.Inject
     private DomainObjectContainer container;
     
@@ -306,5 +291,43 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 
     @Inject
     Profiles profiles;
+    
+    //-- INJECTIONS --//
+    
+    
+	//  /**
+	//  * Generic new Demand
+	//  * @param demandDescription
+	//  * @param weight
+	//  * @param demandSupplyType
+	//  * @return
+	//  */
+	// @ActionLayout(hidden=Where.EVERYWHERE)
+	// @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	// public Demand createDemand(
+	//         final String demandDescription,
+	//         final Integer weight,
+	//         final DemandSupplyType demandSupplyType
+	//         ) {
+	//     return createDemand(demandDescription, "", "", null, weight, demandSupplyType, this, currentUserName());
+	// }
+	    
+	//  /**
+	//  * Generic new Supply
+	//  * @param supplyDescription
+	//  * @param weight
+	//  * @param demandSupplyType
+	//  * @return
+	//  */
+	// @ActionLayout(hidden=Where.EVERYWHERE)
+	// @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	// public Supply createSupply(
+	//         final String supplyDescription,
+	//         final Integer weight,
+	//         final DemandSupplyType demandSupplyType){
+	//     return createSupply(supplyDescription, weight, demandSupplyType, this, currentUserName());
+	// }
+    
+    
     
 }

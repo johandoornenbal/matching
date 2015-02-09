@@ -21,7 +21,7 @@ public abstract class PersonAbstract extends FixtureScript {
             Blob picture,
             ExecutionContext executionContext
             ) {
-        Actor newPerson = persons.newPerson(firstName, middleName, lastName, dateOfBirth, user, picture);
+        Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, user, picture);
                        
         return executionContext.add(this, newPerson);
     }

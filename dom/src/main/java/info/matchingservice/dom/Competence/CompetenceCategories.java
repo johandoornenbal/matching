@@ -21,14 +21,18 @@ package info.matchingservice.dom.Competence;
 
 import java.util.List;
 
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 
 import info.matchingservice.dom.MatchingDomainService;
 
-@DomainService(repositoryFor = CompetenceCategory.class)
+@DomainService(repositoryFor = CompetenceCategory.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
         named="Beheer",
         menuBar = DomainServiceLayout.MenuBar.PRIMARY,
@@ -40,13 +44,15 @@ public class CompetenceCategories extends MatchingDomainService<CompetenceCatego
         super(CompetenceCategories.class, CompetenceCategory.class);
     }
     
-    @ActionLayout(named="Alle competentie categorieën")
+    @ActionLayout(named="Alle competentie categorieën", hidden=Where.ANYWHERE)
+    @Action(semantics=SemanticsOf.SAFE)
     public List<CompetenceCategory> allCompetenceCategories() {
         return allInstances();
     }
     
     @ActionLayout(named="Nieuwe competentie categorie")
-    public CompetenceCategory newCompetenceCategory(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public CompetenceCategory createCompetenceCategory(
             @ParameterLayout(
                     named = "competenceCategoryDescription",
                     describedAs="Verzameling van aantal competenties om op te matchen.",
@@ -60,17 +66,21 @@ public class CompetenceCategories extends MatchingDomainService<CompetenceCatego
         return newCompetenceCategory;
     }
     
-    public String validateNewCompetenceCategory(final String competenceCategoryDescription){
+    public String validateCreateCompetenceCategory(final String competenceCategoryDescription){
         if (!this.findCompetenceCategoryMatches(competenceCategoryDescription).isEmpty()){
             return "Deze categorie is al eerder ingevoerd";
         }
         return null;
     }
     
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(hidden=Where.ANYWHERE)
     public List<CompetenceCategory> findCompetenceCategoryContains(final String competenceCategoryDescription){
         return allMatches("competenceCategoryContains", "competenceCategoryDescription", competenceCategoryDescription.toLowerCase());
     }
     
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(hidden=Where.ANYWHERE)
     public List<CompetenceCategory> findCompetenceCategoryMatches(final String competenceCategoryDescription){
         return allMatches("competenceCategoryMatches", "competenceCategoryDescription", competenceCategoryDescription.toLowerCase());
     }

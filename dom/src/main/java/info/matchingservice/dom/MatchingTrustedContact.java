@@ -101,6 +101,10 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
         if (Objects.equal(getOwnedBy(), container.getUser().getName())){
             return false;
         }
+        // user is referred to
+        if (Objects.equal(getContact(), container.getUser().getName())){
+            return false;
+        }
         // user is admin of app
         if (container.getUser().hasRole(".*matching-admin")) {
             return false;

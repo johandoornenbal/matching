@@ -25,7 +25,6 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -35,26 +34,26 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
-import org.joda.time.LocalDate;
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
 
 
 
@@ -75,21 +74,12 @@ import org.apache.isis.applib.value.Blob;
             name = "matchPersonByLastNameContains", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.Person "
-                    + "WHERE lastName.indexOf(:lastName) >= 0")                    
+                    + "WHERE lastName.toLowerCase().indexOf(:lastName) >= 0")                    
 })
 @DomainObject(editing=Editing.DISABLED, autoCompleteRepository=Persons.class, autoCompleteAction = "autoComplete")
 public class Person extends Actor {
     
-    
-    public String title() {
-        if (getMiddleName()==null) {
-            return this.getFirstName() + " " + this.getLastName();
-        } else {
-            return this.getFirstName() + " " + this.getMiddleName() + " " + this.getLastName();
-        }
-    }
-    
-    
+	//** API: PROPERTIES **//
     //Region> firstName /////////////////////////////////////////////////
     private String firstName;
     
@@ -132,7 +122,7 @@ public class Person extends Actor {
         this.lastName = lastName;
     }
     
-    //Region> dateOfBirth
+    //Region> dateOfBirth /////////////////////////////////////////////////
     private LocalDate dateOfBirth;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -146,6 +136,7 @@ public class Person extends Actor {
         this.dateOfBirth = dateOfBirth;
     }
     
+    //Region> picture /////////////////////////////////////////////////
     private Blob picture;
 
     @javax.jdo.annotations.Persistent(defaultFetchGroup="false", columns = {
@@ -164,109 +155,7 @@ public class Person extends Actor {
         this.picture = picture;
     }
     
-
-    //Region> ROLES /////////////////////////////////////////////////
-    
-    // Role STUDENT 'Clean' code. Makes use of helpers in Helpers region
-    
-    @ActionLayout(named="Rol Student")
-    @MemberOrder(sequence = "40")
-    public Person addRoleStudent() {
-        addRoleStudent(currentUserName());
-        return this;
-    }
-    
-    public boolean hideAddRoleStudent() {
-        return hideAddRoleStudent(this, currentUserName());
-    }
-    
-    @ActionLayout(named="Geen student meer")
-    @MemberOrder(sequence = "41")
-    public Person deleteRoleStudent() {
-        deleteRoleStudent(currentUserName());;
-        return this;
-    }
-    
-    public boolean hideDeleteRoleStudent() {
-        return hideDeleteRoleStudent(this, currentUserName());
-    }
-    
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public Boolean getIsStudent() {
-        return getIsStudent(this);
-    }
-
-    // Role PROFESSIONAL 'Clean' code. Makes use of helpers in Helpers region
-    
-    @ActionLayout(named="Rol ZP-er")
-    @MemberOrder(sequence = "50")
-    public Person addRoleProfessional() {
-        addRoleProfessional(currentUserName());
-        return this;
-    }
-    
-    public boolean hideAddRoleProfessional() {
-        return hideAddRoleProfessional(this, currentUserName());
-    }
-    
-    @ActionLayout(named="Geen ZP-er meer")
-    @MemberOrder(sequence = "51")
-    public Person deleteRoleProfessional() {
-        deleteRoleProfessional(currentUserName());
-        return this;
-    }
-    
-    public boolean hideDeleteRoleProfessional() {
-        return hideDeleteRoleProfessional(this, currentUserName());
-    }
-    
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public Boolean getIsProfessional() {
-        return getIsProfessional(this);
-    }
-    
-    // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region
-    
-    @ActionLayout(named="Rol Opdrachtgever")
-    @MemberOrder(sequence = "60")
-    public Person addRolePrincipal() {
-        addRolePrincipal(currentUserName());
-        return this;
-    }
-    
-    public boolean hideAddRolePrincipal() {
-        return hideAddRolePrincipal(this, currentUserName());
-    }
-    
-    @ActionLayout(named="Geen opdrachtgever meer")
-    @MemberOrder(sequence = "61")
-    public Person deleteRolePrincipal() {
-        deleteRolePrincipal(currentUserName());
-        return this;
-    }
-    
-    public boolean hideDeleteRolePrincipal() {
-        return hideDeleteRolePrincipal(this, currentUserName());
-    }
-    
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public Boolean getIsPrincipal() {
-        return getIsPrincipal(this);
-    }
-    
-    // ALL My Roles
-    
-    @CollectionLayout(hidden=Where.EVERYWHERE, render=RenderType.EAGERLY)
-    @MemberOrder(sequence = "100")
-    public List<PersonRole> getAllMyRoles() {
-        QueryDefault<PersonRole> query =
-                QueryDefault.create(
-                        PersonRole.class,
-                        "findMyRoles",
-                        "ownedBy", this.getOwnedBy());
-        return container.allMatches(query);
-    }
-    
+    //Region> roles /////////////////////////////////////////////////
     @PropertyLayout(named="Rollen", multiLine=2)
     public String getRoles() {
         TitleBuffer tb = new TitleBuffer();
@@ -287,54 +176,198 @@ public class Person extends Actor {
         }
         return tb.toString();
     }
+	
+	//-- API: PROPERTIES --//
     
-    //Region> SUPPLIES /////////////////////////////////////////////////////////////   
+    //** API: COLLECTIONS **//
     
-    public Profile newPersonsSupply(){
-        return newSupplyAndProfile("Persoonlijke profiel van " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "Mijn persoonlijke profiel", 10, ProfileType.PERSON_PROFILE, currentUserName());
+    //** personalContacts **//
+    private SortedSet<PersonalContact> personalContacts = new TreeSet<PersonalContact>();
+    
+    @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
+    @CollectionLayout(named="Persoonlijke contacten", render=RenderType.EAGERLY)
+    public SortedSet<PersonalContact> getPersonalContacts() {
+        return personalContacts;
     }
     
-    //BUSINESS RULE
-    // Je kunt alleen een Persoonprofiel aanmaken als je
-    // - eigenaar bent
-    // - rol Student of Professional hebt
-    // - nog geen persoonssupply hebt
-    public boolean hideNewPersonsSupply(){
-        return hideNewPersonsSupply("", this);
+    public void setPersonalContacts(final SortedSet<PersonalContact> personalContacts) {
+        this.personalContacts = personalContacts;
     }
     
-    public String validateNewPersonsSupply(){
-        return validateNewPersonsSupply("", this);
+    // Business rule: 
+    // only visible for inner-circle
+    public boolean hidePersonalContacts(){
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }
+    //-- personalContacts --//
+    
+    //** personsReferringToActiveUser **//
+    @CollectionLayout(named="Personen verwijzend naar mij", render=RenderType.EAGERLY)
+    public List<PersonalContact> getPersonsReferringToActiveUser(){
+    	return pcontacts.allPersonalContactsReferringToUser(currentUserName());
     }
     
-    public Supply newCourseSupply(
-            @ParameterLayout(named="supplyDescription", multiLine=3)
-            final String supplyDescription
-            ){
-        return newSupply(supplyDescription, 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, currentUserName());
+    // business rule:
+    // show only on person object of Active User
+    public boolean hidePersonsReferringToActiveUser(){
+    	if (getOwnedBy().equals(currentUserName())){
+    		return false;
+    	} else {
+    		return true;
+    	}
     }
     
-    public boolean hideNewCourseSupply(final String supplyDescription){
-        // if you are not the owner
-        if (!this.getOwnedBy().equals(currentUserName())){
+
+    
+    //** suppliesOfActor **//
+    // Business rule:
+    // - hide if not role student or professional
+    public boolean hideSuppliesOfActor(){
+        
+        if (!(getIsStudent() || getIsProfessional() )){
             return true;
         }
-        // if you have no ZP Role
-        if (!((Person) this).getIsProfessional()){
-            return true;
-        } 
         
-        return false;        
+        return false;
+    }
+    //-- suppliesOfActor --//
+    
+    //** demandsOfActor **//
+    // Business rule:
+    // Je moet minimaal INNERCIRCLE zijn om de demands te zien
+    public boolean hideDemandsOfActor() { 
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }
+    //-- demandsOfActor --//
+    
+    //-- API: COLLECTIONS --//
+    
+    //** API: ACTIONS **//
+    
+    //** updatePerson **//
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public Person updatePerson(
+    		@ParameterLayout(named="firstName")
+    		final String firstName,
+    		@ParameterLayout(named="middleName")
+    		@Parameter(optional=Optionality.TRUE)
+    		final String middleName,
+    		@ParameterLayout(named="lastName")
+    		final String lastName,
+    		@ParameterLayout(named="dateOfBirth")
+    		final LocalDate dateOfBirth,
+    		@ParameterLayout(named="picture")
+    		final Blob picture
+    		){
+    	persons.updatePerson(this, firstName, middleName, lastName, dateOfBirth, picture);
+    	return this;
     }
     
-    // Supply helpers
-    //BUSINESS RULE
+    public String default0UpdatePerson(){
+    	return getFirstName();
+    }
+    
+    public String default1UpdatePerson(){
+    	return getMiddleName();
+    }
+    
+    public String default2UpdatePerson(){
+    	return getLastName();
+    }
+    
+    public LocalDate default3UpdatePerson(){
+    	return getDateOfBirth();
+    }
+    
+    public Blob default4UpdatePerson(){
+    	return getPicture();
+    }
+    //-- updatePerson --//
+    
+    //** newPersonsSupplyAndProfile **//
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile newPersonsSupplyAndProfile(){
+        return createSupplyAndProfile("Persoonlijke profiel van " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "Mijn persoonlijke profiel", 10, null, null, ProfileType.PERSON_PROFILE, currentUserName());
+    }
+    
+    // Business rule: 
     // Je kunt alleen een Persoonprofiel aanmaken als je
     // - eigenaar bent
     // - rol Student of Professional hebt
     // - nog geen persoonssupply hebt
+    public boolean hideNewPersonsSupplyAndProfile(){
+        return hideNewPersonsSupplyAndProfile("", this);
+    }
+    
+    public String validateNewPersonsSupplyAndProfile(){
+        return validateNewPersonsSupplyAndProfile("", this);
+    }
+    //-- newPersonsSupplyAndProfile --//
+    
+    //** newPersonsDemand **//
+    // Business rule: 
+    // Je moet Opdrachtgever zijn om een tafel te starten
+    @ActionLayout(named="Start nieuwe tafel")
+    public Demand newPersonsDemand(
+            @ParameterLayout(named="demandDescription")
+            final String demandDescription,
+            @ParameterLayout(named="demandSummary", multiLine=3)
+            @Parameter(optional=Optionality.TRUE)
+            final String demandSummary,
+            @ParameterLayout(named="demandStory", multiLine=8)
+            @Parameter(optional=Optionality.TRUE)
+            final String demandStory,
+            @ParameterLayout(named="demandAttachment")
+            @Parameter(optional=Optionality.TRUE)
+            final Blob demandAttachment
+            ){
+        return createDemand(demandDescription, demandSummary, demandStory, demandAttachment, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
+    }
+    
+    public boolean hideNewPersonsDemand(
+    		final String demandDescription,
+    		final String demandSummary,
+    		final String demandStory,
+    		final Blob demandAttachment
+    		){
+        return hideCreateDemand(demandDescription, this);
+    }
+    
+    public String validateNewPersonsDemand(
+    		final String demandDescription,
+    		final String demandSummary,
+    		final String demandStory,
+    		final Blob demandAttachment
+    		){
+        return validateNewDemand(demandDescription, this);
+    }
+    //-- newPersonsDemand --//
+    
+    //-- API: ACTIONS --//
+    
+    //** GENERIC OBJECT STUFF **//
+
+    //-- GENERIC OBJECT STUFF --//
+    
+    //** HELPERS **//
+    //** HELPERS: generic object helpers **//
+    public String title() {
+        if (getMiddleName()==null) {
+            return this.getFirstName() + " " + this.getLastName();
+        } else {
+            return this.getFirstName() + " " + this.getMiddleName() + " " + this.getLastName();
+        }
+    }
+    
+    private String currentUserName() {
+        return container.getUser().getName();
+    }
+    
+    //-- HELPERS: generic object helpers --//
+    
+    //** HELPERS: programmatic actions **//
     @Programmatic
-    public boolean hideNewPersonsSupply(final String needDescription, final Actor needOwner){
+    public boolean hideNewPersonsSupplyAndProfile(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
             return true;
@@ -358,7 +391,7 @@ public class Person extends Actor {
     }
     
     @Programmatic
-    public String validateNewPersonsSupply(final String needDescription, final Actor needOwner){
+    public String validateNewPersonsSupplyAndProfile(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
             return "Je bent niet de eigenaar";
@@ -381,120 +414,8 @@ public class Person extends Actor {
         return null;
     }
     
-    //BUSINESS RULE
-    //Als je geen Student of Professional bent, toon dan geen supplies
-    
-    public boolean hideMySupplies(){
-        
-        if (!(getIsStudent() || getIsProfessional() )){
-            return true;
-        }
-        
-        return false;
-    }
-    
-    //END Region> SUPPLIES /////////////////////////////////////////////////////////////    
-        
-    //Region> DEMAND /////////////////////////////////////////////////////////////
-    
-    // method myDemands() is on Actor
-    //BUSINESS RULE
-    // Je moet minimaal INNERCIRCLE zijn om de demands te zien
-    public boolean hideMyDemands() { 
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-    }
-    
-    // method newDemand() is on Actor
-    public boolean hideNewDemand(final String needDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
-        return hideNewDemand(needDescription, this);
-    }
-    
-    //XTALUS
-    //BUSINESS RULE
-    // Je moet Opdrachtgever zijn om een tafel te starten
-    @ActionLayout(named="Start nieuwe tafel")
-    public Demand newPersonsDemand(
-            @ParameterLayout(named="demandDescription")
-            final String demandDescription,
-            @ParameterLayout(named="demandSummary", multiLine=3)
-            @Parameter(optional=Optionality.TRUE)
-            final String demandSummary,
-            @ParameterLayout(named="demandStory", multiLine=8)
-            @Parameter(optional=Optionality.TRUE)
-            final String demandStory,
-            @ParameterLayout(named="demandAttachment")
-            @Parameter(optional=Optionality.TRUE)
-            final Blob demandAttachment
-            ){
-        return newDemand(demandDescription, demandSummary, demandStory, demandAttachment, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
-    }
-    
-    public boolean hideNewPersonsDemand(
-    		final String demandDescription,
-    		final String demandSummary,
-    		final String demandStory,
-    		final Blob demandAttachment
-    		){
-        return hideNewDemand(demandDescription, this);
-    }
-    
-    public String validateNewPersonsDemand(
-    		final String demandDescription,
-    		final String demandSummary,
-    		final String demandStory,
-    		final Blob demandAttachment
-    		){
-        return validateNewDemand(demandDescription, this);
-    }
-    
-    //XTALUS
-    //Business Rule
-    //Er is slecht een demand van type Cursus
-    @ActionLayout(named="Zoek een cursus")
-    public Profile newCourseDemand(
-            @ParameterLayout(named="demandProfileDescription")
-            final String demandProfileDescription
-            ){
-        return newDemandAndProfile("Gezochte cursussen", 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, demandProfileDescription, 10, ProfileType.COURSE_PROFILE, currentUserName());
-    }
-    
-    public boolean hideNewCourseDemand(
-            final String demandProfileDescription
-            ){
-        // if there is already a personal Supply
-        QueryDefault<Demand> query = 
-                QueryDefault.create(
-                        Demand.class, 
-                    "findDemandByOwnedByAndType", 
-                    "ownedBy", currentUserName(),
-                    "demandType", DemandSupplyType.COURSE_DEMANDSUPPLY);
-        if (container.firstMatch(query) != null) {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    public String validateNewCourseDemand(
-            final String demandProfileDescription
-            ){
-        // if there is already a personal Supply
-        QueryDefault<Demand> query = 
-                QueryDefault.create(
-                        Demand.class, 
-                    "findDemandByOwnedByAndType", 
-                    "ownedBy", currentUserName(),
-                    "demandType", DemandSupplyType.COURSE_DEMANDSUPPLY);
-        if (container.firstMatch(query) != null) {
-            return "Er is al een vraag van type CURSUS";
-        }
-        
-        return null;
-    }
-    
-    // Demand helpers
     @Programmatic
-    public boolean hideNewDemand(final String needDescription, final Actor needOwner){
+    public boolean hideCreateDemand(final String needDescription, final Actor needOwner){
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
             return true;
@@ -519,55 +440,7 @@ public class Person extends Actor {
         }
         
         return null;
-    }   
-    //END Region> DEMANDS /////////////////////////////////////////////////////////////
-    
-
-    ////PERSON CONTACTS EN REFERERS/////////////////////////////////////////////////////////////////////////////////
-    
-    private SortedSet<PersonalContact> personalContacts = new TreeSet<PersonalContact>();
-    
-    @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
-    @CollectionLayout(named="Persoonlijke contacten", render=RenderType.EAGERLY)
-    public SortedSet<PersonalContact> getPersonalContacts() {
-        return personalContacts;
     }
-    
-    public void setPersonalContacts(final SortedSet<PersonalContact> personalContacts) {
-        this.personalContacts = personalContacts;
-    }
-    
-    public boolean hidePersonalContacts(){
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-    }  
-    
-    @CollectionLayout(named="Personen verwijzend naar mij", render=RenderType.EAGERLY)
-    @NotContributed(As.ACTION)
-    public List<Referral> getPersonsReferringToMe(){
-        List<Referral> personsReferring = new ArrayList<Referral>();
-        for(PersonalContact e: pcontacts.listAll()) {
-            if (e.getContactPerson() == this){
-                Referral referral = new Referral(e.getOwnerPerson(), e.getTrustLevel());
-                personsReferring.add(referral);
-            }
-        }
-        return personsReferring;
-    }
-    
-    public boolean hidePersonsReferringToMe(){
-        return super.allowedTrustLevel(TrustLevel.INTIMATE);
-    } 
-        
-    /////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    // Region>HELPERS ////////////////////////////
-    
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
-    
-    // HELPERS Role STUDENT
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsStudent(Person ownerPerson) {
@@ -617,8 +490,6 @@ public class Person extends Actor {
         return !getIsStudent(ownerPerson);
     }
     
-    // HELPERS Role PROFESSIONAL
-    
     @Programmatic // now values can be set by fixtures
     public Boolean getIsProfessional(Person ownerPerson) {
         QueryDefault<PersonRole> query =
@@ -667,8 +538,6 @@ public class Person extends Actor {
         return !getIsProfessional(ownerPerson);
     }    
     
-    // HELPERS Role PRINCIPAL
-    
     @Programmatic // now values can be set by fixtures
     public Boolean getIsPrincipal(Person ownerPerson) {
         QueryDefault<PersonRole> query =
@@ -716,46 +585,13 @@ public class Person extends Actor {
         //if person has not role Principal
         return !getIsPrincipal(ownerPerson);
     }
+
     
-    // EDIT ACTION
-    public Person editPerson(
-    		@ParameterLayout(named="firstName")
-    		final String firstName,
-    		@ParameterLayout(named="middleName")
-    		@Parameter(optional=Optionality.TRUE)
-    		final String middleName,
-    		@ParameterLayout(named="lastName")
-    		final String lastName,
-    		@ParameterLayout(named="dateOfBirth")
-    		final LocalDate dateOfBirth,
-    		@ParameterLayout(named="picture")
-    		final Blob picture
-    		){
-    	persons.EditPerson(this, firstName, middleName, lastName, dateOfBirth, picture);
-    	return this;
-    }
+    //-- HELPERS: programmatic actions --//
+    //-- HELPERS --//
     
-    public String default0EditPerson(){
-    	return getFirstName();
-    }
+    //** INJECTIONS **//
     
-    public String default1EditPerson(){
-    	return getMiddleName();
-    }
-    
-    public String default2EditPerson(){
-    	return getLastName();
-    }
-    
-    public LocalDate default3EditPerson(){
-    	return getDateOfBirth();
-    }
-    
-    public Blob default4EditPerson(){
-    	return getPicture();
-    }
-    
-    // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;
     
@@ -767,4 +603,182 @@ public class Person extends Actor {
     
     @Inject
     Persons persons;
+    
+    //-- INJECTIONS --//
+    
+    //** HIDDEN ACTIONS **//
+    
+    // Role STUDENT 'Clean' code. Makes use of helpers in Helpers region   
+    @ActionLayout(named="Rol Student", hidden=Where.ANYWHERE)
+    @MemberOrder(sequence = "40")
+    public Person addRoleStudent() {
+        addRoleStudent(currentUserName());
+        return this;
+    }
+    
+    public boolean hideAddRoleStudent() {
+        return hideAddRoleStudent(this, currentUserName());
+    }
+    
+    @ActionLayout(named="Geen student meer", hidden=Where.ANYWHERE)
+    @MemberOrder(sequence = "41")
+    public Person deleteRoleStudent() {
+        deleteRoleStudent(currentUserName());;
+        return this;
+    }
+    
+    public boolean hideDeleteRoleStudent() {
+        return hideDeleteRoleStudent(this, currentUserName());
+    }
+    
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public Boolean getIsStudent() {
+        return getIsStudent(this);
+    }
+
+    // Role PROFESSIONAL 'Clean' code. Makes use of helpers in Helpers region   
+    @ActionLayout(named="Rol ZP-er", hidden=Where.ANYWHERE)
+    @MemberOrder(sequence = "50")
+    public Person addRoleProfessional() {
+        addRoleProfessional(currentUserName());
+        return this;
+    }
+    
+    public boolean hideAddRoleProfessional() {
+        return hideAddRoleProfessional(this, currentUserName());
+    }
+    
+    @ActionLayout(named="Geen ZP-er meer", hidden=Where.ANYWHERE)
+    @MemberOrder(sequence = "51")
+    public Person deleteRoleProfessional() {
+        deleteRoleProfessional(currentUserName());
+        return this;
+    }
+    
+    public boolean hideDeleteRoleProfessional() {
+        return hideDeleteRoleProfessional(this, currentUserName());
+    }
+    
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public Boolean getIsProfessional() {
+        return getIsProfessional(this);
+    }
+    
+    // Role PRINCIPAL 'Clean' code. Makes use of helpers in Helpers region   
+    @ActionLayout(named="Rol Opdrachtgever", hidden=Where.ANYWHERE)
+    @MemberOrder(sequence = "60")
+    public Person addRolePrincipal() {
+        addRolePrincipal(currentUserName());
+        return this;
+    }
+    
+    public boolean hideAddRolePrincipal() {
+        return hideAddRolePrincipal(this, currentUserName());
+    }
+    
+    @ActionLayout(named="Geen opdrachtgever meer", hidden=Where.ANYWHERE)
+    @MemberOrder(sequence = "61")
+    public Person deleteRolePrincipal() {
+        deleteRolePrincipal(currentUserName());
+        return this;
+    }
+    
+    public boolean hideDeleteRolePrincipal() {
+        return hideDeleteRolePrincipal(this, currentUserName());
+    }
+    
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public Boolean getIsPrincipal() {
+        return getIsPrincipal(this);
+    }
+    
+    //-- HIDDEN ACTIONS --//
+    
+//    // ALL My Roles
+//    
+//    @CollectionLayout(hidden=Where.EVERYWHERE, render=RenderType.EAGERLY)
+//    @MemberOrder(sequence = "100")
+//    public List<PersonRole> getAllMyRoles() {
+//        QueryDefault<PersonRole> query =
+//                QueryDefault.create(
+//                        PersonRole.class,
+//                        "findMyRoles",
+//                        "ownedBy", this.getOwnedBy());
+//        return container.allMatches(query);
+//    }
+    
+    
+//    @ActionLayout(hidden=Where.ANYWHERE)
+//    public Supply newCourseSupply(
+//            @ParameterLayout(named="supplyDescription", multiLine=3)
+//            final String supplyDescription
+//            ){
+//        return createSupply(supplyDescription, 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, currentUserName());
+//    }
+//    
+//    public boolean hideNewCourseSupply(final String supplyDescription){
+//        // if you are not the owner
+//        if (!this.getOwnedBy().equals(currentUserName())){
+//            return true;
+//        }
+//        // if you have no ZP Role
+//        if (!((Person) this).getIsProfessional()){
+//            return true;
+//        } 
+//        
+//        return false;        
+//    }
+    
+    // method newDemand() is on Actor
+//    public boolean hideCreateDemand(final String needDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
+//        return hideCreateDemand(needDescription, this);
+//    }
+    
+
+    
+    //XTALUS
+    //Business Rule
+    //Er is slecht een demand van type Cursus
+//    @ActionLayout(named="Zoek een cursus", hidden=Where.ANYWHERE)
+//    public Profile newCourseDemand(
+//            @ParameterLayout(named="demandProfileDescription")
+//            final String demandProfileDescription
+//            ){
+//        return createDemandAndProfile("Gezochte cursussen", 10, DemandSupplyType.COURSE_DEMANDSUPPLY, this, demandProfileDescription, 10, null, null, ProfileType.COURSE_PROFILE, currentUserName());
+//    }
+//    
+//    public boolean hideNewCourseDemand(
+//            final String demandProfileDescription
+//            ){
+//        // if there is already a personal Supply
+//        QueryDefault<Demand> query = 
+//                QueryDefault.create(
+//                        Demand.class, 
+//                    "findDemandByOwnedByAndType", 
+//                    "ownedBy", currentUserName(),
+//                    "demandType", DemandSupplyType.COURSE_DEMANDSUPPLY);
+//        if (container.firstMatch(query) != null) {
+//            return true;
+//        }
+//        
+//        return false;
+//    }
+//    
+//    public String validateNewCourseDemand(
+//            final String demandProfileDescription
+//            ){
+//        // if there is already a personal Supply
+//        QueryDefault<Demand> query = 
+//                QueryDefault.create(
+//                        Demand.class, 
+//                    "findDemandByOwnedByAndType", 
+//                    "ownedBy", currentUserName(),
+//                    "demandType", DemandSupplyType.COURSE_DEMANDSUPPLY);
+//        if (container.firstMatch(query) != null) {
+//            return "Er is al een vraag van type CURSUS";
+//        }
+//        
+//        return null;
+//    }
+    
 }

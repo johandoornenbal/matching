@@ -19,7 +19,7 @@ public class SupplyProfilesForRembrandt extends SupplyProfileAbstract {
                 "Mijn persoonlijke profiel",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Rijn").get(0).getMySupplies().first(),
+                persons.findPersons("Rijn").get(0).getSuppliesOfActor().first(),
                 "rembrandt",
                 executionContext
                 );

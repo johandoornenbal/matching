@@ -21,26 +21,27 @@ package info.matchingservice.dom.Actor;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.TrustLevel;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import com.google.common.base.Objects;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
+import com.google.common.base.Objects;
 
-@DomainService(repositoryFor = PersonalContact.class)
+@DomainService(repositoryFor = PersonalContact.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(named="Personal Contacts", menuOrder="13")
 public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     
@@ -48,8 +49,15 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         super(PersonalContacts.class, PersonalContact.class);
     }
     
-    @MemberOrder(name = "Personen", sequence = "20")
-    public List<PersonalContact> allYourContacts(){
+    //** HELPERS **//
+    //** HELPERS: programmatic actions **//
+    @Programmatic
+    public List<PersonalContact> listAll() {
+        return container.allInstances(PersonalContact.class);
+    }
+    
+    @Programmatic
+    public List<PersonalContact> allPersonalContactsOfUser(){
         QueryDefault<PersonalContact> query = 
                 QueryDefault.create(
                         PersonalContact.class, 
@@ -58,19 +66,81 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         return allMatches(query);
     }
     
+    @Programmatic
+    public List<PersonalContact> allPersonalContactsReferringToUser(final String userName){
+    	final List<PersonalContact> contacts = Collections.emptyList();
+    	// find PersonObject of user
+    	// if not found return emptyList
+    	if (persons.findPersonUnique(userName) == null ){
+    		return contacts;
+    	} else {
+            QueryDefault<PersonalContact> query = 
+                    QueryDefault.create(
+                            PersonalContact.class, 
+                        "findPersonalContactReferringToPerson", 
+                        "contact", persons.findPersonUnique(userName).getOwnedBy());
+            return allMatches(query);
+    	}
+    }
+    
+    @Programmatic //userName can now also be set by fixtures
+    public PersonalContact createPersonalContact(
+            final Person contactPerson,
+            final String userName) {
+        final PersonalContact contact = newTransientInstance(PersonalContact.class);
+        contact.setContactPerson(contactPerson);
+        contact.setContact(contactPerson.getOwnedBy());
+        contact.setOwnerPerson(persons.findPersonUnique(userName));
+        contact.setOwnedBy(userName);
+        persist(contact);
+        return contact;
+    }
+    
+    @Programmatic //userName and trustLevel can now also be set by fixtures
+    public PersonalContact createPersonalContact(
+            final Person contactPerson,
+            final String userName,
+            final TrustLevel trustLevel) {
+        final PersonalContact contact = newTransientInstance(PersonalContact.class);
+        contact.setContactPerson(contactPerson);
+        contact.setContact(contactPerson.getOwnedBy());
+        contact.setOwnerPerson(persons.findPersonUnique(userName));
+        contact.setOwnedBy(userName);
+        contact.setTrustLevel(trustLevel);
+        persist(contact);
+        return contact;
+    }
+    //-- HELPERS: programmatic actions --//
+    //** HELPERS: generic service helpers **//
+    private String currentUserName() {
+        return container.getUser().getName();
+    }
+    //-- HELPERS: generic service helpers --//
+    //-- HELPERS --//
+    
+    //** INJECTIONS **//
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+     
+    @Inject
+    Persons persons;
+    //-- INJECTIONS --//
+    
+    //** HIDDEN: ACTIONS **//
     @MemberOrder(name = "Personen", sequence = "10")
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public PersonalContact newPersonalContact(
+    @ActionLayout(hidden=Where.ANYWHERE)
+    public PersonalContact createPersonalContact(
             @ParameterLayout(named="contactPerson")
             final Person contactPerson) {
-        return newPersonalContact(contactPerson, currentUserName()); // see region>helpers
+        return createPersonalContact(contactPerson, currentUserName()); // see region>helpers
     }
     
-    public List<Person> autoComplete0NewPersonalContact(final String search) {
-        return persons.findPersonsContains(search);
+    public List<Person> autoComplete0CreatePersonalContact(final String search) {
+        return persons.findPersons(search);
     }
     
-    public boolean hideNewPersonalContact(final Person contactPerson){
+    public boolean hideCreatePersonalContact(final Person contactPerson){
         // show in service menu
         if (contactPerson == null) {
             return false;
@@ -94,7 +164,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
      * There should be at most 1 instance for each owner - contact combination.
      * 
      */
-    public String validateNewPersonalContact(final Person contactPerson) {
+    public String validateCreatePersonalContact(final Person contactPerson) {
         
         if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
             return "Contact maken met jezelf heeft geen zin.";
@@ -110,53 +180,5 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         "Dit contact heb je al gemaakt. Pas het eventueel aan in plaats van een nieuwe te maken."        
         :null;
     }
-    
-    @NotInServiceMenu
-    @CollectionLayout(named="Alle persoonlijke contacten")
-    public List<PersonalContact> listAll() {
-        return container.allInstances(PersonalContact.class);
-    }
-    
-    // Region>helpers //////////////////////////// 
-    
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
-    
-    @Programmatic //userName can now also be set by fixtures
-    public PersonalContact newPersonalContact(
-            final Person contactPerson,
-            final String userName) {
-        final PersonalContact contact = newTransientInstance(PersonalContact.class);
-        contact.setContactPerson(contactPerson);
-        contact.setContact(contactPerson.getOwnedBy());
-        contact.setOwnerPerson(persons.findPersonUnique(userName));
-        contact.setOwnedBy(userName);
-        persist(contact);
-        return contact;
-    }
-
-    @Programmatic //userName and trustLevel can now also be set by fixtures
-    public PersonalContact newPersonalContact(
-            final Person contactPerson,
-            final String userName,
-            final TrustLevel trustLevel) {
-        final PersonalContact contact = newTransientInstance(PersonalContact.class);
-        contact.setContactPerson(contactPerson);
-        contact.setContact(contactPerson.getOwnedBy());
-        contact.setOwnerPerson(persons.findPersonUnique(userName));
-        contact.setOwnedBy(userName);
-        contact.setTrustLevel(trustLevel);
-        persist(contact);
-        return contact;
-    }
-    
-    // Region>injections ////////////////////////////  
-    
-    @javax.inject.Inject
-    private DomainObjectContainer container;
-     
-    @Inject
-    Persons persons;
-    
+    //-- HIDDEN: ACTIONS --//    
 }

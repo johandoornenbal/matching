@@ -41,7 +41,7 @@ public class SupplyProfileElementsForFrans extends SupplyProfileElementsAbstract
         createQualityTagsElement(
         		"Mijn kwaliteiten",
         		10,
-        		persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(),
+        		persons.findPersons("Hals").get(0).getSuppliesOfActor().last().getSupplyProfiles().first(),
         		"frans",
         		executionContext
         		);
@@ -51,7 +51,7 @@ public class SupplyProfileElementsForFrans extends SupplyProfileElementsAbstract
                 10, 
                 "Ik ben gek op schilderen en schilder het liefst vrouwen in de bloei van hun leven. Kleurgebruik en lichtinval ben ik helemaal gek van.", 
                 ProfileElementType.PASSION, 
-                persons.findPersons("Hals").get(0).getMySupplies().last().getSupplyProfiles().first(), 
+                persons.findPersons("Hals").get(0).getSuppliesOfActor().last().getSupplyProfiles().first(), 
                 "frans", 
                 executionContext);
     }

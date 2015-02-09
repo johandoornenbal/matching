@@ -39,7 +39,7 @@ public class SupplyProfileElementsForRembrandt extends SupplyProfileElementsAbst
         createQualityTagsElement(
         		"Mijn kwaliteiten",
         		10,
-        		persons.findPersons("Rijn").get(0).getMySupplies().last().getSupplyProfiles().first(),
+        		persons.findPersons("Rijn").get(0).getSuppliesOfActor().last().getSupplyProfiles().first(),
                 "rembrandt",
         		executionContext
         		);

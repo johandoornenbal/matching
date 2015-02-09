@@ -19,37 +19,34 @@
 package info.matchingservice.dom.Actor;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Utils.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
+
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.Contributed;
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.MemberOrder;
+import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import org.joda.time.LocalDate;
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.annotation.NotContributed.As;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.query.QueryDefault;
-import org.apache.isis.applib.value.Blob;
 
-
-@DomainService(repositoryFor = Person.class)
+@DomainService(repositoryFor = Person.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(named="Personen", menuOrder="10")
 public class Persons extends MatchingDomainService<Person> {
     
@@ -59,7 +56,7 @@ public class Persons extends MatchingDomainService<Person> {
    
     @ActionLayout(named="Maak jezelf aan als persoon in het systeem")
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public Person newPerson(
+    public Person createPerson(
             @ParameterLayout(named="firstName")
             final String firstName,
             @ParameterLayout(named="middleName")
@@ -73,34 +70,34 @@ public class Persons extends MatchingDomainService<Person> {
             @Parameter(optional=Optionality.TRUE)
             final Blob picture
             ) {
-        return newPerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture); // see region>helpers
+        return createPerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture); // see region>helpers
     }
     
-    public boolean hideNewPerson() {
-        return hideNewPerson(currentUserName());
+    public boolean hideCreatePerson() {
+        return hideCreatePerson(currentUserName());
     }
     
     /**
      * There should be at most 1 instance for each owner - contact combination.
      * 
      */
-    public String validateNewPerson(
+    public String validateCreatePerson(
             final String firstName,
             final String middleName,
             final String lastName,
             final LocalDate dateOfBirth,
             final Blob picture) {
-        return validateNewPerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture);
+        return validateCreatePerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture);
     }
     
     @MemberOrder(sequence="5")
-    @ActionLayout(named="Dit ben jij ...")
-    public List<Person> thisIsYou() {
-        return thisIsYou(currentUserName());
+    @ActionLayout(named="Dit ben jij ...", hidden=Where.ANYWHERE)
+    public List<Person> activePerson() {
+        return activePerson(currentUserName());
     }
     
     @MemberOrder(sequence="10")
-    @ActionLayout(named="Alle personen")
+    @ActionLayout(named="Alle personen", hidden=Where.ANYWHERE)
     public List<Person> allPersons() {
         return allInstances();
     }
@@ -108,9 +105,7 @@ public class Persons extends MatchingDomainService<Person> {
     
     //region > otherPersons (contributed collection)
     @MemberOrder(sequence="110")
-    @NotInServiceMenu
-    @NotContributed(As.ACTION)
-    @ActionLayout(named="Alle andere personen")
+    @ActionLayout(named="Alle andere personen", hidden=Where.ANYWHERE, contributed=Contributed.AS_ASSOCIATION)
     @Action(semantics=SemanticsOf.SAFE)
     public List<Person> AllOtherPersons(final Person personMe) {
         final List<Person> allPersons = allPersons();
@@ -125,26 +120,16 @@ public class Persons extends MatchingDomainService<Person> {
             }
         };
     }
-    //endregion
     
-   
-    
-    @MemberOrder(sequence="100")
-    @ActionLayout(named="Vind op achternaam")
-    public List<Person> findPersons(
-            @ParameterLayout(named="lastName")
-            final String lastname
-            ) {
-        return allMatches("matchPersonByLastName", "lastName", StringUtils.wildcardToCaseInsensitiveRegex(lastname));
-    }
     
     @MemberOrder(sequence="105")
-    @ActionLayout(named="Vind op overeenkomst achternaam")
-    public List<Person> findPersonsContains(
-            @ParameterLayout(named="lastName")
-            final String lastname
+    @ActionLayout(named="Vind op overeenkomst achternaam", hidden=Where.ANYWHERE)
+    public List<Person> findPersons(
+            @ParameterLayout(named="searchInLastName")
+            final String lastName
             ) {
-        return allMatches("matchPersonByLastNameContains", "lastName", lastname);
+    	
+        return allMatches("matchPersonByLastNameContains", "lastName", lastName.toLowerCase());
     }
     
     // Region>helpers ////////////////////////////
@@ -154,7 +139,7 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public Person newPerson(
+    public Person createPerson(
             final String firstName,
             final String middleName,
             final String lastName,
@@ -175,7 +160,7 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public boolean hideNewPerson(String userName) {
+    public boolean hideCreatePerson(String userName) {
         QueryDefault<Person> query = 
                 QueryDefault.create(
                         Person.class, 
@@ -187,7 +172,7 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public String validateNewPerson(
+    public String validateCreatePerson(
             final String firstName,
             final String middleName,
             final String lastName,
@@ -207,7 +192,7 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @Programmatic
-    public Person EditPerson(
+    public Person updatePerson(
     		final Person person,
     		final String firstName,
     		final String middleName,
@@ -225,7 +210,7 @@ public class Persons extends MatchingDomainService<Person> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public List<Person> thisIsYou(final String userName) {
+    public List<Person> activePerson(final String userName) {
         QueryDefault<Person> query = 
                 QueryDefault.create(
                         Person.class, 
@@ -240,8 +225,12 @@ public class Persons extends MatchingDomainService<Person> {
                 QueryDefault.create(
                         Person.class, 
                     "findPersonUnique", 
-                    "ownedBy", ownedBy);          
-        return allMatches(query).get(0);
+                    "ownedBy", ownedBy);
+        if (allMatches(query).isEmpty()){
+        	return null;
+        } else {
+        	return allMatches(query).get(0);
+        }
     }
     
     // Region>injections ////////////////////////////

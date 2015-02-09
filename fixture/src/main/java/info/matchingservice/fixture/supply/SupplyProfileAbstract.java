@@ -21,7 +21,7 @@ public abstract class SupplyProfileAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Profile newSupplyProfile = profiles.newSupplyProfile(supplyProfileDescription, weight, profileType, supplyProfileOwner, ownedBy);    
+        Profile newSupplyProfile = profiles.newSupplyProfile(supplyProfileDescription, weight, null, null, profileType, supplyProfileOwner, ownedBy);    
         return executionContext.add(this,newSupplyProfile);
     }
     

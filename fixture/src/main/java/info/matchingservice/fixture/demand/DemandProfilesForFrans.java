@@ -19,7 +19,7 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
                 "Gezocht: nieuwsgierige persoon",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMyDemands().last(),
+                persons.findPersons("Hals").get(0).getDemandsOfActor().last(),
                 "frans",
                 executionContext
                 );
@@ -28,19 +28,19 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
                 "Gezocht: oorlogszuchtige persoon",
                 10,
                 ProfileType.PERSON_PROFILE,
-                persons.findPersons("Hals").get(0).getMyDemands().last(),
+                persons.findPersons("Hals").get(0).getDemandsOfActor().last(),
                 "frans",
                 executionContext
                 );
         
-        createDemandProfile(
-                "Gezocht: cursus",
-                10,
-                ProfileType.COURSE_PROFILE,
-                persons.findPersons("Hals").get(0).getMyDemands().first(),
-                "frans",
-                executionContext
-                );
+//        createDemandProfile(
+//                "Gezocht: cursus",
+//                10,
+//                ProfileType.COURSE_PROFILE,
+//                persons.findPersons("Hals").get(0).getDemandsOfActor().first(),
+//                "frans",
+//                executionContext
+//                );
     }
 
     @Inject

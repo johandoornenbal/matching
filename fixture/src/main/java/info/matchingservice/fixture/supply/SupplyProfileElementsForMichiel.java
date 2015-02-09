@@ -49,7 +49,7 @@ public class SupplyProfileElementsForMichiel extends SupplyProfileElementsAbstra
         createQualityTagsElement(
         		"Mijn kwaliteiten",
         		10,
-        		persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(),
+        		persons.findPersons("Ruyter").get(0).getSuppliesOfActor().last().getSupplyProfiles().first(),
                 "michiel",
         		executionContext
         		);
@@ -59,7 +59,7 @@ public class SupplyProfileElementsForMichiel extends SupplyProfileElementsAbstra
                 10, 
                 "Ik ben gek op zeilschepen, wapens in het algemeen en kanonnen in het bijzonder. Strategie ontwikkeling staat centraal in mijn leven.", 
                 ProfileElementType.PASSION, 
-                persons.findPersons("Ruyter").get(0).getMySupplies().last().getSupplyProfiles().first(), 
+                persons.findPersons("Ruyter").get(0).getSuppliesOfActor().last().getSupplyProfiles().first(), 
                 "michiel", 
                 executionContext);
     }

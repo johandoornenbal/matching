@@ -20,7 +20,7 @@ public abstract class SupplyAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Supply newSupply = supplies.newSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
+        Supply newSupply = supplies.createSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
         return executionContext.add(this,newSupply);
     }
     

@@ -35,6 +35,7 @@ import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
@@ -42,10 +43,11 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
 
-@DomainService(repositoryFor = Organisation.class)
+@DomainService(repositoryFor = Organisation.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(named="Organisaties", menuOrder="15")
 public class Organisations extends MatchingDomainService<Organisation> {
     
@@ -53,69 +55,30 @@ public class Organisations extends MatchingDomainService<Organisation> {
         super(Organisations.class, Organisation.class);
     }
     
-    @ActionLayout(named="Maak een organisatie aan in het systeem")
+    @ActionLayout(named="Maak een organisatie aan in het systeem", hidden=Where.EVERYWHERE)
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public Organisation newOrganisation(
+    public Organisation createOrganisation(
             @ParameterLayout(named="organisationName")
             final String organisationName
             ) {
-        return newOrganisation(organisationName, currentUserName()); // see region>helpers
+        return createOrganisation(organisationName, currentUserName()); // see region>helpers
     }
     
     @MemberOrder(sequence="5")
-    @ActionLayout(named="Dit zijn jouw organisaties ...")
-    public List<Organisation> thisIsYou() {
-        return yourOrganisations(currentUserName());
+    @Action(semantics=SemanticsOf.SAFE)
+    @ActionLayout(named="Dit zijn jouw organisaties ...", hidden=Where.ANYWHERE)
+    public List<Organisation> activePersonsOrganisations() {
+        return activePersonsOrganisations(currentUserName());
     }
     
     @MemberOrder(sequence="10")
-    @ActionLayout(named="Alle organisaties")
+    @Action(semantics=SemanticsOf.SAFE)
+    @ActionLayout(named="Alle organisaties", hidden=Where.ANYWHERE)
     public List<Organisation> allOrganisations() {
         return allInstances();
     }
     
-    
-    //region > otherPersons (contributed collection)
-    @MemberOrder(sequence="110")
-    @NotInServiceMenu
-    @Action(semantics=SemanticsOf.SAFE)
-    @NotContributed(As.ACTION)
-    @ActionLayout(named="Alle andere organisaties")
-    public List<Organisation> AllOtherOrganisations(final Organisation organisationMe) {
-        final List<Organisation> allOrganisations = allOrganisations();
-        return Lists.newArrayList(Iterables.filter(allOrganisations, excluding(organisationMe)));
-    }
-
-    private static Predicate<Organisation> excluding(final Organisation organisation) {
-        return new Predicate<Organisation>() {
-            @Override
-            public boolean apply(Organisation input) {
-                return input != organisation;
-            }
-        };
-    }
-    //endregion
-    
-   
-    
-    @MemberOrder(sequence="100")
-    @ActionLayout(named="Vind op organisatie naam")
-    public List<Organisation> findOrganisations(
-            @ParameterLayout(named="organisationName")
-            final String organisationname
-            ) {
-        return allMatches("matchOrganisationByOrganisationName", "organisationName", StringUtils.wildcardToCaseInsensitiveRegex(organisationname));
-    }
-    
-    @MemberOrder(sequence="105")
-    @ActionLayout(named="Vind op overeenkomst naam organisatie")
-    public List<Organisation> findOrganisationContains(
-            @ParameterLayout(named="organisationName")
-            final String organisationname
-            ) {
-        return allMatches("matchOrganisationByOrganisationNameContains", "organisationName", organisationname);
-    }
-    
+       
     // Region>helpers ////////////////////////////
     
     private String currentUserName() {
@@ -123,7 +86,7 @@ public class Organisations extends MatchingDomainService<Organisation> {
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public Organisation newOrganisation(
+    public Organisation createOrganisation(
             @ParameterLayout(named="organisationName")
             final String organisationName,
             final String userName) {
@@ -138,7 +101,7 @@ public class Organisations extends MatchingDomainService<Organisation> {
     
     
     @Programmatic //userName can now also be set by fixtures
-    public List<Organisation> yourOrganisations(final String userName) {
+    public List<Organisation> activePersonsOrganisations(final String userName) {
         QueryDefault<Organisation> query = 
                 QueryDefault.create(
                         Organisation.class, 

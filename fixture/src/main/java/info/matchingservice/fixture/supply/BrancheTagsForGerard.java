@@ -19,22 +19,22 @@ public class BrancheTagsForGerard extends TagsAbstract {
 		executeChild(new TagCategoriesFixture(), executionContext);
 		
 		createBranchTagHolder(
-				persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first().getProfileElement().first(), 
+				persons.findPersons("Dou").get(0).getSuppliesOfActor().last().getSupplyProfiles().first().getProfileElement().first(), 
 				"schilderkunst", 
 				executionContext
 				);
 		createBranchTagHolder(
-				persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first().getProfileElement().first(), 
+				persons.findPersons("Dou").get(0).getSuppliesOfActor().last().getSupplyProfiles().first().getProfileElement().first(), 
 				"portretteerkunst", 
 				executionContext
 				);
 		createBranchTagHolder(
-				persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first().getProfileElement().first(), 
+				persons.findPersons("Dou").get(0).getSuppliesOfActor().last().getSupplyProfiles().first().getProfileElement().first(), 
 				"kunst", 
 				executionContext
 				);
 		createBranchTagHolder(
-				persons.findPersons("Dou").get(0).getMySupplies().last().getSupplyProfiles().first().getProfileElement().first(), 
+				persons.findPersons("Dou").get(0).getSuppliesOfActor().last().getSupplyProfiles().first().getProfileElement().first(), 
 				"zelfstandig", 
 				executionContext
 				);

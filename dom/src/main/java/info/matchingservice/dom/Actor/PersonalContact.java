@@ -25,10 +25,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -37,20 +37,24 @@ import org.apache.isis.applib.annotation.Where;
             name = "findPersonalContactUniqueContact", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.PersonalContact "
-                    + "WHERE ownedBy == :ownedBy && contact == :contact")   ,
+                    + "WHERE ownedBy == :ownedBy && contactPerson == :contact")   ,
     @javax.jdo.annotations.Query(
             name = "findPersonalContact", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.PersonalContact "
                     + "WHERE ownedBy == :ownedBy"),
     @javax.jdo.annotations.Query(
-            name = "findPersonalContactReferringToMe", language = "JDOQL",
+            name = "findPersonalContactReferringToPerson", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.PersonalContact "
-                    + "WHERE contact == :contact")                    
+                    + "WHERE contact.matches(:contact)")                    
 })
+@DomainObject(editing=Editing.DISABLED)
 public class PersonalContact extends MatchingTrustedContact {
     
+	//** API: PROPERTIES **//
+	
+	//** contactPerson **//
     private Person contactPerson;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -64,14 +68,16 @@ public class PersonalContact extends MatchingTrustedContact {
     }
     
     public List<Person> autoCompleteContactPerson(String search) {
-        return persons.findPersonsContains(search);
+        return persons.findPersons(search);
     }
+    //-- contactPerson --//
  
+    //** ownerPerson **//
     private Person ownerPerson;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Property(editing=Editing.DISABLED)
-    @PropertyLayout(hidden=Where.ALL_TABLES)
+    @PropertyLayout()
     public Person getOwnerPerson() {
         return ownerPerson;
     }
@@ -79,12 +85,32 @@ public class PersonalContact extends MatchingTrustedContact {
     public void setOwnerPerson(final Person ownerPerson) {
         this.ownerPerson = ownerPerson;
     }
+    //--  ownerPerson --//
     
+	//-- API: PROPERTIES --//
+	//** API: COLLECTIONS **//
+	//-- API: COLLECTIONS --//
+	//** API: ACTIONS **//
+	//-- API: ACTIONS --//
+	//** GENERIC OBJECT STUFF **//
+	//** constructor **//
+	//** ownedBy - Override for secure object **//
+	//-- GENERIC OBJECT STUFF --//
+	//** HELPERS **//
+    //** HELPERS: generic object helpers **//
     public String title(){
         return "Contact gelegd met " + getContactPerson().title();
     }
-    
+	//-- HELPERS: generic object helpers --//
+	//** HELPERS: programmatic actions **//
+	//-- HELPERS: programmatic actions --// 
+	//-- HELPERS --//
+	//** INJECTIONS **//
     @Inject
     Persons persons;
-
+	//-- INJECTIONS --//
+	//** HIDDEN: PROPERTIES **//
+	//-- HIDDEN: PROPERTIES --//
+	//** HIDDEN: ACTIONS **//
+	//-- HIDDEN: ACTIONS --//
 }

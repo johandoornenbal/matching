@@ -78,7 +78,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void findFransAgain() throws Exception {
-            assertThat(persons.findPersonsContains("als").size(), is(1));
+            assertThat(persons.findPersons("als").size(), is(1));
         }
         
         @Test
@@ -87,13 +87,13 @@ public class PersonTest extends MatchingIntegrationTest {
         }
         
         @Test
-        public void findNothingAgain() throws Exception {
-            assertThat(persons.findPersons("Hal").size(), is(0));
+        public void findFransAgain2() throws Exception {
+            assertThat(persons.findPersons("Hal").size(), is(1));
         }
         
         @Test
         public void findNothingAgain2() throws Exception {
-            assertThat(persons.findPersonsContains("xyz").size(), is(0));
+            assertThat(persons.findPersons("xyz").size(), is(0));
         }
     }
     
@@ -102,12 +102,12 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void shouldBeHidden() throws Exception {
-            assertThat(persons.hideNewPerson("frans"), is(true));
+            assertThat(persons.hideCreatePerson("frans"), is(true));
         }
         
         @Test
         public void shouldNotBeHidden() throws Exception {
-            assertThat(persons.hideNewPerson("piet"), is(false));
+            assertThat(persons.hideCreatePerson("piet"), is(false));
         }
     }
 
@@ -125,7 +125,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
         }
         
         @Test
@@ -155,12 +155,12 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void shouldNotBeValidNewPerson() throws Exception {
-            assertThat(persons.validateNewPerson("Frans", "van", "Oldenbarneveld", new LocalDate(1962,7,16), "frans", null).isEmpty(), is(false));
+            assertThat(persons.validateCreatePerson("Frans", "van", "Oldenbarneveld", new LocalDate(1962,7,16), "frans", null).isEmpty(), is(false));
         }
         
         @Test
         public void shouldBeValidNewPerson() throws Exception {
-            assertTrue(persons.validateNewPerson("Johan", "van", "Oldenbarneveld", new LocalDate(1962,7,16), "johan", null) == null);
+            assertTrue(persons.validateCreatePerson("Johan", "van", "Oldenbarneveld", new LocalDate(1962,7,16), "johan", null) == null);
         }        
         
     }
@@ -174,12 +174,12 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void onlyOneYou() throws Exception {
-            assertThat(persons.thisIsYou("frans").size(), is(1));
+            assertThat(persons.activePerson("frans").size(), is(1));
         }
         
         @Test
         public void notAYou() throws Exception {
-            assertThat(persons.thisIsYou("xyz").size(), is(0));
+            assertThat(persons.activePerson("xyz").size(), is(0));
         }
     }
     
@@ -192,7 +192,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void allOtherPersons() throws Exception {
-            Person thisIsMe = persons.thisIsYou("frans").get(0);
+            Person thisIsMe = persons.activePerson("frans").get(0);
             assertThat(persons.AllOtherPersons(thisIsMe).size(), is(4));
         }
     }
@@ -212,8 +212,8 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
-            p2=persons.newPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, "different_owner", null);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
+            p2=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, "different_owner", null);
             p3=persons.allPersons().get(0);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
@@ -248,7 +248,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
             p1.addRolePrincipal(OWNED_BY);
@@ -282,7 +282,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.newPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
             p1.addRolePrincipal(OWNED_BY);

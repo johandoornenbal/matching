@@ -193,19 +193,19 @@ public class System extends Actor {
     //Region> DEMAND /////////////////////////////////////////////////////////////
     
     // method myDemands() is on Actor
-    public boolean hideMyDemands() {
+    public boolean hideDemandsOfActor() {
         return !getIsPrincipal();
     }
     
     // method NewNeed() is on Actor
-    public boolean hideNewDemand(final String demandDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
-        return hideNewDemand(demandDescription, this);
-    }
+//    public boolean hideCreateDemand(final String demandDescription, final Integer weight, final DemandSupplyType demandSupplyType) {
+//        return hideCreateDemand(demandDescription, this);
+//    }
         
     //Need helpers
     
     @Programmatic
-    public boolean hideNewDemand(final String demandDescription, final Actor demandOwner){
+    public boolean hideCreateDemand(final String demandDescription, final Actor demandOwner){
         // if you are not the owner
         if (!demandOwner.getOwnedBy().equals(currentUserName())){
             return true;

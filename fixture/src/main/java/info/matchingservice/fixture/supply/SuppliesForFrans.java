@@ -23,14 +23,14 @@ public class SuppliesForFrans extends SupplyAbstract {
                 executionContext
                 );
        
-        createSupply(
-                "Cursusaanbod van Frans Hals",
-                10,
-                DemandSupplyType.COURSE_DEMANDSUPPLY,
-                persons.findPersons("Hals").get(0),
-                "frans",
-                executionContext
-                ); 
+//        createSupply(
+//                "Cursusaanbod van Frans Hals",
+//                10,
+//                DemandSupplyType.COURSE_DEMANDSUPPLY,
+//                persons.findPersons("Hals").get(0),
+//                "frans",
+//                executionContext
+//                ); 
     }
 
     @Inject

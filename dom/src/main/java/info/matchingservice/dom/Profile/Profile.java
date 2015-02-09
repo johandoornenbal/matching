@@ -56,6 +56,7 @@ import org.apache.isis.applib.annotation.RegEx;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
+import org.joda.time.LocalDate;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -220,6 +221,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         this.profileName = test;
     }
     
+    //weight /////////////////////////////////////////////////////////////////////////////////////
     private Integer weight;
     
     @PropertyLayout(hidden=Where.EVERYWHERE)
@@ -231,6 +233,28 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public void setWeight(final Integer weight) {
         this.weight = weight;
     }
+    
+    private LocalDate demandOrSupplyProfileStartDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public LocalDate getDemandOrSupplyProfileStartDate() {
+		return demandOrSupplyProfileStartDate;
+	}
+
+	public void setDemandOrSupplyProfileStartDate(LocalDate demandOrSupplyStartDate) {
+		this.demandOrSupplyProfileStartDate = demandOrSupplyStartDate;
+	}
+    
+    private LocalDate demandOrSupplyProfileEndDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getDemandOrSupplyProfileEndDate() {
+		return demandOrSupplyProfileEndDate;
+	}
+
+	public void setDemandOrSupplyProfileEndDate(LocalDate demandOrSupplyEndDate) {
+		this.demandOrSupplyProfileEndDate = demandOrSupplyEndDate;
+	}
     
     
     // Region> ProfileElements
@@ -844,8 +868,8 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     
     // Injects
-    
-    @javax.inject.Inject
+
+	@javax.inject.Inject
     private DomainObjectContainer container;
     
     @Inject

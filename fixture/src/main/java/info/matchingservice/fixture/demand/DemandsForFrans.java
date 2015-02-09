@@ -23,14 +23,14 @@ public class DemandsForFrans extends DemandAbstract {
                 executionContext
                 );
         
-        createDemand(
-                "Cursus gezocht",
-                10,
-                DemandSupplyType.COURSE_DEMANDSUPPLY,
-                persons.findPersons("Hals").get(0),
-                "frans",
-                executionContext
-                );
+//        createDemand(
+//                "Cursus gezocht",
+//                10,
+//                DemandSupplyType.COURSE_DEMANDSUPPLY,
+//                persons.findPersons("Hals").get(0),
+//                "frans",
+//                executionContext
+//                );
     }
 
     @Inject

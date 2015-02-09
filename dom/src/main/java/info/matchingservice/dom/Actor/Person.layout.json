@@ -12,7 +12,7 @@
             "lastName": {},
             "dateOfBirth" : {
             	"actions" : {
-        				"editPerson" : {}
+        				"updatePerson" : {}
         		}
             }
             
@@ -51,9 +51,9 @@
     {
       "span": 8,
       "collections": {
-        "mySupplies": {
+        "suppliesOfActor": {
             "actions": {
-            	"newPersonsSupply": {
+            	"newPersonsSupplyAndProfile": {
             		"named" : {
             				"value" : "Bied jezelf aan"
             			}
@@ -65,16 +65,16 @@
             	}
             }
         },
-        "myDemands": {
+        "demandsOfActor": {
           "actions": {
           	"newPersonsDemand": {},
           	"newCourseDemand": {}
           }
         },     
-        "mySavedMatches": {
+        "savedMatchesOfActor": {
           "actions": {}
         },
-        "assessmentsReceivedByMe": {
+        "assessmentsReceivedByActor": {
           "actions": {}
         },
         "personsReferringToMe": {
@@ -83,7 +83,7 @@
         "personalContacts": {
         	"actions": {}
         },
-       	"assessmentsGivenByMe": {
+       	"assessmentsGivenByActor": {
         	"actions": {}
         }                    
       }

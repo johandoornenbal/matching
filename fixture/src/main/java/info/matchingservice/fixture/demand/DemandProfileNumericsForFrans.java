@@ -20,7 +20,7 @@ public class DemandProfileNumericsForFrans extends DemandProfileNumericAbstract 
                 10,
                 195,
                 ProfileElementType.NUMERIC,
-                persons.findPersons("Hals").get(0).getMyDemands().first().getDemandProfiles().first(),
+                persons.findPersons("Hals").get(0).getDemandsOfActor().first().getDemandProfiles().first(),
                 "frans",
                 executionContext
                 );
