@@ -96,7 +96,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
-    @PropertyLayout(named="Eigenaar")
+    @PropertyLayout()
     public Actor getDemandOwner() {
         return demandOwner;
     }
@@ -188,7 +188,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     //** demandAssessments **//
     private SortedSet<DemandAssessment> collectDemandAssessments = new TreeSet<DemandAssessment>();
     
-    @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
+    @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
     public SortedSet<DemandAssessment> getCollectDemandAssessments() {
         return collectDemandAssessments;
@@ -249,7 +249,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     //-- updateDemand --//
     
     //** deleteDemand **//
-    @ActionLayout(named="Vraag verwijderen")
+    @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Actor deleteDemand(
             @ParameterLayout(named="confirmDelete")
@@ -267,7 +267,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     //-- DeleteDemand --//
     
     //** createPersonDemandProfile **//
-    @ActionLayout(named="Nieuwe persoon zoeken")
+    @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile createPersonDemandProfile(
             @ParameterLayout(named="profileName")
@@ -293,7 +293,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             final  String demandProfileDescription
             ){
         if (this.getDemandType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
-            return "Alleen op type PERSOON";
+            return "ONLY_ON_PERSON_DEMAND";
         }
         
         return null;

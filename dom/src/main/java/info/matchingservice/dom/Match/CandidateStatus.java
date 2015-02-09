@@ -23,10 +23,10 @@ import info.matchingservice.dom.TitledEnum;
 
 public enum CandidateStatus implements TitledEnum {
 
-    CANDIDATE("kandidaat"),
-    RESERVED("gereserveerd"),
-    CHOSEN("gekozen"),
-    DISMISSED("afgewezen");
+    CANDIDATE("Candidate"),
+    RESERVED("Reserved"),
+    CHOSEN("Chosen"),
+    DISMISSED("Dismissed");
 
     private String title;
     

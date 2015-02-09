@@ -70,7 +70,7 @@ public class DropDownForProfileElements extends MatchingDomainService<DropDownFo
         return newProfileElementDropDown;
     }
     
-    @ActionLayout(named="Nieuwe kwaliteit", hidden=Where.EVERYWHERE)
+    @ActionLayout(hidden=Where.EVERYWHERE)
     public DropDownForProfileElement newQualityDropDown(
             @ParameterLayout(named="value")
             final String value
@@ -88,7 +88,7 @@ public class DropDownForProfileElements extends MatchingDomainService<DropDownFo
     
     public String validateNewQualityDropDown(final String value){
         if (!this.findDropDowns(value.toLowerCase()).isEmpty()){
-            return "Deze kwaliteit is al eerder ingevoerd";
+            return "ONE_INSTANCE_AT_MOST";
         }
         return null;
     }

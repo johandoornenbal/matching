@@ -63,7 +63,7 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     }
     
     public String title(){
-        return "Opgeslagen profiel match van " + this.getSupplyCandidate().title();
+        return "SAVED_MATCHING_PROFILE_OF " + this.getSupplyCandidate().title();
     }
     
     private UUID uniqueItemId;
@@ -94,7 +94,7 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     
     private Actor ownerActor;
     
-    @PropertyLayout(named="Eigenaar")
+    @PropertyLayout()
     @Property(editing=Editing.DISABLED)
     @javax.jdo.annotations.Column(allowsNull = "false")
     public Actor getOwnerActor() {
@@ -132,7 +132,7 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     private CandidateStatus candidateStatus;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(named="Status")
+    @PropertyLayout()
     public CandidateStatus getCandidateStatus() {
         return candidateStatus;
     }

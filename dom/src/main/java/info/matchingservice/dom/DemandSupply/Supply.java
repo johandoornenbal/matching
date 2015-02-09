@@ -102,7 +102,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
-    @PropertyLayout(named="Eigenaar")
+    @PropertyLayout()
     public Actor getSupplyOwner() {
         return supplyOwner;
     }
@@ -146,7 +146,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     //** supplyAssessments **//
     private SortedSet<SupplyAssessment> collectSupplyAssessments = new TreeSet<SupplyAssessment>();
     
-    @CollectionLayout(render=RenderType.EAGERLY, named="Assessments")
+    @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
     public SortedSet<SupplyAssessment> getCollectSupplyAssessments() {
         return collectSupplyAssessments;
@@ -182,7 +182,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     //-- updateSupply --//
     
     //** deleteSupply **//
-    @ActionLayout(named="Aanbod verwijderen")
+    @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Actor deleteSupply(
             @ParameterLayout(named="confirmDelete")
@@ -200,10 +200,10 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     //-- deleteSupply --//
     
     //** createPersonSupplyProfile **//
-    @ActionLayout(named="Nieuw persoonlijk profiel")
+    @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile createPersonSupplyProfile(){
-        return createSupplyProfile("Persoonlijke profiel van " + this.getSupplyOwner().title(), 10, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
+        return createSupplyProfile("PERSON_PROFILE_OF " + this.getSupplyOwner().title(), 10, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
     }
     
     // Business rule:
@@ -241,15 +241,15 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
                  "ownedBy", currentUserName(),
                  "profileType", ProfileType.PERSON_PROFILE);
            if (container.firstMatch(query) != null) {
-               return "Je hebt al een persoonlijk profiel";
+               return "ONE_INSTANCE_AT_MOST";
            }
            
            if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
-               return "Om een persoonlijk profiel te maken moet je Professional of Student zijn";
+               return "NO_STUDENT_OR_PROFESSIONAL";
            }
            
            if (this.getSupplyType() != DemandSupplyType.PERSON_DEMANDSUPPLY){
-               return "Dit kan alleen op een persoonlijk aanbod";
+               return "ONLY_ON_PERSON_SUPPLY";
            }
            
            return null;

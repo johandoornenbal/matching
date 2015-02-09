@@ -24,5 +24,15 @@ public class template {
 	//-- HIDDEN: PROPERTIES --//
 	//** HIDDEN: ACTIONS **//
 	//-- HIDDEN: ACTIONS --//
+	
+	/**
+	 *
+	 * ONE_INSTANCE_AT_MOST
+	 * NO_STUDENT_OR_PROFESSIONAL
+	 * ONLY_ON_PERSON_SUPPLY
+	 * NOT_THE_OWNER
+	 * CONFIRM_DELETE
+	 * 
+	 */
 
 }

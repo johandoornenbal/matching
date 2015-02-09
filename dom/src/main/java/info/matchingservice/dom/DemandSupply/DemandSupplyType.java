@@ -23,11 +23,11 @@ import info.matchingservice.dom.TitledEnum;
 
 public enum DemandSupplyType implements TitledEnum {
 
-    GENERIC_DEMANDSUPPLY("Algemeen type"),
-    PERSON_DEMANDSUPPLY("Personen type"),
-    COURSE_DEMANDSUPPLY("Cursus type"),
-    EVENT_DEMANDSUPPLY("Evenement type"),
-    ORGANISATION_DEMANDSUPPLY("Organisatie type");
+    GENERIC_DEMANDSUPPLY("Generic"),
+    PERSON_DEMANDSUPPLY("Person"),
+    COURSE_DEMANDSUPPLY("Course"),
+    EVENT_DEMANDSUPPLY("Event"),
+    ORGANISATION_DEMANDSUPPLY("Organisation");
 
     private String title;
     

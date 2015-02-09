@@ -30,19 +30,20 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Where;
 
-@DomainService(repositoryFor = ProfileMatch.class)
-@DomainServiceLayout(named="Matches", menuOrder="100")
+@DomainService(repositoryFor = ProfileMatch.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
+@DomainServiceLayout(menuOrder="100")
 public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
 
     public ProfileMatches() {
         super(ProfileMatches.class, ProfileMatch.class);
     }
 
-    @ActionLayout(named="Alle vastgelegde matches")
+    @Programmatic
     public List<ProfileMatch> allProfileMatches() {
         return container.allInstances(ProfileMatch.class);
     }
