@@ -28,6 +28,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
@@ -36,6 +37,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.joda.time.LocalDate;
 
@@ -103,7 +105,6 @@ public class Tag extends MatchingDomainObject<Tag> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout(
-            named="Tag",
             describedAs="Omschrijving in zo min mogelijk woorden; liefst slechts een.",
             typicalLength=80)
     @MemberOrder(sequence="2")
@@ -120,7 +121,6 @@ public class Tag extends MatchingDomainObject<Tag> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout(
-            named="Competentie categorie",
             describedAs="Kies de categorie")
     @MemberOrder(sequence="3")
     public TagCategory getTagCategory(){
@@ -170,10 +170,10 @@ public class Tag extends MatchingDomainObject<Tag> {
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @PropertyLayout(named = "Tag verwijderen")
-    public List<Tag> DeleteTag(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public List<Tag> deleteTag(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
@@ -183,7 +183,7 @@ public class Tag extends MatchingDomainObject<Tag> {
     
     public String validateDeleteTag(boolean confirmDelete) {
     	if (getNumberOfTimesUsed()>0){
-    		return "Oeps! Deze tag is nog in gebruik. Verwijderen gaat nu niet.";
+    		return "STILL_IN_USE_REMOVE_DEPENDENCIES_FIRST";
     	}
         return confirmDelete? null:"CONFIRM_DELETE";
     }

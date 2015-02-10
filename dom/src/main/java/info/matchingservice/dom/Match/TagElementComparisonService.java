@@ -92,14 +92,14 @@ public class TagElementComparisonService extends AbstractService {
                     Integer matchValue = 0;
                     Integer numberOfTagsOnDemand = 0;
                     //Iterate over all the tags (this is: tagholders) on the demand profileElement element
-                    for (final Iterator<TagHolder> it_demand = element.getTagHolders().iterator(); it_demand.hasNext();){
+                    for (final Iterator<TagHolder> it_demand = element.getCollectTagHolders().iterator(); it_demand.hasNext();){
                         Tag tag_demand = it_demand.next().getTag();
                         numberOfTagsOnDemand += 1;
                         //if there are any tags on supply profileElement
                         //TODO: this check should be made earlier for performance gain
-                        if (e.getTagHolders().size()>0){
+                        if (e.getCollectTagHolders().size()>0){
                         	//iterate over all the tags (tagholders) on supply element
-                        	for (final Iterator<TagHolder> it_supply = e.getTagHolders().iterator(); it_supply.hasNext();){
+                        	for (final Iterator<TagHolder> it_supply = e.getCollectTagHolders().iterator(); it_supply.hasNext();){
                         		Tag tag_supply = it_supply.next().getTag();
                         		if (tag_supply.equals(tag_demand)){
                         			matchValue += 100;

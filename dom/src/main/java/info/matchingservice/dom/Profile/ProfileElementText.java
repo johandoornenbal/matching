@@ -22,8 +22,10 @@ package info.matchingservice.dom.Profile;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -52,7 +54,8 @@ public class ProfileElementText extends ProfileElement {
     
     // BUSINESS RULE
     // Alleen op type PASSION (Anders komt deze ook bij bijvoorbeeld Postcode)
-    public ProfileElement editPassion(
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public ProfileElement updatePassion(
     		@ParameterLayout(
     				named = "textValue",
     				multiLine = 8
@@ -64,11 +67,11 @@ public class ProfileElementText extends ProfileElement {
         return this;
     }
     
-    public String default0EditPassion() {
+    public String default0UpdatePassion() {
         return getTextValue();
     }
     
-    public boolean hideEditPassion(String textValue){
+    public boolean hideUpdatePassion(String textValue){
     	if (getProfileElementType() == ProfileElementType.PASSION){
     		return false;
     	}
@@ -78,7 +81,8 @@ public class ProfileElementText extends ProfileElement {
     
     // BUSINESS RULE
     // Alleen op type LPOCATION (Anders komt deze ook bij bijvoorbeeld Passie)
-    public ProfileElement editLocation(
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public ProfileElement updateLocation(
     		@ParameterLayout(
     				named = "postcode"
     				)
@@ -90,11 +94,11 @@ public class ProfileElementText extends ProfileElement {
         return this;
     }
     
-    public String default0EditLocation() {
+    public String default0UpdateLocation() {
         return getTextValue();
     }
     
-    public boolean hideEditLocation(String textValue){
+    public boolean hideUpdateLocation(String textValue){
     	if (getProfileElementType() == ProfileElementType.LOCATION){
     		return false;
     	}

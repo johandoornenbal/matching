@@ -35,7 +35,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
     }
 
     @Programmatic
-    public ProfileElementNumeric newProfileElementNumeric(
+    public ProfileElementNumeric createProfileElementNumeric(
             final String description,
             final Integer weight,
             final Integer numericValue,
@@ -57,7 +57,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
     }
     
     @Programmatic
-    public ProfileElementNumeric newProfileElementNumeric(
+    public ProfileElementNumeric createProfileElementNumeric(
             final String description,
             final Integer weight,
             final Integer numericValue,

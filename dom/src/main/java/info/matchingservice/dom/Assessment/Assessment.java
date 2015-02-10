@@ -129,7 +129,7 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     @ActionLayout()
     public void deleteAssessment(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
         container.removeIfNotAlready(this);

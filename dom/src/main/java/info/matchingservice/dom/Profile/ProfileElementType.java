@@ -23,14 +23,14 @@ import info.matchingservice.dom.TitledEnum;
 
 public enum ProfileElementType implements TitledEnum {
     
-    QUALITY("Kwaliteit"),
-    LOCATION("Postcode"),
-    TEXT("Tekst"),
-    NUMERIC("Getal"), 
-    PASSION("Passie"),
-    PASSION_TAGS("Passie steekwoorden"),
-    BRANCHE_TAGS("Branche steekwoorden"),
-    QUALITY_TAGS ("kwaliteiten");
+    QUALITY("Quality"),
+    LOCATION("Zipcode"),
+    TEXT("Text"),
+    NUMERIC("Numeric"), 
+    PASSION("Passion"),
+    PASSION_TAGS("Passion_tags"),
+    BRANCHE_TAGS("Branche_tags"),
+    QUALITY_TAGS ("Quality_tags");
 
     private String title;
     

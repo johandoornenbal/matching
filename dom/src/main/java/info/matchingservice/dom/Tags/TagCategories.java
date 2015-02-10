@@ -19,16 +19,19 @@
 
 package info.matchingservice.dom.Tags;
 
-import java.util.List;
-
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.ParameterLayout;
-
 import info.matchingservice.dom.MatchingDomainService;
 
-@DomainService(repositoryFor = TagCategory.class)
+import java.util.List;
+
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.SemanticsOf;
+
+@DomainService(repositoryFor = TagCategory.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
         named="Beheer",
         menuBar = DomainServiceLayout.MenuBar.PRIMARY,
@@ -40,13 +43,13 @@ public class TagCategories extends MatchingDomainService<TagCategory> {
         super(TagCategories.class, TagCategory.class);
     }
     
-    @ActionLayout(named="Alle tag categorieën")
+    @Programmatic
     public List<TagCategory> allTagCategories() {
         return allInstances();
     }
     
-    @ActionLayout(named="Nieuwe tag categorie")
-    public TagCategory newTagCategory(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public TagCategory createTagCategory(
             @ParameterLayout(
                     named = "tagCategoryDescription",
                     describedAs="Verzameling van aantal tags om op te matchen.",
@@ -54,24 +57,26 @@ public class TagCategories extends MatchingDomainService<TagCategory> {
                     )
             final String tagCategoryDescription
             ){
-        final TagCategory newTagCategory = newTransientInstance(TagCategory.class);
-        newTagCategory.setTagCategoryDescription(tagCategoryDescription.toLowerCase());
-        persist(newTagCategory);
-        return newTagCategory;
+        final TagCategory createTagCategory = newTransientInstance(TagCategory.class);
+        createTagCategory.setTagCategoryDescription(tagCategoryDescription.toLowerCase());
+        persist(createTagCategory);
+        return createTagCategory;
     }
     
     //Businessrule: a tagCategory must be unique
-    public String validateNewTagCategory(final String tagCategoryDescription){
+    public String validateCreateTagCategory(final String tagCategoryDescription){
         if (!this.findTagCategoryMatches(tagCategoryDescription).isEmpty()){
-            return "Deze tagcategorie is al eerder ingevoerd";
+            return "ONE_INSTANCE_AT_MOST";
         }
         return null;
     }
     
+    @Programmatic
     public List<TagCategory> findTagCategoryContains(final String tagCategoryDescription){
         return allMatches("tagCategoryContains", "tagCategoryDescription", tagCategoryDescription.toLowerCase());
     }
     
+    @Programmatic
     public List<TagCategory> findTagCategoryMatches(final String tagCategoryDescription){
         return allMatches("tagCategoryMatches", "tagCategoryDescription", tagCategoryDescription.toLowerCase());
     }

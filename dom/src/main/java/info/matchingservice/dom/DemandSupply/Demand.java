@@ -156,7 +156,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             @javax.jdo.annotations.Column(name = "demandAttachment_bytes", jdbcType = "BLOB", sqlType = "BLOB")
     })
     @Property(
-            optional = Optionality.TRUE
+    		optionality=Optionality.OPTIONAL
     )
 	public Blob getDemandAttachment(){
 		return demandAttachment;
@@ -215,13 +215,13 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             @ParameterLayout(named="demandDescription")
             final String demandDescription,
             @ParameterLayout(named="demandSummary", multiLine=3)
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final String demandSummary,
             @ParameterLayout(named="demandStory", multiLine=8)
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final String demandStory,
             @ParameterLayout(named="demandAttachment")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final Blob demandAttachment         
             ){
         this.setDemandDescription(demandDescription);
@@ -253,7 +253,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Actor deleteDemand(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
         container.removeIfNotAlready(this);

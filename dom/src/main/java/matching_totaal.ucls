@@ -301,7 +301,7 @@
   </association>  
   <association id="44">    
     <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="45" name="tagHolders"/>      
+      <attribute id="45" name="collectTagHolders"/>      
       <multiplicity id="46" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="22" navigable="true"/>    

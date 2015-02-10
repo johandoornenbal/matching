@@ -2,6 +2,8 @@ package info.matchingservice.dom.Api;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.Tags.Tag;
+import info.matchingservice.dom.Tags.Tags;
 
 import java.util.List;
 
@@ -35,14 +37,14 @@ public class api extends AbstractFactoryAndRepository {
             @ParameterLayout(named="firstName")
             final String firstName,
             @ParameterLayout(named="middleName")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final String middleName,
             @ParameterLayout(named="lastName")
             final String lastName,
             @ParameterLayout(named="dateOfBirth")
             final LocalDate dateOfBirth,
             @ParameterLayout(named="picture")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final Blob picture
 			){
 		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture);
@@ -62,17 +64,30 @@ public class api extends AbstractFactoryAndRepository {
                     "findPersonUnique", 
                     "ownedBy", currentUserName());        
         return container.firstMatch(query) != null?
-        "Je hebt jezelf al aangemaakt. Pas je gegevens eventueel aan in plaats van hier een nieuwe persoon aan te maken."        
+        "ONE_INSTANCE_AT_MOST"        
         :null;
         
     }
     
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public List<Person> findPersons(
     		@ParameterLayout(named="searchInLastName")
             final String lastName
             ){
 		return persons.findPersons(lastName);
 	}
+    
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public List<Tag> findTagsUsedMoreThanThreshold(
+    		@ParameterLayout(named="searchString")
+    		final String tagDescription,
+    		@ParameterLayout(named="tagCategoryDescription")
+    		final String tagCategoryDescription,
+    		@ParameterLayout(named="threshold")
+    		final Integer threshold
+    		){
+    	return tags.findTagsUsedMoreThanThreshold(tagDescription, tagCategoryDescription, threshold);
+    }
     
     
     //Helpers
@@ -83,6 +98,9 @@ public class api extends AbstractFactoryAndRepository {
     //Injections
 	@Inject
 	Persons persons;
+	
+	@Inject
+	Tags tags;
 	
 	@Inject
 	private DomainObjectContainer container;

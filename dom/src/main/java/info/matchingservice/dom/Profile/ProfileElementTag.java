@@ -45,16 +45,16 @@ import org.apache.isis.applib.annotation.RenderType;
 public class ProfileElementTag extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
-    private SortedSet<TagHolder> tagHolders = new TreeSet<TagHolder>();
+    private SortedSet<TagHolder> collectTagHolders = new TreeSet<TagHolder>();
 
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "ownerElement", dependentElement = "true")
-    public SortedSet<TagHolder> getTagHolders() {
-        return tagHolders;
+    public SortedSet<TagHolder> getCollectTagHolders() {
+        return collectTagHolders;
     }
 
-    public void setTagHolders(SortedSet<TagHolder> tagholders) {
-        this.tagHolders = tagholders;
+    public void setCollectTagHolders(SortedSet<TagHolder> tagholders) {
+        this.collectTagHolders = tagholders;
         
     }
 

@@ -31,6 +31,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
@@ -39,6 +40,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -88,7 +90,6 @@ public class TagCategory extends MatchingMutableObject<TagCategory> {
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout(
-            named="Tag categorie",
             describedAs="Verzameling van aantal tags op onderwerp zoals steekwoorden in passieomschrijving",
             typicalLength=80)
     public String getTagCategoryDescription() {
@@ -99,26 +100,24 @@ public class TagCategory extends MatchingMutableObject<TagCategory> {
         this.tagCategoryDescription = tagCategoryDescription;
     }
     
-    private SortedSet<Tag> tags = new TreeSet<Tag>();
+    private SortedSet<Tag> collectTags = new TreeSet<Tag>();
     
     @Persistent(mappedBy = "tagCategory", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<Tag> getTags() {
-        return tags;
+    public SortedSet<Tag> getCollectTags() {
+        return collectTags;
     }
     
-    public void setTags(final SortedSet<Tag> tags){
-        this.tags = tags;
+    public void setCollectTags(final SortedSet<Tag> tags){
+        this.collectTags = tags;
     }
     
     //delete action /////////////////////////////////////////////////////////////////////////////////////
     
-    @PropertyLayout(
-            named = "Tag categorie verwijderen"
-            )
-    public List<TagCategory> DeleteTagCategory(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public List<TagCategory> deleteTagCategory(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
@@ -128,8 +127,8 @@ public class TagCategory extends MatchingMutableObject<TagCategory> {
     
     //Businessrule: only an empty tagCategory can be deleted
     public String validateDeleteTagCategory(boolean confirmDelete) {
-        if (!this.getTags().isEmpty()){
-            return "Er zijn nog tags in deze catagorie. Verwijder deze eerst!";
+        if (!this.getCollectTags().isEmpty()){
+            return "REMOVE_DEPENDENCIES_FIRST";
         }
         return confirmDelete? null:"CONFIRM_DELETE";
     }

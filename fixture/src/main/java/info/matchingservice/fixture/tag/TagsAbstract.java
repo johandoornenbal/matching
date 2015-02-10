@@ -24,7 +24,7 @@ public abstract class TagsAbstract extends FixtureScript {
             String tagProposal,
             ExecutionContext executionContext 
             ){
-        ProfileElement newHolder = tagHolders.newPassionTagHolder(ownerElement, tagProposal);
+        ProfileElement newHolder = tagHolders.createPassionTagHolder(ownerElement, tagProposal);
         return newHolder;
     }
     

@@ -39,7 +39,7 @@ public class ProfileElementDropDownAndText extends ProfileElement {
     private DropDownForProfileElement optionalDropDownValue;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Property(optional=Optionality.TRUE)
+    @Property(optionality=Optionality.OPTIONAL)
     public DropDownForProfileElement getOptionalDropDownValue(){
         return optionalDropDownValue;
     }
@@ -51,7 +51,7 @@ public class ProfileElementDropDownAndText extends ProfileElement {
     private String text;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Property(optional=Optionality.TRUE)
+    @Property(optionality=Optionality.OPTIONAL)
     public String getText(){
         return text;
     }

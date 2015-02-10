@@ -267,7 +267,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final ProfileType profileType,
             final String ownedBy){
         final Supply supply = supplies.createSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
-        return profiles.newSupplyProfile(supplyProfileDescription, profileWeight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supply, ownedBy);
+        return profiles.createSupplyProfile(supplyProfileDescription, profileWeight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supply, ownedBy);
     }
     //-- HELPERS: programmatic actions --//
     

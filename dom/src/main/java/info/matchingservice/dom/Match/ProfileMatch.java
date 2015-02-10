@@ -165,7 +165,7 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     
     public Profile deleteMatch(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
         container.removeIfNotAlready(this);

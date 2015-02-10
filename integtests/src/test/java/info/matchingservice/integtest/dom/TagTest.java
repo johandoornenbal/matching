@@ -49,8 +49,8 @@ public class TagTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception{
-            tagCategory1=tagCategories.newTagCategory(UPPER_AND_LOWERCASE);
-            tagCategory2=tagCategories.newTagCategory(LOWERCASE);
+            tagCategory1=tagCategories.createTagCategory(UPPER_AND_LOWERCASE);
+            tagCategory2=tagCategories.createTagCategory(LOWERCASE);
             tag1 = new Tag();
             tag2 = new Tag();
             tag1.setTagDescription(UPPER_AND_LOWERCASE);

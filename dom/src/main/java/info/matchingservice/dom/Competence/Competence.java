@@ -118,7 +118,7 @@ public class Competence extends MatchingMutableObject<Competence> {
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public List<Competence> deleteCompetence(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
         container.removeIfNotAlready(this);

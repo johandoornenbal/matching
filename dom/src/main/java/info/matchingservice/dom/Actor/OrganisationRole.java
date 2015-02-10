@@ -69,7 +69,7 @@ public class OrganisationRole extends Role {
     // Region //// Delete action //////////////////////////////
     public List<OrganisationRole> delete(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete,
             Organisation organisation
             ) {

@@ -23,19 +23,19 @@ import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.joda.time.LocalDate;
 
 @DomainService(repositoryFor = TagHolder.class)
@@ -57,7 +57,8 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     // just one word ...
     // every tag choice at most once (no doubles)    
     @NotInServiceMenu
-    public ProfileElement newPassionTagHolder(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public ProfileElement createPassionTagHolder(
             @ParameterLayout(
                     named = "ownerElement")
             final ProfileElement ownerElement,
@@ -70,7 +71,7 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     	TagCategory tagCat = tagCategories.findTagCategoryMatches("passie").get(0);
     	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).isEmpty()){
     		//make a new tag
-    		newTag = tags.newTag(tagProposalWord, tagCat);
+    		newTag = tags.createTag(tagProposalWord, tagCat);
     	} else {
     		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).get(0);
     	}
@@ -95,7 +96,7 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     	return ownerElement;
     }
     
-    public boolean hideNewPassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
+    public boolean hideCreatePassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
         // catch null value
     	if (ownerElement == null){
     		return true;
@@ -108,7 +109,7 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
         return true;
     }
     
-    public String validateNewPassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
+    public String validateCreatePassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
         // only on profile element with ProfileElementType = PASSION_TAGS
         if (ownerElement.getProfileElementType() == ProfileElementType.PASSION_TAGS){
             return null;
@@ -117,7 +118,7 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
         // every tag choice at most once (no doubles)
         //TODO: Nog maken
         
-        return "Alleen op een Profiel Element van type 'Passion_tags'";
+        return "ONLY_ON_PASSION_TAGS_PROFILE_ELEMENT";
     }
     
     //************BRANCHE TAGS************************//
@@ -140,7 +141,7 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     	TagCategory tagCat = tagCategories.findTagCategoryMatches("branche").get(0);
     	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).isEmpty()){
     		//make a new tag
-    		newTag = tags.newTag(tagProposalWord, tagCat);
+    		newTag = tags.createTag(tagProposalWord, tagCat);
     	} else {
     		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).get(0);
     	}
@@ -210,7 +211,7 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     	TagCategory tagCat = tagCategories.findTagCategoryMatches("kwaliteit").get(0);
     	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).isEmpty()){
     		//make a new tag
-    		newTag = tags.newTag(tagProposalWord, tagCat);
+    		newTag = tags.createTag(tagProposalWord, tagCat);
     	} else {
     		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).get(0);
     	}

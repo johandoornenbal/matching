@@ -145,7 +145,7 @@ public class Person extends Actor {
             @javax.jdo.annotations.Column(name = "picture_bytes", jdbcType = "BLOB", sqlType = "BLOB")
     })
     @Property(
-            optional = Optionality.TRUE
+    		optionality=Optionality.OPTIONAL
     )
     public Blob getPicture() {
         return picture;
@@ -250,7 +250,7 @@ public class Person extends Actor {
     		@ParameterLayout(named="firstName")
     		final String firstName,
     		@ParameterLayout(named="middleName")
-    		@Parameter(optional=Optionality.TRUE)
+    		@Parameter(optionality=Optionality.OPTIONAL)
     		final String middleName,
     		@ParameterLayout(named="lastName")
     		final String lastName,
@@ -312,13 +312,13 @@ public class Person extends Actor {
             @ParameterLayout(named="demandDescription")
             final String demandDescription,
             @ParameterLayout(named="demandSummary", multiLine=3)
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final String demandSummary,
             @ParameterLayout(named="demandStory", multiLine=8)
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final String demandStory,
             @ParameterLayout(named="demandAttachment")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final Blob demandAttachment
             ){
         return createDemand(demandDescription, demandSummary, demandStory, demandAttachment, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());

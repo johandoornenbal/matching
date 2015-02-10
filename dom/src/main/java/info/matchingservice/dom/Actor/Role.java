@@ -21,6 +21,7 @@ package info.matchingservice.dom.Actor;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.Property;
 
 import info.matchingservice.dom.MatchingDomainObject;
@@ -47,7 +48,7 @@ public abstract class Role extends MatchingDomainObject<Role> {
     private String targetApplication;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @Property(optional=Optionality.TRUE)
+    @Property(optionality=Optionality.OPTIONAL)
     public String getTargetApplication() {
         return targetApplication;
     }

@@ -34,7 +34,7 @@ public class ProfileElementTags extends MatchingDomainService<ProfileElementTag>
     }
     
     @Programmatic
-    public ProfileElementTag newProfileElementTag(
+    public ProfileElementTag createProfileElementTag(
             final String description,
             final Integer weight,
             final ProfileElementType profileElementCategory,
@@ -53,7 +53,7 @@ public class ProfileElementTags extends MatchingDomainService<ProfileElementTag>
     }
     
     @Programmatic
-    public ProfileElementTag newProfileElementTag(
+    public ProfileElementTag createProfileElementTag(
             final String description,
             final Integer weight,
             final ProfileElementType profileElementCategory,

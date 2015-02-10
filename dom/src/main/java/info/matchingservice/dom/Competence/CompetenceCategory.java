@@ -100,7 +100,7 @@ public class CompetenceCategory extends MatchingMutableObject<CompetenceCategory
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public List<CompetenceCategory> deleteCompetenceCategory(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
         container.removeIfNotAlready(this);

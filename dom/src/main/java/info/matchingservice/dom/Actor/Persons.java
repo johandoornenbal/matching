@@ -60,14 +60,14 @@ public class Persons extends MatchingDomainService<Person> {
             @ParameterLayout(named="firstName")
             final String firstName,
             @ParameterLayout(named="middleName")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final String middleName,
             @ParameterLayout(named="lastName")
             final String lastName,
             @ParameterLayout(named="dateOfBirth")
             final LocalDate dateOfBirth,
             @ParameterLayout(named="picture")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             final Blob picture
             ) {
         return createPerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture); // see region>helpers

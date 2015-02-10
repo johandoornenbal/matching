@@ -157,7 +157,7 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
     @ActionLayout()
     public List<MatchingTrustedContact> delete(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ) { 
         container.removeIfNotAlready(this);

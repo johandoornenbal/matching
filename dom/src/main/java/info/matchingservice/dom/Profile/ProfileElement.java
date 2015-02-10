@@ -29,6 +29,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
@@ -37,6 +38,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -62,10 +64,35 @@ import org.apache.isis.applib.annotation.Where;
 @DomainObject(editing=Editing.DISABLED)
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
-    public ProfileElement() {
-        super("ownedBy, profileElementDescription, profileElementOwner, profileElementId, uniqueItemId");
+	//** API: PROPERTIES **//
+	
+	//** profileElementDescription **//
+    private String profileElementDescription;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public String getProfileElementDescription(){
+        return profileElementDescription;
     }
     
+    public void setProfileElementDescription(final String description) {
+        this.profileElementDescription = description;
+    }
+    //-- profileElementDescription --//
+    
+    //** weight **//
+    private Integer weight;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight){
+        this.weight=weight;
+    }
+    //-- weight --//
+	
+	//** uniqueItemId **//
     private UUID uniqueItemId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -77,9 +104,107 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     public void setUniqueItemId(final UUID uniqueItemId) {
         this.uniqueItemId = uniqueItemId;
     }
+    //-- uniqueItemId --//
     
-    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
+    //** profileElementOwner **//
+    private Profile profileElementOwner;
     
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.PARENTED_TABLES)
+    public Profile getProfileElementOwner() {
+        return profileElementOwner;
+    }
+    
+    public void setProfileElementOwner(final Profile vacancyProfileOwner) {
+        this.profileElementOwner = vacancyProfileOwner;
+    }
+    //-- profileElementOwner --//
+    
+    //** profileElementType **//
+    private ProfileElementType profileElementType;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public ProfileElementType getProfileElementType(){
+        return profileElementType;
+    }
+    
+    public void setProfileElementType(final ProfileElementType profileElementCategory){
+        this.profileElementType = profileElementCategory;
+    }
+    //-- profileElementType --//
+    
+    //** displayValue **//
+    // Should be set by subClasses
+    private String displayValue;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @PropertyLayout(hidden=Where.OBJECT_FORMS)
+    public String getDisplayValue(){
+        return displayValue;
+    }
+    
+    public void setDisplayValue(final String displayValue){
+        this.displayValue = displayValue;
+    }
+    //-- displayValue --//
+    
+	//-- API: PROPERTIES --//
+	
+    //** API: COLLECTIONS **//
+	//-- API: COLLECTIONS --//
+    
+	//** API: ACTIONS **//
+	
+    //** updateProfileElement **//
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public ProfileElement updateProfileElement(
+            @ParameterLayout(named="profileElementDescription", multiLine=4)
+            String newDescr,
+            @ParameterLayout(named="weight")
+            Integer newWeight
+            ){
+        this.setProfileElementDescription(newDescr);
+        this.setWeight(newWeight);
+        return this;
+    }
+    
+    public String default0UpdateProfileElement() {
+        return getProfileElementDescription();
+    }
+    
+    public Integer default1UpdateProfileElement() {
+        return getWeight();
+    }
+    //-- updateProfileElement --//
+    
+    //** deleteProfileElement **//
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public Profile deleteProfileElement(
+            @ParameterLayout(named="confirmDelete")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            boolean confirmDelete
+            ){
+        container.removeIfNotAlready(this);
+        container.informUser("Element verwijderd");
+        return getProfileElementOwner();
+    }
+    
+    public String validateDeleteProfileElement(boolean confirmDelete) {
+        return confirmDelete? null:"CONFIRM_DELETE";
+    }
+    
+    //-- API: ACTIONS --//
+	
+	//** GENERIC OBJECT STUFF **//
+	//** constructor **//
+    public ProfileElement() {
+        super("ownedBy, profileElementDescription, profileElementOwner, profileElementId, uniqueItemId");
+    }
+	//** ownedBy - Override for secure object **//
     private String ownedBy;
     
     @Override
@@ -93,125 +218,24 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
+	//-- GENERIC OBJECT STUFF --//
     
-    //Immutables /////////////////////////////////////////////////////////////////////////////////////
-    
-    private Profile profileElementOwner;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    @PropertyLayout(hidden=Where.PARENTED_TABLES)
-    public Profile getProfileElementOwner() {
-        return profileElementOwner;
-    }
-    
-    public void setProfileElementOwner(final Profile vacancyProfileOwner) {
-        this.profileElementOwner = vacancyProfileOwner;
-    }
-    
-    private ProfileElementType profileElementType;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public ProfileElementType getProfileElementType(){
-        return profileElementType;
-    }
-    
-    public void setProfileElementType(final ProfileElementType profileElementCategory){
-        this.profileElementType = profileElementCategory;
-    }
-    
-    //element description /////////////////////////////////////////////////////////////////////////////////////
-    
-    private String profileElementDescription;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getProfileElementDescription(){
-        return profileElementDescription;
-    }
-    
-    public void setProfileElementDescription(final String description) {
-        this.profileElementDescription = description;
-    }
-    
-    public ProfileElement EditProfileDescription(
-            @ParameterLayout(named="profileElementDescription", multiLine=4)
-            String newDescr
-            ){
-        this.setProfileElementDescription(newDescr);
-        return this;
-    }
-    
-    public String default0EditProfileDescription() {
-        return getProfileElementDescription();
-    }
-    
-    //weight in case of owner is Demand Profile
-    
-    private Integer weight;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    public Integer getWeight() {
-        return weight;
-    }
-    
-    public void setWeight(final Integer weight){
-        this.weight=weight;
-    }
-    
-//    public boolean hideWeight(){
-//        return (this.getProfileElementOwner() instanceof SupplyProfile);
-//    }
-    
-    public ProfileElement EditWeight(
-            @ParameterLayout(named="weight")
-            Integer newWeight
-            ){
-        this.setWeight(newWeight);
-        return this;
-    }
-    
-    public Integer default0EditWeight() {
-        return getWeight();
-    }
-    
-    //Should be set by subClasses
-    private String displayValue;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @PropertyLayout(hidden=Where.OBJECT_FORMS)
-    public String getDisplayValue(){
-        return displayValue;
-    }
-    
-    public void setDisplayValue(final String displayValue){
-        this.displayValue = displayValue;
-    }
-    
-    //delete action /////////////////////////////////////////////////////////////////////////////////////
-    
-    @ActionLayout(named="Verwijder element")
-    public Profile DeleteProfileElement(
-            @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
-            boolean confirmDelete
-            ){
-        container.removeIfNotAlready(this);
-        container.informUser("Element verwijderd");
-        return getProfileElementOwner();
-    }
-    
-    public String validateDeleteProfileElement(boolean confirmDelete) {
-        return confirmDelete? null:"CONFIRM_DELETE";
-    }
-        
-    // Helpers
-    
+	//** HELPERS **//
+    //** HELPERS: generic object helpers **//
     public String toString(){
         return this.profileElementDescription;
     }
+	//-- HELPERS: generic object helpers --//
+	//** HELPERS: programmatic actions **//
+	//-- HELPERS: programmatic actions --// 
+	//-- HELPERS --//
     
+	//** INJECTIONS **//
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+	//-- INJECTIONS --//
+    
+	//** HIDDEN: PROPERTIES **//
     // Used in case owner chooses identical description and weight
     @SuppressWarnings("unused")
     private String profileElementId;
@@ -227,10 +251,9 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     public void setProfileElementId() {
         this.profileElementId = this.getId();
     }
+	//-- HIDDEN: PROPERTIES --//
     
-    // Injects
-    
-    @javax.inject.Inject
-    private DomainObjectContainer container;
+	//** HIDDEN: ACTIONS **//
+	//-- HIDDEN: ACTIONS --//
 
 }

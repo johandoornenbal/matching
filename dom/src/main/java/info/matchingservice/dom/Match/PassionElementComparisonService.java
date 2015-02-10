@@ -91,15 +91,15 @@ public class PassionElementComparisonService extends AbstractService {
                 // uitsluiten van dezelfde owner
                 if (!e.getOwnedBy().equals(element.getOwnedBy())){
                     Integer matchValue = 0;
-                    for (final Iterator<TagHolder> it = element.getTagHolders().iterator(); it.hasNext();){
+                    for (final Iterator<TagHolder> it = element.getCollectTagHolders().iterator(); it.hasNext();){
                         Tag tag = it.next().getTag();
                         if (e.getTextValue().toLowerCase().matches("(.*)" + tag.getTagDescription() + "(.*)")){
                             matchValue += 100;
                         }
                     }
                     // take the average matchValue of all Tags
-                    if (element.getTagHolders().size()>0){
-                    	matchValue = matchValue / element.getTagHolders().size();
+                    if (element.getCollectTagHolders().size()>0){
+                    	matchValue = matchValue / element.getCollectTagHolders().size();
                     } else {
                     	matchValue =0;
                     }

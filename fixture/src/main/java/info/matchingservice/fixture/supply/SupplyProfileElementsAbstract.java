@@ -30,7 +30,7 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ){
-        ProfileElementDropDown newDropDown = profileElementDropDowns.newProfileElementDropDown(description, weight, dropdownValue, profileElementCategory, profileOwner, ownedBy);
+        ProfileElementDropDown newDropDown = profileElementDropDowns.createProfileElementDropDown(description, weight, dropdownValue, profileElementCategory, profileOwner, ownedBy);
         return executionContext.add(this,newDropDown);
     }
     
@@ -43,7 +43,7 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ){
-        ProfileElementText newText = profileElementTexts.newProfileElementText(description, weight, textValue, profileElementCategory, profileOwner, ownedBy);
+        ProfileElementText newText = profileElementTexts.createProfileElementText(description, weight, textValue, profileElementCategory, profileOwner, ownedBy);
         return executionContext.add(this,newText);
     }
     
@@ -54,7 +54,7 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElementTag newElement = profileElementTags.newProfileElementTag(description, weight, ProfileElementType.BRANCHE_TAGS, profileOwner, ownedBy);
+        ProfileElementTag newElement = profileElementTags.createProfileElementTag(description, weight, ProfileElementType.BRANCHE_TAGS, profileOwner, ownedBy);
         return executionContext.add(this,newElement);
     }
     
@@ -65,7 +65,7 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElementTag newElement = profileElementTags.newProfileElementTag(description, weight, ProfileElementType.QUALITY_TAGS, profileOwner, ownedBy);
+        ProfileElementTag newElement = profileElementTags.createProfileElementTag(description, weight, ProfileElementType.QUALITY_TAGS, profileOwner, ownedBy);
         return executionContext.add(this,newElement);
     }
     

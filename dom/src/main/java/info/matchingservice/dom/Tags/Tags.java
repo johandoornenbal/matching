@@ -25,14 +25,17 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.joda.time.LocalDate;
 
-@DomainService(repositoryFor = Tag.class)
+@DomainService(repositoryFor = Tag.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
         named="Beheer",
         menuBar = DomainServiceLayout.MenuBar.PRIMARY,
@@ -44,13 +47,14 @@ public class Tags extends MatchingDomainService<Tag> {
         super(Tags.class, Tag.class);
     }
     
-    @ActionLayout(named="Alle tags")
+    @Programmatic
     public List<Tag> allTags() {
         return allInstances();
     }
     
-    @ActionLayout(named="Nieuwe tag")
-    public TagCategory newTag(
+    @ActionLayout()
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public TagCategory createTag(
             @ParameterLayout(named = "tagCategory")
             final TagCategory tagCategory,
             @ParameterLayout(
@@ -70,22 +74,24 @@ public class Tags extends MatchingDomainService<Tag> {
         return tagCategory;
     }
     
-    public List<TagCategory> autoComplete0NewTag(final String search) {
+    public List<TagCategory> autoComplete0CreateTag(final String search) {
         return tagCategories.findTagCategoryContains(search);
     }
     
     //Businessrule: within a tagCategory a tag must be unique
-    public String validateNewTag(final TagCategory tagCategory, final String tagDescription){
+    public String validateCreateTag(final TagCategory tagCategory, final String tagDescription){
         if (!this.findTagAndCategoryMatches(tagDescription, tagCategory).isEmpty()){
-            return "Deze tag is al eerder ingevoerd";
+            return "ONE_INSTANCE_AT_MOST";
         }
         return null;
     }
     
+    @Programmatic
     public List<Tag> findTagContains(final String tagDescription){
         return allMatches("tagContains", "tagDescription", tagDescription.toLowerCase());
     }
     
+    @Programmatic
     public List<Tag> findTagMatches(final String tagDescription){
         return allMatches("tagMatches", "tagDescription", tagDescription.toLowerCase());
     }
@@ -101,6 +107,7 @@ public class Tags extends MatchingDomainService<Tag> {
     }
     
     //service that returns tags in a tag category that are used at least x (threshold) times
+    @Programmatic
     public List<Tag> findTagsUsedMoreThanThreshold(
     		@ParameterLayout(named = "tagDescription")
     		final String tagDescription,
@@ -119,7 +126,7 @@ public class Tags extends MatchingDomainService<Tag> {
     
     //For fixtures
     @Programmatic
-    public Tag newTag(
+    public Tag createTag(
             final String tagDescription,
             final TagCategory tagCategory
             ){

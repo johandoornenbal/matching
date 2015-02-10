@@ -58,7 +58,7 @@ public class SystemRole extends Role {
     // Region //// Delete action //////////////////////////////
     public List<SystemRole> delete(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete) {
         container.removeIfNotAlready(this);
         container.informUser("Rol verwijderd");

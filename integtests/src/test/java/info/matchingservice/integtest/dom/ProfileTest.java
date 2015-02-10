@@ -73,7 +73,7 @@ public class ProfileTest extends MatchingIntegrationTest {
     		p1=persons.createPerson("TESTvn", "", "TESTan", new LocalDate(1962,7,16), null);
     		s1=supplies.createSupply("TESTSUP", 10, DemandSupplyType.PERSON_DEMANDSUPPLY, p1, container.getUser().getName());
     		pf1=s1.createPersonSupplyProfile();
-    		pf1.newPassion(ELEMENT_PASSIONVALUE, ELEMENT_INTVALUE);
+    		pf1.createPassionElement(ELEMENT_PASSIONVALUE, ELEMENT_INTVALUE);
     	}
     	
 //    	@Test
@@ -150,14 +150,14 @@ public class ProfileTest extends MatchingIntegrationTest {
             assertThat(dropdownAndText.getWeight(), is(WEIGHT));
             
 //            assertThat(dropdown.default0EditProfileDescription(), is(dropdown.getProfileElementDescription()));
-            assertThat(numeric.default0EditProfileDescription(), is(ELEMENT_DESCRIPTION));
-            assertThat(text.default0EditProfileDescription(), is(text.getProfileElementDescription()));
-            assertThat(dropdownAndText.default0EditProfileDescription(), is(dropdownAndText.getProfileElementDescription()));
+            assertThat(numeric.default0UpdateProfileElement(), is(ELEMENT_DESCRIPTION));
+            assertThat(text.default0UpdateProfileElement(), is(text.getProfileElementDescription()));
+            assertThat(dropdownAndText.default0UpdateProfileElement(), is(dropdownAndText.getProfileElementDescription()));
             
 //            assertThat(dropdown.default0EditWeight(), is(WEIGHT));
-            assertThat(numeric.default0EditWeight(), is(WEIGHT));
-            assertThat(text.default0EditWeight(), is(WEIGHT));
-            assertThat(dropdownAndText.default0EditWeight(), is(dropdownAndText.getWeight()));
+            assertThat(numeric.default1UpdateProfileElement(), is(WEIGHT));
+            assertThat(text.default1UpdateProfileElement(), is(WEIGHT));
+            assertThat(dropdownAndText.default1UpdateProfileElement(), is(dropdownAndText.getWeight()));
             
 //            assertThat(dropdown.getDropDownValue(), is(dropDownValue));
             assertThat(numeric.getNumericValue(), is(ELEMENT_INTVALUE));
@@ -208,11 +208,11 @@ public class ProfileTest extends MatchingIntegrationTest {
         public void deletions() throws Exception {
 //            dropdown.DeleteProfileElement(true);
 //            assertThat(container().allInstances(ProfileElementDropDown.class).size(), is(numberOfDropDownElements-1));
-            numeric.DeleteProfileElement(true);
+            numeric.deleteProfileElement(true);
             assertThat(container().allInstances(ProfileElementNumeric.class).size(), is(numberOfNumericElements-1));
-            text.DeleteProfileElement(true);
+            text.deleteProfileElement(true);
             assertThat(container().allInstances(ProfileElementText.class).size(), is(numberOfTextElements-1));
-            dropdownAndText.DeleteProfileElement(true);
+            dropdownAndText.deleteProfileElement(true);
             assertThat(container().allInstances(ProfileElementDropDownAndText.class).size(), is(numberOfDropDownAndTextElements-1));
         }
         

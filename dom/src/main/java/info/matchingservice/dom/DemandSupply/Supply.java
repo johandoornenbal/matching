@@ -186,7 +186,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Actor deleteSupply(
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
         container.removeIfNotAlready(this);
@@ -305,7 +305,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
             final ProfileType profileType,
             final Supply supplyProfileOwner, 
             final String ownedBy) {
-        return allSupplyProfiles.newSupplyProfile(supplyProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supplyProfileOwner, ownedBy);
+        return allSupplyProfiles.createSupplyProfile(supplyProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supplyProfileOwner, ownedBy);
     }
 	//-- HELPERS: programmatic actions --// 
 	//-- HELPERS --//

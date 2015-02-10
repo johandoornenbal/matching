@@ -22,21 +22,18 @@ package info.matchingservice.dom.Profile;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Profile.ProfileType;
 
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Where;
 import org.joda.time.LocalDate;
 
-@DomainService(repositoryFor = Profile.class)
+@DomainService(repositoryFor = Profile.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
-        named="Aanbod en vraag",
         menuBar = DomainServiceLayout.MenuBar.PRIMARY,
         menuOrder = "30"
 )
@@ -46,32 +43,31 @@ public class Profiles extends MatchingDomainService<Profile> {
         super(Profiles.class, Profile.class);
     }
     
-    @ActionLayout(named="Alle profielen", hidden=Where.EVERYWHERE)
+    @Programmatic
     public List<Profile> allProfiles() {
         return allInstances();
     }
     
-    @ActionLayout(named="Alle aanbod profielen")
+    @Programmatic
     public List<Profile> allSupplyProfiles() {
         return allMatches("allSupplyProfiles");
     }
     
-    @ActionLayout(named="Alle vraagprofielen")
+    @Programmatic
     public List<Profile> allDemandProfiles() {
         return allMatches("allDemandProfiles");
     }
     
-    @ActionLayout(named="Alle aanbodprofielen van type...")
+    @Programmatic
     public List<Profile> allSupplyProfilesOfType(ProfileType profileType) {
         return allMatches("allSupplyProfilesOfType","profileType",profileType);
     }
     
-    @ActionLayout(named="Alle vraagprofielen van type...")
+    @Programmatic
     public List<Profile> allDemandProfilesOfType(ProfileType profileType) {
         return allMatches("allDemandProfilesOfType","profileType",profileType);
     }
     
-    @ActionLayout(named="Zoek profiel ...")
     @Programmatic
     public List<Profile> searchNameOfProfilesOfTypeByOwner(String profileName, DemandOrSupply demandOrSupply, ProfileType profileType, String ownedBy) {
         return allMatches("searchNameOfProfilesOfTypeByOwner",
@@ -96,8 +92,8 @@ public class Profiles extends MatchingDomainService<Profile> {
         newDemandProfile.setUniqueItemId(uuid);
         newDemandProfile.setProfileName(demandProfileDescription);
         newDemandProfile.setWeight(weight);
-        newDemandProfile.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
-        newDemandProfile.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
+        newDemandProfile.setProfileStartDate(demandOrSupplyProfileStartDate);
+        newDemandProfile.setProfileEndDate(demandOrSupplyProfileEndDate);
         newDemandProfile.setDemandOrSupply(DemandOrSupply.DEMAND);
         newDemandProfile.setProfileType(profileType);
         newDemandProfile.setDemandProfileOwner(demandProfileOwner);
@@ -107,7 +103,7 @@ public class Profiles extends MatchingDomainService<Profile> {
     }
     
     @Programmatic
-    public Profile newSupplyProfile(
+    public Profile createSupplyProfile(
             final String supplyProfileDescription,
             final Integer weight,
             final LocalDate demandOrSupplyProfileStartDate,
@@ -121,8 +117,8 @@ public class Profiles extends MatchingDomainService<Profile> {
         newSupplyProfile.setUniqueItemId(uuid);
         newSupplyProfile.setProfileName(supplyProfileDescription);
         newSupplyProfile.setWeight(weight);
-        newSupplyProfile.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
-        newSupplyProfile.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
+        newSupplyProfile.setProfileStartDate(demandOrSupplyProfileStartDate);
+        newSupplyProfile.setProfileEndDate(demandOrSupplyProfileEndDate);
         newSupplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
         newSupplyProfile.setProfileType(profileType);
         newSupplyProfile.setSupplyProfileOwner(supplyProfileOwner);

@@ -36,7 +36,7 @@ public abstract class TagAbstract extends FixtureScript {
             TagCategory tagCategory,
             ExecutionContext executionContext
             ){
-        Tag newTag = tags.newTag(tagDescription, tagCategory);
+        Tag newTag = tags.createTag(tagDescription, tagCategory);
         return executionContext.add(this, newTag);
     }
     

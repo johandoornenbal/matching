@@ -35,7 +35,7 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
     }
 
     @Programmatic
-    public ProfileElementText newProfileElementText(
+    public ProfileElementText createProfileElementText(
             final String description,
             final Integer weight,
             final String textValue,
@@ -57,7 +57,7 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
     }
     
     @Programmatic
-    public ProfileElementText newProfileElementText(
+    public ProfileElementText createProfileElementText(
             final String description,
             final Integer weight,
             final String textValue,

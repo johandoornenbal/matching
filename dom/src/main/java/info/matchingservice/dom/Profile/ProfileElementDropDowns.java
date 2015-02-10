@@ -36,7 +36,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
     }
 
     @Programmatic
-    public ProfileElementDropDown newProfileElementDropDown(
+    public ProfileElementDropDown createProfileElementDropDown(
             final String description,
             final Integer weight,
             final DropDownForProfileElement dropDown,
@@ -58,7 +58,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
     }
     
     @Programmatic
-    public ProfileElementDropDown newProfileElementDropDown(
+    public ProfileElementDropDown createProfileElementDropDown(
             final String description,
             final Integer weight,
             final DropDownForProfileElement dropDown,

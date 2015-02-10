@@ -43,6 +43,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
@@ -52,8 +53,8 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.RegEx;
 import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.joda.time.LocalDate;
@@ -101,10 +102,62 @@ import org.joda.time.LocalDate;
 @DomainObject(editing = Editing.DISABLED)
 public class Profile extends MatchingSecureMutableObject<Profile> {
     
-    public Profile() {
-        super("profileName, profileType, ownedBy, uniqueItemId");
+	//** API: PROPERTIES **//
+	
+	//** profileName **//
+    private String profileName;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public void setProfileName(final String test) {
+        this.profileName = test;
+    }
+    //-- profileName --//
+    
+    //** weight **//
+    private Integer weight;
+    
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getWeight() {
+        return weight;
     }
     
+    public void setWeight(final Integer weight) {
+        this.weight = weight;
+    }
+    //-- weight --//
+    
+    //** profileStartDate **//
+    private LocalDate profileStartDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public LocalDate getProfileStartDate() {
+		return profileStartDate;
+	}
+
+	public void setProfileStartDate(LocalDate demandOrSupplyStartDate) {
+		this.profileStartDate = demandOrSupplyStartDate;
+	}
+    //-- profileStartDate --//
+	
+	//** profileEndDate **//
+    private LocalDate profileEndDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getProfileEndDate() {
+		return profileEndDate;
+	}
+
+	public void setProfileEndDate(LocalDate demandOrSupplyEndDate) {
+		this.profileEndDate = demandOrSupplyEndDate;
+	}
+	//-- profileEndDate --//
+	
+	//** uniqueItemId **//
     private UUID uniqueItemId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -116,24 +169,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public void setUniqueItemId(final UUID uniqueItemId) {
         this.uniqueItemId = uniqueItemId;
     }
+    //-- uniqueItemId --//
     
-    //Override for secure object /////////////////////////////////////////////////////////////////////////////////////
-    private String ownedBy;
-
-    @Override
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing = Editing.DISABLED)
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(final String owner) {
-        this.ownedBy = owner;
-    }
-
-    //Immutables //////////////////////////////////////////////////////////////////////////////////////
-    
+    //** profileType **//
     private ProfileType profileType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -145,7 +183,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public void setProfileType(final ProfileType profileType){
         this.profileType = profileType;
     }
-    
+    //-- profileType --//
+   
+    //** demandOrSupply **//
     private DemandOrSupply demandOrSupply;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -157,7 +197,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public void setDemandOrSupply(final DemandOrSupply demandOrSupply){
         this.demandOrSupply = demandOrSupply;
     }
+    //-- demandOrSupply --//
     
+    //** demandProfileOwner **//
     private Demand demandProfileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -178,7 +220,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         
         return false;
     }
+    //-- demandProfileOwner --//
     
+    //** supplyProfileOwner **//
     private Supply supplyProfileOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -199,8 +243,10 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         
         return false;
     }
+    //-- supplyProfileOwner --//
     
-    @PropertyLayout(hidden=Where.PARENTED_TABLES, named="Eigenaar")
+    //** actorOwner **//
+    @PropertyLayout(hidden=Where.PARENTED_TABLES)
     public Actor getActorOwner() {
         if (this.getDemandOrSupply().equals(DemandOrSupply.DEMAND)){
             return getDemandProfileOwner().getDemandOwner();
@@ -208,75 +254,63 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             return getSupplyProfileOwner().getSupplyOwner();
         }
     }
+    //-- actorOwner --//
     
-    //ProfileName /////////////////////////////////////////////////////////////////////////////////////
-    private String profileName;
+	//-- API: PROPERTIES --//
     
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getProfileName() {
-        return profileName;
+	//** API: COLLECTIONS **//
+    
+    //** collectProfileElements **//
+    private SortedSet<ProfileElement> collectProfileElements = new TreeSet<ProfileElement>();
+
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "profileElementOwner", dependentElement = "true")
+    public SortedSet<ProfileElement> getCollectProfileElements() {
+        return collectProfileElements;
+    }
+    
+    public void setCollectProfileElements(final SortedSet<ProfileElement> vac) {
+        this.collectProfileElements = vac;
+    }
+    //-- collectProfileElements --//
+    
+    //** collectAssessments **//
+    private SortedSet<ProfileAssessment> collectAssessments = new TreeSet<ProfileAssessment>();
+
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
+    public SortedSet<ProfileAssessment> getCollectAssessments() {
+        return collectAssessments;
     }
 
-    public void setProfileName(final String test) {
-        this.profileName = test;
+    public void setCollectAssessments(final SortedSet<ProfileAssessment> assessment) {
+        this.collectAssessments = assessment;
     }
-    
-    //weight /////////////////////////////////////////////////////////////////////////////////////
-    private Integer weight;
-    
-    @PropertyLayout(hidden=Where.EVERYWHERE)
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    public Integer getWeight() {
-        return weight;
-    }
-    
-    public void setWeight(final Integer weight) {
-        this.weight = weight;
-    }
-    
-    private LocalDate demandOrSupplyProfileStartDate;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    public LocalDate getDemandOrSupplyProfileStartDate() {
-		return demandOrSupplyProfileStartDate;
-	}
 
-	public void setDemandOrSupplyProfileStartDate(LocalDate demandOrSupplyStartDate) {
-		this.demandOrSupplyProfileStartDate = demandOrSupplyStartDate;
-	}
+    public boolean hideCollectAssessments() {
+        return this.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+    }
+	//-- collectAssessments --//
     
-    private LocalDate demandOrSupplyProfileEndDate;
+	//-- API: COLLECTIONS --//
     
-    @javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getDemandOrSupplyProfileEndDate() {
-		return demandOrSupplyProfileEndDate;
-	}
-
-	public void setDemandOrSupplyProfileEndDate(LocalDate demandOrSupplyEndDate) {
-		this.demandOrSupplyProfileEndDate = demandOrSupplyEndDate;
-	}
+	//** API: ACTIONS **//
     
-    
-    // Region> ProfileElements
-    
-    //XTALUS VOOR PERSONEN
-    
-    //**PASSIE** *******SUPPLY PROFILE*******************//
-    //BUSINESSRULE
+    //** createPassionElement **//
+    // Business rule:
     // alleen op profile van type PERSON of ORGANISATION
     // alleen op aanbod profiel
     // slechts 1 per profile
-    @ActionLayout(
-    		named="Nieuwe passie"
-    		)
-    public Profile newPassion(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public Profile createPassionElement(
     		@ParameterLayout(named="textValue")
     		final String textValue,
     		@ParameterLayout(named="weight")
     		final Integer weight
     		){
-    	profileElementTexts.newProfileElementText(
-    			"Passie omschrijving", 
+    	profileElementTexts.createProfileElementText(
+    			"PASSION_ELEMENT", 
     			weight, 
     			textValue, 
     			ProfileElementType.PASSION, 
@@ -285,7 +319,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     
     
-    public boolean hideNewPassion(
+    public boolean hideCreatePassionElement(
             final String passionText,
             final Integer weight
             ){
@@ -310,14 +344,14 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return false;
     }
     
-    public String validateNewPassion(
+    public String validateCreatePassionElement(
             final String passionText,
             final Integer weight
             ){
         
     	// alleen op profile van type PERSON of ORGANISATION
         if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.DEMAND){
-            return "Alleen op aanbod en op persoon- of organisatie profiel";
+            return "ONLY_ON_PERSON_SUPPLY_AND_PERSON_OR_ORGANISATION_PROFILE";
         }
         
         // er  mag hooguit 1 Passie element zijn
@@ -328,34 +362,32 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                     "profileElementType", ProfileElementType.PASSION,
                     "profileElementOwner", this);
         if (container.firstMatch(query) != null) {
-            return "Je hebt al je passie ingevuld; pas deze aan indien nodig";
+            return "ONE_INSTANCE_AT_MOST";
         }
         
         return null;
     }
+    //-- createPassionElement --//
     
-    //END >> **PASSIE** *******SUPPLY PROFILE*******************//
-    
-    //**PASSIE TAG** *******DEMAND PROFILE*******************//
-    //BUSINESSRULE
+    //** createPassionTagElement **//
+    // Business rule:
     // only on profile van type PERSON
     // only on DEMAND PROFILE
     // At Most one
-    @ActionLayout(
-            named="Passie steekwoorden"
-            )
-    public ProfileElementTag newPassionTagElement(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElementTag createPassionTagElement(
             @ParameterLayout(named="weight")
             final Integer weight
             ){
-        return profileElementTags.newProfileElementTag(
-                "passie steekwoorden", 
+        return profileElementTags.createProfileElementTag(
+                "PASSION_TAGS_ELEMENT", 
                 weight, 
                 ProfileElementType.PASSION_TAGS, 
                 this);
     }
     
-    public boolean hideNewPassionTagElement(final Integer weight){
+    public boolean hideCreatePassionTagElement(final Integer weight){
         // only on profile van type PERSON
         // only on DEMAND PROFILE
         if ((this.getProfileType() != ProfileType.PERSON_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
@@ -376,11 +408,11 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return false;
     }
     
-    public String validateNewPassionTagElement(final Integer weight){
+    public String validateCreatePassionTagElement(final Integer weight){
         // only on profile van type PERSON
         // only on DEMAND PROFILE
         if ((this.getProfileType() != ProfileType.PERSON_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
-            return "Alleen op gevraagd persoonsprofiel";
+            return "ONLY_ON_PERSON_DEMAND_AND_PERSON_PROFILE";
         }
         
      // At Most one
@@ -391,35 +423,31 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                     "profileElementType", ProfileElementType.PASSION_TAGS,
                     "profileElementOwner", this);
         if (container.firstMatch(query) != null) {
-            return "Er mag maar een element met passie steekwoorden zijn";
+            return "ONE_INSTANCE_AT_MOST";
         }
         
         return null;
     }
+    //-- createPassionTagElement --//
     
-    
-    
-    //END >> **PASSIE TAG** *******DEMAND PROFILE*******************//
-    
-    //**BRANCHE TAG** *******DEMAND/SUPPLY PROFILE*******************//
-    //BUSINESSRULE
+    //** createBrancheTagElement **//
+    // Business rule:
     // only on profile of type PERSON and ORGANISATION
     // At Most one
-    @ActionLayout(
-            named="Branche steekwoorden"
-            )
-    public ProfileElementTag newBrancheTagElement(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElementTag createBrancheTagElement(
             @ParameterLayout(named="weight")
             final Integer weight
             ){
-        return profileElementTags.newProfileElementTag(
-                "branche steekwoorden", 
+        return profileElementTags.createProfileElementTag(
+                "BRANCHE_TAGS_ELEMENT", 
                 weight, 
                 ProfileElementType.BRANCHE_TAGS, 
                 this);
     }
     
-    public boolean hideNewBrancheTagElement(final Integer weight){
+    public boolean hideCreateBrancheTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
         if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
             return true;
@@ -439,10 +467,10 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return false;
     }
     
-    public String validateNewBrancheTagElement(final Integer weight){
+    public String validateCreateBrancheTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
     	if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
-            return "Alleen op persoons- of organisatie profiel";
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
         }
         
     	// At Most one
@@ -453,38 +481,34 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                     "profileElementType", ProfileElementType.BRANCHE_TAGS,
                     "profileElementOwner", this);
         if (container.firstMatch(query) != null) {
-            return "Er mag maar een element met branche steekwoorden zijn";
+            return "ONE_INSTANCE_AT_MOST";
         }
         
         return null;
     }
+    //-- createBrancheTagElement --//
     
+    //** createQualityTagElement **//
     
-    
-    //END >> **BRANCHE TAG** *******DEMAND/SUPPPLY PROFILE*******************//
-    
-    // **QUALITY TAG** *******DEMAND/SUPPPLY PROFILE*******************//
-    //BUSINESSRULE
+    // Business rule:
     // only on profile of type PERSON and ORGANISATION
     // At Most one
     // 2 dezelfde kwaliteiten kiezen heeft geen zin => TODO: Deze moet in zijn algemeenheid worden opgelost bij tags denk ik
     
-    
-    @ActionLayout(
-            named="Kwaliteiten"
-            )
-    public ProfileElementTag newQualityTagElement(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElementTag createQualityTagElement(
             @ParameterLayout(named="weight")
             final Integer weight
             ){
-        return profileElementTags.newProfileElementTag(
-                "kwaliteiten", 
+        return profileElementTags.createProfileElementTag(
+                "QUALITY_TAGS_ELEMENT", 
                 weight, 
                 ProfileElementType.QUALITY_TAGS, 
                 this);
     }
     
-    public boolean hideNewQualityTagElement(final Integer weight){
+    public boolean hideCreateQualityTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
         if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
             return true;
@@ -504,10 +528,10 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return false;
     }
     
-    public String validateNewQualityTagElement(final Integer weight){
+    public String validateCreateQualityTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
     	if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
-            return "Alleen op persoons- of organisatie profiel";
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
         }
         
     	// At Most one
@@ -518,92 +542,32 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                     "profileElementType", ProfileElementType.QUALITY_TAGS,
                     "profileElementOwner", this);
         if (container.firstMatch(query) != null) {
-            return "Er mag maar een element met kwaliteiten zijn";
+            return "ONE_INSTANCE_AT_MOST";
         }
         
         return null;
     }
-        
+    //-- createQualityTagElement --//
     
-    
-    //END >> **QUALITY TAG** *******DEMAND/SUPPPLY PROFILE*******************//
-    
-//    //**KWALITEITEN*//
-//    //BUSINESSRULE
-//    // alleen tonen op profile van type PERSON
-//    // 2 dezelfde kwaliteiten kiezen heeft geen zin
-//    
-//    public Profile newQualityElementDropDown(
-//            @ParameterLayout(named="dropDownValue")
-//            final DropDownForProfileElement dropDown,
-//            @ParameterLayout(named="weight")
-//            final Integer weight
-//            ){
-//        profileElementDropDowns.newProfileElementDropDown(
-//                "kwaliteit " + dropDown.title(), 
-//                weight,
-//                dropDown,
-//                ProfileElementType.QUALITY, 
-//                this);
-//        return this;
-//    }
-//    
-//    public List<DropDownForProfileElement> autoComplete0NewQualityElementDropDown(String search) {
-//        return dropDownForProfileElements.findDropDowns(search);
-//    }
-//    
-//    public boolean hideNewQualityElementDropDown(
-//            final DropDownForProfileElement dropDown,
-//            final Integer weight
-//            ){
-//        
-//        if (this.getProfileType() != ProfileType.PERSON_PROFILE){
-//            return true;
-//        }
-//        
-//        return false;
-//    }
-//    
-//    public String validateNewQualityElementDropDown(
-//            final DropDownForProfileElement dropDown,
-//            final Integer weight
-//            ){
-//        
-//        if (this.getProfileType() != ProfileType.PERSON_PROFILE){
-//            return "Alleen op persoons profiel";
-//        }
-//        
-//        // twee dezelfde kwaliteiten heeft geen zin
-//        QueryDefault<ProfileElementDropDown> query = 
-//                QueryDefault.create(
-//                        ProfileElementDropDown.class, 
-//                    "findProfileElementDropDownByOwnerProfileAndDropDownValue", 
-//                    "dropDownValue", dropDown,
-//                    "profileElementOwner", this);
-//        if (container.firstMatch(query) != null) {
-//            return "Deze kwaliteit heb je al gekozen";
-//        }
-//        
-//        return null;
-//    }
-    
-    // LOKATIE (Postcode)
-    // BUSINESSRULE
+    //** createLocationElement **//
+    // Business rule:
     // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
     // er mag er hooguit een van zijn
     // textValue moet een geldig postcode formaat zijn (4 cijfers , al of niet een spatie, 2 hoofdletters)
-    public Profile newLocation(
+    
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createLocationElement(
     		@ParameterLayout(named="postcode")
     		@Parameter(regexPattern="^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")
     		final String textValue,
     		@ParameterLayout(named="weight")
     		final Integer weight
     		){
-    	profileElementTexts.newProfileElementText("lokatie", weight, textValue, ProfileElementType.LOCATION, this);
+    	profileElementTexts.createProfileElementText("LOCATION_ELEMENT", weight, textValue, ProfileElementType.LOCATION, this);
     	return this;
     }
     
-    public boolean hideNewLocation(final String textValue, final Integer weight){
+    public boolean hideCreateLocationElement(final String textValue, final Integer weight){
     	
         QueryDefault<ProfileElementText> query = 
                 QueryDefault.create(
@@ -622,7 +586,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     	return true;
     }
     
-    public String validateNewLocation(final String textValue, final Integer weight){
+    public String validateCreateLocationElement(final String textValue, final Integer weight){
     	
         QueryDefault<ProfileElementText> query = 
                 QueryDefault.create(
@@ -630,12 +594,12 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                     "findProfileElementOfType",
                     "profileElementOwner", this, "profileElementType", ProfileElementType.LOCATION);
         if (container.firstMatch(query) != null) {
-            return "Je hebt al een lokatie opgegeven.";
+            return "ONE_INSTANCE_AT_MOST";
         }
     	
     	// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
     	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
-    		return "Alleen op persoons of organisatie profiel.";
+    		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
     	}
     	
     	//textValue moet een geldig postcode formaat zijn
@@ -643,27 +607,27 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     	
     	return null;
     }
+    //-- createLocationElement --//
     
-    //XTALUS VOOR CURSUSSEN
+    //** createPriceElement **//
+    // Business rule:
+    // Er kan maar een prijs element zijn
+    // Alleen op cursusprofiel
     
-    //**PRIJS*//    
-    //BUSINESSRULE
-    //Er kan maar een prijs element zijn
-    //Alleen op cursusprofiel
-    
-    public ProfileElementNumeric newProfileElementPrice(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public ProfileElementNumeric createPriceElement(
             @ParameterLayout(named="numericValue")
             final Integer numericValue
             ){
-        return profileElementNumerics.newProfileElementNumeric(
-                "Prijs in credits", 
+        return profileElementNumerics.createProfileElementNumeric(
+                "PRICE_ELEMENT", 
                 10,
                 numericValue,
                 ProfileElementType.NUMERIC, 
                 this);
     }
     
-    public boolean hideNewProfileElementPrice(
+    public boolean hideCreatePriceElement(
             final Integer numericValue
             ){
         
@@ -683,12 +647,12 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return false;
     }
     
-    public String validateNewProfileElementPrice(
+    public String validateCreatePriceElement(
             final Integer numericValue
             ){
         
         if (this.getProfileType() != ProfileType.COURSE_PROFILE){
-            return "Kan alleen op Cursus profiel";
+            return "ONLY_ON_COURSE_PROFILE";
         }
         
         QueryDefault<ProfileElementNumeric> query = 
@@ -697,42 +661,40 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                     "findProfileElementNumericByOwnerProfile",
                     "profileElementOwner", this);
         if (container.firstMatch(query) != null) {
-            return "Er is al een prijs";
+            return "ONE_INSTANCE_AT_MOST";
         }
         
         return null;
     }
-
+    //-- createPriceElement --//
     
-    // Region actions
-    public Profile EditProfileName(
+    //** updateProfile **//
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public Profile updateProfile(
             @ParameterLayout(named="profileName")
-            String newString
-            ){
-        this.setProfileName(newString);
-        return this;
-    }
-    
-    public String default0EditProfileName() {
-        return getProfileName();
-    }
-    
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public Profile EditWeight(
+            String newString,
+            @ParameterLayout(named="weight")
             Integer newInteger
             ){
+        this.setProfileName(newString);
         this.setWeight(newInteger);
         return this;
     }
     
-    public Integer default0EditWeight() {
-        return getWeight();
+    public String default0UpdateProfile() {
+        return getProfileName();
     }
     
-    //delete action /////////////////////////////////////////////////////////////////////////////////////
-    public Actor DeleteProfile( 
+    public Integer default1UpdateProfile() {
+        return getWeight();
+    }
+    //-- updateProfile --//
+    
+    //** deleteProfile **//
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Actor deleteProfile( 
             @ParameterLayout(named="confirmDelete")
-            @Parameter(optional=Optionality.TRUE)
+            @Parameter(optionality=Optionality.OPTIONAL)
         boolean confirmDelete) {
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
@@ -743,132 +705,45 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public String validateDeleteProfile(boolean confirmDelete) {
         return confirmDelete? null:"CONFIRM_DELETE";
     }
+    //-- deleteProfile --//
     
-    @ActionLayout(hidden=Where.EVERYWHERE, named="NewDropDownTest")
-    public Profile newProfileElementDropDown(
-            final Integer weight,
-            final DropDownForProfileElement dropDown
-            ){
-        profileElementDropDowns.newProfileElementDropDown(
-                "kwaliteit " + dropDown.title(), 
-                weight,
-                dropDown,
-                ProfileElementType.QUALITY, 
-                this);
-        return this;
+    
+	//-- API: ACTIONS --//
+    
+	//** GENERIC OBJECT STUFF **//
+	//** constructor **//
+	public Profile() {
+        super("profileName, profileType, ownedBy, uniqueItemId");
     }
-    
-    public List<DropDownForProfileElement> autoComplete1NewProfileElementDropDown(String search) {
-        return dropDownForProfileElements.findDropDowns(search);
+	
+	//** ownedBy - Override for secure object **//
+    private String ownedBy;
+
+    @Override
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing = Editing.DISABLED)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
+    public String getOwnedBy() {
+        return ownedBy;
     }
 
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
+    }
+	//-- GENERIC OBJECT STUFF --//
     
-    @ActionLayout(hidden=Where.EVERYWHERE, named="NewDropDownAndTextTest")
-    public ProfileElementDropDownAndText newProfileElementDropDownAndText(
-            final String description,
-            final Integer weight,
-            @Parameter(optional=Optionality.TRUE)
-            final DropDownForProfileElement dropDown,
-            @Parameter(optional=Optionality.TRUE)
-            final String text
-            ){
-        return profileElementDropDownsAndTexts.newProfileElementDropDownAndText(
-                description, 
-                weight,
-                dropDown,
-                text,
-                ProfileElementType.QUALITY, 
-                this);
-    }
-    
-    public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDownAndText(String search) {
-        return dropDownForProfileElements.findDropDowns(search);
-    }
-    
-    @ActionLayout(hidden=Where.EVERYWHERE, named="NewTextTest")
-    public ProfileElementText newProfileElementText(
-            final String description,
-            final Integer weight,
-            final String textValue
-            ){
-        return profileElementTexts.newProfileElementText(
-                description, 
-                weight,
-                textValue,
-                ProfileElementType.TEXT, 
-                this);
-    }
-    
-    @ActionLayout(hidden=Where.EVERYWHERE, named="NewNumericTest")
-    public ProfileElementNumeric newProfileElementNumeric(
-            final String description,
-            final Integer weight,
-            final Integer numericValue
-            ){
-        return profileElementNumerics.newProfileElementNumeric(
-                description, 
-                weight,
-                numericValue,
-                ProfileElementType.NUMERIC, 
-                this);
-    }
-       
-    
-    //Profile Elements ///////////////////////////////////////////////////////////////////////////////
-    private SortedSet<ProfileElement> collectProfileElements = new TreeSet<ProfileElement>();
-
-    @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "profileElementOwner", dependentElement = "true")
-    public SortedSet<ProfileElement> getCollectProfileElements() {
-        return collectProfileElements;
-    }
-    
-    public void setCollectProfileElements(final SortedSet<ProfileElement> vac) {
-        this.collectProfileElements = vac;
-    }
-
-    //Assessments ///////////////////////////////////////////////////////////////////////////////
-    private SortedSet<ProfileAssessment> collectAssessments = new TreeSet<ProfileAssessment>();
-
-    @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
-    public SortedSet<ProfileAssessment> getCollectAssessments() {
-        return collectAssessments;
-    }
-
-    public void setCollectAssessments(final SortedSet<ProfileAssessment> assessment) {
-        this.collectAssessments = assessment;
-    }
-
-    public boolean hideCollectAssessments() {
-        return this.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
-    }
-   
-    //HELPERS
-    
+	//** HELPERS **//
+    //** HELPERS: generic object helpers **//
     public String toString() {
         return "Profiel: " + this.profileName;
     }
+	//-- HELPERS: generic object helpers --//
+	//** HELPERS: programmatic actions **//
+	//-- HELPERS: programmatic actions --// 
+	//-- HELPERS --//
     
-//    // Used in case owner chooses identical vacancyDescription and weight
-//    @SuppressWarnings("unused")
-//    private String profileId;
-//
-//    @ActionLayout(hidden=Where.EVERYWHERE)
-//    public String getProfileId() {
-//        if (this.getId() != null) {
-//            return this.getId();
-//        }
-//        return "";
-//    }
-//    
-//    public void setProfileId() {
-//        this.profileId = this.getId();
-//    }
+	//** INJECTIONS **//
     
-    
-    // Injects
-
 	@javax.inject.Inject
     private DomainObjectContainer container;
     
@@ -896,4 +771,82 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     @Inject
     ProfileElementNumerics profileElementNumerics;
     
+	//-- INJECTIONS --//
+    
+	//** HIDDEN: PROPERTIES **//
+	//-- HIDDEN: PROPERTIES --//
+    
+	//** HIDDEN: ACTIONS **//
+    
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public Profile newProfileElementDropDown(
+            final Integer weight,
+            final DropDownForProfileElement dropDown
+            ){
+        profileElementDropDowns.createProfileElementDropDown(
+                "kwaliteit " + dropDown.title(), 
+                weight,
+                dropDown,
+                ProfileElementType.QUALITY, 
+                this);
+        return this;
+    }
+    
+    public List<DropDownForProfileElement> autoComplete1NewProfileElementDropDown(String search) {
+        return dropDownForProfileElements.findDropDowns(search);
+    }
+
+    
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public ProfileElementDropDownAndText newProfileElementDropDownAndText(
+            final String description,
+            final Integer weight,
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final DropDownForProfileElement dropDown,
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final String text
+            ){
+        return profileElementDropDownsAndTexts.createProfileElementDropDownAndText(
+                description, 
+                weight,
+                dropDown,
+                text,
+                ProfileElementType.QUALITY, 
+                this);
+    }
+    
+    public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDownAndText(String search) {
+        return dropDownForProfileElements.findDropDowns(search);
+    }
+    
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public ProfileElementText newProfileElementText(
+            final String description,
+            final Integer weight,
+            final String textValue
+            ){
+        return profileElementTexts.createProfileElementText(
+                description, 
+                weight,
+                textValue,
+                ProfileElementType.TEXT, 
+                this);
+    }
+    
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public ProfileElementNumeric newProfileElementNumeric(
+            final String description,
+            final Integer weight,
+            final Integer numericValue
+            ){
+        return profileElementNumerics.createProfileElementNumeric(
+                description, 
+                weight,
+                numericValue,
+                ProfileElementType.NUMERIC, 
+                this);
+    }
+    
+	//-- HIDDEN: ACTIONS --//
+
 }

@@ -23,13 +23,13 @@ import info.matchingservice.dom.TitledEnum;
 
 public enum ProfileType implements TitledEnum {
 
-    PERSON_PROFILE("CV"),
-    ORGANISATION_PROFILE("Organisatie profiel"),
-    SERVICE_PROFILE("Dienst"),
-    DEVICE_PROFILE("Voorwerp"),
-    EVENT_PROFILE("Evenement"),
-    COURSE_PROFILE("Cursus / Opleiding"),
-    GENERIC_PROFILE("Algemeen");
+    PERSON_PROFILE("Person"),
+    ORGANISATION_PROFILE("Organisation"),
+    SERVICE_PROFILE("Service"),
+    DEVICE_PROFILE("Device"),
+    EVENT_PROFILE("Event"),
+    COURSE_PROFILE("Course"),
+    GENERIC_PROFILE("Generic");
 
     private String title;
     

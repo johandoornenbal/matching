@@ -22,7 +22,7 @@ public abstract class DemandProfileNumericAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ){
-        ProfileElementNumeric newNumeric = profileElementNumerics.newProfileElementNumeric(description, weight, numericValue, profileElementCategory, profileOwner, ownedBy);
+        ProfileElementNumeric newNumeric = profileElementNumerics.createProfileElementNumeric(description, weight, numericValue, profileElementCategory, profileOwner, ownedBy);
         return executionContext.add(this,newNumeric);
     }
     
