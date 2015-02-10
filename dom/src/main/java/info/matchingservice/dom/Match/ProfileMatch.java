@@ -29,6 +29,7 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Optionality;
@@ -36,6 +37,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
 /**
@@ -154,12 +156,13 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     
     //Region>Actions
     
-    public ProfileMatch ChangeStatus(final CandidateStatus status) {
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public ProfileMatch updateCandidateStatus(final CandidateStatus status) {
         setCandidateStatus(status);
         return this;
     }
     
-    public CandidateStatus default0ChangeStatus(final CandidateStatus status){
+    public CandidateStatus default0UpdateCandidateStatus(final CandidateStatus status){
         return getCandidateStatus();
     }
     

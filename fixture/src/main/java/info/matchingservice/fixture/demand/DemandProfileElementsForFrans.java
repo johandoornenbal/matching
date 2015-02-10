@@ -54,9 +54,6 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
 
     }
         
-
-    @Inject
-    private DropDownForProfileElements dropDownForProfileElements;
     
     @Inject
     private Persons persons;

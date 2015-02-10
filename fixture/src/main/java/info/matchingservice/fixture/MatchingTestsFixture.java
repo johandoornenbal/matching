@@ -86,7 +86,6 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new DemandProfileElementsForFrans(), executionContext);
         executeChild(new DemandProfileElementsForRembrandt(), executionContext);
         executeChild(new DemandProfileElementsForMichiel(), executionContext);
-        executeChild(new DemandProfileNumericsForFrans(), executionContext);
         executeChild(new SuppliesForGerard(), executionContext);
         executeChild(new SuppliesForFrans(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
@@ -102,8 +101,6 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new SupplyProfileElementsForGerard(), executionContext); 
         executeChild(new SupplyProfileElementsForMichiel(), executionContext); 
         executeChild(new SupplyProfileElementsForRembrandt(), executionContext); 
-        executeChild(new SupplyProfileNumericsForFrans(), executionContext);
-        executeChild(new SupplyProfileNumericsForAntoni(), executionContext);   
         executeChild(new OrganisationsForFrans(), executionContext);
         executeChild(new OrganisationsForMichel(), executionContext);
         executeChild(new AssessmentsForRembrandtFixture(), executionContext);

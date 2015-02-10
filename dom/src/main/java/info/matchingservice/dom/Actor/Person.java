@@ -202,21 +202,21 @@ public class Person extends Actor {
     //-- personalContacts --//
     
     //** personsReferringToActiveUser **//
-    @CollectionLayout(render=RenderType.EAGERLY)
-    public List<PersonalContact> getCollectPersonsReferringToActiveUser(){
-    	return pcontacts.allPersonalContactsReferringToUser(currentUserName());
-    }
-    
-    // business rule:
-    // show only on person object of Active User
-    public boolean hideCollectPersonsReferringToActiveUser(){
-    	if (getOwnedBy().equals(currentUserName())){
-    		return false;
-    	} else {
-    		return true;
-    	}
-    }
-    
+//    @CollectionLayout(render=RenderType.EAGERLY)
+//    public List<PersonalContact> getCollectPersonsReferringToActiveUser(){
+//    	return pcontacts.allPersonalContactsReferringToUser(currentUserName());
+//    }
+//    
+//    // business rule:
+//    // show only on person object of Active User
+//    public boolean hideCollectPersonsReferringToActiveUser(){
+//    	if (getOwnedBy().equals(currentUserName())){
+//    		return false;
+//    	} else {
+//    		return true;
+//    	}
+//    }
+    //-- personsReferringToActiveUser --//
 
     
     //** suppliesOfActor **//
@@ -257,6 +257,7 @@ public class Person extends Actor {
     		@ParameterLayout(named="dateOfBirth")
     		final LocalDate dateOfBirth,
     		@ParameterLayout(named="picture")
+    		@Parameter(optionality=Optionality.OPTIONAL)
     		final Blob picture
     		){
     	persons.updatePerson(this, firstName, middleName, lastName, dateOfBirth, picture);

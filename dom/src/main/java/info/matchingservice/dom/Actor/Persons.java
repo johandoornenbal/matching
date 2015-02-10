@@ -199,11 +199,13 @@ public class Persons extends MatchingDomainService<Person> {
     		final LocalDate dateOfBirth,
     		final Blob picture
     		){
-    	person.setFirstName(firstName);
+    	person.setFirstName(firstName);   	
     	person.setMiddleName(middleName);
     	person.setLastName(lastName);
     	person.setDateOfBirth(dateOfBirth);
-    	person.setPicture(picture);
+//    	if (picture != null){
+    		person.setPicture(picture);
+//    	}
     	persistIfNotAlready(person);
     	return person;
     }
