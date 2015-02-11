@@ -5,8 +5,8 @@ import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
-import info.matchingservice.fixture.demand.DemandsForMichiel;
-import info.matchingservice.fixture.supply.SuppliesForMichiel;
+import info.matchingservice.fixture.demand.TestDemands;
+import info.matchingservice.fixture.supply.TestSupplies;
 
 import javax.inject.Inject;
 
@@ -17,8 +17,8 @@ public class TagsForMichiel extends TagsAbstract {
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForMichiel(), executionContext);
-        executeChild(new SuppliesForMichiel(), executionContext);
+    	executeChild(new TestDemands(), executionContext);
+    	executeChild(new TestSupplies(), executionContext);
         executeChild(new DemandProfileElementsForMichiel(), executionContext);
         executeChild(new TagCategoriesFixture(), executionContext);
         

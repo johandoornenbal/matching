@@ -14,7 +14,7 @@ public class BrancheTagsForGerard extends TagsAbstract {
 		
 		//preqs
 		executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForGerard(), executionContext);
+        executeChild(new TestSupplies(), executionContext);
         executeChild(new SupplyProfileElementsForGerard(), executionContext);
 		executeChild(new TagCategoriesFixture(), executionContext);
 		

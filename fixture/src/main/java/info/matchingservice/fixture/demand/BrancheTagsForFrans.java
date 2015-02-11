@@ -14,7 +14,7 @@ public class BrancheTagsForFrans extends TagsAbstract {
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForFrans(), executionContext);
+        executeChild(new TestDemands(), executionContext);
         executeChild(new DemandProfileElementsForFrans(), executionContext);
         executeChild(new TagCategoriesFixture(), executionContext);
         

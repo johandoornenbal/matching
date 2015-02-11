@@ -13,7 +13,7 @@ public class SupplyProfileNumericsForAntoni extends SupplyProfileNumericAbstract
         
         //preqs
         executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForAntoni(), executionContext);
+        executeChild(new TestSupplies(), executionContext);
         
 //        createNumericElement(
 //                "Prijs (credits)",

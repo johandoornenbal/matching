@@ -2,7 +2,6 @@ package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Profile.ProfileType;
-
 import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
@@ -14,7 +13,7 @@ public class DemandProfilesForMichiel extends DemandProfileAbstract {
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForMichiel(), executionContext);
+    	executeChild(new TestDemands(), executionContext);
         
         createDemandProfile(
                 "Gezocht: wie maar wil",

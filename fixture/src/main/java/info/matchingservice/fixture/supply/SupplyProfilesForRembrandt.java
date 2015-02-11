@@ -13,7 +13,7 @@ public class SupplyProfilesForRembrandt extends SupplyProfileAbstract {
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForRembrandt(), executionContext);
+    	executeChild(new TestSupplies(), executionContext);
         
         createSupplyProfile(
                 "Mijn persoonlijke profiel",

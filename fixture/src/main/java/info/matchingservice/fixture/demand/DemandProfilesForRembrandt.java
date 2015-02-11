@@ -13,7 +13,7 @@ public class DemandProfilesForRembrandt extends DemandProfileAbstract {
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForRembrandt(), executionContext);
+    	executeChild(new TestDemands(), executionContext);
         
         createDemandProfile(
                 "Gezocht: commandant die wil poseren",

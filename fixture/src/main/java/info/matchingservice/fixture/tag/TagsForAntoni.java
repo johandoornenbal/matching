@@ -5,9 +5,8 @@ import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
-import info.matchingservice.fixture.demand.DemandsForFrans;
-import info.matchingservice.fixture.supply.SuppliesForAntoni;
-import info.matchingservice.fixture.supply.SuppliesForFrans;
+import info.matchingservice.fixture.demand.TestDemands;
+import info.matchingservice.fixture.supply.TestSupplies;
 import info.matchingservice.fixture.supply.SupplyProfileElementsForAntoni;
 
 import javax.inject.Inject;
@@ -19,7 +18,7 @@ public class TagsForAntoni extends TagsAbstract {
         
         //preqs
         executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForAntoni(), executionContext);
+        executeChild(new TestSupplies(), executionContext);
         executeChild(new SupplyProfileElementsForAntoni(), executionContext);
         executeChild(new TagCategoriesFixture(), executionContext);
         

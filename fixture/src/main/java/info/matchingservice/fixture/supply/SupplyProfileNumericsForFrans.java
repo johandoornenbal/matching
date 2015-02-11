@@ -13,7 +13,7 @@ public class SupplyProfileNumericsForFrans extends SupplyProfileNumericAbstract 
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForFrans(), executionContext);
+        executeChild(new TestSupplies(), executionContext);
         
 //        createNumericElement(
 //                "Prijs (credits)",

@@ -14,7 +14,7 @@ public class SupplyProfileElementsForAntoni extends SupplyProfileElementsAbstrac
         
         //preqs
         executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForAntoni(), executionContext);
+        executeChild(new TestSupplies(), executionContext);;
    
         
         createQualityTagsElement(

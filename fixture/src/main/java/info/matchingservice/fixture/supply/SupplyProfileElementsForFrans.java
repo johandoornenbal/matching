@@ -16,7 +16,7 @@ public class SupplyProfileElementsForFrans extends SupplyProfileElementsAbstract
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForFrans(), executionContext);
+        executeChild(new TestSupplies(), executionContext);
         
         createQualityTagsElement(
         		"QUALITY_TAGS_ELEMENT",

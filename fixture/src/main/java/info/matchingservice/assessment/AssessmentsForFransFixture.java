@@ -2,8 +2,7 @@ package info.matchingservice.assessment;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.fixture.demand.DemandsForFrans;
-import info.matchingservice.fixture.demand.DemandsForMichiel;
+import info.matchingservice.fixture.demand.TestDemands;
 
 import javax.inject.Inject;
 
@@ -13,8 +12,8 @@ public class AssessmentsForFransFixture extends AssessmentAbstract {
     protected void execute(ExecutionContext executionContext) {
         
       //preqs
-        executeChild(new DemandsForFrans(), executionContext);
-        executeChild(new DemandsForMichiel(), executionContext);
+        executeChild(new TestDemands(), executionContext);
+        executeChild(new TestDemands(), executionContext);
 
         Demand demandOfRembrandt;
         Demand demandOfMichiel;

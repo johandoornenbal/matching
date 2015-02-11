@@ -14,7 +14,7 @@ public class DemandProfileElementsForRembrandt extends DemandProfileElementsAbst
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForRembrandt(), executionContext);
+    	executeChild(new TestDemands(), executionContext);
 
         
         createQualityTagsElement(

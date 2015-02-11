@@ -14,7 +14,7 @@ public class SupplyProfileElementsForGerard extends SupplyProfileElementsAbstrac
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForGerard(), executionContext);
+    	executeChild(new TestSupplies(), executionContext);
         
 //        createDropDownElement(
 //                "Kwaliteit empatisch",

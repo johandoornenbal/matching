@@ -13,7 +13,7 @@ public class SupplyProfilesForFrans extends SupplyProfileAbstract {
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForFrans(), executionContext);
+        executeChild(new TestSupplies(), executionContext);
         
         createSupplyProfile(
                 "Mijn persoonlijke profiel",

@@ -14,7 +14,7 @@ public class SupplyProfileElementsForRembrandt extends SupplyProfileElementsAbst
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForRembrandt(), executionContext);
+    	executeChild(new TestSupplies(), executionContext);
 //        
 //        createDropDownElement(
 //                "Kwaliteit leidinggevend",

@@ -14,7 +14,7 @@ public class SupplyProfileElementsForMichiel extends SupplyProfileElementsAbstra
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new SuppliesForMichiel(), executionContext);
+    	executeChild(new TestSupplies(), executionContext);
         
 //        createDropDownElement(
 //                "Kwaliteit doortastend",

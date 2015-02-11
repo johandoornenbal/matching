@@ -17,7 +17,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForFrans(), executionContext);
+        executeChild(new TestDemands(), executionContext);
         
         
         createQualityTagsElement(

@@ -19,7 +19,7 @@ public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstra
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForMichiel(), executionContext);
+        executeChild(new TestDemands(), executionContext);
                 
         createQualityTagsElement(
         		"kwaliteit out of the box en dapper",

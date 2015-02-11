@@ -13,7 +13,7 @@ public class DemandProfilesForFrans extends DemandProfileAbstract {
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForFrans(), executionContext);
+        executeChild(new TestDemands(), executionContext);
         
         createDemandProfile(
                 "Gezocht: nieuwsgierige persoon",

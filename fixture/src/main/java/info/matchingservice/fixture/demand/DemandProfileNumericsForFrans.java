@@ -13,7 +13,7 @@ public class DemandProfileNumericsForFrans extends DemandProfileNumericAbstract 
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-        executeChild(new DemandsForFrans(), executionContext);
+        executeChild(new TestDemands(), executionContext);
         
         createNumericElement(
                 "Prijs (credits)",

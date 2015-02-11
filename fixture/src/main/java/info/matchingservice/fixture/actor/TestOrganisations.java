@@ -1,7 +1,7 @@
 package info.matchingservice.fixture.actor;
 
 
-public class OrganisationsForFrans extends OrganisationAbstract {
+public class TestOrganisations extends OrganisationAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -13,6 +13,11 @@ public class OrganisationsForFrans extends OrganisationAbstract {
         createOrganisation(
                 "Frans&Co2",
                 "frans",
+                executionContext);
+        
+        createOrganisation( 
+                "De Zilveren Vloot",
+                "michiel",
                 executionContext);
     }
     
