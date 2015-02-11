@@ -12,7 +12,7 @@ import info.matchingservice.fixture.supply.TestSupplyProfiles;
 
 import javax.inject.Inject;
 
-public class TagsForAntoni extends TagsAbstract {
+public class TagsForGerard extends TagsAbstract {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -26,33 +26,42 @@ public class TagsForAntoni extends TagsAbstract {
         executeChild(new TestSupplyProfileElementsPersonProfiles(), executionContext);
         executeChild(new TagCategoriesFixture(), executionContext);
         
-        createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),  
-                "onderzoekend", 
-                executionContext
-                );
+
+        //** supply **//
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),  
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
                 "nieuwsgierig", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),  
-                "nauwkeurig", 
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
+                "ondernemend", 
+                executionContext
+                );
+        
+        createQualityTagHolder(
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
+                "invoelend", 
+                executionContext
+                );
+        
+        createQualityTagHolder(
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
+                "meelevend", 
                 executionContext
                 );
         
         createBrancheTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0),  
-                "wetenschap", 
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
+                "kunst", 
                 executionContext
                 );
         
         createBrancheTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
-                "onderzoek", 
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
+                "schilderen", 
                 executionContext
                 );
     }

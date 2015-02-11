@@ -10,7 +10,7 @@ public abstract class TagsAbstract extends FixtureScript {
     @Override
     protected abstract void execute(ExecutionContext executionContext);
     
-    protected ProfileElement createBranchTagHolder(
+    protected ProfileElement createBrancheTagHolder(
             ProfileElement ownerElement,
             String tagProposal,
             ExecutionContext executionContext 

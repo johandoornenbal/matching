@@ -50,7 +50,7 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElementTag newElement = profileElementTags.createProfileElementTag("BRANCH_TAGS_ELEMENT", weight, ProfileElementType.BRANCHE_TAGS, profileOwner, ownedBy);
+        ProfileElementTag newElement = profileElementTags.createProfileElementTag("BRANCHE_TAGS_ELEMENT", weight, ProfileElementType.BRANCHE_TAGS, profileOwner, ownedBy);
         return executionContext.add(this,newElement);
     }
     

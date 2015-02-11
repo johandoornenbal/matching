@@ -56,10 +56,10 @@ import org.apache.isis.applib.annotation.Where;
                     + "FROM info.matchingservice.dom.Profile.ProfileElement "
                     + "WHERE profileElementOwner == :profileElementOwner"),
     @javax.jdo.annotations.Query(
-            name = "findProfileElementByOwnerProfileAndNature", language = "JDOQL",
+            name = "findProfileElementByOwnerProfileAndDescription", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.ProfileElement "
-                    + "WHERE profileElementOwner == :profileElementOwner && profileElementNature == :profileElementNature")
+                    + "WHERE profileElementOwner == :profileElementOwner && profileElementDescription.indexOf(:profileElementDescription) >= 0")
 })
 @DomainObject(editing=Editing.DISABLED)
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {

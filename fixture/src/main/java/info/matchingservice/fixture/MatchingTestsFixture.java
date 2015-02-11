@@ -12,15 +12,9 @@ import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
 import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.demand.TestDemands;
-import info.matchingservice.fixture.supply.SupplyProfileElementsForAntoni;
-import info.matchingservice.fixture.supply.SupplyProfileElementsForFrans;
-import info.matchingservice.fixture.supply.SupplyProfileElementsForGerard;
-import info.matchingservice.fixture.supply.SupplyProfileElementsForMichiel;
-import info.matchingservice.fixture.supply.SupplyProfileElementsForRembrandt;
+import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplies;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
-import info.matchingservice.fixture.tag.BrancheTagsForFrans;
-import info.matchingservice.fixture.tag.BrancheTagsForGerard;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
 import info.matchingservice.fixture.tag.TagsFixture;
 import info.matchingservice.fixture.tag.TagsForFrans;
@@ -50,11 +44,7 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new DemandProfileElementsForMichiel(), executionContext);
         executeChild(new TestSupplies(), executionContext);
         executeChild(new TestSupplyProfiles(), executionContext);
-        executeChild(new SupplyProfileElementsForFrans(), executionContext);
-        executeChild(new SupplyProfileElementsForAntoni(), executionContext);        
-        executeChild(new SupplyProfileElementsForGerard(), executionContext); 
-        executeChild(new SupplyProfileElementsForMichiel(), executionContext); 
-        executeChild(new SupplyProfileElementsForRembrandt(), executionContext); 
+        executeChild(new TestSupplyProfileElementsPersonProfiles(), executionContext);
         executeChild(new TestOrganisations(), executionContext);
         executeChild(new AssessmentsForRembrandtFixture(), executionContext);
         executeChild(new AssessmentsForFransFixture(), executionContext);
@@ -63,8 +53,7 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new TagsFixture(), executionContext);
         executeChild(new TagsForFrans(), executionContext);
         executeChild(new TagsForMichiel(), executionContext);
-        executeChild(new BrancheTagsForGerard(), executionContext);
-        executeChild(new BrancheTagsForFrans(), executionContext);
+
     }
 
 }

@@ -7,6 +7,8 @@ import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.fixture.actor.TestPersons;
+import info.matchingservice.fixture.supply.TestSupplies;
+import info.matchingservice.fixture.supply.TestSupplyProfiles;
 
 import javax.inject.Inject;
 
@@ -17,10 +19,19 @@ public class DemandProfileElementsForRembrandt extends DemandProfileElementsAbst
         
         //preqs
     	executeChild(new TestPersons(), executionContext);
-    	executeChild(new TestDemands(), executionContext);
+    	executeChild(new TestPersons(), executionContext);
+        executeChild(new TestDemands(), executionContext);
+        executeChild(new TestDemandProfiles(), executionContext);
 
         
         createQualityTagsElement(
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("commandant die wil poseren", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0),
+        		"rembrandt",
+        		executionContext
+        		);
+        
+        createPassionTagsElement(
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("commandant die wil poseren", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0),
         		"rembrandt",

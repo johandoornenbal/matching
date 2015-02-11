@@ -37,7 +37,7 @@ public class TestDemandProfiles extends DemandProfileAbstract {
                 );
         
         createDemandProfile(
-                "Gezocht: meelevende persooonlijkheden",
+                "Gezocht: meelevende persoonlijkheden",
                 10,
                 ProfileType.PERSON_PROFILE,
                 demands.findDemandByDescription("schilderproject", "frans").get(0),

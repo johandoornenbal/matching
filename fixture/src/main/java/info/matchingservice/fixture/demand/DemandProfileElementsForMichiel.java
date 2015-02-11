@@ -4,6 +4,8 @@ import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.fixture.actor.TestPersons;
+import info.matchingservice.fixture.supply.TestSupplies;
+import info.matchingservice.fixture.supply.TestSupplyProfiles;
 
 import javax.inject.Inject;
 
@@ -15,6 +17,7 @@ public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstra
         //preqs
     	executeChild(new TestPersons(), executionContext);
         executeChild(new TestDemands(), executionContext);
+        executeChild(new TestDemandProfiles(), executionContext);
                 
         createQualityTagsElement(
         		10,

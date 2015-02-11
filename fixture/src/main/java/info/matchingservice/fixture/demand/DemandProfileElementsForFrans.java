@@ -89,6 +89,13 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         		executionContext
         		);
         
+        createBrancheTagsElement( 
+                10, 
+                profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend persoon", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
+                "frans", 
+                executionContext
+                );
+        
 
     }
         

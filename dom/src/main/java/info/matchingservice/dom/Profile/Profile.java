@@ -51,6 +51,7 @@ import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
@@ -739,6 +740,13 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
 	//-- HELPERS: generic object helpers --//
 	//** HELPERS: programmatic actions **//
+    
+//    @Programmatic
+    // help for fixtures
+    public List<ProfileElement> findProfileElementByOwnerProfileAndDescription(final String profileElementDescription){
+    	return profileElements.findProfileElementByOwnerProfileAndDescription(profileElementDescription, this);
+    }
+    
 	//-- HELPERS: programmatic actions --// 
 	//-- HELPERS --//
     
@@ -770,6 +778,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Inject
     ProfileElementNumerics profileElementNumerics;
+    
+    @Inject
+    ProfileElements profileElements;
     
 	//-- INJECTIONS --//
     
