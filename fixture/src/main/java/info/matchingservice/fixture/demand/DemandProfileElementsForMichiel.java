@@ -2,10 +2,15 @@ package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Profile.DemandOrSupply;
+import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.fixture.actor.PersonForMichiel;
+import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
+import javax.jdo.listener.CreateLifecycleListener;
 
 public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstract {
 
@@ -13,13 +18,37 @@ public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstra
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForMichiel(), executionContext);
+    	executeChild(new TestPersons(), executionContext);
         executeChild(new DemandsForMichiel(), executionContext);
                 
         createQualityTagsElement(
         		"kwaliteit out of the box en dapper",
         		10,
-        		persons.findPersons("Ruyter").get(0).getCollectDemands().last().getCollectDemandProfiles().first(),
+        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0),
+        		"michiel",
+        		executionContext
+        		);
+        
+        createPassionTagsElement(
+        		"gevraagd de volgende passies",
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0),
+        		"michiel",
+        		executionContext
+        		);
+        
+        createQualityTagsElement(
+        		"iemand met overwicht",
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("Commandant", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0),
+        		"michiel",
+        		executionContext
+        		);
+        
+        createQualityTagsElement(
+        		"hardloper",
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("Voetvolk", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0),
         		"michiel",
         		executionContext
         		);
@@ -31,6 +60,10 @@ public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstra
     
     @Inject
     private Persons persons;
+    
+    @Inject
+    Profiles profiles;
+    
     
     
 }

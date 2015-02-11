@@ -17,11 +17,11 @@ public abstract class PersonAbstract extends FixtureScript {
             String middleName,
             String lastName,
             LocalDate dateOfBirth,
-            String user,
             Blob picture,
+            String user,
             ExecutionContext executionContext
             ) {
-        Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, user, picture);
+        Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, user);
                        
         return executionContext.add(this, newPerson);
     }

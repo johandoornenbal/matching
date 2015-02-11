@@ -2,7 +2,7 @@ package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
-import info.matchingservice.fixture.actor.PersonForMichiel;
+import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
@@ -12,7 +12,7 @@ public class SuppliesForMichiel extends SupplyAbstract {
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForMichiel(), executionContext);
+    	executeChild(new TestPersons(), executionContext);
         
         createSupply(
                 "Persoonlijk profiel van Michiel",

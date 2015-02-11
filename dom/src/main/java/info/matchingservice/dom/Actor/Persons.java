@@ -70,7 +70,7 @@ public class Persons extends MatchingDomainService<Person> {
             @Parameter(optionality=Optionality.OPTIONAL)
             final Blob picture
             ) {
-        return createPerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture); // see region>helpers
+        return createPerson(firstName, middleName, lastName, dateOfBirth, picture, currentUserName()); // see region>helpers
     }
     
     public boolean hideCreatePerson() {
@@ -143,8 +143,8 @@ public class Persons extends MatchingDomainService<Person> {
             final String middleName,
             final String lastName,
             final LocalDate dateOfBirth,
-            final String userName,
-            final Blob picture) {
+            final Blob picture,
+            final String userName) {
         final Person person = newTransientInstance(Person.class);
         final UUID uuid=UUID.randomUUID();
         person.setUniqueItemId(uuid);

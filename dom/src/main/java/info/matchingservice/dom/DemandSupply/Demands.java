@@ -46,6 +46,14 @@ public class Demands extends MatchingDomainService<Demand> {
     public List<Demand> allDemands() {
         return allInstances();
     }
+    
+    @Programmatic
+    // for fixtures
+    public List<Demand> findDemandByDescription(String demandDescription, String ownedBy) {
+        return allMatches("findDemandByDescription",
+        		"demandDescription", demandDescription,
+        		"ownedBy", ownedBy);
+    }
 
     @Programmatic
     public Demand createDemand(

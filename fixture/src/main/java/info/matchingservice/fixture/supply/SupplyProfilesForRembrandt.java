@@ -2,7 +2,7 @@ package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.fixture.actor.PersonForRembrandt;
+import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
@@ -12,7 +12,7 @@ public class SupplyProfilesForRembrandt extends SupplyProfileAbstract {
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForRembrandt(), executionContext);
+    	executeChild(new TestPersons(), executionContext);
         executeChild(new SuppliesForRembrandt(), executionContext);
         
         createSupplyProfile(

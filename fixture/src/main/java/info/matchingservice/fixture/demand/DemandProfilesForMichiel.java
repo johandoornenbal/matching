@@ -2,7 +2,8 @@ package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.fixture.actor.PersonForMichiel;
+
+import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
@@ -12,11 +13,29 @@ public class DemandProfilesForMichiel extends DemandProfileAbstract {
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForMichiel(), executionContext);
+    	executeChild(new TestPersons(), executionContext);
         executeChild(new DemandsForMichiel(), executionContext);
         
         createDemandProfile(
                 "Gezocht: wie maar wil",
+                10,
+                ProfileType.PERSON_PROFILE,
+                persons.findPersons("Ruyter").get(0).getCollectDemands().first(),
+                "michiel",
+                executionContext
+                );
+        
+        createDemandProfile(
+                "Commandant",
+                10,
+                ProfileType.PERSON_PROFILE,
+                persons.findPersons("Ruyter").get(0).getCollectDemands().first(),
+                "michiel",
+                executionContext
+                );
+        
+        createDemandProfile(
+                "Voetvolk",
                 10,
                 ProfileType.PERSON_PROFILE,
                 persons.findPersons("Ruyter").get(0).getCollectDemands().first(),

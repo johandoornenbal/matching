@@ -37,7 +37,7 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElementTag newElement = profileElementTags.createProfileElementTag(description, weight, ProfileElementType.PASSION_TAGS, profileOwner, ownedBy);
+        ProfileElementTag newElement = profileElementTags.createProfileElementTag("PASSION_TAGS_ELEMENT", weight, ProfileElementType.PASSION_TAGS, profileOwner, ownedBy);
         return newElement;
     }
     
@@ -48,7 +48,7 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElementTag newElement = profileElementTags.createProfileElementTag(description, weight, ProfileElementType.BRANCHE_TAGS, profileOwner, ownedBy);
+        ProfileElementTag newElement = profileElementTags.createProfileElementTag("BRANCH_TAGS_ELEMENT", weight, ProfileElementType.BRANCHE_TAGS, profileOwner, ownedBy);
         return executionContext.add(this,newElement);
     }
     
@@ -59,7 +59,7 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElementTag newElement = profileElementTags.createProfileElementTag(description, weight, ProfileElementType.QUALITY_TAGS, profileOwner, ownedBy);
+        ProfileElementTag newElement = profileElementTags.createProfileElementTag("QUALITY_TAGS_ELEMENT", weight, ProfileElementType.QUALITY_TAGS, profileOwner, ownedBy);
         return executionContext.add(this,newElement);
     }
     

@@ -2,7 +2,7 @@ package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.fixture.actor.PersonForAntoni;
+import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
@@ -12,7 +12,7 @@ public class SupplyProfileNumericsForAntoni extends SupplyProfileNumericAbstract
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForAntoni(), executionContext);
+        executeChild(new TestPersons(), executionContext);
         executeChild(new SuppliesForAntoni(), executionContext);
         
 //        createNumericElement(

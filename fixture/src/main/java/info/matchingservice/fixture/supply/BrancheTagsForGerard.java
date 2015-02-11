@@ -1,7 +1,7 @@
 package info.matchingservice.fixture.supply;
 
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.fixture.actor.PersonForGerard;
+import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.tag.TagsAbstract;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
 
@@ -13,7 +13,7 @@ public class BrancheTagsForGerard extends TagsAbstract {
 	protected void execute(ExecutionContext executionContext) {
 		
 		//preqs
-		executeChild(new PersonForGerard(), executionContext);
+		executeChild(new TestPersons(), executionContext);
         executeChild(new SuppliesForGerard(), executionContext);
         executeChild(new SupplyProfileElementsForGerard(), executionContext);
 		executeChild(new TagCategoriesFixture(), executionContext);

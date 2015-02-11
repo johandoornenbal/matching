@@ -125,7 +125,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, OWNED_BY);
         }
         
         @Test
@@ -212,8 +212,8 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
-            p2=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, "different_owner", null);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, OWNED_BY);
+            p2=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, "different_owner");
             p3=persons.allPersons().get(0);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
@@ -248,7 +248,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, OWNED_BY);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
             p1.addRolePrincipal(OWNED_BY);
@@ -282,7 +282,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, OWNED_BY, null);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, OWNED_BY);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
             p1.addRolePrincipal(OWNED_BY);

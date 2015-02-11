@@ -69,6 +69,18 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
         return executionContext.add(this,newElement);
     }
     
+    protected ProfileElementText createLocation(
+            String description,
+            String textValue,
+            Integer weight,
+            Profile profileOwner,
+            String ownedBy,
+            ExecutionContext executionContext 
+    		){
+    	ProfileElementText newElement = profileElementTexts.createProfileElementText(description, weight, textValue, ProfileElementType.LOCATION, profileOwner, ownedBy);
+    	return executionContext.add(this,newElement);
+    }
+    
     
     //region > injected services
     @javax.inject.Inject
@@ -82,4 +94,5 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
     
     @Inject
     ProfileElementTags profileElementTags;
+
 }

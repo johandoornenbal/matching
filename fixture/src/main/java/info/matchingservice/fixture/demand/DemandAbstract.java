@@ -14,13 +14,15 @@ public abstract class DemandAbstract extends FixtureScript {
     
     protected Demand createDemand(
             String demandDescription,
+            String demandSummary,
+            String demandStory,
             Integer weight,
             DemandSupplyType demandSupplyType,
             Actor demandOwner,
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Demand newDemand = demands.createDemand(demandDescription, "", "", null, weight, demandSupplyType, demandOwner, ownedBy);
+        Demand newDemand = demands.createDemand(demandDescription, demandSummary, demandStory, null, weight, demandSupplyType, demandOwner, ownedBy);
         return executionContext.add(this,newDemand);
     }
     

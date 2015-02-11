@@ -70,7 +70,12 @@ import org.joda.time.LocalDate;
             name = "findDemandByOwnedByAndType", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Demand "
-                    + "WHERE ownedBy == :ownedBy && demandType == :demandType")                  
+                    + "WHERE ownedBy == :ownedBy && demandType == :demandType"),
+    @javax.jdo.annotations.Query(
+            name = "findDemandByDescription", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.DemandSupply.Demand "
+                    + "WHERE ownedBy == :ownedBy && demandDescription.indexOf(:demandDescription) >= 0")                    
 })
 @DomainObject(editing=Editing.DISABLED)
 public class Demand extends MatchingSecureMutableObject<Demand> {
@@ -122,8 +127,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     //** demandSummary **//
     private String demandSummary;
     
-    @javax.jdo.annotations.Column(allowsNull = "true")
+    @javax.jdo.annotations.Column(allowsNull = "true", length=1024)
     @PropertyLayout(multiLine=4)
+    @Property(maxLength=1024)
     public String getDemandSummary() {
 		return demandSummary;
 	}
@@ -136,8 +142,9 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 	//** demandStory **//
 	private String demandStory;
     
-	@javax.jdo.annotations.Column(allowsNull = "true")
+	@javax.jdo.annotations.Column(allowsNull = "true", length=2048)
     @PropertyLayout(multiLine=8)
+	@Property(maxLength=2048)
 	public String getDemandStory() {
 		return demandStory;
 	}

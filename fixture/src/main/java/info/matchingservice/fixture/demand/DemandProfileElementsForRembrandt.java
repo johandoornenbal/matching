@@ -3,7 +3,7 @@ package info.matchingservice.fixture.demand;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.fixture.actor.PersonForRembrandt;
+import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
@@ -13,7 +13,7 @@ public class DemandProfileElementsForRembrandt extends DemandProfileElementsAbst
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForRembrandt(), executionContext);
+    	executeChild(new TestPersons(), executionContext);
         executeChild(new DemandsForRembrandt(), executionContext);
 
         

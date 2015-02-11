@@ -69,6 +69,7 @@ public class Profiles extends MatchingDomainService<Profile> {
     }
     
     @Programmatic
+    // for fixtures
     public List<Profile> searchNameOfProfilesOfTypeByOwner(String profileName, DemandOrSupply demandOrSupply, ProfileType profileType, String ownedBy) {
         return allMatches("searchNameOfProfilesOfTypeByOwner",
         		"profileName", profileName,

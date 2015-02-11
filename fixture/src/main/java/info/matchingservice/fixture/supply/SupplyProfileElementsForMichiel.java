@@ -3,7 +3,7 @@ package info.matchingservice.fixture.supply;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.fixture.actor.PersonForMichiel;
+import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
@@ -13,7 +13,7 @@ public class SupplyProfileElementsForMichiel extends SupplyProfileElementsAbstra
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForMichiel(), executionContext);
+    	executeChild(new TestPersons(), executionContext);
         executeChild(new SuppliesForMichiel(), executionContext);
         
 //        createDropDownElement(
@@ -47,7 +47,7 @@ public class SupplyProfileElementsForMichiel extends SupplyProfileElementsAbstra
 //                );
         
         createQualityTagsElement(
-        		"Mijn kwaliteiten",
+        		"QUALITY_TAGS_ELEMENT",
         		10,
         		persons.findPersons("Ruyter").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first(),
                 "michiel",
@@ -55,13 +55,24 @@ public class SupplyProfileElementsForMichiel extends SupplyProfileElementsAbstra
         		);
         
         createPassion(
-                "Passie van Michiel", 
+                "PASSION_ELEMENT", 
                 10, 
-                "Ik ben gek op zeilschepen, wapens in het algemeen en kanonnen in het bijzonder. Strategie ontwikkeling staat centraal in mijn leven.", 
+                "Ik ben gek op zeilschepen, wapens in het algemeen en kanonnen in het bijzonder. "
+                + "Strategie ontwikkeling staat centraal in mijn leven. De kunst van de oorlog "
+                + "kruitdampen en strijdtonelen vullen mijn gedachten voortdurend.", 
                 ProfileElementType.PASSION, 
                 persons.findPersons("Ruyter").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first(), 
                 "michiel", 
                 executionContext);
+        
+        createLocation(
+        		"LOCATION_ELEMENT",
+        		"5674 FK",
+        		10,
+        		persons.findPersons("Ruyter").get(0).getCollectSupplies().last().getCollectSupplyProfiles().first(), 
+        		"michiel",
+        		executionContext
+        		);
     }
     
         

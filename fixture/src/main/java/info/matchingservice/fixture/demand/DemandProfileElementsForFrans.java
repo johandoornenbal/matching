@@ -2,8 +2,11 @@ package info.matchingservice.fixture.demand;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.fixture.actor.PersonForFrans;
+import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
@@ -13,14 +16,14 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForFrans(), executionContext);
+    	executeChild(new TestPersons(), executionContext);
         executeChild(new DemandsForFrans(), executionContext);
         
         
         createQualityTagsElement(
         		"kwaliteit oorlogszuchtig",
         		10,
-        		persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().last(),
+        		persons.findPersons("Hals").get(0).getCollectDemands().first().getCollectDemandProfiles().last(),
         		"frans",
         		executionContext
         		);
@@ -29,16 +32,24 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         createPassionTagsElement(
                 "Passie steekwoorden", 
                 10, 
-                persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().last(), 
+                persons.findPersons("Hals").get(0).getCollectDemands().first().getCollectDemandProfiles().last(), 
                 "frans", 
                 executionContext
                 );
         
         
         createQualityTagsElement(
-        		"kwaliteit nieuwsgierig",
+        		"kwaliteit onderzoekend",
         		10,
-        		persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().first(),
+        		profiles.searchNameOfProfilesOfTypeByOwner("nieuwsgierig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
+        		"frans",
+        		executionContext
+        		);
+        
+        createQualityTagsElement(
+        		"empathische kwaliteiten",
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
         		"frans",
         		executionContext
         		);
@@ -57,6 +68,8 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
     
     @Inject
     private Persons persons;
+    
+    @Inject Profiles profiles;
     
     
 }

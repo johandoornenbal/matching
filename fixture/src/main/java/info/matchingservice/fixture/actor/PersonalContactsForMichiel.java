@@ -12,9 +12,8 @@ public class PersonalContactsForMichiel extends PersonalContactAbstract {
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-        executeChild(new PersonForRembrandt(), executionContext);
-        executeChild(new PersonForFrans(), executionContext);
-        
+    	executeChild(new TestPersons(), executionContext);
+    	
         createPersonalContact(
                 persons.findPersons("Hals").get(0),
                 "michiel",

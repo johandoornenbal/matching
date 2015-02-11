@@ -25,6 +25,7 @@ import info.matchingservice.dom.MatchingDomainService;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.Programmatic;
 
 @DomainService(repositoryFor = ProfileElementText.class)
@@ -60,6 +61,7 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
     public ProfileElementText createProfileElementText(
             final String description,
             final Integer weight,
+            @Parameter(maxLength=2048)
             final String textValue,
             final ProfileElementType profileElementCategory,
             final Profile profileOwner,
@@ -67,11 +69,15 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
             ){
         final ProfileElementText newProfileElement = newTransientInstance(ProfileElementText.class);
         final UUID uuid=UUID.randomUUID();
+        Integer textLength = 20;
         newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setTextValue(textValue);
-        newProfileElement.setDisplayValue(textValue);
+        if (textValue.length() < textLength){
+        	textLength = textValue.length();
+        }
+        newProfileElement.setDisplayValue(textValue.substring(0, textLength-1));
         newProfileElement.setProfileElementType(profileElementCategory);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(ownedBy);
