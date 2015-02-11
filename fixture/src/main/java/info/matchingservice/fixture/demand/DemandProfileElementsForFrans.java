@@ -18,28 +18,26 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         //preqs
     	executeChild(new TestPersons(), executionContext);
         executeChild(new TestDemands(), executionContext);
+        executeChild(new TestDemandProfiles(), executionContext);
         
-        
+        //** op eerste demand **//
         createQualityTagsElement(
-        		"kwaliteit oorlogszuchtig",
         		10,
-        		persons.findPersons("Hals").get(0).getCollectDemands().first().getCollectDemandProfiles().last(),
+        		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtige", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
         		"frans",
         		executionContext
         		);
         
         
-        createPassionTagsElement(
-                "Passie steekwoorden", 
+        createPassionTagsElement( 
                 10, 
-                persons.findPersons("Hals").get(0).getCollectDemands().first().getCollectDemandProfiles().last(), 
+                profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtige", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
                 "frans", 
                 executionContext
                 );
         
         
         createQualityTagsElement(
-        		"kwaliteit onderzoekend",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("nieuwsgierig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
         		"frans",
@@ -47,7 +45,6 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         		);
         
         createQualityTagsElement(
-        		"empathische kwaliteiten",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
         		"frans",
@@ -55,19 +52,46 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         		);
         
         createBrancheTagsElement(
-                "Branche steekwoorden", 
                 10, 
-                persons.findPersons("Hals").get(0).getCollectDemands().last().getCollectDemandProfiles().first(), 
+                profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
                 "frans", 
                 executionContext
                 );
         
+        //** op tweede demand **//
+        
+        createPassionTagsElement( 
+                10, 
+                profiles.searchNameOfProfilesOfTypeByOwner("iemand die in is voor aktie", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
+                "frans", 
+                executionContext
+                );
+        
+        createQualityTagsElement(
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("iemand die in is voor aktie", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
+        		"frans",
+        		executionContext
+        		);
+        
+        //** op derde demand **//
+        createPassionTagsElement( 
+                10, 
+                profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend persoon", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
+                "frans", 
+                executionContext
+                );
+        
+        createQualityTagsElement(
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend persoon", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
+        		"frans",
+        		executionContext
+        		);
+        
 
     }
         
-    
-    @Inject
-    private Persons persons;
     
     @Inject Profiles profiles;
     

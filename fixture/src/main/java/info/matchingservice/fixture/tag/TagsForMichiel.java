@@ -24,18 +24,18 @@ public class TagsForMichiel extends TagsAbstract {
         
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("huurling", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
                 "dapper", 
                 executionContext
                 );
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("huurling", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(), 
                 "out of the box", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("wie maar wil", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(),
+        		profiles.searchNameOfProfilesOfTypeByOwner("huurling", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).getCollectProfileElements().first(),
                 "bloeddorstig", 
                 executionContext
                 );

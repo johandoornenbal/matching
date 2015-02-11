@@ -1,9 +1,13 @@
 package info.matchingservice.fixture.demand;
 
+import javax.inject.Inject;
+
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementTags;
+import info.matchingservice.dom.Profile.ProfileElementText;
+import info.matchingservice.dom.Profile.ProfileElementTexts;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementDropDowns;
@@ -31,7 +35,6 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     }
     
     protected ProfileElementTag createPassionTagsElement(
-            String description,
             Integer weight,
             Profile profileOwner,
             String ownedBy,
@@ -42,7 +45,6 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     }
     
     protected ProfileElementTag createBrancheTagsElement(
-            String description,
             Integer weight,
             Profile profileOwner,
             String ownedBy,
@@ -53,7 +55,6 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     }
     
     protected ProfileElementTag createQualityTagsElement(
-            String description,
             Integer weight,
             Profile profileOwner,
             String ownedBy,
@@ -61,6 +62,17 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
             ){
         ProfileElementTag newElement = profileElementTags.createProfileElementTag("QUALITY_TAGS_ELEMENT", weight, ProfileElementType.QUALITY_TAGS, profileOwner, ownedBy);
         return executionContext.add(this,newElement);
+    }
+    
+    protected ProfileElementText createLocation(
+            String textValue,
+            Integer weight,
+            Profile profileOwner,
+            String ownedBy,
+            ExecutionContext executionContext 
+    		){
+    	ProfileElementText newElement = profileElementTexts.createProfileElementText("LOCATION_ELEMENT", weight, textValue, ProfileElementType.LOCATION, profileOwner, ownedBy);
+    	return executionContext.add(this,newElement);
     }
     
     //region > injected services
@@ -72,4 +84,7 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     
     @javax.inject.Inject
     ProfileElementTags profileElementTags;
+    
+    @Inject
+    ProfileElementTexts profileElementTexts;
 }

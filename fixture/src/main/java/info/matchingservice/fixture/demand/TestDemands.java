@@ -17,7 +17,7 @@ public class TestDemands extends DemandAbstract {
     	//** frans **//
         
         createDemand(
-                "1 Mensen gezocht voor schilder project",
+                "1 Mensen gezocht voor schilderproject",
                 "Het gaat om een groot project waarin ik een veldslag hoop te vast te leggen voor het nageslacht.",
                 "Het gaat om een groot project waarin ik een veldslag hoop te vast te leggen voor het nageslacht."
                 + " Ik hoop een gedeelte daarvan op zee te laten afspelen op de achtergrond van het doek. Veel figuranten "

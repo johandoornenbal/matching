@@ -89,25 +89,25 @@ public class TagsForFrans extends TagsAbstract {
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().last(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_SUPPLY_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().last(), 
                 "ijverig", 
                 executionContext
                 );
         
         createQualityTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().last(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_SUPPLY_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().last(), 
                 "out of the box", 
                 executionContext
                 );
         
         createBranchTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_SUPPLY_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().first(), 
                 "schilderkunst", 
                 executionContext
                 );
         
         createBranchTagHolder(
-        		profiles.searchNameOfProfilesOfTypeByOwner("persoonlijk", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().first(), 
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_SUPPLY_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).getCollectProfileElements().first(), 
                 "schilderen", 
                 executionContext
                 );

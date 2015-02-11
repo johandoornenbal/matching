@@ -76,7 +76,12 @@ import org.joda.time.LocalDate;
             name = "findSupplyByActorOwnerAndType", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Supply "
-                    + "WHERE supplyOwner == :supplyOwner && supplyType == :supplyType")                            
+                    + "WHERE supplyOwner == :supplyOwner && supplyType == :supplyType"),
+    @javax.jdo.annotations.Query(
+            name = "findSupplyByDescription", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.DemandSupply.Supply "
+                    + "WHERE ownedBy == :ownedBy && supplyDescription.indexOf(:supplyDescription) >= 0")                    
 })
 @DomainObject(editing=Editing.DISABLED)
 public class Supply extends MatchingSecureMutableObject<Supply> {

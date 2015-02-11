@@ -45,6 +45,14 @@ public class Supplies extends MatchingDomainService<Supply> {
     public List<Supply> allSupplies() {
         return allInstances();
     }
+    
+    @Programmatic
+    // for fixtures
+    public List<Supply> findSupplyByDescription(String supplyDescription, String ownedBy) {
+        return allMatches("findSupplyByDescription",
+        		"supplyDescription", supplyDescription,
+        		"ownedBy", ownedBy);
+    }
 
     @Programmatic
     public Supply createSupply(

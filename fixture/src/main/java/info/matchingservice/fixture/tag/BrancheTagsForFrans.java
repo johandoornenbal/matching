@@ -1,9 +1,9 @@
-package info.matchingservice.fixture.demand;
+package info.matchingservice.fixture.tag;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.fixture.actor.TestPersons;
-import info.matchingservice.fixture.tag.TagCategoriesFixture;
-import info.matchingservice.fixture.tag.TagsAbstract;
+import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
+import info.matchingservice.fixture.demand.TestDemands;
 
 import javax.inject.Inject;
 

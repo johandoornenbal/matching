@@ -58,7 +58,7 @@ public class TestSupplies extends SupplyAbstract {
         
         //** antoni **//
         createSupply(
-                "Persoonlijk profiel van Antoni",
+                "PERSON_SUPPLY_OFi",
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Leeuw").get(0),

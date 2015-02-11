@@ -1,9 +1,9 @@
-package info.matchingservice.fixture.supply;
+package info.matchingservice.fixture.tag;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.fixture.actor.TestPersons;
-import info.matchingservice.fixture.tag.TagsAbstract;
-import info.matchingservice.fixture.tag.TagCategoriesFixture;
+import info.matchingservice.fixture.supply.SupplyProfileElementsForGerard;
+import info.matchingservice.fixture.supply.TestSupplies;
 
 import javax.inject.Inject;
 
