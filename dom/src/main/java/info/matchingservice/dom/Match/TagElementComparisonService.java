@@ -21,6 +21,7 @@ package info.matchingservice.dom.Match;
 
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementTag;
+import info.matchingservice.dom.Profile.ProfileElementTags;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Tags.Tag;
@@ -31,11 +32,16 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.isis.applib.AbstractService;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.NotContributed.As;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
@@ -58,16 +64,15 @@ import org.apache.isis.applib.annotation.SemanticsOf;
  * 
  * @version 0.1 04-02-2015
  */
-@DomainService
+@DomainService(nature=NatureOfService.DOMAIN)
 public class TagElementComparisonService extends AbstractService {
     // Thresholds
     final Integer MATCHING_ElEMENT_THRESHOLD = 20;
     
-    @NotInServiceMenu
-    @NotContributed(As.ACTION)
     @CollectionLayout(render=RenderType.EAGERLY)
     @Render(Type.EAGERLY) // because of bug @CollectionLayout
     @Action(semantics=SemanticsOf.SAFE)
+    @ActionLayout(contributed=Contributed.AS_NEITHER)
     // Notabene: element is the profileElement on the DEMAND profile
     public List<ElementComparison> showElementMatches(ProfileElementTag element){
         
@@ -84,8 +89,11 @@ public class TagElementComparisonService extends AbstractService {
             		e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  
             		(e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE || 
             		e.getProfileElementOwner().getProfileType() == ProfileType.ORGANISATION_PROFILE) && 
-            		(e.getProfileElementType() == ProfileElementType.BRANCHE_TAGS || 
-            		e.getProfileElementType() == ProfileElementType.QUALITY_TAGS)
+            		(
+            				e.getProfileElementType() == ProfileElementType.BRANCHE_TAGS 
+            				|| 
+            				e.getProfileElementType() == ProfileElementType.QUALITY_TAGS
+            		)
             		){
                 // uitsluiten van dezelfde owner
                 if (!e.getOwnedBy().equals(element.getOwnedBy())){
@@ -127,9 +135,9 @@ public class TagElementComparisonService extends AbstractService {
     
     // Hide the contributed List except on Profiles of type Demand_Person_Profile
     // Strictly this should be impossible by other business logic but we leave it here anyway
-    public boolean hideShowElementMatches(ProfileElementTag element){
-        return element.getProfileElementOwner().getDemandOrSupply() != DemandOrSupply.DEMAND;
-    }
+//    public boolean hideShowElementMatches(ProfileElementTag element){
+//        return element.getProfileElementOwner().getDemandOrSupply() != DemandOrSupply.DEMAND;
+//    }
     
     // Region>injections ////////////////////////////
     @javax.inject.Inject

@@ -85,7 +85,7 @@ public class ProfileMatchingService extends AbstractService {
     @Action(semantics=SemanticsOf.SAFE)
     @CollectionLayout(render=RenderType.EAGERLY)
     @Render(Type.EAGERLY) // because of bug @CollectionLayout
-    public List<ProfileComparison> showProfileMatches(Profile demandProfile) {
+    public List<ProfileComparison> collectProfileMatches(Profile demandProfile) {
         List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
         
         //***********INIT**************//
@@ -236,7 +236,7 @@ public class ProfileMatchingService extends AbstractService {
 	                		){
 	                    
 	                 // Get the matching profileElements in ElementComparison Object
-	                    List<ElementComparison> tempListOfElements = brancheElementMatches.showElementMatches((ProfileElementTag) demandProfileElement);
+	                    List<ElementComparison> tempListOfElements = tagElementMatches.showElementMatches((ProfileElementTag) demandProfileElement);
 	                    if (!tempListOfElements.isEmpty()){
 	                        for (ElementComparison e: tempListOfElements){
 	                            
@@ -315,7 +315,7 @@ public class ProfileMatchingService extends AbstractService {
     }
     
     // this one is meant for demand profiles only
-    public boolean hideShowProfileMatches(Profile demandProfile){
+    public boolean hideCollectProfileMatches(Profile demandProfile){
         return demandProfile.getDemandOrSupply() != DemandOrSupply.DEMAND;
     }
     
@@ -334,7 +334,7 @@ public class ProfileMatchingService extends AbstractService {
     PassionElementComparisonService passionElementMatches;
     
     @Inject
-    TagElementComparisonService brancheElementMatches;
+    TagElementComparisonService tagElementMatches;
     
     @Inject
     NumericElementComparisonService numericElementMatches;

@@ -6,32 +6,13 @@
         "Profiel": {
           "members": {
             "profileName": {
-            	"named" : {
-            		"value" : "Naam"
-            	},
             	"actions" : {
-            		"UpdateProfile" : {
-            			"named" : {
-            				"value" : "Bewerk naam"
-            			}
-            		}
+            		"UpdateProfile" : {}
             	}
             },
-            "actorOwner": {
-            	"named" : {
-            		"value" : "Profiel eigenaar"
-            	}
-            },
-            "supplyProfileOwner" : {
-            	"named" : {
-            		"value" : "Behorend bij aanbod"
-            	}
-            },
-            "demandProfileOwner" : {
-            	"named" : {
-            		"value" : "Behorend bij vraag"
-            	}
-            }            
+            "actorOwner": {},
+            "supplyProfileOwner" : {},
+            "demandProfileOwner" : {}            
           }
         }
       }
@@ -48,51 +29,17 @@
       "span": 8,
       "collections": {
         "collectProfileElements": {
-        	"named" : {
-        		"value" : "Profiel elementen"
-        	},
             "actions": {
-				"createQualityTagElement" : {
-					"named" : {
-						"value" : "Kwaliteiten"
-					}
-				},
-				"createPassion" : {
-					"named" : {
-						"value" : "Passie"
-					}
-				},
-				"createProfileElementPrice" : {
-					"named" : {
-						"value" : "Nieuwe prijs"
-					}
-				},
-				"createPassionTagElement" : {
-					"named" : {
-						"value" : "Passie steekwoorden"
-					}
-				},
-				"createBrancheTagElement" : {
-					"named" : {
-						"value" : "Branche"
-					}
-				},
-				"createLocation" : {
-					"named" : {
-						"value" : "Lokatie"
-					}
-				}
+				"createQualityTagElement" : {},
+				"createPassion" : {},
+				"createProfileElementPrice" : {},
+				"createPassionTagElement" : {},
+				"createBrancheTagElement" : {},
+				"createLocation" : {}
             }
         },
-        "collectProfileMatches" : {
-        	"named" : {
-        		"value" : "Gevonden overeenkomende profielen"
-        	}
-        },
+        "collectProfileMatches" : {},
         "collectAssessments": {
-        	"named" : {
-        		"value" : "Onvangen feedback"
-        	},
           	"actions": {
         	
           	}
@@ -101,15 +48,7 @@
     }
   ],
   "actions": {
-  		"deleteProfile" : {
-      		"named" : {
-      			"value" : "Verwijder profiel"
-      		}
-      	},
-  		"createProfileAssessment" : {
-      		"named" : {
-      			"value" : "Geef feedback"
-      		}
-      	}       	 
+  		"deleteProfile" : {},
+  		"createProfileAssessment" : {}       	 
   }
 }

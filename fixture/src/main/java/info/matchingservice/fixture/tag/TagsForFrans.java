@@ -94,6 +94,12 @@ public class TagsForFrans extends TagsAbstract {
                 executionContext
                 );
         
+        createBrancheTagHolder(
+        		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
+                "schilder", 
+                executionContext
+                );
+        
         //**demand 2 **//
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("iemand die in is voor aktie", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0), 

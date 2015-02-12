@@ -20,6 +20,8 @@ package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.MatchingDomainService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.isis.applib.DomainObjectContainer;
@@ -31,6 +33,17 @@ public class ProfileElementTags extends MatchingDomainService<ProfileElementTag>
     
     public ProfileElementTags() {
         super(ProfileElementTags.class, ProfileElementTag.class);
+    }
+    
+    @Programmatic
+    public List<ProfileElementTag> allElementsOnDemands(){
+    	List<ProfileElementTag> tempList = new ArrayList<ProfileElementTag>();;
+    	for (ProfileElementTag e : container.allInstances(ProfileElementTag.class)){
+    		if (e.getProfileElementOwner().getDemandOrSupply()==DemandOrSupply.DEMAND){
+    			tempList.add(e);
+    		}
+    	}
+    	return tempList;
     }
     
     @Programmatic

@@ -37,6 +37,7 @@ public class MatchingDemoFixture extends FixtureScript {
 //        executeChild(new TeardownFixture(), executionContext);
         
         // create
+    	executeChild(new TestConfig(), executionContext);
         executeChild(new ProfileElementDropDownsFixture(), executionContext);
         executeChild(new TestPersons(), executionContext);
         executeChild(new TestRoles(), executionContext);

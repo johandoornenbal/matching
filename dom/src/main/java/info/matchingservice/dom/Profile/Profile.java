@@ -741,7 +741,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 	//-- HELPERS: generic object helpers --//
 	//** HELPERS: programmatic actions **//
     
-//    @Programmatic
+    @Programmatic
     // help for fixtures
     public List<ProfileElement> findProfileElementByOwnerProfileAndDescription(final String profileElementDescription){
     	return profileElements.findProfileElementByOwnerProfileAndDescription(profileElementDescription, this);

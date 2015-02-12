@@ -17,8 +17,11 @@ import info.matchingservice.fixture.supply.TestSupplies;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
 import info.matchingservice.fixture.tag.TagsFixture;
+import info.matchingservice.fixture.tag.TagsForAntoni;
 import info.matchingservice.fixture.tag.TagsForFrans;
+import info.matchingservice.fixture.tag.TagsForGerard;
 import info.matchingservice.fixture.tag.TagsForMichiel;
+import info.matchingservice.fixture.tag.TagsForRembrandt;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -34,6 +37,7 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new TeardownFixture(), executionContext);
    
         // create
+    	executeChild(new TestConfig(), executionContext);
         executeChild(new ProfileElementDropDownsFixture(), executionContext);
         executeChild(new TestPersons(), executionContext);
         executeChild(new TestRoles(), executionContext);
@@ -52,7 +56,10 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new TagCategoriesFixture(), executionContext);
         executeChild(new TagsFixture(), executionContext);
         executeChild(new TagsForFrans(), executionContext);
+        executeChild(new TagsForGerard(), executionContext);
+        executeChild(new TagsForRembrandt(), executionContext);
         executeChild(new TagsForMichiel(), executionContext);
+        executeChild(new TagsForAntoni(), executionContext);
 
     }
 
