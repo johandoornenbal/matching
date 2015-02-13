@@ -18,7 +18,7 @@
  */
 package info.matchingservice.dom.Tags;
 
-import info.matchingservice.dom.MatchingDomainObject;
+import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.ProfileElement;
 
 import java.util.UUID;
@@ -35,7 +35,9 @@ import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -47,10 +49,25 @@ import org.apache.isis.applib.annotation.SemanticsOf;
                     + "WHERE ownerElement == :ownerElement && tag == :tag")                    
 })
 @DomainObject(editing=Editing.DISABLED)
-public class TagHolder extends MatchingDomainObject<TagHolder> {
+public class TagHolder extends MatchingSecureMutableObject<TagHolder> {
     
     public TagHolder() {
         super("ownerElement, tag, uniqueItemId");
+    }
+    
+    //** ownedBy - Override for secure object **//
+    private String ownedBy;
+    
+    @Override
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @PropertyLayout(hidden=Where.NOWHERE)
+    @Property(editing=Editing.DISABLED)
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
     }
     
     private UUID uniqueItemId;

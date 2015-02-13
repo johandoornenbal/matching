@@ -33,55 +33,64 @@ public class TagsForRembrandt extends TagsAbstract {
 
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("poseren", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
-                "leger", 
+                "leger",
+                "rembrandt",
                 executionContext
                 );
         
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("poseren", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0), 
-                "schilderkunst", 
+                "schilderkunst",
+                "rembrandt",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("poseren", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "sterk", 
+                "sterk",
+                "rembrandt",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("poseren", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "stoer", 
+                "stoer",
+                "rembrandt",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("poseren", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "gespierd", 
+                "gespierd",
+                "rembrandt",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("figurant", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "nieuwsgierig", 
+                "nieuwsgierig",
+                "rembrandt",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("figurant", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "stil", 
+                "stil",
+                "rembrandt",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("model1", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "slank", 
+                "slank",
+                "rembrandt",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("model2", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "dik", 
+                "dik",
+                "rembrandt",
                 executionContext
                 );
         
@@ -90,25 +99,29 @@ public class TagsForRembrandt extends TagsAbstract {
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "gevoelig", 
+                "gevoelig",
+                "rembrandt",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "precies", 
+                "precies",
+                "rembrandt",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
-                "schilderkunst", 
+                "schilderkunst",
+                "rembrandt",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
                 "schilderen", 
+                "rembrandt",
                 executionContext
                 );
     }

@@ -210,7 +210,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     @Override
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
-    @PropertyLayout(hidden=Where.EVERYWHERE)
+    @PropertyLayout(hidden=Where.NOWHERE)
     public String getOwnedBy() {
         return ownedBy;
     }

@@ -13,27 +13,30 @@ public abstract class TagsAbstract extends FixtureScript {
     protected ProfileElement createBrancheTagHolder(
             ProfileElement ownerElement,
             String tagProposal,
+            String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElement newHolder = tagHolders.newBrancheTagHolder(ownerElement, tagProposal);
+        ProfileElement newHolder = tagHolders.createTagHolder(ownerElement, tagProposal, "branche", ownedBy);
         return newHolder;
     }
     
     protected ProfileElement createPassionTagHolder(
             ProfileElement ownerElement,
             String tagProposal,
+            String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElement newHolder = tagHolders.createPassionTagHolder(ownerElement, tagProposal);
+        ProfileElement newHolder = tagHolders.createTagHolder(ownerElement, tagProposal, "passie", ownedBy);
         return newHolder;
     }
     
     protected ProfileElement createQualityTagHolder(
             ProfileElement ownerElement,
             String tagProposal,
+            String ownedBy,
             ExecutionContext executionContext 
             ){
-        ProfileElement newHolder = tagHolders.newQualityTagHolder(ownerElement, tagProposal);
+        ProfileElement newHolder = tagHolders.createTagHolder(ownerElement, tagProposal, "kwaliteit", ownedBy);
         return newHolder;
     }
     

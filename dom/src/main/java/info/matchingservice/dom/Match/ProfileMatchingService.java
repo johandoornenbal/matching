@@ -75,7 +75,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
  */
 @DomainService
 public class ProfileMatchingService extends AbstractService {
-    
+	
     // Thresholds
     final Integer MATCHING_PROFILE_THRESHOLD = 30;
 

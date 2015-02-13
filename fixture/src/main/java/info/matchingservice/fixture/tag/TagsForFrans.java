@@ -31,128 +31,149 @@ public class TagsForFrans extends TagsAbstract {
         //** demand 1 **//
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0), 
-                "zeilschepen", 
+                "zeilschepen",
+                "frans",
                 executionContext
                 );
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0), 
-                "schilderen", 
+                "schilderen",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "oorlogszuchtig", 
+                "oorlogszuchtig",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
                 "dapper", 
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "stoer", 
+                "stoer",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "gespierd", 
+                "gespierd",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("nieuwsgierig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "nieuwsgierig", 
+                "nieuwsgierig",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("nieuwsgierig", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
                 "onderzoekend", 
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "invoelend", 
+                "invoelend",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "meelevend", 
+                "meelevend",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
                 "empatisch", 
+                "frans",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
-                "schilder", 
+                "schilder",
+                "frans",
                 executionContext
                 );
         
         //**demand 2 **//
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("iemand die in is voor aktie", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0), 
-                "aktie", 
+                "aktie",
+                "frans",
                 executionContext
                 );
         
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("iemand die in is voor aktie", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0), 
-                "buitensport", 
+                "buitensport",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("iemand die in is voor aktie", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "energiek", 
+                "energiek",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("iemand die in is voor aktie", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "ondernemend", 
+                "ondernemend",
+                "frans",
                 executionContext
                 );
         
         //**demand 3 **//
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend persoon", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0), 
-                "onderzoek", 
+                "onderzoek",
+                "frans",
                 executionContext
                 );
         
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend persoon", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0), 
-                "wetenschap", 
+                "wetenschap",
+                "frans",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("BRANCH").get(0), 
-                "wetenschap", 
+                "wetenschap",
+                "frans",
                 executionContext
                 ); 
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend persoon", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "nauwkeurig", 
+                "nauwkeurig",
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend persoon", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "nieuwsgierig", 
+                "nieuwsgierig",
+                "frans",
                 executionContext
                 );
         
@@ -161,24 +182,28 @@ public class TagsForFrans extends TagsAbstract {
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
                 "ijverig", 
+                "frans",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "out of the box", 
+                "out of the box",
+                "frans",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
                 "schilderkunst", 
+                "frans",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
                 "schilderen", 
+                "frans",
                 executionContext
                 );
     }

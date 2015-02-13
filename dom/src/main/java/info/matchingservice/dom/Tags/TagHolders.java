@@ -21,24 +21,19 @@ package info.matchingservice.dom.Tags;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElementType;
 
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.SemanticsOf;
 import org.joda.time.LocalDate;
 
-@DomainService(repositoryFor = TagHolder.class)
+@DomainService(repositoryFor = TagHolder.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
         named="Beheer",
         menuBar = DomainServiceLayout.MenuBar.PRIMARY,
@@ -46,222 +41,25 @@ import org.joda.time.LocalDate;
 )
 public class TagHolders extends MatchingDomainService<TagHolder> {
     
+
+        
+	//** API: PROPERTIES **//
+	//-- API: PROPERTIES --//
+	//** API: COLLECTIONS **//
+	//-- API: COLLECTIONS --//
+	//** API: ACTIONS **//
+	//-- API: ACTIONS --//
+	//** GENERIC OBJECT STUFF **//
+	//** constructor **//
     public TagHolders(){
         super(TagHolders.class, TagHolder.class);
     }
-    
-    //************PASSION TAGS************************//
-    
-    //BUSINESSRULES:
-    // only on profile element with ProfileElementType = PASSION_TAGS
-    // just one word ...
-    // every tag choice at most once (no doubles)    
-    @NotInServiceMenu
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public ProfileElement createPassionTagHolder(
-            @ParameterLayout(
-                    named = "ownerElement")
-            final ProfileElement ownerElement,
-            @ParameterLayout(
-                  named = "tagProposalWord")
-            @Parameter(regexPattern="^\\S+$")
-    		final String tagProposalWord
-    		){
-    	Tag newTag;
-    	TagCategory tagCat = tagCategories.findTagCategoryMatches("passie").get(0);
-    	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).isEmpty()){
-    		//make a new tag
-    		newTag = tags.createTag(tagProposalWord, tagCat);
-    	} else {
-    		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).get(0);
-    	}
-    	
-        final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
-        final UUID uuid=UUID.randomUUID();
-        // administration of tag usage
-        newTag.setDateLastUsed(LocalDate.now());
-        if (newTag.getNumberOfTimesUsed()==null){
-        	newTag.setNumberOfTimesUsed(1);
-        }
-        else
-        {
-        	newTag.setNumberOfTimesUsed(newTag.getNumberOfTimesUsed()+1);
-        }
-        // END administration of tag usage
-        newTagHolder.setUniqueItemId(uuid);
-        newTagHolder.setOwnerElement(ownerElement);
-        newTagHolder.setTag(newTag);
-        persist(newTagHolder);
-    	
-    	return ownerElement;
-    }
-    
-    public boolean hideCreatePassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
-        // catch null value
-    	if (ownerElement == null){
-    		return true;
-    	}
-    	// only on profile element with ProfileElementType = PASSION_TAGS
-        if (ownerElement.getProfileElementType() == ProfileElementType.PASSION_TAGS){
-            return false;
-        }
-        
-        return true;
-    }
-    
-    public String validateCreatePassionTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
-        // only on profile element with ProfileElementType = PASSION_TAGS
-        if (ownerElement.getProfileElementType() == ProfileElementType.PASSION_TAGS){
-            return null;
-        }
-        
-        // every tag choice at most once (no doubles)
-        //TODO: Nog maken
-        
-        return "ONLY_ON_PASSION_TAGS_PROFILE_ELEMENT";
-    }
-    
-    //************BRANCHE TAGS************************//
-    
-    //BUSINESSRULES:
-    // only on profile element with ProfileElementType = BRANCHE_TAGS
-    // just one word ...
-    // every tag choice at most once (no doubles)    
-    @NotInServiceMenu
-    public ProfileElement newBrancheTagHolder(
-            @ParameterLayout(
-                    named = "ownerElement")
-            final ProfileElement ownerElement,
-            @ParameterLayout(
-                  named = "tagProposalWord")
-            @Parameter(regexPattern="^\\S+$")
-    		final String tagProposalWord
-    		){
-    	Tag newTag;
-    	TagCategory tagCat = tagCategories.findTagCategoryMatches("branche").get(0);
-    	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).isEmpty()){
-    		//make a new tag
-    		newTag = tags.createTag(tagProposalWord, tagCat);
-    	} else {
-    		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).get(0);
-    	}
-    	
-        final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
-        final UUID uuid=UUID.randomUUID();
-        // administration of tag usage
-        newTag.setDateLastUsed(LocalDate.now());
-        if (newTag.getNumberOfTimesUsed()==null){
-        	newTag.setNumberOfTimesUsed(1);
-        }
-        else
-        {
-        	newTag.setNumberOfTimesUsed(newTag.getNumberOfTimesUsed()+1);
-        }
-        // END administration of tag usage
-        newTagHolder.setUniqueItemId(uuid);
-        newTagHolder.setOwnerElement(ownerElement);
-        newTagHolder.setTag(newTag);
-        persist(newTagHolder);
-    	
-    	return ownerElement;
-    }
-    
-    public boolean hideNewBrancheTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
-        // catch null value
-    	if (ownerElement == null){
-    		return true;
-    	}
-    	// only on profile element with ProfileElementType = BRANCHE_TAGS
-        if (ownerElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS){
-            return false;
-        }
-        
-        return true;
-    }
-    
-    public String validateNewBrancheTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
-        // only on profile element with ProfileElementType = BRANCHE_TAGS
-        if (ownerElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS){
-            return null;
-        }
-        
-        // every tag choice at most once (no doubles)
-        //TODO: Nog maken
-        
-        return "Alleen op een Profiel Element van type 'Branche_tags'";
-    }
-    
-    //END ************BRANCHE TAGS************************//
-    
-    //************QUALITY TAGS************************//
-    
-    //BUSINESSRULES:
-    // only on profile element with ProfileElementType = QUALITY_TAGS
-    // every tag choice at most once (no doubles)    TODO: nog maken voor tags in algemeenheid
-    @NotInServiceMenu
-    public ProfileElement newQualityTagHolder(
-            @ParameterLayout(
-                    named = "ownerElement")
-            final ProfileElement ownerElement,
-            @ParameterLayout(
-                  named = "tagProposalWord")
-    		final String tagProposalWord
-    		){
-    	Tag newTag;
-    	TagCategory tagCat = tagCategories.findTagCategoryMatches("kwaliteit").get(0);
-    	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).isEmpty()){
-    		//make a new tag
-    		newTag = tags.createTag(tagProposalWord, tagCat);
-    	} else {
-    		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), tagCat).get(0);
-    	}
-    	
-        final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
-        final UUID uuid=UUID.randomUUID();
-        // administration of tag usage
-        newTag.setDateLastUsed(LocalDate.now());
-        if (newTag.getNumberOfTimesUsed()==null){
-        	newTag.setNumberOfTimesUsed(1);
-        }
-        else
-        {
-        	newTag.setNumberOfTimesUsed(newTag.getNumberOfTimesUsed()+1);
-        }
-        // END administration of tag usage
-        newTagHolder.setUniqueItemId(uuid);
-        newTagHolder.setOwnerElement(ownerElement);
-        newTagHolder.setTag(newTag);
-        persist(newTagHolder);
-    	
-    	return ownerElement;
-    }
-    
-    public boolean hideNewQualityTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
-        // catch null value
-    	if (ownerElement == null){
-    		return true;
-    	}
-    	// only on profile element with ProfileElementType = QUALITY_TAGS
-        if (ownerElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS){
-            return false;
-        }
-        
-        return true;
-    }
-    
-    public String validateNewQualityTagHolder(final ProfileElement ownerElement,final String tagProposalWord){
-        // only on profile element with ProfileElementType = QUALITY_TAGS
-        if (ownerElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS){
-            return null;
-        }
-        
-        // every tag choice at most once (no doubles)
-        //TODO: Nog maken
-        
-        return "Alleen op een Profiel Element van type 'QUALITY_TAGS'";
-    }
-    
-    //END ************QUALITY TAGS************************//
+	//** ownedBy - Override for secure object **//
+	//-- GENERIC OBJECT STUFF --//
+	//** HELPERS **//
+    //** HELPERS: generic service helpers **//   
+	//-- HELPERS: generic service helpers --//
+	//** HELPERS: programmatic actions **//
     
     @Programmatic
     public List<TagHolder> findTagHolder(final ProfileElement ownerElement, final Tag tag){
@@ -269,7 +67,68 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     }
     
     
-     
+    /**
+     * This functions returns a tagHolder on a ProfileElement (actually a ProfileTagElement).
+     * It checks if the tagCategory and the Tag already exists by testing on the tag(Category)Description.
+     * If the tagCategory or Tag does not exist it will be created.
+     * NOTE: make sure to test tagCategory in order not to accidentally create tagCategories!!
+     * 
+     * @param ownerElement
+     * @param tagProposalWord
+     * @param tagCategoryDescription
+     * @param ownedBy
+     * @return
+     */
+    @Programmatic
+    public ProfileElement createTagHolder(
+            final ProfileElement ownerElement,
+    		final String tagProposalWord,
+    		final String tagCategoryDescription,
+    		final String ownedBy
+    		){
+    	Tag newTag;
+    	TagCategory newTagCategory;
+    	if (tagCategories.findTagCategoryMatches(tagCategoryDescription).isEmpty()){
+    		//create new tagCategory
+    		newTagCategory = tagCategories.createTagCategory(tagCategoryDescription);
+    	}
+    	else
+    	{
+    		newTagCategory = tagCategories.findTagCategoryMatches(tagCategoryDescription).get(0);
+    	}
+    	if (tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), newTagCategory).isEmpty()){
+    		//make a new tag
+    		newTag = tags.createTag(tagProposalWord, newTagCategory);
+    	} else {
+    		newTag = tags.findTagAndCategoryMatches(tagProposalWord.toLowerCase(), newTagCategory).get(0);
+    	}
+    	
+        final TagHolder newTagHolder = newTransientInstance(TagHolder.class);
+        final UUID uuid=UUID.randomUUID();
+        // administration of tag usage
+        newTag.setDateLastUsed(LocalDate.now());
+        if (newTag.getNumberOfTimesUsed()==null){
+        	newTag.setNumberOfTimesUsed(1);
+        }
+        else
+        {
+        	newTag.setNumberOfTimesUsed(newTag.getNumberOfTimesUsed()+1);
+        }
+        // END administration of tag usage
+        newTagHolder.setUniqueItemId(uuid);
+        newTagHolder.setOwnerElement(ownerElement);
+        newTagHolder.setTag(newTag);
+        newTagHolder.setOwnedBy(ownedBy);
+        persist(newTagHolder);
+    	
+    	return ownerElement;
+    }   
+    
+	//-- HELPERS: programmatic actions --// 
+	//-- HELPERS --//
+    
+	//** INJECTIONS **//
+    
     @Inject
     Tags tags;
     
@@ -278,5 +137,12 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     
     @Inject
     TagHolders tagHolders;
+    
+	//-- INJECTIONS --//
+    
+	//** HIDDEN: PROPERTIES **//
+	//-- HIDDEN: PROPERTIES --//
+	//** HIDDEN: ACTIONS **//
+	//-- HIDDEN: ACTIONS --//
 
 }

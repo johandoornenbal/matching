@@ -29,30 +29,35 @@ public class TagsForAntoni extends TagsAbstract {
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),  
                 "onderzoekend", 
+                "antoni",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),  
-                "nieuwsgierig", 
+                "nieuwsgierig",
+                "antoni",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),  
                 "nauwkeurig", 
+                "antoni",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0),  
-                "wetenschap", 
+                "wetenschap",
+                "antoni",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
                 "onderzoek", 
+                "antoni",
                 executionContext
                 );
     }

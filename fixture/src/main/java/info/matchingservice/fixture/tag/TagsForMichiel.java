@@ -32,47 +32,55 @@ public class TagsForMichiel extends TagsAbstract {
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("huurling", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),  
                 "dapper", 
+                "michiel",
                 executionContext
                 );
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("huurling", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
                 "out of the box", 
+                "michiel",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("huurling", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),
                 "bloeddorstig", 
+                "michiel",
                 executionContext
                 );
         
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("huurling", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0),
-                "oorlog", 
+                "oorlog",
+                "michiel",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("Commandant", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "out of the box", 
+                "out of the box",
+                "michiel",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("Commandant", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),
                 "strategisch", 
+                "michiel",
                 executionContext
                 );
         
         createPassionTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("Commandant", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("PASSION").get(0),
                 "spectakel", 
+                "michiel",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("infanterist", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),
-                "doorzetter", 
+                "doorzetter",
+                "michiel",
                 executionContext
                 );
         
@@ -82,43 +90,50 @@ public class TagsForMichiel extends TagsAbstract {
         //** supply **//
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),
-                "doortastend", 
+                "doortastend",
+                "michiel",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),
-                "leidinggevend", 
+                "leidinggevend",
+                "michiel",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),
-                "oorlogszuchtig", 
+                "oorlogszuchtig",
+                "michiel",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),
                 "sterk", 
+                "michiel",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0),
                 "gespierd", 
+                "michiel",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0),
                 "leger", 
+                "michiel",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0),
-                "politiek", 
+                "politiek",
+                "michiel",
                 executionContext
                 );
     }

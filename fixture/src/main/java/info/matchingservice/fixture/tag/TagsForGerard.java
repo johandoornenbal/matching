@@ -32,36 +32,42 @@ public class TagsForGerard extends TagsAbstract {
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
                 "nieuwsgierig", 
+                "gerard",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "ondernemend", 
+                "ondernemend",
+                "gerard",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
                 "invoelend", 
+                "gerard",
                 executionContext
                 );
         
         createQualityTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("QUALITY").get(0), 
-                "meelevend", 
+                "meelevend",
+                "gerard",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
                 "kunst", 
+                "gerard",
                 executionContext
                 );
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
-                "schilderen", 
+                "schilder", 
+                "gerard",
                 executionContext
                 );
     }
