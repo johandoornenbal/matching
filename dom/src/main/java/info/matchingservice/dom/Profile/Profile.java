@@ -310,6 +310,10 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     	return profileMatchingService.collectProfileComparisons(this);
     }
     
+    public boolean hideActionCollectProfileComparisons(){
+    	return this.getDemandOrSupply() != DemandOrSupply.DEMAND;
+    }
+    
     //-- collectProfileComparisons--//
     
     //** createPassionElement **//
