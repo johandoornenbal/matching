@@ -85,6 +85,29 @@ public class ProfileElementTags extends MatchingDomainService<ProfileElementTag>
         return newProfileElement;
     }
     
+    @Programmatic
+    public ArrayList<ProfileElementTag> chooseElementsOnSupplyProfiles(
+    		List<ProfileType> profileTypeArray, 
+    		List<ProfileElementType> profileElementTypeArray,
+    		String ownedBy
+    		){
+    	ArrayList<ProfileElementTag> elementList = new ArrayList<ProfileElementTag>();
+    	for (ProfileElementTag e : container.allInstances(ProfileElementTag.class)) {
+    		if (!e.getOwnedBy().equals(ownedBy) && e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY){
+    			for (ProfileType pt: profileTypeArray){
+    				if (e.getProfileElementOwner().getProfileType() == pt){
+    					for (ProfileElementType pet: profileElementTypeArray){
+    						if(e.getProfileElementType() == pet){
+    							elementList.add(e);
+    						}
+    					}	
+    				}
+    			}
+    		}
+    	}
+    	return elementList;
+    }
+    
 
     
     // Region>helpers ///////////////////////////////

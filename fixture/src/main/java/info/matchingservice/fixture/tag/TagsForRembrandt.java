@@ -120,7 +120,7 @@ public class TagsForRembrandt extends TagsAbstract {
         
         createBrancheTagHolder(
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0).findProfileElementByOwnerProfileAndDescription("BRANCHE").get(0), 
-                "schilderen", 
+                "schilder", 
                 "rembrandt",
                 executionContext
                 );

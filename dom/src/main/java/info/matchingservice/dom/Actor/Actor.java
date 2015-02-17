@@ -30,6 +30,7 @@ import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -241,7 +242,16 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final ProfileType profileType,
             final String ownedBy){
         final Demand demand = demands.createDemand(demandDescription, "", "", null, weight, demandSupplyType, demandOwner, ownedBy);
-        return profiles.createDemandProfile(demandProfileDescription, profileWeight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demand, ownedBy);
+        return profiles.createDemandProfile(
+        		demandProfileDescription, 
+        		profileWeight, 
+        		demandOrSupplyProfileStartDate, 
+        		demandOrSupplyProfileEndDate, 
+        		profileType, 
+        		demand,
+        		profileTypeMatchingRules.findProfileTypeMatchingRule("regel1"),
+        		ownedBy
+        		);
     }
 
     @Programmatic
@@ -286,6 +296,10 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 
     @Inject
     Profiles profiles;
+    
+    @Inject
+    ProfileTypeMatchingRules profileTypeMatchingRules;
+    
     
     //-- INJECTIONS --//
     

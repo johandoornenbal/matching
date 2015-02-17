@@ -18,13 +18,14 @@
  */
 package info.matchingservice.dom.Profile;
 
-import info.matchingservice.dom.Match.ElementComparisonPersisted;
-import info.matchingservice.dom.Match.PersistedElements;
+import info.matchingservice.dom.Match.PersistedProfileElementComparison;
+import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.TagHolder;
 import info.matchingservice.dom.Tags.TagHolders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
@@ -210,7 +211,10 @@ public class ProfileElementTag extends ProfileElement {
     private DomainObjectContainer container;
     
     @Inject
-    private PersistedElements persistedElements;
+    private PersistedProfileElementComparisons persistedElements;
+    
+    @Inject
+    private ProfileElementTags profileElementTags;
     
 	//-- INJECTIONS --//
 	//** HIDDEN: PROPERTIES **//
@@ -218,65 +222,57 @@ public class ProfileElementTag extends ProfileElement {
 	//** HIDDEN: ACTIONS **//
 	//-- HIDDEN: ACTIONS --//
     
-
-    
     // test to see if we can collect matches by action
-    public List<ElementComparisonPersisted> collectProfileElementMatches(){
-    	List<ElementComparisonPersisted> elementMatches = new ArrayList<ElementComparisonPersisted>();
-    	for (ProfileElementTag e : container.allInstances(ProfileElementTag.class)) {
-    		if (
-            		e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  
-            		(e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE || 
-            		e.getProfileElementOwner().getProfileType() == ProfileType.ORGANISATION_PROFILE) && 
-            		(
-            				e.getProfileElementType() == ProfileElementType.BRANCHE_TAGS 
-            				|| 
-            				e.getProfileElementType() == ProfileElementType.QUALITY_TAGS
-            		)
-    			)
-    		{
-                // uitsluiten van dezelfde owner
-                if (!e.getOwnedBy().equals(this.getOwnedBy())){
-                    Integer matchValue = 0;
-                    Integer numberOfTagsOnDemand = 0;
-                    //Iterate over all the tags (this is: tagholders) on the demand profileElement element
-                    for (final Iterator<TagHolder> it_demand = this.getCollectTagHolders().iterator(); it_demand.hasNext();){
-                        Tag tag_demand = it_demand.next().getTag();
-                        numberOfTagsOnDemand += 1;
-                        //if there are any tags on supply profileElement
-                        //TODO: this check should be made earlier for performance gain
-                        if (e.getCollectTagHolders().size()>0){
-                        	
-                        	//iterate over all the tags (tagholders) on supply element
-                        	for (final Iterator<TagHolder> it_supply = e.getCollectTagHolders().iterator(); it_supply.hasNext();){             
-                        		Tag tag_supply = it_supply.next().getTag();
-                        		System.out.println(tag_supply.getTagDescription());
-                        		if (tag_demand.getTagDescription().equals("schilder")){
-                        			matchValue += 100;
-                        		}
-                        	}
-                        }
-                    }
-                    // take the average matchValue of all Tags
-                    if (numberOfTagsOnDemand>0){
-                    	matchValue = matchValue / numberOfTagsOnDemand;
-                    } else {
-                    	matchValue =0;
-                    }
-        			ElementComparisonPersisted matchTmp = persistedElements.createElementComparisonPersisted(
-        					this.getProfileElementOwner(),
-        					this, 
-        					e, 
-        					e.getProfileElementOwner(), 
-        					e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), 
-        					matchValue
-        					);
-        			elementMatches.add(matchTmp);
-                }
-
+    public List<PersistedProfileElementComparison> collectProfileElementMatches(){
+    	
+    	List<PersistedProfileElementComparison> elementMatches = new ArrayList<PersistedProfileElementComparison>();    	
+    	List<ProfileType> ptList =  Arrays.asList(ProfileType.PERSON_PROFILE, ProfileType.ORGANISATION_PROFILE);
+    	List<ProfileElementType> petList = Arrays.asList(ProfileElementType.BRANCHE_TAGS, ProfileElementType.QUALITY_TAGS);
+    	
+    	for (ProfileElementTag e : profileElementTags.chooseElementsOnSupplyProfiles(ptList, petList, this.getOwnedBy())){
+    		
+    		Integer matchValue = 0;
+    		Integer numberOfTagsOnDemand = 0;
+    		
+    		//Iterate over all the tags (this is: tagholders) on the demand profileElement element
+    		for (final Iterator<TagHolder> it_demand = this.getCollectTagHolders().iterator(); it_demand.hasNext();){
+    			Tag tag_demand = it_demand.next().getTag();
+    			numberOfTagsOnDemand += 1;
+    			if (e.getCollectTagHolders().size()>0){
+    				//iterate over all the tags (tagholders) on supply element
+    				for (final Iterator<TagHolder> it_supply = e.getCollectTagHolders().iterator(); it_supply.hasNext();){ 
+    					Tag tag_supply = it_supply.next().getTag();
+    					
+    					if (tag_demand.equals(tag_supply)){
+    						matchValue += 100;
+    						System.out.println("match vanuit ProfileElementTag:");
+    						System.out.println(tag_supply.getTagDescription());
+    					}
+    				}
+    			}
+    		}
+    		// take the average matchValue of all Tags
+    		if (numberOfTagsOnDemand>0){
+    			matchValue = matchValue / numberOfTagsOnDemand;
+    		} else {
+    			matchValue = 0;
+    		}
+    		if (matchValue > 0){
+    			//TODO: Eerst alle oude PersistedProfileElementComparisons verwijderen!!!
+    			PersistedProfileElementComparison matchTmp = persistedElements.createElementComparisonPersisted(
+    					this.getProfileElementOwner(),
+    					this,
+    					e,
+    					e.getProfileElementOwner(),
+    					e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), 
+    					matchValue
+    					);
+    			elementMatches.add(matchTmp);
     		}
     	}
+
     	return elementMatches;
+		
     }
     
     public boolean hideCollectProfileElementMatches(){

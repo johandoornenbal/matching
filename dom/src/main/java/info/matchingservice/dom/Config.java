@@ -1,5 +1,7 @@
 package info.matchingservice.dom;
 
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
+
 import javax.inject.Singleton;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
@@ -23,6 +25,17 @@ public class Config extends MatchingDomainObject<Config> {
 
 	public void setDemoFixturesLoaded(boolean demoFixturesLoaded) {
 		this.demoFixturesLoaded = demoFixturesLoaded;
+	}
+	
+	private ProfileTypeMatchingRule profileTypeMatchingRule;
+	
+	@javax.jdo.annotations.Column(allowsNull = "true")
+	public ProfileTypeMatchingRule getProfileTypeMatchingRule() {
+		return profileTypeMatchingRule;
+	}
+
+	public void setProfileTypeMatchingRule(ProfileTypeMatchingRule profileTypeMatchingRule) {
+		this.profileTypeMatchingRule = profileTypeMatchingRule;
 	}
 
 }

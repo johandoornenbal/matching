@@ -36,9 +36,9 @@ import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class ElementComparisonPersisted extends MatchingDomainObject<ElementComparisonPersisted>{
+public class PersistedProfileElementComparison extends MatchingDomainObject<PersistedProfileElementComparison>{
     
-    public ElementComparisonPersisted(){
+    public PersistedProfileElementComparison(){
         super("demandProfileElementOwner, matchingSupplyProfileElement");     
     }
     
@@ -124,7 +124,7 @@ public class ElementComparisonPersisted extends MatchingDomainObject<ElementComp
     		return "PersistedElementMatch";
     }
     
-    public int compareTo(ElementComparisonPersisted that) {
+    public int compareTo(PersistedProfileElementComparison that) {
         return ComparisonChain.start()
             .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
             .compare(this.matchingProfileElementOwner, that.matchingProfileElementOwner)

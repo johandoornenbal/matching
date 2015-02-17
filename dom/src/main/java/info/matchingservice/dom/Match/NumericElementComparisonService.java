@@ -66,9 +66,9 @@ public class NumericElementComparisonService extends AbstractService {
     @CollectionLayout(render=RenderType.EAGERLY)
     @Render(Type.EAGERLY) // because of bug @CollectionLayout
     @Action(semantics=SemanticsOf.SAFE)
-    public List<ElementComparison> showElementMatches(ProfileElementNumeric element){
+    public List<ProfileElementComparison> showElementMatches(ProfileElementNumeric element){
         
-        List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
+        List<ProfileElementComparison> elementMatches = new ArrayList<ProfileElementComparison>();
         
         //Init Test: Only if there are any Profiles
         if (container.allInstances(ProfileElementNumeric.class).isEmpty()) {
@@ -81,7 +81,7 @@ public class NumericElementComparisonService extends AbstractService {
                 // drempelwaarde is MATCHING_THRESHOLD
                 Integer matchValue = 100 - 1*Math.abs(element.getNumericValue() - e.getNumericValue());
                 if (matchValue >= MATCHING_ElEMENT_THRESHOLD && !e.getOwnedBy().equals(element.getOwnedBy())) {
-                    ElementComparison matchTmp = new ElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue);
+                    ProfileElementComparison matchTmp = new ProfileElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue, element.getWeight());
                     elementMatches.add(matchTmp);
                 }
             }

@@ -1,5 +1,7 @@
 package info.matchingservice.dom;
 
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,14 +21,19 @@ public class Configs extends MatchingDomainService<Config> {
 		return container.allInstances(Config.class);
 	}
 	
-	public Config createConfig(){
+	public Config createConfig(
+			final ProfileTypeMatchingRule profileTypeMatchingRule
+			){
 		Config newConfig = newTransientInstance(Config.class);
 		newConfig.setDemoFixturesLoaded(true);
+		newConfig.setProfileTypeMatchingRule(profileTypeMatchingRule);
 		persist(newConfig);
 		return newConfig;
 	}
 	
-	public String validateCreateConfig(){
+	public String validateCreateConfig(
+			final ProfileTypeMatchingRule profileTypeMatchingRule
+			){
 		if (!this.allConfigs().isEmpty()){
 			return "CONFIG_ONLY_ONCE";
 		}

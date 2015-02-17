@@ -32,22 +32,24 @@ import org.apache.isis.applib.annotation.ViewModel;
 import org.apache.isis.applib.annotation.Where;
 
 @ViewModel
-public class ElementComparison extends MatchingDomainObject<ElementComparison>{
+public class ProfileElementComparison extends MatchingDomainObject<ProfileElementComparison>{
     
-    public ElementComparison(
+    public ProfileElementComparison(
             Profile demandProfileElementOwner, 
             ProfileElement demandProfileElement, 
             ProfileElement matchingSupplyProfileElement, 
             Profile matchingProfileElementOwner, 
             Actor matchingProfileElementActorOwner,
-            Integer value){
+            Integer calculatedMatchingValue,
+            Integer weight){
         super("demandProfileElementOwner");
         this.demandProfileElementOwner = demandProfileElementOwner;
         this.demandProfileElement = demandProfileElement;
         this.matchingSupplyProfileElement = matchingSupplyProfileElement;
         this.matchingProfileElementOwner = matchingProfileElementOwner;
         this.matchingProfileElementActorOwner = matchingProfileElementActorOwner;
-        this.calculatedMatchingValue = value;        
+        this.calculatedMatchingValue = calculatedMatchingValue;
+        this.weight = weight;
     }
     
     private Profile demandProfileElementOwner;
@@ -119,13 +121,25 @@ public class ElementComparison extends MatchingDomainObject<ElementComparison>{
         this.calculatedMatchingValue = matchingvalue;
     }
     
+    private Integer weight;
+    
+    @MemberOrder(sequence="11")
+    @PropertyLayout(named="Gewicht")
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight){
+    	this.weight = weight;
+    }
+    
     //helpers
     
     public String toString() {
         return getDemandProfileElement().toString() + " vs. " + getMatchingSupplyProfileElement().toString();
     }
     
-    public int compareTo(ElementComparison that) {
+    public int compareTo(ProfileElementComparison that) {
         return ComparisonChain.start()
             .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
             .compare(this.matchingProfileElementOwner, that.matchingProfileElementOwner)

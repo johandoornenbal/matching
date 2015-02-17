@@ -2,6 +2,8 @@ package info.matchingservice.fixture;
 
 import info.matchingservice.dom.Config;
 import info.matchingservice.dom.Configs;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -11,9 +13,10 @@ public abstract class ConfigAbstract extends FixtureScript {
     protected abstract void execute(ExecutionContext executionContext);
     
     protected Config createConfig (
+    		ProfileTypeMatchingRule profileTypeMatchingRule,
             ExecutionContext executionContext
             ) {
-        Config newConfig = configs.createConfig();
+        Config newConfig = configs.createConfig(profileTypeMatchingRule);
                        
         return executionContext.add(this, newConfig);
     }
@@ -22,6 +25,5 @@ public abstract class ConfigAbstract extends FixtureScript {
     //region > injected services
     @javax.inject.Inject
     private Configs configs;
-
 
 }

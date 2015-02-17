@@ -22,6 +22,7 @@ package info.matchingservice.dom.Profile;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
 
 import java.util.List;
 import java.util.UUID;
@@ -85,7 +86,8 @@ public class Profiles extends MatchingDomainService<Profile> {
             final LocalDate demandOrSupplyProfileStartDate,
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
-            final Demand demandProfileOwner,            
+            final Demand demandProfileOwner,
+            final ProfileTypeMatchingRule profileTypeMatchingRule,
             final String ownedBy
             ){
         final Profile newDemandProfile = newTransientInstance(Profile.class);
@@ -98,6 +100,7 @@ public class Profiles extends MatchingDomainService<Profile> {
         newDemandProfile.setDemandOrSupply(DemandOrSupply.DEMAND);
         newDemandProfile.setProfileType(profileType);
         newDemandProfile.setDemandProfileOwner(demandProfileOwner);
+        newDemandProfile.setProfileTypeMatchingRule(profileTypeMatchingRule);
         newDemandProfile.setOwnedBy(ownedBy);
         persist(newDemandProfile);
         return newDemandProfile;

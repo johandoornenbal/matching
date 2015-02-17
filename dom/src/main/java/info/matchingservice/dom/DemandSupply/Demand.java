@@ -26,6 +26,8 @@ import info.matchingservice.dom.Assessment.DemandAssessment;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -280,7 +282,16 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             @ParameterLayout(named="profileName")
             final  String demandProfileDescription
             ){
-        return createDemandProfile(demandProfileDescription, 10, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
+        return createDemandProfile(
+        		demandProfileDescription, 
+        		10, 
+        		null, 
+        		null, 
+        		ProfileType.PERSON_PROFILE, 
+        		this,
+        		profileTypeMatchingRules.findProfileTypeMatchingRule("regel1"),
+        		currentUserName()
+        		);
     }
     
     // Business rule: 
@@ -355,9 +366,10 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             final LocalDate demandOrSupplyProfileStartDate,
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
-            final Demand demandProfileOwner, 
+            final Demand demandProfileOwner,
+            final ProfileTypeMatchingRule profileTypeMatchingRule,
             final String ownedBy) {
-        return allDemandProfiles.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demandProfileOwner, ownedBy);
+        return allDemandProfiles.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demandProfileOwner, profileTypeMatchingRule, ownedBy);
     }
 	//-- HELPERS: programmatic actions --// 
 	//-- HELPERS --//
@@ -367,6 +379,11 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     
     @Inject
     Profiles allDemandProfiles;
+    
+    @Inject
+    ProfileTypeMatchingRules profileTypeMatchingRules;
+    
+    
 
 	//-- INJECTIONS --//
     //** HIDDEN: PROPERTIES **//

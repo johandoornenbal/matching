@@ -73,9 +73,9 @@ public class PassionElementComparisonService extends AbstractService {
     @CollectionLayout(render=RenderType.EAGERLY)
     @Render(Type.EAGERLY) // because of bug @CollectionLayout
     @Action(semantics=SemanticsOf.SAFE)
-    public List<ElementComparison> showElementMatches(ProfileElementTag element){
+    public List<ProfileElementComparison> showElementMatches(ProfileElementTag element){
         
-        List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
+        List<ProfileElementComparison> elementMatches = new ArrayList<ProfileElementComparison>();
         
        //Init Test: Only if there are any ProfileElements
         if (container.allInstances(ProfileElementTag.class).isEmpty()) {
@@ -104,7 +104,7 @@ public class PassionElementComparisonService extends AbstractService {
                     	matchValue =0;
                     }
                     if (matchValue >= MATCHING_ElEMENT_THRESHOLD){
-                        ElementComparison matchTmp = new ElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue);
+                        ProfileElementComparison matchTmp = new ProfileElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue, element.getWeight());
                         elementMatches.add(matchTmp);
                     }
                 }

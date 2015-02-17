@@ -4,6 +4,7 @@ import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Demands;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 

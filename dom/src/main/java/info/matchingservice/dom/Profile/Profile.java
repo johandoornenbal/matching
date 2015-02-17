@@ -27,6 +27,9 @@ import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Match.ProfileComparison;
+import info.matchingservice.dom.Match.ProfileMatchingService;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
 import info.matchingservice.dom.Tags.TagCategories;
 import info.matchingservice.dom.Tags.Tags;
 
@@ -296,6 +299,18 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 	//-- API: COLLECTIONS --//
     
 	//** API: ACTIONS **//
+    
+    //** collectProfileComparisons**//
+    
+    @Inject
+    ProfileMatchingService profileMatchingService;
+    
+    @Action(semantics=SemanticsOf.SAFE)
+    public List<ProfileComparison> actionCollectProfileComparisons(){
+    	return profileMatchingService.collectProfileComparisons(this);
+    }
+    
+    //-- collectProfileComparisons--//
     
     //** createPassionElement **//
     // Business rule:
@@ -785,6 +800,19 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 	//-- INJECTIONS --//
     
 	//** HIDDEN: PROPERTIES **//
+    
+    private ProfileTypeMatchingRule profileTypeMatchingRule;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+//    @PropertyLayout(hidden=Where.EVERYWHERE)
+	public ProfileTypeMatchingRule getProfileTypeMatchingRule() {
+		return profileTypeMatchingRule;
+	}
+
+	public void setProfileTypeMatchingRule(ProfileTypeMatchingRule canMatchProfileOfType) {
+		this.profileTypeMatchingRule = canMatchProfileOfType;
+	}
+	
 	//-- HIDDEN: PROPERTIES --//
     
 	//** HIDDEN: ACTIONS **//
@@ -857,6 +885,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 ProfileElementType.NUMERIC, 
                 this);
     }
+
     
 	//-- HIDDEN: ACTIONS --//
 

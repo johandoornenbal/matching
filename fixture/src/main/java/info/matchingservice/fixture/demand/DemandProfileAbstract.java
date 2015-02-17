@@ -4,6 +4,7 @@ import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -20,7 +21,7 @@ public abstract class DemandProfileAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Profile newDemandProfile = profiles.createDemandProfile(demandProfileDescription, weight, null, null, profileType, demandProfileOwner, ownedBy);
+        Profile newDemandProfile = profiles.createDemandProfile(demandProfileDescription, weight, null, null, profileType, demandProfileOwner, profileTypeMatchingRules.findProfileTypeMatchingRule("regel1"), ownedBy);
         
         return executionContext.add(this,newDemandProfile);
     }
@@ -28,4 +29,7 @@ public abstract class DemandProfileAbstract extends FixtureScript {
     //region > injected services
     @javax.inject.Inject
     Profiles profiles;
+    
+    @javax.inject.Inject
+    ProfileTypeMatchingRules profileTypeMatchingRules;
 }

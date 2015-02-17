@@ -49,11 +49,11 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         super("demandProfile, uniqueItemId");
     }
 
-    public ProfileComparison(Profile demandProfile, Profile matchingSupplyProfile, Integer value) {
+    public ProfileComparison(Profile demandProfile, Profile matchingSupplyProfile, Integer calculatedMatchingValue) {
         super("matchInitiator");
         this.demandProfile = demandProfile;
         this.matchingSupplyProfile = matchingSupplyProfile;
-        this.calculatedMatchingValue = value;
+        this.calculatedMatchingValue = calculatedMatchingValue;
     }
     
     private UUID uniqueItemId;
@@ -98,8 +98,8 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         return calculatedMatchingValue;
     }
     
-    public void setCalculatedMatchingValue(final Integer matchingvalue) {
-        this.calculatedMatchingValue = matchingvalue;
+    public void setCalculatedMatchingValue(final Integer calculatedMatchingValue) {
+        this.calculatedMatchingValue = calculatedMatchingValue;
     }
     
     //Region>Actions ////////////////////////////////////////////////////////

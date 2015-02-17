@@ -37,6 +37,7 @@ public class MatchingTestsFixture extends FixtureScript {
         executeChild(new TeardownFixture(), executionContext);
    
         // create
+        executeChild(new TestMatchingProfileTypeRules(), executionContext);
     	executeChild(new TestConfig(), executionContext);
         executeChild(new ProfileElementDropDownsFixture(), executionContext);
         executeChild(new TestPersons(), executionContext);

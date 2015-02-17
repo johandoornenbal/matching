@@ -19,7 +19,6 @@
 
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementTags;
 import info.matchingservice.dom.Profile.ProfileElementType;
@@ -28,6 +27,7 @@ import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.TagHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -42,9 +42,6 @@ import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.annotation.NotContributed.As;
-import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.RenderType;
@@ -62,7 +59,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
  * 
  * TODO: how to test this object?
  * 
- * @version 0.1 04-02-2015
+ * @version 0.2 15-02-2015
  */
 @DomainService(nature=NatureOfService.DOMAIN)
 public class TagElementComparisonService extends AbstractService {
@@ -73,59 +70,49 @@ public class TagElementComparisonService extends AbstractService {
     @Render(Type.EAGERLY) // because of bug @CollectionLayout
     @Action(semantics=SemanticsOf.SAFE)
     @ActionLayout(contributed=Contributed.AS_NEITHER)
-    // Notabene: element is the profileElement on the DEMAND profile
-    public List<ElementComparison> showElementMatches(ProfileElementTag element){
+    
+    public List<ProfileElementComparison> showElementMatches(ProfileElementTag element){
         
-        List<ElementComparison> elementMatches = new ArrayList<ElementComparison>();
-        
+        List<ProfileElementComparison> elementMatches = new ArrayList<ProfileElementComparison>();
+    	List<ProfileType> ptList =  Arrays.asList(ProfileType.PERSON_PROFILE, ProfileType.ORGANISATION_PROFILE);
+    	List<ProfileElementType> petList = Arrays.asList(ProfileElementType.BRANCHE_TAGS, ProfileElementType.QUALITY_TAGS);
+    	
         //Init Test: Only if there are any ProfileElements
         if (container.allInstances(ProfileElementTag.class).isEmpty()) {
             return elementMatches;
         }
         
         // look at all the corresponding profileELements on SUPPLY profiles
-        for (ProfileElementTag e : container.allInstances(ProfileElementTag.class)) {
-            if (
-            		e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY  &&  
-            		(e.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE || 
-            		e.getProfileElementOwner().getProfileType() == ProfileType.ORGANISATION_PROFILE) && 
-            		(
-            				e.getProfileElementType() == ProfileElementType.BRANCHE_TAGS 
-            				|| 
-            				e.getProfileElementType() == ProfileElementType.QUALITY_TAGS
-            		)
-            		){
-                // uitsluiten van dezelfde owner
-                if (!e.getOwnedBy().equals(element.getOwnedBy())){
-                    Integer matchValue = 0;
-                    Integer numberOfTagsOnDemand = 0;
-                    //Iterate over all the tags (this is: tagholders) on the demand profileElement element
-                    for (final Iterator<TagHolder> it_demand = element.getCollectTagHolders().iterator(); it_demand.hasNext();){
-                        Tag tag_demand = it_demand.next().getTag();
-                        numberOfTagsOnDemand += 1;
-                        //if there are any tags on supply profileElement
-                        //TODO: this check should be made earlier for performance gain
-                        if (e.getCollectTagHolders().size()>0){
-                        	//iterate over all the tags (tagholders) on supply element
-                        	for (final Iterator<TagHolder> it_supply = e.getCollectTagHolders().iterator(); it_supply.hasNext();){
-                        		Tag tag_supply = it_supply.next().getTag();
-                        		if (tag_supply.equals(tag_demand)){
-                        			matchValue += 100;
-                        		}
-                        	}
-                        }
-                    }
-                    // take the average matchValue of all Tags
-                    if (numberOfTagsOnDemand>0){
-                    	matchValue = matchValue / numberOfTagsOnDemand;
-                    } else {
-                    	matchValue =0;
-                    }
-                    if (matchValue >= MATCHING_ElEMENT_THRESHOLD){
-                        ElementComparison matchTmp = new ElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue);
-                        elementMatches.add(matchTmp);
-                    }
-                }
+        for (ProfileElementTag e : profileElementTags.chooseElementsOnSupplyProfiles(ptList, petList, element.getOwnedBy())){    	
+              
+        	Integer matchValue = 0;
+            Integer numberOfTagsOnDemand = 0;
+                    
+    		//Iterate over all the tags (this is: tagholders) on the demand profileElement element
+    		for (final Iterator<TagHolder> it_demand = element.getCollectTagHolders().iterator(); it_demand.hasNext();){
+    			Tag tag_demand = it_demand.next().getTag();
+    			numberOfTagsOnDemand += 1;
+    			if (e.getCollectTagHolders().size()>0){
+    				//iterate over all the tags (tagholders) on supply element
+    				for (final Iterator<TagHolder> it_supply = e.getCollectTagHolders().iterator(); it_supply.hasNext();){ 
+    					Tag tag_supply = it_supply.next().getTag();
+    					if (tag_demand.equals(tag_supply)){
+    						matchValue += 100;
+    						System.out.println("match tagElementComparisonService:");
+    						System.out.println(tag_supply.getTagDescription());
+    					}
+    				}
+    			}
+    		}
+    		// take the average matchValue of all Tags
+    		if (numberOfTagsOnDemand>0){
+    			matchValue = matchValue / numberOfTagsOnDemand;
+    		} else {
+    			matchValue = 0;
+    		}
+            if (matchValue >= MATCHING_ElEMENT_THRESHOLD){
+            	ProfileElementComparison matchTmp = new ProfileElementComparison(element.getProfileElementOwner(), element, e, e.getProfileElementOwner(), e.getProfileElementOwner().getSupplyProfileOwner().getSupplyOwner(), matchValue, element.getWeight());
+                elementMatches.add(matchTmp);
             }
         }
         Collections.sort(elementMatches);
@@ -142,5 +129,8 @@ public class TagElementComparisonService extends AbstractService {
     // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;
+    
+    @Inject
+    private ProfileElementTags profileElementTags;
 }
 
