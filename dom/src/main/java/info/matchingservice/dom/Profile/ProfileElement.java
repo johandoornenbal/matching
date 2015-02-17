@@ -19,10 +19,17 @@
 
 package info.matchingservice.dom.Profile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Match.PersistedProfileElementComparison;
+import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
+import info.matchingservice.dom.Match.ProfileElementComparison;
+import info.matchingservice.dom.Match.ProfileMatchingService;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -196,6 +203,98 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     public String validateDeleteProfileElement(boolean confirmDelete) {
         return confirmDelete? null:"CONFIRM_DELETE";
     }
+    //-- deleteProfileElement --//
+    
+    //** actionCollectProfileElementComparisons **//
+   
+    @Inject
+    ProfileMatchingService profileMatchingService;
+    
+    @Inject
+    PersistedProfileElementComparisons persistedProfileElementComparisons;
+    
+    
+    @Action(semantics=SemanticsOf.SAFE)
+    public List<PersistedProfileElementComparison> actionCollectProfileElementComparisons(){
+	   
+    	List<PersistedProfileElementComparison> elementComparisons = new ArrayList<PersistedProfileElementComparison>();
+	   
+    	// see if there a elements at all
+    	if (container.allInstances(ProfileElement.class).isEmpty()) {
+    		
+    		return elementComparisons;
+    		
+    	}
+    	
+    	// delete existing profile elements of the current user
+    	persistedProfileElementComparisons.deleteProfileElementComparisons(getOwnedBy());
+    	
+    	// loop through all profile elements and collect 'valid' comparisons
+    	for (ProfileElement supplyElement: container.allInstances(ProfileElement.class)) {
+    		try
+    		{
+	    		if (
+	    				!supplyElement.getProfileElementOwner().equals(null)
+	    				
+	    				&&
+	    				
+	    				// Only supplies
+	    				supplyElement.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY
+	    				
+	    				&&
+	    				
+	    				// Only of other owners
+	    				!supplyElement.getOwnedBy().equals(this.getOwnedBy())
+	    				
+	    				
+	    			) 
+	    		{
+	    			try 
+	    			{
+	    				PersistedProfileElementComparison elementComparison = newTransientInstance(PersistedProfileElementComparison.class);
+	    					    				
+	    				if (!profileMatchingService.getProfileElementComparison(this.getProfileElementOwner(), this, supplyElement.getProfileElementOwner(), supplyElement).equals(null))
+	    				{
+	    					
+	    					ProfileElementComparison tempComparison = profileMatchingService.getProfileElementComparison(this.getProfileElementOwner(), this, supplyElement.getProfileElementOwner(), supplyElement);
+	    					elementComparison.setCalculatedMatchingValue(tempComparison.getCalculatedMatchingValue());
+	    					elementComparison.setDemandProfileElement(tempComparison.getDemandProfileElement());
+	    					elementComparison.setDemandProfileElementOwner(tempComparison.getDemandProfileElementOwner());
+	    					elementComparison.setMatchingProfileElementActorOwner(tempComparison.getMatchingProfileElementActorOwner());
+	    					elementComparison.setMatchingProfileElementOwner(elementComparison.getMatchingProfileElementOwner());
+	    					elementComparison.setMatchingSupplyProfileElement(tempComparison.getMatchingSupplyProfileElement());
+	    					elementComparison.setWeight(tempComparison.getWeight());
+	    					elementComparison.setOwnedBy(this.getOwnedBy());
+	    					final UUID uuid=UUID.randomUUID();
+	    					elementComparison.setUniqueItemId(uuid);
+	    					persistIfNotAlready(elementComparison);
+	    					elementComparisons.add(elementComparison);
+	    					
+	    				}
+	    			}
+	    			catch(NullPointerException e)
+	    			{
+	    				
+	    			}
+	    		}
+    		}
+    		catch(NullPointerException e)
+    		{
+    		
+    		}
+    	}
+    	
+    	return elementComparisons;
+    }
+    
+    public boolean hideActionCollectProfileElementComparisons() {
+    	
+    	return this.getProfileElementOwner().getDemandOrSupply() != DemandOrSupply.DEMAND;
+    	
+    }
+    
+    //-- --//
+    
     
     //-- API: ACTIONS --//
 	

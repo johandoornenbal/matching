@@ -1,37 +1,37 @@
 package info.matchingservice.dom.Match;
 
+import java.util.List;
+
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElementTag;
 
-@DomainService(nature=NatureOfService.DOMAIN)
-public class PersistedProfileElementComparisons extends MatchingDomainService<PersistedProfileElementComparison> {
+@DomainService(nature=NatureOfService.DOMAIN, repositoryFor=PersistedProfileElementComparison.class)
+public class PersistedProfileElementComparisons extends
+		MatchingDomainService<PersistedProfileElementComparison> {
 
 	public PersistedProfileElementComparisons() {
 		super(PersistedProfileElementComparisons.class, PersistedProfileElementComparison.class);
 	}
 	
-	public PersistedProfileElementComparison createElementComparisonPersisted(
-            Profile demandProfileElementOwner,
-            ProfileElement demandProfileElement, 
-            ProfileElementTag matchingSupplyProfileElement, 
-            Profile matchingProfileElementOwner, 
-            Actor matchingProfileElementActorOwner,
-            Integer calculatedMatchingValue
-			){
-		final PersistedProfileElementComparison newEc = newTransientInstance(PersistedProfileElementComparison.class);
-		newEc.setDemandProfileElementOwner(demandProfileElementOwner);
-		newEc.setDemandProfileElement(demandProfileElement);
-		newEc.setMatchingProfileElementOwner(matchingProfileElementOwner);
-		newEc.setMatchingProfileElementActorOwner(matchingProfileElementActorOwner);
-		newEc.setCalculatedMatchingValue(calculatedMatchingValue);
-		persistIfNotAlready(newEc);
-		return newEc;
+	public List<PersistedProfileElementComparison> findProfileElementComparisons(final String ownedBy)
+	{
+        return allMatches("findProfileElementComparisonByOwner",
+        		"ownedBy", ownedBy);
+	}
+	
+	public void deleteProfileElementComparisons(final String ownedBy)
+	{
+		
+		List<PersistedProfileElementComparison> tempList = this.findProfileElementComparisons(ownedBy);
+		for (PersistedProfileElementComparison e: tempList) 
+		{
+		
+			e.deletePersistedProfileElementComparison();
+			
+		}
+		
 	}
 
 }

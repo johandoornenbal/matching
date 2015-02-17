@@ -19,32 +19,46 @@
 
 package info.matchingservice.dom.Match;
 
+import java.util.UUID;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import info.matchingservice.dom.MatchingDomainObject;
+import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 
 import com.google.common.collect.ComparisonChain;
 
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.ViewModel;
 import org.apache.isis.applib.annotation.Where;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-public class PersistedProfileElementComparison extends MatchingDomainObject<PersistedProfileElementComparison>{
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findProfileElementComparisonByOwner", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Match.PersistedProfileElementComparison "
+                    + "WHERE ownedBy == :ownedBy")
+})
+@DomainObject(editing=Editing.DISABLED)
+public class PersistedProfileElementComparison extends MatchingSecureMutableObject<PersistedProfileElementComparison>{
     
     public PersistedProfileElementComparison(){
-        super("demandProfileElementOwner, matchingSupplyProfileElement");     
+        super("demandProfileElementOwner, uniqueItemId");
     }
     
     private Profile demandProfileElementOwner;
 
-//    @PropertyLayout(hidden=Where.EVERYWHERE)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Profile getDemandProfileElementOwner() {
         return demandProfileElementOwner;
@@ -56,7 +70,7 @@ public class PersistedProfileElementComparison extends MatchingDomainObject<Pers
     
     private ProfileElement demandProfileElement;
     
-//    @PropertyLayout(hidden=Where.EVERYWHERE)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public ProfileElement getDemandProfileElement() {
         return demandProfileElement;
@@ -68,7 +82,7 @@ public class PersistedProfileElementComparison extends MatchingDomainObject<Pers
     
     private ProfileElement matchingSupplyProfileElement;
     
-//    @PropertyLayout(hidden=Where.EVERYWHERE)
+    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public ProfileElement getMatchingSupplyProfileElement(){
         return matchingSupplyProfileElement;
@@ -117,11 +131,37 @@ public class PersistedProfileElementComparison extends MatchingDomainObject<Pers
         this.calculatedMatchingValue = matchingvalue;
     }
     
+    private Integer weight;
+    
+    @MemberOrder(sequence="11")
+    @PropertyLayout(named="Gewicht")
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public Integer getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(final Integer weight){
+    	this.weight = weight;
+    }
+    
+	//** uniqueItemId **//
+    private UUID uniqueItemId;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Property(editing=Editing.DISABLED)
+    public UUID getUniqueItemId() {
+        return uniqueItemId;
+    }
+    
+    public void setUniqueItemId(final UUID uniqueItemId) {
+        this.uniqueItemId = uniqueItemId;
+    }
+    //-- uniqueItemId --//
+    
     //helpers
     
     public String toString() {
-//        return getDemandProfileElement().toString() + " vs. " + getMatchingSupplyProfileElement().toString();
-    		return "PersistedElementMatch";
+        return getDemandProfileElement().toString() + " vs. " + getMatchingSupplyProfileElement().toString();
     }
     
     public int compareTo(PersistedProfileElementComparison that) {
@@ -130,5 +170,35 @@ public class PersistedProfileElementComparison extends MatchingDomainObject<Pers
             .compare(this.matchingProfileElementOwner, that.matchingProfileElementOwner)
             .result();
     }
+    
+	//** ownedBy - Override for secure object **//
+    private String ownedBy;
+    
+    @Override
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden=Where.NOWHERE)
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
+    }
+    
+    //** deletePersistedProfileElementComparison **//
+    
+    @Programmatic
+    public void deletePersistedProfileElementComparison(){
+    	
+    	container.removeIfNotAlready(this);
+    	
+    }
+    //-- deletePersistedProfileElementComparison --//
+    
+	//** INJECTIONS **//
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+	//-- INJECTIONS --//
 
 }

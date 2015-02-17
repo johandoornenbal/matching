@@ -559,18 +559,6 @@ public class ProfileMatchingService extends AbstractService {
     
     @javax.inject.Inject
     private Profiles profiles;
-    
-//    @Inject
-//    QualityElementComparisonService dropDownElementMatches;
-    
-    @Inject
-    PassionElementComparisonService passionElementMatches;
-    
-    @Inject
-    TagElementComparisonService tagElementMatches;
-    
-    @Inject
-    NumericElementComparisonService numericElementMatches;
-    
+        
 
 }
