@@ -284,7 +284,8 @@ public class ProfileMatchingService extends AbstractService {
 					// implement mockRule1
 					getProfileElementTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementTag) supplyProfileElement).getCalculatedMatchingValue()
 					>= 
-					mockRule1.getMatchingProfileElementValueThreshold()
+//					mockRule1.getMatchingProfileElementValueThreshold()
+					1
 				) 
 			{
 				return getProfileElementTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementTag) supplyProfileElement);
@@ -304,7 +305,8 @@ public class ProfileMatchingService extends AbstractService {
 					// implement mockRule2
 					getProfileElementPassionTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementText) supplyProfileElement).getCalculatedMatchingValue()
 					>=
-					mockRule2.getMatchingProfileElementValueThreshold()
+//					mockRule2.getMatchingProfileElementValueThreshold()
+					1
 				)
 			{
 				return getProfileElementPassionTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementText) supplyProfileElement);
@@ -457,7 +459,13 @@ public class ProfileMatchingService extends AbstractService {
 			
 			// create the profileComparison
 			
-			if (calculatedMatchingValue >= mockRule1.getMatchingProfileValueThreshold()) {
+			if (
+					calculatedMatchingValue 
+					>= 
+//					mockRule1.getMatchingProfileValueThreshold()
+					1
+				) 
+			{
 				profileComparison.setCalculatedMatchingValue(calculatedMatchingValue.intValue());
 				profileComparison.setDemandProfile(demandProfile);
 				profileComparison.setMatchingSupplyProfile(supplyProfile);
@@ -508,10 +516,23 @@ public class ProfileMatchingService extends AbstractService {
 					) 
 			{
 				
-				// implement mockRule1
-				if (this.getProfileComparison(demandProfile, supplyProfile).getCalculatedMatchingValue() >= mockRule1.getMatchingProfileValueThreshold() ) {
-					
-					profileComparisons.add(this.getProfileComparison(demandProfile, supplyProfile));
+				try
+				{
+					// implement mockRule1
+					if (
+							this.getProfileComparison(demandProfile, supplyProfile).getCalculatedMatchingValue() 
+							>= 
+	//						mockRule1.getMatchingProfileValueThreshold() 
+							1
+						) 
+					{
+						
+						profileComparisons.add(this.getProfileComparison(demandProfile, supplyProfile));
+						
+					}
+				}
+				catch(NullPointerException e)
+				{
 					
 				}
 				

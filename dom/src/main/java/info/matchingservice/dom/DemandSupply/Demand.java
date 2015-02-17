@@ -175,6 +175,32 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 		this.demandAttachment = demandAttachment;
 	}
 	//-- demandAttachment --//
+	
+	//** demandOrSupplyProfileStartDate **//
+	private LocalDate demandOrSupplyProfileStartDate;
+	
+	@javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getDemandOrSupplyProfileStartDate() {
+		return demandOrSupplyProfileStartDate;
+	}
+	
+	public void setDemandOrSupplyProfileStartDate(final LocalDate demandOrSupplyProfileStartDate){
+		this.demandOrSupplyProfileStartDate = demandOrSupplyProfileStartDate;
+	}	
+	//-- demandOrSupplyProfileStartDate --//
+	
+	//** demandOrSupplyProfileEndDate **//	
+	private LocalDate demandOrSupplyProfileEndDate;
+	
+	@javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getDemandOrSupplyProfileEndDate() {
+		return demandOrSupplyProfileEndDate;
+	}
+	
+	public void setDemandOrSupplyProfileEndDate(final LocalDate demandOrSupplyProfileEndDate){
+		this.demandOrSupplyProfileEndDate = demandOrSupplyProfileEndDate;
+	}	
+	//-- demandOrSupplyProfileStartDate --//
     
 	//-- API: PROPERTIES --//
 	
@@ -231,12 +257,20 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             final String demandStory,
             @ParameterLayout(named="demandAttachment")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final Blob demandAttachment         
+            final Blob demandAttachment,
+            @ParameterLayout(named="demandOrSupplyProfileStartDate")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final LocalDate demandOrSupplyProfileStartDate,
+            @ParameterLayout(named="demandOrSupplyProfileEndDate")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final LocalDate demandOrSupplyProfileEndDate
             ){
         this.setDemandDescription(demandDescription);
         this.setDemandSummary(demandSummary);
         this.setDemandStory(demandStory);
         this.setDemandAttachment(demandAttachment);
+        this.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
+        this.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
         return this;
     }
     
@@ -255,6 +289,48 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public Blob default3UpdateDemand(){
         return this.getDemandAttachment();
     }
+    
+    public LocalDate default4UpdateDemand(){
+        return this.getDemandOrSupplyProfileStartDate();
+    }
+    
+    public LocalDate default5UpdateDemand(){
+        return this.getDemandOrSupplyProfileEndDate();
+    }
+    
+    public String validateUpdateDemand(
+    		final String demandDescription,
+            final String demandSummary,
+            final String demandStory,
+            final Blob demandAttachment,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate
+            )
+     {
+    	final LocalDate today = LocalDate.now();
+    	if (demandOrSupplyProfileEndDate != null && demandOrSupplyProfileEndDate.isBefore(today))
+    	{
+    		return "ENDDATE_BEFORE_TODAY";
+    	}
+    	
+    	if (
+    			demandOrSupplyProfileEndDate != null 
+    			
+    			&& 
+    			
+    			demandOrSupplyProfileStartDate != null
+    			
+    			&&
+    			
+    			demandOrSupplyProfileEndDate.isBefore(demandOrSupplyProfileStartDate)
+    			
+    			)
+    	{
+    		return "ENDDATE_BEFORE_STARTDATE";
+    	}
+    	
+    	return null;
+     }
     //-- updateDemand --//
     
     //** deleteDemand **//

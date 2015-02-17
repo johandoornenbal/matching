@@ -6,26 +6,17 @@
         "Aanbod": {
           "members": {
             "supplyDescription": {
-            	"named" : {
-            		"value" : "Omschrijving"
-            	},
             	"multiLine" : {
             		"numberOfLines" : "3"
             	},
             	"actions" : {
-            		"updateSupply" : {
-            			"named" : {
-            				"value" : "Bewerk het aanbod"
-            			}
-            		},
+            		"updateSupply" : {},
             		"deleteSupply" : {}
             	}
             },
-            "supplyOwner": {
-            	"named" : {
-            		"value" : "Eigenaar"
-            	}
-            }
+            "demandOrSupplyProfileStartDate" : {},
+            "demandOrSupplyProfileEndDate" : {},
+            "supplyOwner": {}
           }
         }
       }
@@ -42,28 +33,18 @@
       "span": 8,
       "collections": {
         "collectSupplyProfiles": {
-        	"named" : {
-        		"value" : "Aanbod profielen"
-        	},
             "actions": {
             	"newPersonSupplyProfile": {},
             	"newCourseSupplyProfile": {}
             }
         },
         "collectSupplyAssessments": {
-        	"named" : {
-        		"value" : "Onvangen feedback"
-        	},
           	"actions": {}
         }                 
       }
     }
   ],
   "actions": {
-  		"createSupplyAssessment" : {
-      		"named" : {
-      			"value" : "Geef feedback"
-      		}
-      	}   
+  		"createSupplyAssessment" : {}   
   }
 }

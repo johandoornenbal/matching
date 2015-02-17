@@ -320,16 +320,24 @@ public class Person extends Actor {
             final String demandStory,
             @ParameterLayout(named="demandAttachment")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final Blob demandAttachment
+            final Blob demandAttachment,
+            @ParameterLayout(named="demandOrSupplyProfileStartDate")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final LocalDate demandOrSupplyProfileStartDate,
+            @ParameterLayout(named="demandOrSupplyProfileStartDate")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final LocalDate demandOrSupplyProfileEndDate
             ){
-        return createDemand(demandDescription, demandSummary, demandStory, demandAttachment, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
+        return createDemand(demandDescription, demandSummary, demandStory, demandAttachment, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
     }
     
     public boolean hideCreatePersonsDemand(
     		final String demandDescription,
     		final String demandSummary,
     		final String demandStory,
-    		final Blob demandAttachment
+    		final Blob demandAttachment,
+    		final LocalDate demandOrSupplyProfileStartDate,
+    		final LocalDate demandOrSupplyProfileEndDate
     		){
         return hideCreateDemand(demandDescription, this);
     }
@@ -338,9 +346,11 @@ public class Person extends Actor {
     		final String demandDescription,
     		final String demandSummary,
     		final String demandStory,
-    		final Blob demandAttachment
+    		final Blob demandAttachment,
+    		final LocalDate demandOrSupplyProfileStartDate,
+    		final LocalDate demandOrSupplyProfileEndDate
     		){
-        return validateNewDemand(demandDescription, this);
+        return validateNewDemand(demandDescription, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, this);
     }
     //-- newPersonsDemand --//
     
@@ -430,7 +440,14 @@ public class Person extends Actor {
     }
     
     @Programmatic
-    public String validateNewDemand(final String needDescription, final Actor needOwner){
+    public String validateNewDemand
+    	(
+    		final String needDescription,
+    		final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
+    		final Actor needOwner
+    	)
+    {
         // if you are not the owner
         if (!needOwner.getOwnedBy().equals(currentUserName())){
             return "NOT_THE_OWNER";
@@ -439,6 +456,28 @@ public class Person extends Actor {
         if (!((Person) needOwner).getIsPrincipal()){
             return "ONE_INSTANCE_AT_MOST";
         }
+        
+    	final LocalDate today = LocalDate.now();
+    	if (demandOrSupplyProfileEndDate != null && demandOrSupplyProfileEndDate.isBefore(today))
+    	{
+    		return "ENDDATE_BEFORE_TODAY";
+    	}
+    	
+    	if (
+    			demandOrSupplyProfileEndDate != null 
+    			
+    			&& 
+    			
+    			demandOrSupplyProfileStartDate != null
+    			
+    			&&
+    			
+    			demandOrSupplyProfileEndDate.isBefore(demandOrSupplyProfileStartDate)
+    			
+    			)
+    	{
+    		return "ENDDATE_BEFORE_STARTDATE";
+    	}
         
         return null;
     }

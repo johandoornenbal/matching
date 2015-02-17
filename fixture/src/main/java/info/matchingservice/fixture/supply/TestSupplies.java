@@ -6,6 +6,8 @@ import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
+import org.joda.time.LocalDate;
+
 public class TestSupplies extends SupplyAbstract {
 
     @Override
@@ -19,6 +21,8 @@ public class TestSupplies extends SupplyAbstract {
         createSupply(
                 "PERSON_SUPPLY_OF",
                 10,
+                new LocalDate(2015, 01, 01),
+                new LocalDate(2015, 12, 31),
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
                 "frans",
@@ -30,6 +34,8 @@ public class TestSupplies extends SupplyAbstract {
         createSupply(
                 "PERSON_SUPPLY_OF",
                 10,
+                new LocalDate(2015, 07, 01),
+                new LocalDate(2015, 12, 31),
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Dou").get(0),
                 "gerard",
@@ -40,6 +46,8 @@ public class TestSupplies extends SupplyAbstract {
         createSupply(
                 "PERSON_SUPPLY_OF",
                 10,
+                new LocalDate(2015, 01, 01),
+                new LocalDate(2015, 12, 31),
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Rijn").get(0),
                 "rembrandt",
@@ -50,6 +58,8 @@ public class TestSupplies extends SupplyAbstract {
         createSupply(
                 "PERSON_SUPPLY_OF",
                 10,
+                new LocalDate(2015, 01, 01),
+                new LocalDate(2017, 12, 31),
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Ruyter").get(0),
                 "michiel",
@@ -60,6 +70,8 @@ public class TestSupplies extends SupplyAbstract {
         createSupply(
                 "PERSON_SUPPLY_OF",
                 10,
+                new LocalDate(2015, 01, 01),
+                new LocalDate(2015, 12, 31),
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Leeuw").get(0),
                 "antoni",

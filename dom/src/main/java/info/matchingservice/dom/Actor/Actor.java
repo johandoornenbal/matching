@@ -222,11 +222,13 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final String demandSummary,
             final String demandStory,
             final Blob demandAttachment,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner, 
             final String ownedBy){
-        return demands.createDemand(demandDescription, demandSummary, demandStory, demandAttachment, weight, demandSupplyType, demandOwner, ownedBy);
+        return demands.createDemand(demandDescription, demandSummary, demandStory, demandAttachment, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
     }
     
     @Programmatic
@@ -241,7 +243,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final String ownedBy){
-        final Demand demand = demands.createDemand(demandDescription, "", "", null, weight, demandSupplyType, demandOwner, ownedBy);
+        final Demand demand = demands.createDemand(demandDescription, "", "", null, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
         return profiles.createDemandProfile(
         		demandProfileDescription, 
         		profileWeight, 
@@ -258,10 +260,12 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public Supply createSupply(
             final String supplyDescription,
             final Integer weight,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
             final DemandSupplyType demandSupplyType,
             final Actor supplyOwner, 
             final String ownedBy){
-        return supplies.createSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
+        return supplies.createSupply(supplyDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, demandSupplyType, supplyOwner, ownedBy);
     }
     
     @Programmatic
@@ -276,7 +280,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final String ownedBy){
-        final Supply supply = supplies.createSupply(supplyDescription, weight, demandSupplyType, supplyOwner, ownedBy);
+        final Supply supply = supplies.createSupply(supplyDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, demandSupplyType, supplyOwner, ownedBy);
         return profiles.createSupplyProfile(supplyProfileDescription, profileWeight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supply, ownedBy);
     }
     //-- HELPERS: programmatic actions --//

@@ -6,6 +6,8 @@ import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
+import org.joda.time.LocalDate;
+
 public class TestDemands extends DemandAbstract {
 
     @Override
@@ -22,6 +24,8 @@ public class TestDemands extends DemandAbstract {
                 "Het gaat om een groot project waarin ik een veldslag hoop te vast te leggen voor het nageslacht."
                 + " Ik hoop een gedeelte daarvan op zee te laten afspelen op de achtergrond van het doek. Veel figuranten "
                 + "die de komende maanden op afroep beschikbaar zijn zijn noodzakelijk voor het slagen van dit monsterproject.",
+                new LocalDate(2015, 01, 01),
+                new LocalDate(2015, 12, 31),
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
@@ -33,6 +37,8 @@ public class TestDemands extends DemandAbstract {
                 "2 Groot spectakel",
                 "Samengevat: blabla",
                 "Het hele verhaal: blablabla",
+                new LocalDate(2015, 03, 01),
+                new LocalDate(2015, 07, 31),
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
@@ -44,6 +50,8 @@ public class TestDemands extends DemandAbstract {
                 "3 Wetenschappelijk onderzoek",
                 "Samengevat: blabla",
                 "Het hele verhaal: blablabla",
+                new LocalDate(2015, 02, 15),
+                new LocalDate(2017, 06, 30),
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
@@ -57,6 +65,8 @@ public class TestDemands extends DemandAbstract {
                 "Hulp gezocht voor De Nachtwacht",
                 "Samengevat: blabla",
                 "Het hele verhaal: blablabla",
+                new LocalDate(2015, 01, 01),
+                new LocalDate(2015, 12, 31),
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Rijn").get(0),
@@ -70,6 +80,8 @@ public class TestDemands extends DemandAbstract {
                 "Ik wil een oorlog beginnen",
                 "Samengevat: blabla",
                 "Het hele verhaal: blablabla",
+                new LocalDate(2016, 01, 01),
+                new LocalDate(2017, 12, 31),
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Ruyter").get(0),

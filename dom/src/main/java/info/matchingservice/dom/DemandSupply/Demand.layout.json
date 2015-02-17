@@ -6,9 +6,6 @@
         "Vraag": {
           "members": {
             "demandDescription": {
-            	"named" : {
-            		"value" : "Omschrijving"
-            	},
             	"multiLine" : {
             		"numberOfLines" : "3"
             	}
@@ -16,16 +13,11 @@
             "demandSummary" : {},
             "demandStory" : {},
             "demandAttachment" : {},
+            "demandOrSupplyProfileStartDate" : {},
+            "demandOrSupplyProfileEndDate" : {},
             "demandOwner": {
-            	"named" : {
-            		"value" : "Eigenaar"
-            	},
              	"actions" : {
-            		"updateDemand" : {
-            			"named" : {
-            				"value" : "Bewerk vraag gegevens"
-            			}
-            		},
+            		"updateDemand" : {},
             		"deleteDemand" : {}
             	}           	
             }
@@ -45,30 +37,18 @@
       "span": 8,
       "collections": {
         "collectDemandProfiles": {
-        	"named" : {
-        		"value" : "Vraag profielen"
-        	},
             "actions": {
             	"newPersonDemandProfile": {},
             	"newCourseDemandProfile": {}
             }
         },
         "collectDemandAssessments": {
-        	"named" : {
-        		"value" : "Onvangen feedback"
-        	},
-          	"actions": {
-        	
-          	}
+          	"actions": {}
         }                 
       }
     }
   ],
   "actions": {
-  		"createDemandAssessment" : {
-      		"named" : {
-      			"value" : "Geef feedback"
-      		}
-      	} 
+  		"createDemandAssessment" : {} 
   }
 }

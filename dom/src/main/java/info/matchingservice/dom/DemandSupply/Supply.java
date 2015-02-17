@@ -131,6 +131,32 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     }
     //-- supplyDescription --//
     
+	//** demandOrSupplyProfileStartDate **//
+	private LocalDate demandOrSupplyProfileStartDate;
+	
+	@javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getDemandOrSupplyProfileStartDate() {
+		return demandOrSupplyProfileStartDate;
+	}
+	
+	public void setDemandOrSupplyProfileStartDate(final LocalDate demandOrSupplyProfileStartDate){
+		this.demandOrSupplyProfileStartDate = demandOrSupplyProfileStartDate;
+	}	
+	//-- demandOrSupplyProfileStartDate --//
+	
+	//** demandOrSupplyProfileEndDate **//	
+	private LocalDate demandOrSupplyProfileEndDate;
+	
+	@javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getDemandOrSupplyProfileEndDate() {
+		return demandOrSupplyProfileEndDate;
+	}
+	
+	public void setDemandOrSupplyProfileEndDate(final LocalDate demandOrSupplyProfileEndDate){
+		this.demandOrSupplyProfileEndDate = demandOrSupplyProfileEndDate;
+	}	
+	//-- demandOrSupplyProfileStartDate --//
+    
 	//-- API: PROPERTIES --//
 	//** API: COLLECTIONS **//
     
@@ -175,15 +201,63 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     @Action(semantics=SemanticsOf.IDEMPOTENT)
     public Supply updateSupply(
             @ParameterLayout(named="supplyDescription", multiLine=4)
-            final String supplyDescription
+            final String supplyDescription,
+            @ParameterLayout(named="demandOrSupplyProfileStartDate")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final LocalDate demandOrSupplyProfileStartDate,
+            @ParameterLayout(named="demandOrSupplyProfileEndDate")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final LocalDate demandOrSupplyProfileEndDate
             ){
         this.setSupplyDescription(supplyDescription);
+        this.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
+        this.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
         return this;
     }
     
     public String default0UpdateSupply(){
         return this.getSupplyDescription();
     }
+    
+    public LocalDate default1UpdateSupply(){
+        return this.getDemandOrSupplyProfileStartDate();
+    }
+    
+    public LocalDate default2UpdateSupply(){
+        return this.getDemandOrSupplyProfileEndDate();
+    }
+    
+    public String validateUpdateSupply(
+            final String supplyDescription,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate
+            )
+     {
+    	final LocalDate today = LocalDate.now();
+    	if (demandOrSupplyProfileEndDate != null && demandOrSupplyProfileEndDate.isBefore(today))
+    	{
+    		return "ENDDATE_BEFORE_TODAY";
+    	}
+    	
+    	if (
+    			demandOrSupplyProfileEndDate != null 
+    			
+    			&& 
+    			
+    			demandOrSupplyProfileStartDate != null
+    			
+    			&&
+    			
+    			demandOrSupplyProfileEndDate.isBefore(demandOrSupplyProfileStartDate)
+    			
+    			)
+    	{
+    		return "ENDDATE_BEFORE_STARTDATE";
+    	}
+    	
+    	return null;
+     }
+    
     //-- updateSupply --//
     
     //** deleteSupply **//

@@ -694,10 +694,16 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             @ParameterLayout(named="profileName")
             String newString,
             @ParameterLayout(named="weight")
-            Integer newInteger
+            Integer newInteger,
+            @ParameterLayout(named="profileStartDate")
+            LocalDate profileStartDate,
+            @ParameterLayout(named="profileEndDate")
+            LocalDate profileEndDate
             ){
         this.setProfileName(newString);
         this.setWeight(newInteger);
+        this.setProfileStartDate(profileStartDate);
+        this.setProfileEndDate(profileEndDate);
         return this;
     }
     
@@ -707,6 +713,14 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public Integer default1UpdateProfile() {
         return getWeight();
+    }
+    
+    public LocalDate default2UpdateProfile() {
+        return getProfileStartDate();
+    }
+    
+    public LocalDate default3UpdateProfile() {
+        return getProfileEndDate();
     }
     //-- updateProfile --//
     
@@ -718,6 +732,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         boolean confirmDelete) {
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
+        this.getSupplyProfileOwner().deleteSupply(true);
         return this.getActorOwner();
             
     }

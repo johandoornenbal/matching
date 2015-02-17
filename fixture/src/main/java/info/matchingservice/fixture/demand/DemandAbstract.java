@@ -7,6 +7,7 @@ import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.joda.time.LocalDate;
 
 public abstract class DemandAbstract extends FixtureScript {
 
@@ -17,13 +18,15 @@ public abstract class DemandAbstract extends FixtureScript {
             String demandDescription,
             String demandSummary,
             String demandStory,
+            LocalDate demandOrSupplyProfileStartDate,
+            LocalDate demandOrSupplyProfileEndDate,
             Integer weight,
             DemandSupplyType demandSupplyType,
             Actor demandOwner,
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Demand newDemand = demands.createDemand(demandDescription, demandSummary, demandStory, null, weight, demandSupplyType, demandOwner, ownedBy);
+        Demand newDemand = demands.createDemand(demandDescription, demandSummary, demandStory, null, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
         return executionContext.add(this,newDemand);
     }
     

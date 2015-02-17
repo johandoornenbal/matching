@@ -30,6 +30,7 @@ import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
 
 @DomainService(repositoryFor = Demand.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -61,6 +62,8 @@ public class Demands extends MatchingDomainService<Demand> {
             final String demandSummary,
             final String demandStory,
             final Blob demandAttachment,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner,
@@ -72,6 +75,8 @@ public class Demands extends MatchingDomainService<Demand> {
         newNeed.setDemandSummary(demandSummary);
         newNeed.setDemandStory(demandStory);
         newNeed.setDemandAttachment(demandAttachment);
+        newNeed.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
+        newNeed.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
         newNeed.setWeight(weight);
         newNeed.setDemandType(demandSupplyType);
         newNeed.setDemandOwner(demandOwner);
@@ -79,5 +84,7 @@ public class Demands extends MatchingDomainService<Demand> {
         persist(newNeed);
         return newNeed;
     }
+    
+    
 
 }

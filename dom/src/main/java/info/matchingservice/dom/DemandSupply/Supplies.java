@@ -29,6 +29,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDate;
 
 @DomainService(repositoryFor = Supply.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -58,6 +59,8 @@ public class Supplies extends MatchingDomainService<Supply> {
     public Supply createSupply(
             final String supplyDescription,
             final Integer weight,
+            final LocalDate demandOrSupplyProfileStartDate,
+            final LocalDate demandOrSupplyProfileEndDate,
             final DemandSupplyType demandSupplyType,
             final Actor supplyOwner,
             final String ownedBy) {
@@ -65,6 +68,8 @@ public class Supplies extends MatchingDomainService<Supply> {
         final UUID uuid=UUID.randomUUID();
         newSupply.setUniqueItemId(uuid);
         newSupply.setSupplyDescription(supplyDescription);
+        newSupply.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
+        newSupply.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
         newSupply.setSupplyType(demandSupplyType);
         newSupply.setWeight(weight);
         newSupply.setSupplyOwner(supplyOwner);
