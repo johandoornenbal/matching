@@ -21,6 +21,7 @@ package info.matchingservice.dom.Profile;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ParameterLayout;
@@ -39,6 +40,7 @@ public class ProfileElementUseTimePeriod extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
     
+	@Persistent
     private boolean useTimePeriod;
     
     @javax.jdo.annotations.Column(allowsNull = "true")

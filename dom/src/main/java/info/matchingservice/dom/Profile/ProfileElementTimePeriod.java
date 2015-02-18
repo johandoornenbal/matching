@@ -21,6 +21,7 @@ package info.matchingservice.dom.Profile;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ParameterLayout;
@@ -40,7 +41,8 @@ public class ProfileElementTimePeriod extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
     
-    private LocalDate startDate;
+    @Persistent
+	private LocalDate startDate;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
 	public LocalDate getStartDate() {
@@ -51,6 +53,7 @@ public class ProfileElementTimePeriod extends ProfileElement {
 		this.startDate = startDate;
 	}
 
+	@Persistent
     private LocalDate endDate;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
