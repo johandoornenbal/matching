@@ -58,7 +58,7 @@ public class PersistedProfileElementComparison extends MatchingSecureMutableObje
     
     private Profile demandProfileElementOwner;
 
-    @PropertyLayout(hidden=Where.EVERYWHERE)
+//    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Profile getDemandProfileElementOwner() {
         return demandProfileElementOwner;
@@ -70,7 +70,7 @@ public class PersistedProfileElementComparison extends MatchingSecureMutableObje
     
     private ProfileElement demandProfileElement;
     
-    @PropertyLayout(hidden=Where.EVERYWHERE)
+//    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public ProfileElement getDemandProfileElement() {
         return demandProfileElement;
@@ -82,7 +82,7 @@ public class PersistedProfileElementComparison extends MatchingSecureMutableObje
     
     private ProfileElement matchingSupplyProfileElement;
     
-    @PropertyLayout(hidden=Where.EVERYWHERE)
+//    @PropertyLayout(hidden=Where.EVERYWHERE)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public ProfileElement getMatchingSupplyProfileElement(){
         return matchingSupplyProfileElement;
@@ -95,7 +95,7 @@ public class PersistedProfileElementComparison extends MatchingSecureMutableObje
     private Profile matchingProfileElementOwner;
     
     @MemberOrder(sequence="30")
-    @PropertyLayout(named="Profiel")
+//    @PropertyLayout(named="Profiel")
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Profile getMatchingProfileElementOwner(){
         return matchingProfileElementOwner;
@@ -108,7 +108,7 @@ public class PersistedProfileElementComparison extends MatchingSecureMutableObje
     private Actor matchingProfileElementActorOwner;
     
     @MemberOrder(sequence="20")
-    @PropertyLayout(named="Eigenaar")
+//    @PropertyLayout(named="Eigenaar")
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Actor getMatchingProfileElementActorOwner() {
         return matchingProfileElementActorOwner;
@@ -121,7 +121,7 @@ public class PersistedProfileElementComparison extends MatchingSecureMutableObje
     private Integer calculatedMatchingValue;
     
     @MemberOrder(sequence="10")
-    @PropertyLayout(named="Matchingswaarde")
+//    @PropertyLayout(named="Matchingswaarde")
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Integer getCalculatedMatchingValue() {
         return calculatedMatchingValue;
@@ -134,7 +134,7 @@ public class PersistedProfileElementComparison extends MatchingSecureMutableObje
     private Integer weight;
     
     @MemberOrder(sequence="11")
-    @PropertyLayout(named="Gewicht")
+//    @PropertyLayout(named="Gewicht")
     @javax.jdo.annotations.Column(allowsNull = "true")
     public Integer getWeight() {
         return weight;
@@ -161,7 +161,15 @@ public class PersistedProfileElementComparison extends MatchingSecureMutableObje
     //helpers
     
     public String toString() {
-        return getDemandProfileElement().toString() + " vs. " + getMatchingSupplyProfileElement().toString();
+    	if (getMatchingSupplyProfileElement() != null)
+    	{
+        	return getDemandProfileElement().toString() + " vs. " + getMatchingSupplyProfileElement().toString();
+    	}
+    	else
+    	{
+    		return getDemandProfileElement().toString() + " vs. profile";
+    	}
+    
     }
     
     public int compareTo(PersistedProfileElementComparison that) {

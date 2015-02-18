@@ -165,28 +165,6 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
 	//** API: ACTIONS **//
 	
-    //** updateProfileElement **//
-    @Action(semantics=SemanticsOf.IDEMPOTENT)
-    public ProfileElement updateProfileElement(
-            @ParameterLayout(named="profileElementDescription", multiLine=4)
-            String newDescr,
-            @ParameterLayout(named="weight")
-            Integer newWeight
-            ){
-        this.setProfileElementDescription(newDescr);
-        this.setWeight(newWeight);
-        return this;
-    }
-    
-    public String default0UpdateProfileElement() {
-        return getProfileElementDescription();
-    }
-    
-    public Integer default1UpdateProfileElement() {
-        return getWeight();
-    }
-    //-- updateProfileElement --//
-    
     //** deleteProfileElement **//
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout()

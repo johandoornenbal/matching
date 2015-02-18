@@ -25,7 +25,6 @@ import javax.jdo.annotations.InheritanceStrategy;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
-import org.joda.time.LocalDate;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -33,92 +32,47 @@ import org.joda.time.LocalDate;
     @javax.jdo.annotations.Query(
             name = "findProfileElementOfType", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Profile.ProfileElementPeriod "
+                    + "FROM info.matchingservice.dom.Profile.ProfileElementUseTimePeriod "
                     + "WHERE profileElementOwner == :profileElementOwner && profileElementType == :profileElementType")
 })
-public class ProfileElementPeriod extends ProfileElement {
+public class ProfileElementUseTimePeriod extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
     
-    private LocalDate startDate;
+    private boolean useTimePeriod;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getStartDate() {
-		return startDate;
+	public boolean getUseTimePeriod() {
+		return useTimePeriod;
 	}
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-
-    private LocalDate endDate;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
+	public void setUseTimePeriod(boolean useTimePeriod) {
+		this.useTimePeriod = useTimePeriod;
 	}
     
     
     // Business rules:
-    // Only on type TIME_PERIOD
-	// Normal validation of date: Start before End and End after toDay
+    // Only on type USE_TIME_PERIOD
     @Action(semantics=SemanticsOf.IDEMPOTENT)
-    public ProfileElement updatePeriod(
-    		@ParameterLayout(named = "startDate")
-            LocalDate startDate,
-            @ParameterLayout(named = "endDate")
-            LocalDate endDate
+    public ProfileElement updateUseTimePeriod(
+    		@ParameterLayout(named = "useTimePeriod")
+            boolean useTimePeriod
             ){
-        this.setStartDate(startDate);
-        this.setEndDate(endDate);
+        this.setUseTimePeriod(useTimePeriod);
         return this;
     }
     
-    public LocalDate default0UpdatePeriod() {
-        return getStartDate();
+    public boolean default0UpdateUseTimePeriod() {
+        return getUseTimePeriod();
     }
     
-    public LocalDate default1UpdatePeriod() {
-        return getEndDate();
-    }
     
-    public boolean hideUpdatePeriod(LocalDate startDate, LocalDate endDate){
-    	if (getProfileElementType() == ProfileElementType.TIME_PERIOD){
+    public boolean hideUpdateUseTimePeriod(boolean useTimePeriod){
+    	if (getProfileElementType() == ProfileElementType.USE_TIME_PERIOD){
     		return false;
     	}
     	
     	return true;
     }
-    
-    public String validateUpdatePeriod(LocalDate startDate, LocalDate endDate) {
-    	
-    	final LocalDate today = LocalDate.now();
-    	if (endDate != null && endDate.isBefore(today))
-    	{
-    		return "ENDDATE_BEFORE_TODAY";
-    	}
-    	
-    	if (
-    			endDate != null 
-    			
-    			&& 
-    			
-    			startDate != null
-    			
-    			&&
-    			
-    			startDate.isBefore(startDate)
-    			
-    			)
-    	{
-    		return "ENDDATE_BEFORE_STARTDATE";
-    	}
-    	
-    	return null;
-    }
-    
+        
 }

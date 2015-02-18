@@ -10,6 +10,8 @@ import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
+import org.joda.time.LocalDate;
+
 public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract {
 
     @Override
@@ -57,6 +59,15 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
                 "frans", 
                 executionContext
                 );
+        
+//        createTimePeriod(
+//        		new LocalDate(2015, 3, 1),
+//        		new LocalDate(2015, 3, 20),
+//        		10,
+//        		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
+//                "frans", 
+//                executionContext
+//        		);
         
         //** op tweede demand **//
         

@@ -19,52 +19,62 @@
 
 package info.matchingservice.dom.Profile;
 
-import java.util.UUID;
-
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
+
+import java.util.UUID;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDate;
 
-@DomainService(repositoryFor = ProfileElementDropDown.class)
-public class ProfileElementDropDowns extends MatchingDomainService<ProfileElementDropDown> {
+@DomainService(repositoryFor = ProfileElementTimePeriod.class)
+public class ProfileElementTimePeriods extends MatchingDomainService<ProfileElementTimePeriod> {
 
-    public ProfileElementDropDowns() {
-        super(ProfileElementDropDowns.class, ProfileElementDropDown.class);
+    public ProfileElementTimePeriods() {
+        super(ProfileElementTimePeriods.class, ProfileElementTimePeriod.class);
     }
 
     // with currentUserName
     @Programmatic
-    public ProfileElementDropDown createProfileElementDropDown(
+    public ProfileElementTimePeriod createProfileElementTimePeriod(
             final String description,
             final Integer weight,
-            final DropDownForProfileElement dropDown,
+            final LocalDate startDate,
+            final LocalDate endDate,
             final ProfileElementType profileElementType,
             final Profile profileOwner
             ){
-        
-        return createProfileElementDropDown(description, weight, dropDown, profileElementType, profileOwner, currentUserName());
+
+        return createProfileElementTimePeriod(
+        		description,
+                weight,
+                startDate,
+                endDate,
+                profileElementType,
+                profileOwner,
+                currentUserName()
+        		);
     }
     
     // without currentUser (for fixtures)
     @Programmatic
-    public ProfileElementDropDown createProfileElementDropDown(
+    public ProfileElementTimePeriod createProfileElementTimePeriod(
             final String description,
             final Integer weight,
-            final DropDownForProfileElement dropDown,
+            final LocalDate startDate,
+            final LocalDate endDate,
             final ProfileElementType profileElementType,
             final Profile profileOwner,
             final String ownedBy
             ){
-        final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
+        final ProfileElementTimePeriod newProfileElement = newTransientInstance(ProfileElementTimePeriod.class);
         final UUID uuid=UUID.randomUUID();
         newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
-        newProfileElement.setDropDownValue(dropDown);
-        newProfileElement.setDisplayValue(dropDown.getValue());
+        newProfileElement.setStartDate(startDate);
+        newProfileElement.setEndDate(endDate);
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(ownedBy);

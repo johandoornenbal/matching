@@ -35,35 +35,26 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
         super(ProfileElementTexts.class, ProfileElementText.class);
     }
 
+    // with currentUserName
     @Programmatic
     public ProfileElementText createProfileElementText(
             final String description,
             final Integer weight,
             final String textValue,
-            final ProfileElementType profileElementCategory,
+            final ProfileElementType profileElementType,
             final Profile profileOwner
             ){
-        final ProfileElementText newProfileElement = newTransientInstance(ProfileElementText.class);
-        final UUID uuid=UUID.randomUUID();
-        newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
-        newProfileElement.setWeight(weight);
-        newProfileElement.setTextValue(textValue);
-        newProfileElement.setDisplayValue(textValue);
-        newProfileElement.setProfileElementType(profileElementCategory);
-        newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setOwnedBy(currentUserName());
-        persist(newProfileElement);
-        return newProfileElement;
+    	return createProfileElementText(description, weight, textValue, profileElementType, profileOwner, currentUserName());
     }
     
+    // without currentUser (for fixtures)
     @Programmatic
     public ProfileElementText createProfileElementText(
             final String description,
             final Integer weight,
             @Parameter(maxLength=2048)
             final String textValue,
-            final ProfileElementType profileElementCategory,
+            final ProfileElementType profileElementType,
             final Profile profileOwner,
             final String ownedBy
             ){
@@ -78,7 +69,7 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
         	textLength = textValue.length();
         }
         newProfileElement.setDisplayValue(textValue.substring(0, textLength-1));
-        newProfileElement.setProfileElementType(profileElementCategory);
+        newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);

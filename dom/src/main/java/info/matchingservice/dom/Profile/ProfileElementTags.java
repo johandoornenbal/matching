@@ -46,30 +46,23 @@ public class ProfileElementTags extends MatchingDomainService<ProfileElementTag>
     	return tempList;
     }
     
+    // with currentUserName
     @Programmatic
     public ProfileElementTag createProfileElementTag(
             final String description,
             final Integer weight,
-            final ProfileElementType profileElementCategory,
+            final ProfileElementType profileElementType,
             final Profile profileOwner
             ){
-        final ProfileElementTag newProfileElement = newTransientInstance(ProfileElementTag.class);
-        final UUID uuid=UUID.randomUUID();
-        newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
-        newProfileElement.setWeight(weight);
-        newProfileElement.setProfileElementType(profileElementCategory);
-        newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setOwnedBy(currentUserName());
-        persist(newProfileElement);
-        return newProfileElement;
+        return createProfileElementTag(description, weight, profileElementType, profileOwner, currentUserName());
     }
     
+    // without currentUser (for fixtures)
     @Programmatic
     public ProfileElementTag createProfileElementTag(
             final String description,
             final Integer weight,
-            final ProfileElementType profileElementCategory,
+            final ProfileElementType profileElementType,
             final Profile profileOwner,
             final String ownedBy
             ){
@@ -78,7 +71,7 @@ public class ProfileElementTags extends MatchingDomainService<ProfileElementTag>
         newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
-        newProfileElement.setProfileElementType(profileElementCategory);
+        newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);

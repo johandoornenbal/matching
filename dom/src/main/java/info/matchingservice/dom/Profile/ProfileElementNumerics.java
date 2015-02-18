@@ -34,34 +34,26 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         super(ProfileElementNumerics.class, ProfileElementNumeric.class);
     }
 
+    // with currentUserName
     @Programmatic
     public ProfileElementNumeric createProfileElementNumeric(
             final String description,
             final Integer weight,
             final Integer numericValue,
-            final ProfileElementType profileElementCategory,
+            final ProfileElementType profileElementType,
             final Profile profileOwner
             ){
-        final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
-        final UUID uuid=UUID.randomUUID();
-        newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
-        newProfileElement.setWeight(weight);
-        newProfileElement.setNumericValue(numericValue);
-        newProfileElement.setDisplayValue(numericValue.toString());
-        newProfileElement.setProfileElementType(profileElementCategory);
-        newProfileElement.setProfileElementOwner(profileOwner);
-        newProfileElement.setOwnedBy(currentUserName());
-        persist(newProfileElement);
-        return newProfileElement;
+    	
+    	return createProfileElementNumeric(description, weight, numericValue, profileElementType, profileOwner, currentUserName());
     }
     
+    // without currentUser (for fixtures)
     @Programmatic
     public ProfileElementNumeric createProfileElementNumeric(
             final String description,
             final Integer weight,
             final Integer numericValue,
-            final ProfileElementType profileElementCategory,
+            final ProfileElementType profileElementType,
             final Profile profileOwner,
             final String ownedBy
             ){
@@ -72,7 +64,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         newProfileElement.setWeight(weight);
         newProfileElement.setNumericValue(numericValue);
         newProfileElement.setDisplayValue(numericValue.toString());
-        newProfileElement.setProfileElementType(profileElementCategory);
+        newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);

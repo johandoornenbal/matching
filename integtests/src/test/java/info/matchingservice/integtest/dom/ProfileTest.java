@@ -149,16 +149,7 @@ public class ProfileTest extends MatchingIntegrationTest {
             assertThat(text.getWeight(), is(WEIGHT));
             assertThat(dropdownAndText.getWeight(), is(WEIGHT));
             
-//            assertThat(dropdown.default0EditProfileDescription(), is(dropdown.getProfileElementDescription()));
-            assertThat(numeric.default0UpdateProfileElement(), is(ELEMENT_DESCRIPTION));
-            assertThat(text.default0UpdateProfileElement(), is(text.getProfileElementDescription()));
-            assertThat(dropdownAndText.default0UpdateProfileElement(), is(dropdownAndText.getProfileElementDescription()));
-            
-//            assertThat(dropdown.default0EditWeight(), is(WEIGHT));
-            assertThat(numeric.default1UpdateProfileElement(), is(WEIGHT));
-            assertThat(text.default1UpdateProfileElement(), is(WEIGHT));
-            assertThat(dropdownAndText.default1UpdateProfileElement(), is(dropdownAndText.getWeight()));
-            
+
 //            assertThat(dropdown.getDropDownValue(), is(dropDownValue));
             assertThat(numeric.getNumericValue(), is(ELEMENT_INTVALUE));
             assertThat(text.getTextValue(), is(ELEMENT_TEXTVALUE));

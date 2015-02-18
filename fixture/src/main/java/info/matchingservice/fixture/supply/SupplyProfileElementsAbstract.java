@@ -11,6 +11,8 @@ import info.matchingservice.dom.Profile.ProfileElementTexts;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementDropDowns;
+import info.matchingservice.dom.Profile.ProfileElementUseTimePeriod;
+import info.matchingservice.dom.Profile.ProfileElementUseTimePeriods;
 import info.matchingservice.dom.Profile.Profiles;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
@@ -81,6 +83,18 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
     	return executionContext.add(this,newElement);
     }
     
+    protected ProfileElementUseTimePeriod createUseTimePeriod(
+            String description,
+            boolean useTimePeriod,
+            Integer weight,
+            Profile profileOwner,
+            String ownedBy,
+            ExecutionContext executionContext 
+    		){
+    	ProfileElementUseTimePeriod newElement = profileElementUseTimePeriods.createProfileElementUseTimePeriod(description, 10, useTimePeriod, ProfileElementType.USE_TIME_PERIOD, profileOwner, ownedBy);
+    	return executionContext.add(this,newElement);
+    }
+    
     
     //region > injected services
     @javax.inject.Inject
@@ -94,5 +108,8 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
     
     @Inject
     ProfileElementTags profileElementTags;
+    
+    @Inject
+    ProfileElementUseTimePeriods profileElementUseTimePeriods;
 
 }

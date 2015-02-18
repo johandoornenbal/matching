@@ -7,6 +7,7 @@ import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.joda.time.LocalDate;
 
 public abstract class SupplyProfileAbstract extends FixtureScript {
 
@@ -16,12 +17,14 @@ public abstract class SupplyProfileAbstract extends FixtureScript {
     protected Profile createSupplyProfile(
             String supplyProfileDescription,
             Integer weight,
+            LocalDate profileStartDate,
+            LocalDate profileEndDate,
             ProfileType profileType,
             Supply supplyProfileOwner,
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Profile newSupplyProfile = profiles.createSupplyProfile(supplyProfileDescription, weight, null, null, profileType, supplyProfileOwner, ownedBy);    
+        Profile newSupplyProfile = profiles.createSupplyProfile(supplyProfileDescription, weight, profileStartDate, profileEndDate, profileType, supplyProfileOwner, ownedBy);    
         return executionContext.add(this,newSupplyProfile);
     }
     

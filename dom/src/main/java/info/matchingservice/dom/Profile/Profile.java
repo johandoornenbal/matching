@@ -629,6 +629,186 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     //-- createLocationElement --//
     
+    //** createTimePeriodElement **//
+    // Business rule:
+    // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    // er mag er hooguit een van zijn
+    // alleen op demands
+    // de 'gewone' datum regels gelden
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createTimePeriodElement(
+    		@ParameterLayout(named="startDate")
+    		final LocalDate startDate,
+    		@ParameterLayout(named="endDate")
+    		final LocalDate endDate,
+    		@ParameterLayout(named="weight")
+    		final Integer weight) {
+    	
+    	profileElementTimePeriods.createProfileElementTimePeriod("TIME_PERIOD_ELEMENT", weight, startDate, endDate, ProfileElementType.TIME_PERIOD, this);
+    	
+    	return this;
+    }
+    
+    public boolean hideCreateTimePeriodElement(final LocalDate startDate, final LocalDate endDate, final Integer weight) {
+    	
+    	QueryDefault<ProfileElementTimePeriod> query = 
+                QueryDefault.create(
+                		ProfileElementTimePeriod.class, 
+                    "findProfileElementOfType",
+                    "profileElementOwner", this, "profileElementType", ProfileElementType.TIME_PERIOD);
+    	
+    	if (
+    			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    			(this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+    			
+    			&&
+    			
+    			// alleen op demands
+    			this.getDemandOrSupply() == DemandOrSupply.DEMAND
+    			
+    			&&
+    			
+    			// er mag er hooguit een van zijn
+    			container.firstMatch(query) == null
+    		) 
+    	{
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+    public String validateCreateTimePeriodElement(final LocalDate startDate, final LocalDate endDate, final Integer weight) {
+    	
+    	QueryDefault<ProfileElementTimePeriod> query = 
+                QueryDefault.create(
+                		ProfileElementTimePeriod.class, 
+                    "findProfileElementOfType",
+                    "profileElementOwner", this, "profileElementType", ProfileElementType.TIME_PERIOD);
+    	
+    	if (container.firstMatch(query) != null) {
+    		
+    		return "ONE_INSTANCE_AT_MOST";
+    		
+    	}
+    	
+    	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+    		
+    		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+    		
+    	}
+    	
+    	if (this.getDemandOrSupply() != DemandOrSupply.DEMAND) {
+    		
+    		return "ONLY_ON_DEMAND";
+    		
+    	}
+    	
+    	//Date validation
+    	
+    	final LocalDate today = LocalDate.now();
+    	if (endDate != null && endDate.isBefore(today))
+    	{
+    		return "ENDDATE_BEFORE_TODAY";
+    	}
+    	
+    	if (
+    			endDate != null 
+    			
+    			&& 
+    			
+    			startDate != null
+    			
+    			&&
+    			
+    			endDate.isBefore(startDate)
+    			
+    			)
+    	{
+    		return "ENDDATE_BEFORE_STARTDATE";
+    	}
+    	
+    	
+    	return null;
+    }
+    
+    //-- createTimePeriodElement --//
+    
+    //** createUseTimePeriodElement **//
+    // Business rule:
+    // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    // er mag er hooguit een van zijn
+    // alleen op supplies
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createUseTimePeriodElement(
+    		@ParameterLayout(named="weight")
+    		final Integer weight) {
+    	
+    	profileElementUseTimePeriods.createProfileElementUseTimePeriod("USE_TIME_PERIOD_ELEMENT", weight, true, ProfileElementType.USE_TIME_PERIOD, this);
+    	
+    	return this;
+    }
+    
+    public boolean hideCreateUseTimePeriodElement(final Integer weight) {
+    	
+    	QueryDefault<ProfileElementUseTimePeriod> query = 
+                QueryDefault.create(
+                		ProfileElementUseTimePeriod.class, 
+                    "findProfileElementOfType",
+                    "profileElementOwner", this, "profileElementType", ProfileElementType.USE_TIME_PERIOD);
+    	
+    	if (
+    			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    			(this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+    			
+    			&&
+    			
+    			// alleen op demands
+    			this.getDemandOrSupply() == DemandOrSupply.SUPPLY
+    			
+    			&&
+    			
+    			// er mag er hooguit een van zijn
+    			container.firstMatch(query) == null
+    		) 
+    	{
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+    public String validateCreateUseTimePeriodElement(final Integer weight) {
+    	
+    	QueryDefault<ProfileElementUseTimePeriod> query = 
+                QueryDefault.create(
+                		ProfileElementUseTimePeriod.class, 
+                    "findProfileElementOfType",
+                    "profileElementOwner", this, "profileElementType", ProfileElementType.USE_TIME_PERIOD);
+    	
+    	if (container.firstMatch(query) != null) {
+    		
+    		return "ONE_INSTANCE_AT_MOST";
+    		
+    	}
+    	
+    	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+    		
+    		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+    		
+    	}
+    	
+    	if (this.getDemandOrSupply() != DemandOrSupply.SUPPLY) {
+    		
+    		return "ONLY_ON_SUPPLY";
+    		
+    	}
+    	
+    	return null;
+    	
+    }
+    //-- createUseTimePeriodElement --//
+    
     //** createPriceElement **//
     // Business rule:
     // Er kan maar een prijs element zijn
@@ -797,6 +977,12 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Inject
     ProfileElementTags profileElementTags;
+    
+    @Inject
+    ProfileElementTimePeriods profileElementTimePeriods;
+    
+    @Inject
+    ProfileElementUseTimePeriods profileElementUseTimePeriods;
     
     @Inject
     Tags tags;

@@ -1,20 +1,22 @@
 package info.matchingservice.fixture.demand;
 
-import javax.inject.Inject;
-
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElementDropDown;
+import info.matchingservice.dom.Profile.ProfileElementDropDowns;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementTags;
 import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementTexts;
+import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
+import info.matchingservice.dom.Profile.ProfileElementTimePeriods;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.dom.Profile.ProfileElementDropDown;
-import info.matchingservice.dom.Profile.ProfileElementDropDowns;
 import info.matchingservice.dom.Profile.Profiles;
 
+import javax.inject.Inject;
+
 import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
+import org.joda.time.LocalDate;
 
 public abstract class DemandProfileElementsAbstract extends FixtureScript {
 
@@ -75,6 +77,20 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     	return executionContext.add(this,newElement);
     }
     
+    protected ProfileElementTimePeriod createTimePeriod(
+            LocalDate startDate,
+            LocalDate endDate,
+            Integer weight,
+            Profile profileOwner,
+            String ownedBy,
+            ExecutionContext executionContext 
+    		){
+    	ProfileElementTimePeriod newElement = profileElementTimePeriods.createProfileElementTimePeriod("TIME_PERIOD", weight, startDate, endDate, ProfileElementType.TIME_PERIOD, profileOwner, ownedBy);
+    	return executionContext.add(this,newElement);
+    }
+    
+    
+    
     //region > injected services
     @javax.inject.Inject
     Profiles profiles;
@@ -87,4 +103,7 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     
     @Inject
     ProfileElementTexts profileElementTexts;
+    
+    @Inject
+    ProfileElementTimePeriods profileElementTimePeriods;
 }

@@ -24,7 +24,9 @@ import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementText;
+import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementType;
+import info.matchingservice.dom.Profile.ProfileElementUseTimePeriod;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRule;
 import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRules;
@@ -54,6 +56,7 @@ import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.joda.time.Days;
 
 /**
  * 
@@ -94,6 +97,144 @@ import org.apache.isis.applib.annotation.SemanticsOf;
  */
 @DomainService(nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 public class ProfileMatchingService extends AbstractService {
+	
+	
+	//********************************************************************* getProfileElementTimePeriodComparison ************************************************************************
+	/**
+	 * Returns a comparison between a demand TimePeriod element and a supply UseTimePeriod element
+	 * Calculation is 'optimistic': when there are no start- or enddates on the profile availability is assumed
+	 * TODO: Also when there is no UseTimePeriod element this element will have no effect on the matching value of the profile
+	 * Default matchValue is set to 100 for this purpose
+	 * 
+	 * @param demandProfileElement
+	 * @param supplyProfile
+	 * @return
+	 */
+	@Programmatic
+	public ProfileElementComparison getProfileElementTimePeriodComparison(
+			final ProfileElementTimePeriod demandProfileElement,
+			final ProfileElementUseTimePeriod supplyProfileElement
+			)
+	{
+		
+		// return null if types are not as expected
+		if (
+				demandProfileElement.getProfileElementType() != ProfileElementType.TIME_PERIOD
+				
+				&&
+				
+				supplyProfileElement.getProfileElementType() != ProfileElementType.USE_TIME_PERIOD
+			)
+		{
+			return null;
+		}
+
+		// Default: availability is assumed..
+		Integer matchValue = 100;
+		
+		// When supply profile dates are meant to be used, indicated by supplyProfileElement.getUseTimePeriod() == true
+		if (supplyProfileElement.getUseTimePeriod()) {
+			
+			// if the endDate on demandProfile element is there and the startDate on supplyProfile also
+			// and if startdate later than enddate value = 0;
+			// 
+			//	(pic)
+			// 	demand -------------------*enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+			//	supply xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx *startdate* ----------------
+			if (
+					demandProfileElement.getEndDate() != null
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileStartDate() !=null
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileStartDate().isAfter(demandProfileElement.getEndDate())
+					
+				)
+			{
+				matchValue = 0;
+				
+				System.out.println("match from getProfileElementTimePeriodComparison() in ProfileMatchingService.class:");
+				System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() +  " >> start supply later than end demand");
+				
+			}
+			
+			
+			// if the startDate on demandProfile element is there and the endDate on supplyProfile also
+			// and if startdate later than enddate value = 0;
+			//
+			// 	(pic)
+			// 	demand xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx *startdate* ----------------
+			// 	supply -------------------*enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+			
+			if (
+					supplyProfileElement.getProfileElementOwner().getProfileEndDate() !=null
+					&&
+					demandProfileElement.getStartDate() != null
+					&&
+					demandProfileElement.getStartDate().isAfter(supplyProfileElement.getProfileElementOwner().getProfileEndDate())
+					
+				)
+			{
+				matchValue = 0;
+				
+				System.out.println("match from getProfileElementTimePeriodComparison() in ProfileMatchingService.class:");
+				System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() +  " >> end supply before start demand");
+			}
+			
+			// if supply start <= demand start and supply end <= demand end
+			// calculate relative value
+			//
+			//	(pic)
+			// 	demand xxxxxxxxxxxxxxxxxxx *startdate* ------------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxx
+			// 	supply xxxxxx*startdate* ----------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+			
+			if (
+					demandProfileElement.getStartDate() != null
+					&&
+					demandProfileElement.getEndDate() != null
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileStartDate() !=null
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileEndDate() !=null
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileStartDate().isBefore(demandProfileElement.getStartDate().plusDays(1))
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileEndDate().isBefore(demandProfileElement.getEndDate().plusDays(1))
+				)
+			{
+				
+				final int demandDays = Days.daysBetween(demandProfileElement.getStartDate(), demandProfileElement.getEndDate()).getDays();
+				final int deltaDays = Days.daysBetween(supplyProfileElement.getProfileElementOwner().getProfileEndDate(), demandProfileElement.getEndDate()).getDays();
+				
+				final int value = 100*(1-(deltaDays/demandDays));
+				
+				matchValue = value;
+				
+				System.out.println("value: " + value);
+				System.out.println("match from getProfileElementTimePeriodComparison() in ProfileMatchingService.class:");
+				System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() +  " >> start supply before start demand and end supply before end demand");
+				System.out.println("matchValue:  " + matchValue);
+				System.out.println("demand:  " + demandProfileElement.getStartDate().toString() + " - " + demandProfileElement.getEndDate().toString());
+				System.out.println("supply:  " + supplyProfileElement.getProfileElementOwner().getProfileStartDate().toString() + " - " + supplyProfileElement.getProfileElementOwner().getProfileEndDate().toString());
+				System.out.println("demandDays: " + demandDays + "  deltaDays: " + deltaDays);
+				
+			}
+				
+		}
+		
+		ProfileElementComparison profileElementComparison = new ProfileElementComparison(
+				demandProfileElement.getProfileElementOwner(),
+				demandProfileElement, 
+				supplyProfileElement, 
+				supplyProfileElement.getProfileElementOwner(), 
+				supplyProfileElement.getProfileElementOwner().getActorOwner(), 
+				matchValue, 
+				demandProfileElement.getWeight()
+				);		
+		return profileElementComparison;
+	}
+	
+	
+	//********************************************************************* END getProfileElementTimePeriodComparison ************************************************************************
 	
 	//********************************************************************* getProfileElementPassionTagComparison ************************************************************************
 	
@@ -267,6 +408,7 @@ public class ProfileMatchingService extends AbstractService {
 		
 		final ProfileElementTypeMatchingRule mockRule1 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule1", "SAME_PROFILE_ELEMENT_TYPE", 1);
 		final ProfileElementTypeMatchingRule mockRule2 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule2", "PASSION_TAGS_TO_PASSION", 1);
+		final ProfileElementTypeMatchingRule mockRule3 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule3", "TIME_PERIOD_TO_SUPPLY_PROFILE", 1);
 		
 		if (
 				//implementation of mockRule1
@@ -312,6 +454,30 @@ public class ProfileMatchingService extends AbstractService {
 				return getProfileElementPassionTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementText) supplyProfileElement);
 			}
 			
+		}
+		
+		if (
+				//implementation of mockRule3
+				demandProfileElement.getProfileElementType() == ProfileElementType.TIME_PERIOD
+				&&
+				supplyProfileElement.getProfileElementType() == ProfileElementType.USE_TIME_PERIOD
+				
+			)
+		{
+			if (
+				
+					// implement mockRule3
+					getProfileElementTimePeriodComparison((ProfileElementTimePeriod) demandProfileElement, (ProfileElementUseTimePeriod) supplyProfileElement).getCalculatedMatchingValue()
+					>=
+//					mockRule3.getMatchingProfileElementValueThreshold()
+					1
+					
+				)
+			{
+				
+				return getProfileElementTimePeriodComparison((ProfileElementTimePeriod) demandProfileElement, (ProfileElementUseTimePeriod) supplyProfileElement);
+		
+			}
 		}
 		
 		// default

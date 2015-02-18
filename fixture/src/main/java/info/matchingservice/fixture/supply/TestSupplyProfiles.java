@@ -7,6 +7,8 @@ import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
+import org.joda.time.LocalDate;
+
 public class TestSupplyProfiles extends SupplyProfileAbstract {
 
     @Override
@@ -21,6 +23,8 @@ public class TestSupplyProfiles extends SupplyProfileAbstract {
         createSupplyProfile(
                 "PERSON_PROFILE_OF",
                 10,
+                null,
+                null,
                 ProfileType.PERSON_PROFILE,
                 supplies.findSupplyByDescription("PERSON_SUPPLY_OF", "frans").get(0),
                 "frans",
@@ -31,6 +35,8 @@ public class TestSupplyProfiles extends SupplyProfileAbstract {
         createSupplyProfile(
                 "PERSON_PROFILE_OF",
                 10,
+                new LocalDate(2015, 3, 1),
+                new LocalDate(2015, 3, 10),
                 ProfileType.PERSON_PROFILE,
                 supplies.findSupplyByDescription("PERSON_SUPPLY_OF", "gerard").get(0),
                 "gerard",
@@ -41,6 +47,8 @@ public class TestSupplyProfiles extends SupplyProfileAbstract {
         createSupplyProfile(
                 "PERSON_PROFILE_OF",
                 10,
+                null,
+                null,
                 ProfileType.PERSON_PROFILE,
                 supplies.findSupplyByDescription("PERSON_SUPPLY_OF", "rembrandt").get(0),
                 "rembrandt",
@@ -51,6 +59,8 @@ public class TestSupplyProfiles extends SupplyProfileAbstract {
         createSupplyProfile(
                 "PERSON_PROFILE_OF",
                 10,
+                null,
+                null,
                 ProfileType.PERSON_PROFILE,
                 supplies.findSupplyByDescription("PERSON_SUPPLY_OF", "michiel").get(0),
                 "michiel",
@@ -61,6 +71,8 @@ public class TestSupplyProfiles extends SupplyProfileAbstract {
         createSupplyProfile(
                 "PERSON_PROFILE_OF",
                 10,
+                null,
+                null,
                 ProfileType.PERSON_PROFILE,
                 supplies.findSupplyByDescription("PERSON_SUPPLY_OF", "antoni").get(0),
                 "antoni",
