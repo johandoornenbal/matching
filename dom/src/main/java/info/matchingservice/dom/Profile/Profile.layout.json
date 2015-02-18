@@ -12,7 +12,9 @@
             },
             "actorOwner": {},
             "supplyProfileOwner" : {},
-            "demandProfileOwner" : {}            
+            "demandProfileOwner" : {},
+            "profileStartDate" : {},
+            "profileEndDate" : {}            
           }
         }
       }

@@ -361,8 +361,8 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         return createDemandProfile(
         		demandProfileDescription, 
         		10, 
-        		null, 
-        		null, 
+        		this.getDemandOrSupplyProfileStartDate(), 
+        		this.getDemandOrSupplyProfileEndDate(), 
         		ProfileType.PERSON_PROFILE, 
         		this,
         		profileTypeMatchingRules.findProfileTypeMatchingRule("regel1"),
@@ -445,7 +445,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             final Demand demandProfileOwner,
             final ProfileTypeMatchingRule profileTypeMatchingRule,
             final String ownedBy) {
-        return allDemandProfiles.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demandProfileOwner, profileTypeMatchingRule, ownedBy);
+        return profiles.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demandProfileOwner, profileTypeMatchingRule, ownedBy);
     }
 	//-- HELPERS: programmatic actions --// 
 	//-- HELPERS --//
@@ -454,7 +454,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     private DomainObjectContainer container;
     
     @Inject
-    Profiles allDemandProfiles;
+    Profiles profiles;
     
     @Inject
     ProfileTypeMatchingRules profileTypeMatchingRules;
