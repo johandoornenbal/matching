@@ -34,6 +34,7 @@ import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -74,6 +75,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 	//** API: PROPERTIES **//
 	
 	//** profileElementDescription **//
+	@Persistent
     private String profileElementDescription;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -87,6 +89,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     //-- profileElementDescription --//
     
     //** weight **//
+    @Persistent
     private Integer weight;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -100,6 +103,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     //-- weight --//
 	
 	//** uniqueItemId **//
+    @Persistent
     private UUID uniqueItemId;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -114,6 +118,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     //-- uniqueItemId --//
     
     //** profileElementOwner **//
+    @Persistent
     private Profile profileElementOwner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -129,6 +134,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     //-- profileElementOwner --//
     
     //** profileElementType **//
+    @Persistent
     private ProfileElementType profileElementType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -145,6 +151,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
     //** displayValue **//
     // Should be set by subClasses
+    @Persistent
     private String displayValue;
     
     @javax.jdo.annotations.Column(allowsNull = "true")

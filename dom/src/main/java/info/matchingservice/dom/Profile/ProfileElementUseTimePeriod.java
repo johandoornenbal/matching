@@ -43,7 +43,7 @@ public class ProfileElementUseTimePeriod extends ProfileElement {
 	@Persistent
     private boolean useTimePeriod;
     
-    @javax.jdo.annotations.Column(allowsNull = "true")
+    @javax.jdo.annotations.Column(allowsNull = "false")
 	public boolean getUseTimePeriod() {
 		return useTimePeriod;
 	}

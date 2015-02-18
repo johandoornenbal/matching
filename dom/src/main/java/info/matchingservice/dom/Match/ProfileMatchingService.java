@@ -93,7 +93,7 @@ import org.joda.time.Days;
  * 
  * 	- 'valid' will be caught in 'rules'; at the moment: at the moment: profile element types have to be the same except for PASSION_TAGS matches PASSION
  * 
- * @version 0.2 17-02-2015
+ * @version 0.3 13-02-2015
  */
 @DomainService(nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 public class ProfileMatchingService extends AbstractService {
@@ -102,9 +102,11 @@ public class ProfileMatchingService extends AbstractService {
 	//********************************************************************* getProfileElementTimePeriodComparison ************************************************************************
 	/**
 	 * Returns a comparison between a demand TimePeriod element and a supply UseTimePeriod element
-	 * Calculation is 'optimistic': when there are no start- or enddates on the profile availability is assumed
+	 * Calculation is 'optimistic': when there are no start- or enddates on the supply profile availability is assumed
 	 * TODO: Also when there is no UseTimePeriod element this element will have no effect on the matching value of the profile
 	 * Default matchValue is set to 100 for this purpose
+	 * 
+	 * Both start and endDate on the demand profile Time Period element are obligatory
 	 * 
 	 * @param demandProfileElement
 	 * @param supplyProfile
@@ -121,9 +123,10 @@ public class ProfileMatchingService extends AbstractService {
 		if (
 				demandProfileElement.getProfileElementType() != ProfileElementType.TIME_PERIOD
 				
-				&&
+				||
 				
 				supplyProfileElement.getProfileElementType() != ProfileElementType.USE_TIME_PERIOD
+
 			)
 		{
 			return null;
@@ -142,8 +145,6 @@ public class ProfileMatchingService extends AbstractService {
 			// 	demand -------------------*enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 			//	supply xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx *startdate* ----------------
 			if (
-					demandProfileElement.getEndDate() != null
-					&&
 					supplyProfileElement.getProfileElementOwner().getProfileStartDate() !=null
 					&&
 					supplyProfileElement.getProfileElementOwner().getProfileStartDate().isAfter(demandProfileElement.getEndDate())
@@ -168,8 +169,6 @@ public class ProfileMatchingService extends AbstractService {
 			if (
 					supplyProfileElement.getProfileElementOwner().getProfileEndDate() !=null
 					&&
-					demandProfileElement.getStartDate() != null
-					&&
 					demandProfileElement.getStartDate().isAfter(supplyProfileElement.getProfileElementOwner().getProfileEndDate())
 					
 				)
@@ -185,40 +184,120 @@ public class ProfileMatchingService extends AbstractService {
 			//
 			//	(pic)
 			// 	demand xxxxxxxxxxxxxxxxxxx *startdate* ------------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxx
-			// 	supply xxxxxx*startdate* ----------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+			// 	supply xxxxxx[*startdate*] ----------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 			
 			if (
-					demandProfileElement.getStartDate() != null
+					(	
+						supplyProfileElement.getProfileElementOwner().getProfileEndDate() !=null
+						&&
+						supplyProfileElement.getProfileElementOwner().getProfileEndDate().isBefore(demandProfileElement.getEndDate().plusDays(1))
+					)
 					&&
-					demandProfileElement.getEndDate() != null
-					&&
-					supplyProfileElement.getProfileElementOwner().getProfileStartDate() !=null
-					&&
-					supplyProfileElement.getProfileElementOwner().getProfileEndDate() !=null
-					&&
-					supplyProfileElement.getProfileElementOwner().getProfileStartDate().isBefore(demandProfileElement.getStartDate().plusDays(1))
-					&&
-					supplyProfileElement.getProfileElementOwner().getProfileEndDate().isBefore(demandProfileElement.getEndDate().plusDays(1))
+					(
+							(
+									supplyProfileElement.getProfileElementOwner().getProfileStartDate() !=null
+									&&
+									supplyProfileElement.getProfileElementOwner().getProfileStartDate().isBefore(demandProfileElement.getStartDate().plusDays(1))
+							)
+							||
+							(
+									supplyProfileElement.getProfileElementOwner().getProfileStartDate() ==null
+							)
+					)
 				)
 			{
 				
 				final int demandDays = Days.daysBetween(demandProfileElement.getStartDate(), demandProfileElement.getEndDate()).getDays();
 				final int deltaDays = Days.daysBetween(supplyProfileElement.getProfileElementOwner().getProfileEndDate(), demandProfileElement.getEndDate()).getDays();
 				
-				final int value = 100*(1-(deltaDays/demandDays));
+				final double value = 100 * ( 1- (double) deltaDays / (double) demandDays);
 				
-				matchValue = value;
+				matchValue = (int) value;
+				
+			}
+			
+			// if supply start > demand start and supply end > demand end
+			// calculate relative value
+			//
+			//	(pic)
+			// 	demand xxxxxxxx *startdate* ------------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxx
+			// 	supply xxxxxxxxxxxxxxxxxxxxxxxx*startdate* ----------------------------- [*enddate*] xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+			if (
+					
+					(
+						supplyProfileElement.getProfileElementOwner().getProfileStartDate() !=null
+						&&
+						supplyProfileElement.getProfileElementOwner().getProfileStartDate().isAfter(demandProfileElement.getStartDate().minusDays(1))
+					)
+					&&
+					(
+						(
+							supplyProfileElement.getProfileElementOwner().getProfileEndDate() !=null
+							&&
+							supplyProfileElement.getProfileElementOwner().getProfileEndDate().isAfter(demandProfileElement.getEndDate().minusDays(1))
+						)
+						||
+						( 
+								supplyProfileElement.getProfileElementOwner().getProfileEndDate() == null
+						)
+					)
+					
+				) 
+			{
+				
+				final int demandDays = Days.daysBetween(demandProfileElement.getStartDate(), demandProfileElement.getEndDate()).getDays();
+				final int deltaDays = Days.daysBetween(demandProfileElement.getStartDate(), supplyProfileElement.getProfileElementOwner().getProfileStartDate()).getDays();
+				
+				final double value = 100 * ( 1- (double) deltaDays / (double) demandDays);
+				
+				matchValue = (int) value;
+				
+			}
+			
+			// if supply start > demand start and supply end < demand end
+			// calculate relative value
+			//
+			//	(pic)
+			// 	demand xxxxxxxx *startdate* -------------------------------------------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxx
+			// 	supply xxxxxxxxxxxxxxxxxxxxxxxx*startdate* ----------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+			if (
+					
+					supplyProfileElement.getProfileElementOwner().getProfileStartDate() !=null
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileEndDate() !=null
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileStartDate().isAfter(demandProfileElement.getStartDate())
+					&&
+					supplyProfileElement.getProfileElementOwner().getProfileEndDate().isBefore(demandProfileElement.getEndDate().plusDays(1))
+					
+				) 
+			{
+				
+				final int demandDays = Days.daysBetween(demandProfileElement.getStartDate(), demandProfileElement.getEndDate()).getDays();
+				final int deltaDays = 
+						Days.daysBetween(demandProfileElement.getStartDate(), 
+						supplyProfileElement.getProfileElementOwner().getProfileStartDate()).
+						getDays()
+						+ 
+						Days.daysBetween(supplyProfileElement.getProfileElementOwner().
+								getProfileEndDate(),
+								demandProfileElement.getEndDate()
+						).getDays();
+				
+				final double value = 100 * ( 1- (double) deltaDays / (double) demandDays);
+				
+				matchValue = (int) value;
 				
 				System.out.println("value: " + value);
 				System.out.println("match from getProfileElementTimePeriodComparison() in ProfileMatchingService.class:");
-				System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() +  " >> start supply before start demand and end supply before end demand");
+				System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() +  " >> start supply after start demand and end supply before end demand");
 				System.out.println("matchValue:  " + matchValue);
 				System.out.println("demand:  " + demandProfileElement.getStartDate().toString() + " - " + demandProfileElement.getEndDate().toString());
 				System.out.println("supply:  " + supplyProfileElement.getProfileElementOwner().getProfileStartDate().toString() + " - " + supplyProfileElement.getProfileElementOwner().getProfileEndDate().toString());
 				System.out.println("demandDays: " + demandDays + "  deltaDays: " + deltaDays);
 				
 			}
-				
+			
 		}
 		
 		ProfileElementComparison profileElementComparison = new ProfileElementComparison(

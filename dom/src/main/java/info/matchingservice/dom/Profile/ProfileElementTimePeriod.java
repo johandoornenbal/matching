@@ -44,7 +44,7 @@ public class ProfileElementTimePeriod extends ProfileElement {
     @Persistent
 	private LocalDate startDate;
     
-    @javax.jdo.annotations.Column(allowsNull = "true")
+    @javax.jdo.annotations.Column(allowsNull = "false")
 	public LocalDate getStartDate() {
 		return startDate;
 	}
@@ -56,7 +56,7 @@ public class ProfileElementTimePeriod extends ProfileElement {
 	@Persistent
     private LocalDate endDate;
     
-    @javax.jdo.annotations.Column(allowsNull = "true")
+    @javax.jdo.annotations.Column(allowsNull = "false")
 	public LocalDate getEndDate() {
 		return endDate;
 	}
