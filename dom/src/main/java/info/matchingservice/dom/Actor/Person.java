@@ -25,7 +25,6 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
