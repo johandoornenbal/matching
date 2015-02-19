@@ -102,9 +102,7 @@ public class ProfileMatchingService extends AbstractService {
 	//********************************************************************* getProfileElementTimePeriodComparison ************************************************************************
 	/**
 	 * Returns a comparison between a demand TimePeriod element and a supply UseTimePeriod element
-	 * Calculation is 'optimistic': when there are no start- or enddates on the supply profile availability is assumed
-	 * TODO: Also when there is no UseTimePeriod element this element will have no effect on the matching value of the profile
-	 * Default matchValue is set to 100 for this purpose
+	 * Calculation is 'optimistic': when there are no start- or enddates on the supply profile availability is assumed  when Use Time Period exists and is set to true
 	 * 
 	 * Both start and endDate on the demand profile Time Period element are obligatory
 	 * 
@@ -132,12 +130,14 @@ public class ProfileMatchingService extends AbstractService {
 			return null;
 		}
 
-		// Default: availability is assumed..
-		Integer matchValue = 100;
+		Integer matchValue = 0;
 		
 		// When supply profile dates are meant to be used, indicated by supplyProfileElement.getUseTimePeriod() == true
 		if (supplyProfileElement.getUseTimePeriod()) {
 			
+			// Default for supply with Use Time Period set to true
+			matchValue = 100;
+						
 			// if the endDate on demandProfile element is there and the startDate on supplyProfile also
 			// and if startdate later than enddate value = 0;
 			// 

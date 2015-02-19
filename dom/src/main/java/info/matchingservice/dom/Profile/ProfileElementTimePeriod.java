@@ -21,7 +21,6 @@ package info.matchingservice.dom.Profile;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ParameterLayout;
@@ -40,7 +39,10 @@ import org.joda.time.LocalDate;
 public class ProfileElementTimePeriod extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
-    
+
+	// Put on the parent as a work-a-round for persistence problems
+	
+	
 //    @Persistent
 //	private LocalDate startDate;
 //    
@@ -74,10 +76,13 @@ public class ProfileElementTimePeriod extends ProfileElement {
     		@ParameterLayout(named = "startDate")
             LocalDate startDate,
             @ParameterLayout(named = "endDate")
-            LocalDate endDate
+            LocalDate endDate,
+            @ParameterLayout(named = "weight")
+            Integer weight
             ){
         this.setStartDate(startDate);
         this.setEndDate(endDate);
+        this.setWeight(weight);
         return this;
     }
     
@@ -89,7 +94,11 @@ public class ProfileElementTimePeriod extends ProfileElement {
         return getEndDate();
     }
     
-    public boolean hideUpdateTimePeriod(LocalDate startDate, LocalDate endDate){
+    public Integer default2UpdateTimePeriod() {
+        return getWeight();
+    }
+    
+    public boolean hideUpdateTimePeriod(LocalDate startDate, LocalDate endDate,  Integer weight){
     	if (getProfileElementType() == ProfileElementType.TIME_PERIOD){
     		return false;
     	}
@@ -97,7 +106,7 @@ public class ProfileElementTimePeriod extends ProfileElement {
     	return true;
     }
     
-    public String validateUpdateTimePeriod(LocalDate startDate, LocalDate endDate) {
+    public String validateUpdateTimePeriod(LocalDate startDate, LocalDate endDate,  Integer weight) {
     	
     	final LocalDate today = LocalDate.now();
     	if (endDate != null && endDate.isBefore(today))

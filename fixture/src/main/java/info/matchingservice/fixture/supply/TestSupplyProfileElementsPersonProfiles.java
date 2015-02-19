@@ -138,6 +138,14 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
                 "rembrandt", 
                 executionContext);
         
+        createUseTimePeriod(
+        		"USE_TIME_PERIOD",
+        		true,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0),
+        		"rembrandt", 
+                executionContext);
+        
         //** michiel **//
         
         createQualityTagsElement(

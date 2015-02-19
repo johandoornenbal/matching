@@ -87,6 +87,16 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 		this.useTimePeriod = useTimePeriod;
 	}
 	
+	// work-a-round for persistence problems
+	public boolean hideUseTimePeriod()
+	{
+		if (this.profileElementType==ProfileElementType.USE_TIME_PERIOD){
+			return false;
+		}
+		
+		return true;
+	}
+	
 	@Persistent
 	private LocalDate startDate;
     
@@ -97,6 +107,16 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
+	}
+	
+	// work-a-round for persistence problems
+	public boolean hideStartDate()
+	{
+		if (this.profileElementType==ProfileElementType.TIME_PERIOD){
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Persistent
@@ -109,6 +129,16 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+	
+	// work-a-round for persistence problems
+	public boolean hideEndDate()
+	{
+		if (this.profileElementType==ProfileElementType.TIME_PERIOD){
+			return false;
+		}
+		
+		return true;
 	}
 	
 	//** profileElementDescription **//

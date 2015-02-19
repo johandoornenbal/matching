@@ -47,8 +47,8 @@ public class TestSupplyProfiles extends SupplyProfileAbstract {
         createSupplyProfile(
                 "PERSON_PROFILE_OF",
                 10,
-                null,
-                null,
+                new LocalDate(2015, 2, 1),
+                new LocalDate(2015, 5, 31),
                 ProfileType.PERSON_PROFILE,
                 supplies.findSupplyByDescription("PERSON_SUPPLY_OF", "rembrandt").get(0),
                 "rembrandt",
