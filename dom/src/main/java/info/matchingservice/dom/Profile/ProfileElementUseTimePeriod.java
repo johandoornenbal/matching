@@ -40,19 +40,19 @@ public class ProfileElementUseTimePeriod extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
     
-	@Persistent
-    private boolean useTimePeriod;
+//	@Persistent
+//    private boolean useTimePeriod;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "false")
+//	public boolean getUseTimePeriod() {
+//		return useTimePeriod;
+//	}
+//
+//	public void setUseTimePeriod(boolean useTimePeriod) {
+//		this.useTimePeriod = useTimePeriod;
+//	}
     
-    @javax.jdo.annotations.Column(allowsNull = "false")
-	public boolean getUseTimePeriod() {
-		return useTimePeriod;
-	}
-
-	public void setUseTimePeriod(boolean useTimePeriod) {
-		this.useTimePeriod = useTimePeriod;
-	}
-    
-    
+	
     // Business rules:
     // Only on type USE_TIME_PERIOD
     @Action(semantics=SemanticsOf.IDEMPOTENT)

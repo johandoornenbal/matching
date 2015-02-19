@@ -41,29 +41,29 @@ public class ProfileElementTimePeriod extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
     
-    @Persistent
-	private LocalDate startDate;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-
-	@Persistent
-    private LocalDate endDate;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
+//    @Persistent
+//	private LocalDate startDate;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "true")
+//	public LocalDate getStartDate() {
+//		return startDate;
+//	}
+//
+//	public void setStartDate(LocalDate startDate) {
+//		this.startDate = startDate;
+//	}
+//
+//	@Persistent
+//    private LocalDate endDate;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "true")
+//	public LocalDate getEndDate() {
+//		return endDate;
+//	}
+//
+//	public void setEndDate(LocalDate endDate) {
+//		this.endDate = endDate;
+//	}
     
     
     // Business rules:

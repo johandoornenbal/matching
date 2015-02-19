@@ -93,13 +93,13 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
                 "gerard", 
                 executionContext);
         
-//        createUseTimePeriod(
-//        		"USE_TIME_PERIOD",
-//        		true,
-//        		10,
-//        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
-//        		"gerard", 
-//                executionContext);
+        createUseTimePeriod(
+        		"USE_TIME_PERIOD",
+        		true,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
+        		"gerard", 
+                executionContext);
         
         //** rembrandt **//
         

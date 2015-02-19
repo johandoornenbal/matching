@@ -48,6 +48,7 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
+import org.joda.time.LocalDate;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -73,6 +74,42 @@ import org.apache.isis.applib.annotation.Where;
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
 	//** API: PROPERTIES **//
+	
+	@Persistent
+    private boolean useTimePeriod;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public boolean getUseTimePeriod() {
+		return useTimePeriod;
+	}
+
+	public void setUseTimePeriod(boolean useTimePeriod) {
+		this.useTimePeriod = useTimePeriod;
+	}
+	
+	@Persistent
+	private LocalDate startDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	@Persistent
+    private LocalDate endDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
 	
 	//** profileElementDescription **//
 	@Persistent
