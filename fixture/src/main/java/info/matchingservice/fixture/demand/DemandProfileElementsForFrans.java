@@ -60,14 +60,14 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
                 executionContext
                 );
         
-//        createTimePeriod(
-//        		new LocalDate(2015, 3, 1),
-//        		new LocalDate(2015, 3, 20),
-//        		10,
-//        		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
-//                "frans", 
-//                executionContext
-//        		);
+        createTimePeriod(
+        		new LocalDate(2015, 3, 1),
+        		new LocalDate(2015, 3, 20),
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
+                "frans", 
+                executionContext
+        		);
         
         //** op tweede demand **//
         
