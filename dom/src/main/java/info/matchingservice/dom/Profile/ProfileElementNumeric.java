@@ -19,18 +19,23 @@
 
 package info.matchingservice.dom.Profile;
 
-import javax.inject.Named;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 @javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findProfileElementOfType", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.ProfileElementTag "
+                    + "WHERE profileElementOwner == :profileElementOwner && profileElementType == :profileElementType"),
     @javax.jdo.annotations.Query(
             name = "findProfileElementNumericByOwnerProfile", language = "JDOQL",
             value = "SELECT "
@@ -54,16 +59,32 @@ public class ProfileElementNumeric extends ProfileElement {
     }
     
     @Action(semantics=SemanticsOf.IDEMPOTENT)
-    public ProfileElementNumeric updateNumericValue(
-            @Named("value")
-            final Integer value
+    public ProfileElementNumeric updateAge(
+            @ParameterLayout(named="Age")
+            final Integer value,
+            @ParameterLayout(named="Weight")
+            final Integer weight
             ){
         this.setNumericValue(value);
+        this.setWeight(weight);
         return this;
     }
     
-    public Integer default0UpdateNumericValue(){
+    public Integer default0UpdateAge(){
         return this.getNumericValue();
+    }
+    
+    public Integer default1UpdateAge(){
+        return this.getWeight();
+    }
+    
+    public boolean hideUpdateAge() {
+    	
+    	if (this.getProfileElementType() == ProfileElementType.AGE){
+    		return false;
+    	}
+    	
+    	return true;
     }
 
 }

@@ -629,6 +629,78 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     //-- createLocationElement --//
     
+    //** createAgeElement **//
+    // Business rule:
+    // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    // er mag er hooguit een van zijn
+    // alleen op demands
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createAgeElement(
+    		@ParameterLayout(named="age")
+    		final Integer age,
+    		@ParameterLayout(named="weight")
+    		final Integer weight
+    		) 
+    {
+    	profileElementNumerics.createProfileElementNumeric("AGE_ELEMENT", weight, age, ProfileElementType.AGE, this);
+    	
+    	return this;
+    }
+    
+    public boolean hideCreateAgeElement(final Integer age, final Integer weight){
+    	
+    	QueryDefault<ProfileElementNumeric> query = 
+                QueryDefault.create(
+                		ProfileElementNumeric.class, 
+                    "findProfileElementOfType",
+                    "profileElementOwner", this, "profileElementType", ProfileElementType.AGE);
+    	
+    	if (
+    			// alleen op demands
+    			this.getDemandOrSupply() == DemandOrSupply.DEMAND
+    			
+    			&&
+    			
+    			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    			(this.getProfileType() == ProfileType.PERSON_PROFILE || this.getProfileType() == ProfileType.ORGANISATION_PROFILE)
+    			
+    			&&
+    			
+    			// er mag er hooguit een van zijn
+    			container.firstMatch(query) == null
+    		)
+    	{
+    		
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+   public String validateCreateAgeElement(final Integer age, final Integer weight){
+    	
+    	QueryDefault<ProfileElementNumeric> query = 
+                QueryDefault.create(
+                		ProfileElementNumeric.class, 
+                    "findProfileElementOfType",
+                    "profileElementOwner", this, "profileElementType", ProfileElementType.AGE);
+    	
+    	if (container.firstMatch(query) != null) {
+    		
+    		return "ONE_INSTANCE_AT_MOST";
+    		
+    	}
+    	
+    	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+    		
+    		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+    		
+    	}
+    	
+    	return null;
+    }
+    //-- createAgeElement --//
+    
     //** createTimePeriodElement **//
     // Business rule:
     // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE

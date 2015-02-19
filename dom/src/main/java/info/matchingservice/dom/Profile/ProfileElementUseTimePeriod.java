@@ -21,6 +21,7 @@ package info.matchingservice.dom.Profile;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ParameterLayout;
@@ -41,17 +42,17 @@ public class ProfileElementUseTimePeriod extends ProfileElement {
 	
 	// Put on the parent as a work-a-round for persistence problems
 	
-//	@Persistent
-//    private boolean useTimePeriod;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "false")
-//	public boolean getUseTimePeriod() {
-//		return useTimePeriod;
-//	}
-//
-//	public void setUseTimePeriod(boolean useTimePeriod) {
-//		this.useTimePeriod = useTimePeriod;
-//	}
+	@Persistent
+    private boolean useTimePeriod;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+	public boolean getUseTimePeriod() {
+		return useTimePeriod;
+	}
+
+	public void setUseTimePeriod(boolean useTimePeriod) {
+		this.useTimePeriod = useTimePeriod;
+	}
     
 	
     // Business rules:

@@ -21,6 +21,7 @@ package info.matchingservice.dom.Profile;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ParameterLayout;
@@ -43,29 +44,29 @@ public class ProfileElementTimePeriod extends ProfileElement {
 	// Put on the parent as a work-a-round for persistence problems
 	
 	
-//    @Persistent
-//	private LocalDate startDate;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "true")
-//	public LocalDate getStartDate() {
-//		return startDate;
-//	}
-//
-//	public void setStartDate(LocalDate startDate) {
-//		this.startDate = startDate;
-//	}
-//
-//	@Persistent
-//    private LocalDate endDate;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "true")
-//	public LocalDate getEndDate() {
-//		return endDate;
-//	}
-//
-//	public void setEndDate(LocalDate endDate) {
-//		this.endDate = endDate;
-//	}
+    @Persistent
+	private LocalDate startDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	@Persistent
+    private LocalDate endDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
     
     
     // Business rules:

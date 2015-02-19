@@ -19,15 +19,15 @@
 
 package info.matchingservice.dom.Profile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Match.PersistedProfileElementComparison;
 import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
 import info.matchingservice.dom.Match.ProfileElementComparison;
 import info.matchingservice.dom.Match.ProfileMatchingService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
@@ -48,7 +48,6 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
-import org.joda.time.LocalDate;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -74,72 +73,6 @@ import org.joda.time.LocalDate;
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
 	//** API: PROPERTIES **//
-	
-	@Persistent
-    private boolean useTimePeriod;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-	public boolean getUseTimePeriod() {
-		return useTimePeriod;
-	}
-
-	public void setUseTimePeriod(boolean useTimePeriod) {
-		this.useTimePeriod = useTimePeriod;
-	}
-	
-	// work-a-round for persistence problems
-	public boolean hideUseTimePeriod()
-	{
-		if (this.profileElementType==ProfileElementType.USE_TIME_PERIOD){
-			return false;
-		}
-		
-		return true;
-	}
-	
-	@Persistent
-	private LocalDate startDate;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-	
-	// work-a-round for persistence problems
-	public boolean hideStartDate()
-	{
-		if (this.profileElementType==ProfileElementType.TIME_PERIOD){
-			return false;
-		}
-		
-		return true;
-	}
-
-	@Persistent
-    private LocalDate endDate;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
-	
-	// work-a-round for persistence problems
-	public boolean hideEndDate()
-	{
-		if (this.profileElementType==ProfileElementType.TIME_PERIOD){
-			return false;
-		}
-		
-		return true;
-	}
 	
 	//** profileElementDescription **//
 	@Persistent
