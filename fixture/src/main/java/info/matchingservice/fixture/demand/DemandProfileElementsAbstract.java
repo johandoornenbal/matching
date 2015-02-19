@@ -4,6 +4,8 @@ import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementDropDowns;
+import info.matchingservice.dom.Profile.ProfileElementNumeric;
+import info.matchingservice.dom.Profile.ProfileElementNumerics;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementTags;
 import info.matchingservice.dom.Profile.ProfileElementText;
@@ -89,6 +91,17 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     	return executionContext.add(this,newElement);
     }
     
+    protected ProfileElementNumeric createAgeElement(
+             final Integer numericValue,
+             final Integer weight,
+             final Profile profileOwner,
+             final String ownedBy,
+            ExecutionContext executionContext 
+    		){
+    	ProfileElementNumeric newElement = profileElementNumerics.createProfileElementNumeric("AGE_ELEMENT", weight, numericValue, ProfileElementType.AGE, profileOwner, ownedBy);
+    	return executionContext.add(this,newElement);
+    }
+    
     
     
     //region > injected services
@@ -106,4 +119,7 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     
     @Inject
     ProfileElementTimePeriods profileElementTimePeriods;
+    
+    @Inject
+    ProfileElementNumerics profileElementNumerics;
 }

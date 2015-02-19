@@ -823,9 +823,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public boolean hideCreateUseTimePeriodElement(final Integer weight) {
     	
-    	QueryDefault<ProfileElementUseTimePeriod> query = 
+    	QueryDefault<ProfileElementUsePredicate> query = 
                 QueryDefault.create(
-                		ProfileElementUseTimePeriod.class, 
+                		ProfileElementUsePredicate.class, 
                     "findProfileElementOfType",
                     "profileElementOwner", this, "profileElementType", ProfileElementType.USE_TIME_PERIOD);
     	
@@ -852,9 +852,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public String validateCreateUseTimePeriodElement(final Integer weight) {
     	
-    	QueryDefault<ProfileElementUseTimePeriod> query = 
+    	QueryDefault<ProfileElementUsePredicate> query = 
                 QueryDefault.create(
-                		ProfileElementUseTimePeriod.class, 
+                		ProfileElementUsePredicate.class, 
                     "findProfileElementOfType",
                     "profileElementOwner", this, "profileElementType", ProfileElementType.USE_TIME_PERIOD);
     	
@@ -1054,7 +1054,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     ProfileElementTimePeriods profileElementTimePeriods;
     
     @Inject
-    ProfileElementUseTimePeriods profileElementUseTimePeriods;
+    ProfileElementUsePredicates profileElementUseTimePeriods;
     
     @Inject
     Tags tags;

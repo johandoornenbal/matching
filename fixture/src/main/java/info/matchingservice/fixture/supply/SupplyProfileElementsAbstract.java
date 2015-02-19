@@ -11,8 +11,8 @@ import info.matchingservice.dom.Profile.ProfileElementTexts;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementDropDowns;
-import info.matchingservice.dom.Profile.ProfileElementUseTimePeriod;
-import info.matchingservice.dom.Profile.ProfileElementUseTimePeriods;
+import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
+import info.matchingservice.dom.Profile.ProfileElementUsePredicates;
 import info.matchingservice.dom.Profile.Profiles;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
@@ -83,7 +83,7 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
     	return executionContext.add(this,newElement);
     }
     
-    protected ProfileElementUseTimePeriod createUseTimePeriod(
+    protected ProfileElementUsePredicate createUseTimePeriod(
             String description,
             boolean useTimePeriod,
             Integer weight,
@@ -91,7 +91,7 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
     		){
-    	ProfileElementUseTimePeriod newElement = profileElementUseTimePeriods.createProfileElementUseTimePeriod(description, 10, useTimePeriod, ProfileElementType.USE_TIME_PERIOD, profileOwner, ownedBy);
+    	ProfileElementUsePredicate newElement = profileElementUseTimePeriods.createProfileElementUseTimePeriod(description, 10, useTimePeriod, ProfileElementType.USE_TIME_PERIOD, profileOwner, ownedBy);
     	return executionContext.add(this,newElement);
     }
     
@@ -110,6 +110,6 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
     ProfileElementTags profileElementTags;
     
     @Inject
-    ProfileElementUseTimePeriods profileElementUseTimePeriods;
+    ProfileElementUsePredicates profileElementUseTimePeriods;
 
 }

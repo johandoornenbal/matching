@@ -33,10 +33,17 @@ import org.apache.isis.applib.annotation.SemanticsOf;
     @javax.jdo.annotations.Query(
             name = "findProfileElementOfType", language = "JDOQL",
             value = "SELECT "
-                    + "FROM info.matchingservice.dom.Profile.ProfileElementUseTimePeriod "
+                    + "FROM info.matchingservice.dom.Profile.ProfileElementUsePredicate "
                     + "WHERE profileElementOwner == :profileElementOwner && profileElementType == :profileElementType")
 })
-public class ProfileElementUseTimePeriod extends ProfileElement {
+/**
+ * Profile Element only used to indicated that a PROFILE ELEMENT CLASS should match a property of the owner on another object
+ * 
+ * 
+ * @author johan
+ *
+ */
+public class ProfileElementUsePredicate extends ProfileElement {
     
     //REPRESENTATIONS /////////////////////////////////////////////////////////////////////////////////////
 	
@@ -45,13 +52,25 @@ public class ProfileElementUseTimePeriod extends ProfileElement {
 	@Persistent
     private boolean useTimePeriod;
     
-    @javax.jdo.annotations.Column(allowsNull = "false")
+    @javax.jdo.annotations.Column(allowsNull = "true")
 	public boolean getUseTimePeriod() {
 		return useTimePeriod;
 	}
 
 	public void setUseTimePeriod(boolean useTimePeriod) {
 		this.useTimePeriod = useTimePeriod;
+	}
+	
+	@Persistent
+    private boolean useAge;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public boolean getUseAge() {
+		return useAge;
+	}
+
+	public void setUseAge(boolean useAge) {
+		this.useAge = useAge;
 	}
     
 	
@@ -73,6 +92,30 @@ public class ProfileElementUseTimePeriod extends ProfileElement {
     
     public boolean hideUpdateUseTimePeriod(boolean useTimePeriod){
     	if (getProfileElementType() == ProfileElementType.USE_TIME_PERIOD){
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+ // Business rules:
+    // Only on type USE_AGE
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    public ProfileElement updateUseAge(
+    		@ParameterLayout(named = "useAge")
+            boolean useAge
+            ){
+        this.setUseAge(useAge);
+        return this;
+    }
+    
+    public boolean default0UpdateUseAge() {
+        return getUseAge();
+    }
+    
+    
+    public boolean hideUpdateUseAge(boolean useAge){
+    	if (getProfileElementType() == ProfileElementType.USE_AGE){
     		return false;
     	}
     	

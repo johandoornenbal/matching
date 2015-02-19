@@ -7,7 +7,7 @@ import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.dom.Profile.ProfileElementUseTimePeriod;
+import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
 
 import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2;
 import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2.Mode;
@@ -26,7 +26,7 @@ public class ProfileMatchingServiceTest {
 	private ProfileElementTimePeriod demandProfileElement;
 	
 	@Mock
-	private ProfileElementUseTimePeriod supplyProfileElement;
+	private ProfileElementUsePredicate supplyProfileElement;
 	
 	@Mock
 	private Profile demandProfile;
@@ -54,7 +54,7 @@ public class ProfileMatchingServiceTest {
 		Person supplier = new Person();
 		Supply supply = new Supply();
 		Profile supplyProfile = new Profile();
-		ProfileElementUseTimePeriod supplyProfileElement = new ProfileElementUseTimePeriod();
+		ProfileElementUsePredicate supplyProfileElement = new ProfileElementUsePredicate();
 		Profile demandProfile = new Profile();
 		ProfileElementTimePeriod demandProfileElement = new ProfileElementTimePeriod();
 		

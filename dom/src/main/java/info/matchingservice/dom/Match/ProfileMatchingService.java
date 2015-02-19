@@ -26,7 +26,7 @@ import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.dom.Profile.ProfileElementUseTimePeriod;
+import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRule;
 import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRules;
@@ -113,7 +113,7 @@ public class ProfileMatchingService extends AbstractService {
 	@Programmatic
 	public ProfileElementComparison getProfileElementTimePeriodComparison(
 			final ProfileElementTimePeriod demandProfileElement,
-			final ProfileElementUseTimePeriod supplyProfileElement
+			final ProfileElementUsePredicate supplyProfileElement
 			)
 	{
 		
@@ -546,7 +546,7 @@ public class ProfileMatchingService extends AbstractService {
 			if (
 				
 					// implement mockRule3
-					getProfileElementTimePeriodComparison((ProfileElementTimePeriod) demandProfileElement, (ProfileElementUseTimePeriod) supplyProfileElement).getCalculatedMatchingValue()
+					getProfileElementTimePeriodComparison((ProfileElementTimePeriod) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement).getCalculatedMatchingValue()
 					>=
 //					mockRule3.getMatchingProfileElementValueThreshold()
 					1
@@ -554,7 +554,7 @@ public class ProfileMatchingService extends AbstractService {
 				)
 			{
 				
-				return getProfileElementTimePeriodComparison((ProfileElementTimePeriod) demandProfileElement, (ProfileElementUseTimePeriod) supplyProfileElement);
+				return getProfileElementTimePeriodComparison((ProfileElementTimePeriod) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement);
 		
 			}
 		}

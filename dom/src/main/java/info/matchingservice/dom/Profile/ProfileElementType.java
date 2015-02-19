@@ -33,7 +33,8 @@ public enum ProfileElementType implements TitledEnum {
     QUALITY_TAGS ("Quality_tags"),
     TIME_PERIOD ("Time_period"),
     USE_TIME_PERIOD ("Use_time_period"),
-    AGE("Age");
+    AGE("Age"),
+    USE_AGE("Use_age");
 
     private String title;
     

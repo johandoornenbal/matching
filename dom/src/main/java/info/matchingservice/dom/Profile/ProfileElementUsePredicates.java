@@ -27,16 +27,16 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
 
-@DomainService(repositoryFor = ProfileElementUseTimePeriod.class)
-public class ProfileElementUseTimePeriods extends MatchingDomainService<ProfileElementUseTimePeriod> {
+@DomainService(repositoryFor = ProfileElementUsePredicate.class)
+public class ProfileElementUsePredicates extends MatchingDomainService<ProfileElementUsePredicate> {
 
-    public ProfileElementUseTimePeriods() {
-        super(ProfileElementUseTimePeriods.class, ProfileElementUseTimePeriod.class);
+    public ProfileElementUsePredicates() {
+        super(ProfileElementUsePredicates.class, ProfileElementUsePredicate.class);
     }
 
     // with currentUserName
     @Programmatic
-    public ProfileElementUseTimePeriod createProfileElementUseTimePeriod(
+    public ProfileElementUsePredicate createProfileElementUseTimePeriod(
             final String description,
             final Integer weight,
             final boolean useTimePeriod,
@@ -56,7 +56,7 @@ public class ProfileElementUseTimePeriods extends MatchingDomainService<ProfileE
     
     // without currentUser (for fixtures)
     @Programmatic
-    public ProfileElementUseTimePeriod createProfileElementUseTimePeriod(
+    public ProfileElementUsePredicate createProfileElementUseTimePeriod(
             final String description,
             final Integer weight,
             final boolean useTimePeriod,
@@ -64,7 +64,7 @@ public class ProfileElementUseTimePeriods extends MatchingDomainService<ProfileE
             final Profile profileOwner,
             final String ownedBy
             ){
-        final ProfileElementUseTimePeriod newProfileElement = newTransientInstance(ProfileElementUseTimePeriod.class);
+        final ProfileElementUsePredicate newProfileElement = newTransientInstance(ProfileElementUsePredicate.class);
         final UUID uuid=UUID.randomUUID();
         newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setProfileElementDescription(description);
