@@ -61,6 +61,15 @@ public class ProfileElementUsePredicate extends ProfileElement {
 		this.useTimePeriod = useTimePeriod;
 	}
 	
+	public boolean hideUseTimePeriod(){
+		
+		if (this.getProfileElementType() == ProfileElementType.USE_TIME_PERIOD) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	@Persistent
     private boolean useAge;
     
@@ -71,6 +80,15 @@ public class ProfileElementUsePredicate extends ProfileElement {
 
 	public void setUseAge(boolean useAge) {
 		this.useAge = useAge;
+	}
+	
+	public boolean hideUseAge(){
+		
+		if (this.getProfileElementType() == ProfileElementType.USE_AGE) {
+			return false;
+		}
+		
+		return true;
 	}
     
 	

@@ -96,6 +96,7 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         createUseTimePeriod(
         		"USE_TIME_PERIOD",
         		true,
+        		false,
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
         		"gerard", 
@@ -141,6 +142,7 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         createUseTimePeriod(
         		"USE_TIME_PERIOD",
         		true,
+        		false,
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0),
         		"rembrandt", 

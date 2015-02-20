@@ -280,8 +280,28 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final String ownedBy){
-        final Supply supply = supplies.createSupply(supplyDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, demandSupplyType, supplyOwner, ownedBy);
-        return profiles.createSupplyProfile(supplyProfileDescription, profileWeight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supply, ownedBy);
+        final Supply supply = supplies.createSupply(
+        		supplyDescription, 
+        		weight, 
+        		demandOrSupplyProfileStartDate, 
+        		demandOrSupplyProfileEndDate, 
+        		demandSupplyType, 
+        		supplyOwner, 
+        		ownedBy);
+        Profile newProfile = profiles.createSupplyProfile(
+        		supplyProfileDescription, 
+        		profileWeight, 
+        		demandOrSupplyProfileStartDate, 
+        		demandOrSupplyProfileEndDate, 
+        		profileType, 
+        		supply, 
+        		ownedBy);
+        
+        // create Predicate Elements
+        newProfile.createUseAgeElement(10);	// default: age is taken into account when matching 
+        newProfile.createUseTimePeriodElement(10); // default: availibility is assumed
+        
+        return newProfile;
     }
     //-- HELPERS: programmatic actions --//
     

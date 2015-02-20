@@ -36,18 +36,20 @@ public class ProfileElementUsePredicates extends MatchingDomainService<ProfileEl
 
     // with currentUserName
     @Programmatic
-    public ProfileElementUsePredicate createProfileElementUseTimePeriod(
+    public ProfileElementUsePredicate createProfileElementUsePredicate(
             final String description,
             final Integer weight,
             final boolean useTimePeriod,
+            final boolean useAge,
             final ProfileElementType profileElementType,
             final Profile profileOwner
             ){
 
-        return createProfileElementUseTimePeriod(
+        return createProfileElementUsePredicate(
         		description,
                 weight,
                 useTimePeriod,
+                useAge,
                 profileElementType,
                 profileOwner,
                 currentUserName()
@@ -56,10 +58,11 @@ public class ProfileElementUsePredicates extends MatchingDomainService<ProfileEl
     
     // without currentUser (for fixtures)
     @Programmatic
-    public ProfileElementUsePredicate createProfileElementUseTimePeriod(
+    public ProfileElementUsePredicate createProfileElementUsePredicate(
             final String description,
             final Integer weight,
             final boolean useTimePeriod,
+            final boolean useAge,
             final ProfileElementType profileElementType,
             final Profile profileOwner,
             final String ownedBy
@@ -70,6 +73,7 @@ public class ProfileElementUsePredicates extends MatchingDomainService<ProfileEl
         newProfileElement.setProfileElementDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setUseTimePeriod(useTimePeriod);
+        newProfileElement.setUseAge(useAge);
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setOwnedBy(ownedBy);

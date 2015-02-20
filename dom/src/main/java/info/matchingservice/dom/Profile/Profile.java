@@ -700,6 +700,81 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     	return null;
     }
     //-- createAgeElement --//
+   
+   //** createUseAgeElement **//
+   // Business rule:
+   // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+   // er mag er hooguit een van zijn
+   // alleen op supplies
+   @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+   public Profile createUseAgeElement(
+   		@ParameterLayout(named="weight")
+   		final Integer weight) {
+   	
+   	profileElementUsePredicates.createProfileElementUsePredicate("USE_AGE_ELEMENT", weight, false, true, ProfileElementType.USE_AGE, this);
+   	
+   	return this;
+   }
+   
+   public boolean hideCreateUseAgeElement(final Integer weight) {
+   	
+   	QueryDefault<ProfileElementUsePredicate> query = 
+               QueryDefault.create(
+               		ProfileElementUsePredicate.class, 
+                   "findProfileElementOfType",
+                   "profileElementOwner", this, "profileElementType", ProfileElementType.USE_AGE);
+   	
+   	if (
+   			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+   			(this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+   			
+   			&&
+   			
+   			// alleen op demands
+   			this.getDemandOrSupply() == DemandOrSupply.SUPPLY
+   			
+   			&&
+   			
+   			// er mag er hooguit een van zijn
+   			container.firstMatch(query) == null
+   		) 
+   	{
+   		return false;
+   	}
+   	
+   	return true;
+   }
+   
+   public String validateCreateUseAgeElement(final Integer weight) {
+   	
+   	QueryDefault<ProfileElementUsePredicate> query = 
+               QueryDefault.create(
+               		ProfileElementUsePredicate.class, 
+                   "findProfileElementOfType",
+                   "profileElementOwner", this, "profileElementType", ProfileElementType.USE_AGE);
+   	
+   	if (container.firstMatch(query) != null) {
+   		
+   		return "ONE_INSTANCE_AT_MOST";
+   		
+   	}
+   	
+   	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+   		
+   		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+   		
+   	}
+   	
+   	if (this.getDemandOrSupply() != DemandOrSupply.SUPPLY) {
+   		
+   		return "ONLY_ON_SUPPLY";
+   		
+   	}
+   	
+   	return null;
+   	
+   }
+   //-- createUseAgeElement --//
     
     //** createTimePeriodElement **//
     // Business rule:
@@ -816,7 +891,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     		@ParameterLayout(named="weight")
     		final Integer weight) {
     	
-    	profileElementUseTimePeriods.createProfileElementUseTimePeriod("USE_TIME_PERIOD_ELEMENT", weight, true, ProfileElementType.USE_TIME_PERIOD, this);
+    	profileElementUsePredicates.createProfileElementUsePredicate("USE_TIME_PERIOD_ELEMENT", weight, true, false, ProfileElementType.USE_TIME_PERIOD, this);
     	
     	return this;
     }
@@ -1054,7 +1129,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     ProfileElementTimePeriods profileElementTimePeriods;
     
     @Inject
-    ProfileElementUsePredicates profileElementUseTimePeriods;
+    ProfileElementUsePredicates profileElementUsePredicates;
     
     @Inject
     Tags tags;

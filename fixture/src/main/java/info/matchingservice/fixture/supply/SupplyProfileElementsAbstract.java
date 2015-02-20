@@ -86,12 +86,13 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
     protected ProfileElementUsePredicate createUseTimePeriod(
             String description,
             boolean useTimePeriod,
+            boolean useAge,
             Integer weight,
             Profile profileOwner,
             String ownedBy,
             ExecutionContext executionContext 
     		){
-    	ProfileElementUsePredicate newElement = profileElementUseTimePeriods.createProfileElementUseTimePeriod(description, 10, useTimePeriod, ProfileElementType.USE_TIME_PERIOD, profileOwner, ownedBy);
+    	ProfileElementUsePredicate newElement = profileElementUseTimePeriods.createProfileElementUsePredicate(description, 10, useTimePeriod, useAge, ProfileElementType.USE_TIME_PERIOD, profileOwner, ownedBy);
     	return executionContext.add(this,newElement);
     }
     
