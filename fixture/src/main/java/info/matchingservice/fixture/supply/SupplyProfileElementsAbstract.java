@@ -96,6 +96,18 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
     	return executionContext.add(this,newElement);
     }
     
+    protected ProfileElementUsePredicate createUseAge(
+            String description,
+            boolean useTimePeriod,
+            boolean useAge,
+            Integer weight,
+            Profile profileOwner,
+            String ownedBy,
+            ExecutionContext executionContext 
+    		){
+    	ProfileElementUsePredicate newElement = profileElementUseTimePeriods.createProfileElementUsePredicate(description, 10, useTimePeriod, useAge, ProfileElementType.USE_AGE, profileOwner, ownedBy);
+    	return executionContext.add(this,newElement);
+    }
     
     //region > injected services
     @javax.inject.Inject

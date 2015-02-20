@@ -22,6 +22,7 @@ package info.matchingservice.dom.Match;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
@@ -314,7 +315,56 @@ public class ProfileMatchingService extends AbstractService {
 	
 	
 	//********************************************************************* END getProfileElementTimePeriodComparison ************************************************************************
+
+	//********************************************************************* getProfileElementAgeComparison ************************************************************************
+
+	/**
+	 * 
+	 * @param demandProfileElement
+	 * @param supplyProfileElement
+	 * @return
+	 */
+	@Programmatic
+	public ProfileElementComparison getProfileElementAgeComparison(
+			final ProfileElementNumeric demandProfileElement,
+			final ProfileElementUsePredicate supplyProfileElement
+			)
+	{
+		
+		// return null if types are not as expected
+		if (
+				demandProfileElement.getProfileElementType() != ProfileElementType.AGE
+				
+				||
+				
+				supplyProfileElement.getProfileElementType() != ProfileElementType.USE_AGE
+
+			)
+		{
+			return null;
+		}
+
+		// stub
+		Integer matchValue = 100;
+		
+		System.out.println("match from getProfileElementAgeComparison() in ProfileMatchingService.class:");
+		
+		ProfileElementComparison profileElementComparison = new ProfileElementComparison(
+				demandProfileElement.getProfileElementOwner(),
+				demandProfileElement, 
+				supplyProfileElement, 
+				supplyProfileElement.getProfileElementOwner(), 
+				supplyProfileElement.getProfileElementOwner().getActorOwner(), 
+				matchValue, 
+				demandProfileElement.getWeight()
+				);		
+		return profileElementComparison;
+		
+	}
 	
+	
+	//********************************************************************* END getProfileElementAgeComparison ************************************************************************
+
 	//********************************************************************* getProfileElementPassionTagComparison ************************************************************************
 	
 	/**
@@ -488,6 +538,7 @@ public class ProfileMatchingService extends AbstractService {
 		final ProfileElementTypeMatchingRule mockRule1 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule1", "SAME_PROFILE_ELEMENT_TYPE", 1);
 		final ProfileElementTypeMatchingRule mockRule2 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule2", "PASSION_TAGS_TO_PASSION", 1);
 		final ProfileElementTypeMatchingRule mockRule3 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule3", "TIME_PERIOD_TO_SUPPLY_PROFILE", 1);
+		final ProfileElementTypeMatchingRule mockRule4 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule4", "AGE_TO_PERSON", 1);
 		
 		if (
 				//implementation of mockRule1
@@ -555,6 +606,30 @@ public class ProfileMatchingService extends AbstractService {
 			{
 				
 				return getProfileElementTimePeriodComparison((ProfileElementTimePeriod) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement);
+		
+			}
+		}
+		
+		if (
+				//implementation of mockRule4
+				demandProfileElement.getProfileElementType() == ProfileElementType.AGE
+				&&
+				supplyProfileElement.getProfileElementType() == ProfileElementType.USE_AGE
+				
+			)
+		{
+			if (
+				
+					// implement mockRule4
+					getProfileElementAgeComparison((ProfileElementNumeric) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement).getCalculatedMatchingValue()
+					>=
+//					mockRule4.getMatchingProfileElementValueThreshold()
+					1
+					
+				)
+			{
+				
+				return getProfileElementAgeComparison((ProfileElementNumeric) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement);
 		
 			}
 		}

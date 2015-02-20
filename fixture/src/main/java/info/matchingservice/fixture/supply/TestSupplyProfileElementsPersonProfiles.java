@@ -54,6 +54,24 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         		executionContext
         		);
         
+        createUseTimePeriod(
+        		"USE_TIME_PERIOD",
+        		true,
+        		false,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0),
+        		"frans", 
+                executionContext);
+        
+        createUseAge(
+        		"USE_AGE",
+        		false,
+        		true,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0),
+        		"frans", 
+                executionContext);
+        
         //** gerard **//
         
         createQualityTagsElement(
@@ -97,6 +115,15 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         		"USE_TIME_PERIOD",
         		true,
         		false,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
+        		"gerard", 
+                executionContext);
+        
+        createUseAge(
+        		"USE_AGE",
+        		false,
+        		true,
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
         		"gerard", 
@@ -148,6 +175,15 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         		"rembrandt", 
                 executionContext);
         
+        createUseAge(
+        		"USE_AGE",
+        		false,
+        		true,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0),
+        		"rembrandt", 
+                executionContext);
+        
         //** michiel **//
         
         createQualityTagsElement(
@@ -186,6 +222,24 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         		executionContext
         		);
         
+        createUseTimePeriod(
+        		"USE_TIME_PERIOD",
+        		true,
+        		false,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0),
+        		"michiel", 
+                executionContext);
+        
+        createUseAge(
+        		"USE_AGE",
+        		false,
+        		true,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0),
+        		"michiel", 
+                executionContext);
+        
         //** antoni **//
         
         createQualityTagsElement(
@@ -223,6 +277,25 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
                 profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0),
                 "antoni", 
                 executionContext);
+        
+        createUseTimePeriod(
+        		"USE_TIME_PERIOD",
+        		true,
+        		false,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0),
+        		"antoni", 
+                executionContext);
+        
+        createUseAge(
+        		"USE_AGE",
+        		false,
+        		true,
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0),
+        		"antoni", 
+                executionContext);
+        
     }
     
     
