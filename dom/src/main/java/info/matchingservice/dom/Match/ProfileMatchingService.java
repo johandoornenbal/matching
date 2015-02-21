@@ -316,6 +316,55 @@ public class ProfileMatchingService extends AbstractService {
 	
 	//********************************************************************* END getProfileElementTimePeriodComparison ************************************************************************
 
+	//********************************************************************* getProfileElementLocationComparison ************************************************************************
+
+	/**
+	 * 
+	 * @param demandProfileElement
+	 * @param supplyProfileElement
+	 * @return
+	 */
+	@Programmatic
+	public ProfileElementComparison getProfileElementLocationComparison(
+			final ProfileElementText demandProfileElement,
+			final ProfileElementText supplyProfileElement
+			)
+	{
+		
+		// return null if types are not as expected
+		if (
+				demandProfileElement.getProfileElementType() != ProfileElementType.LOCATION
+				
+				||
+				
+				supplyProfileElement.getProfileElementType() != ProfileElementType.LOCATION
+
+			)
+		{
+			return null;
+		}
+
+		// stub
+		Integer matchValue = 100;
+		
+		System.out.println("match from getProfileElementLocationComparison() in ProfileMatchingService.class:");
+		
+		ProfileElementComparison profileElementComparison = new ProfileElementComparison(
+				demandProfileElement.getProfileElementOwner(),
+				demandProfileElement, 
+				supplyProfileElement, 
+				supplyProfileElement.getProfileElementOwner(), 
+				supplyProfileElement.getProfileElementOwner().getActorOwner(), 
+				matchValue, 
+				demandProfileElement.getWeight()
+				);		
+		return profileElementComparison;
+		
+	}
+	
+	
+	//********************************************************************* END getProfileElementLocationComparison ************************************************************************
+
 	//********************************************************************* getProfileElementAgeComparison ************************************************************************
 
 	/**
@@ -365,6 +414,7 @@ public class ProfileMatchingService extends AbstractService {
 	
 	//********************************************************************* END getProfileElementAgeComparison ************************************************************************
 
+	
 	//********************************************************************* getProfileElementPassionTagComparison ************************************************************************
 	
 	/**
@@ -632,6 +682,31 @@ public class ProfileMatchingService extends AbstractService {
 				return getProfileElementAgeComparison((ProfileElementNumeric) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement);
 		
 			}
+		}
+		
+		if (
+				//implementation of mockRule1
+				(
+						demandProfileElement.getProfileElementType() == ProfileElementType.LOCATION
+						||
+						demandProfileElement.getProfileElementType() == ProfileElementType.LOCATION
+				)
+				&&
+				demandProfileElement.getProfileElementType() == supplyProfileElement.getProfileElementType()
+			)
+		{
+			
+			if (
+					// implement mockRule1
+					getProfileElementLocationComparison((ProfileElementText) demandProfileElement, (ProfileElementText) supplyProfileElement).getCalculatedMatchingValue()
+					>= 
+//					mockRule1.getMatchingProfileElementValueThreshold()
+					1
+				) 
+			{
+				return getProfileElementLocationComparison((ProfileElementText) demandProfileElement, (ProfileElementText) supplyProfileElement);
+			}
+            
 		}
 		
 		// default
