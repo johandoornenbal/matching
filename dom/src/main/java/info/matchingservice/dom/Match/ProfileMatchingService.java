@@ -19,6 +19,7 @@
 
 package info.matchingservice.dom.Match;
 
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
@@ -28,6 +29,7 @@ import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
+import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRule;
 import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRules;
@@ -57,7 +59,10 @@ import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.query.QueryDefault;
 import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
 
 /**
  * 
@@ -393,10 +398,48 @@ public class ProfileMatchingService extends AbstractService {
 			return null;
 		}
 
-		// stub
-		Integer matchValue = 100;
+		Integer matchValue = 0;
 		
-		System.out.println("match from getProfileElementAgeComparison() in ProfileMatchingService.class:");
+		// When supply profile date of birth is meant to be used, indicated by supplyProfileElement.getUseAge() == true
+		if (supplyProfileElement.getUseAge()) {
+			
+			// Make sure the supplyProfileElement belongs to a Person Profile of a Person with dateOfBirth property not null
+			QueryDefault<Person> query = 
+	                QueryDefault.create(
+	                		Person.class, 
+	                    "findPersonUnique",
+	                    "ownedBy", supplyProfileElement.getOwnedBy());
+			
+			if (
+					container.firstMatch(query)!= null 
+					
+					&& 
+					
+					container.firstMatch(query).getDateOfBirth() != null
+				
+					&&
+					
+					supplyProfileElement.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE
+				)
+			{
+				LocalDate supplyDateOfBirth = container.firstMatch(query).getDateOfBirth();
+				new LocalDate();
+				LocalDate toDay = LocalDate.now();
+				Integer age = Years.yearsBetween(supplyDateOfBirth, toDay).getYears();
+				Integer delta = Math.abs(age - demandProfileElement.getNumericValue());
+				
+				// The value of the match is 100 minus 5 x the difference in years between the demand age and the supplied age
+				matchValue = 100 - 5*delta;
+				if (matchValue < 0 ) { matchValue = 0; }
+				
+				System.out.println("match from getProfileElementAgeComparison() in ProfileMatchingService.class:");
+				System.out.println("owner username: " + container.firstMatch(query).getOwnedBy() + " - dateOfBirth: " + container.firstMatch(query).getDateOfBirth());
+				System.out.println("demanded age: " + demandProfileElement.getNumericValue() + " - matchValue: " + matchValue);
+			}
+			
+		}
+		
+		
 		
 		ProfileElementComparison profileElementComparison = new ProfileElementComparison(
 				demandProfileElement.getProfileElementOwner(),

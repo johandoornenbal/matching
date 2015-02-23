@@ -66,6 +66,7 @@ public class ProfileElementNumeric extends ProfileElement {
             final Integer weight
             ){
         this.setNumericValue(value);
+        this.setDisplayValue(value.toString());
         this.setWeight(weight);
         return this;
     }

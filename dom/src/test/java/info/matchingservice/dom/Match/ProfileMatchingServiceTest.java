@@ -5,9 +5,11 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
+import info.matchingservice.dom.Profile.ProfileType;
 
 import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2;
 import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2.Mode;
@@ -24,6 +26,9 @@ public class ProfileMatchingServiceTest {
 	
 	@Mock
 	private ProfileElementTimePeriod demandProfileElement;
+	
+	@Mock
+	private ProfileElementNumeric demandProfileElementAge;
 	
 	@Mock
 	private ProfileElementUsePredicate supplyProfileElement;
@@ -45,9 +50,10 @@ public class ProfileMatchingServiceTest {
 		
 	}
 	
+	//************* TEST getProfileElementTimePeriodComparison *********************//
 	
 	@Test
-    public void testMatchingService(){
+    public void testProfileElementTimePeriodComparison(){
 		
 		ProfileMatchingService service = new ProfileMatchingService();
 		
@@ -70,8 +76,6 @@ public class ProfileMatchingServiceTest {
 		assertEquals(supplyProfile.getSupplyProfileOwner(), supply);
 		assertEquals(supplyProfile.getActorOwner(), supplier);
 		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
-		
-		//************* TEST getProfileElementTimePeriodComparison *********************//
 		
 		// wrong profile element type
 		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
@@ -149,10 +153,59 @@ public class ProfileMatchingServiceTest {
 		ProfileElementComparison comp12 = service.getProfileElementTimePeriodComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp12.getCalculatedMatchingValue().intValue(), 100);
 		
-		//---------------- END TEST getProfileElementTimePeriodComparison --------------------//
-		
-		
-		
 	}
+	//---------------- END TEST getProfileElementTimePeriodComparison --------------------//
+	
+	//************* TEST getProfileElementAgeComparison **********************************//
+	
+	// Very basic test because of use queries and container
+	// The rest with integration tests
+	
+	@Test
+    public void testProfileElementAgeComparison(){
+		
+		ProfileMatchingService service = new ProfileMatchingService();
+		
+		Person supplier = new Person();
+		Supply supply = new Supply();
+		Profile supplyProfile = new Profile();
+		ProfileElementUsePredicate supplyProfileElement = new ProfileElementUsePredicate();
+		Profile demandProfile = new Profile();
+		ProfileElementNumeric demandProfileElement = new ProfileElementNumeric();
+		
+		supply.setSupplyOwner(supplier);
+		supplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
+		supplyProfile.setSupplyProfileOwner(supply);
+		supplyProfile.setProfileType(ProfileType.PERSON_PROFILE);
+		demandProfileElement.setProfileElementOwner(demandProfile);
+		supplyProfileElement.setProfileElementOwner(supplyProfile);
+		demandProfileElement.setProfileElementType(ProfileElementType.AGE);
+		supplyProfileElement.setProfileElementType(ProfileElementType.USE_AGE);
+		
+		assertNotNull(service);
+		assertEquals(supplyProfile.getSupplyProfileOwner(), supply);
+		assertEquals(supplyProfile.getActorOwner(), supplier);
+		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
+		
+		// wrong profile element type
+		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
+		ProfileElementComparison comp = service.getProfileElementAgeComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp);
+		demandProfileElement.setProfileElementType(ProfileElementType.AGE);
+		
+		// wrong profile element type again
+		supplyProfileElement.setProfileElementType(ProfileElementType.AGE);
+		ProfileElementComparison comp2 = service.getProfileElementAgeComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp2);
+		
+		// wrong profile element type again
+		supplyProfileElement.setProfileElementType(ProfileElementType.AGE);
+		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
+		ProfileElementComparison comp3 = service.getProfileElementAgeComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp3);
+	
+	}
+	
+	//------------- TEST getProfileElementAgeComparison ----------------------------------//
 	
 }
