@@ -2,10 +2,13 @@ package info.matchingservice.dom.Api;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.Tags;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -30,6 +33,11 @@ public class api extends AbstractFactoryAndRepository {
 	@Action(semantics=SemanticsOf.SAFE)
 	public List<Person> activePerson(){
 		return persons.activePerson();
+	}
+	
+	@Action(semantics=SemanticsOf.SAFE)
+	public List<Demand> getDemandByUniqueId(final UUID uniqueItemId){
+		return demands.findDemandByUniqueItemId(uniqueItemId);
 	}
 	
 	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
@@ -98,6 +106,9 @@ public class api extends AbstractFactoryAndRepository {
     //Injections
 	@Inject
 	Persons persons;
+	
+	@Inject
+	Demands demands;
 	
 	@Inject
 	Tags tags;

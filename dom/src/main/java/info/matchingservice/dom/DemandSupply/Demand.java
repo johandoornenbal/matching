@@ -77,7 +77,12 @@ import org.joda.time.LocalDate;
             name = "findDemandByDescription", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Demand "
-                    + "WHERE ownedBy == :ownedBy && demandDescription.indexOf(:demandDescription) >= 0")                    
+                    + "WHERE ownedBy == :ownedBy && demandDescription.indexOf(:demandDescription) >= 0"),
+    @javax.jdo.annotations.Query(
+            name = "findDemandByUniqueItemId", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.DemandSupply.Demand "
+                    + "WHERE uniqueItemId.matches(:uniqueItemId)")                    
 })
 @DomainObject(editing=Editing.DISABLED)
 public class Demand extends MatchingSecureMutableObject<Demand> {

@@ -55,6 +55,13 @@ public class Demands extends MatchingDomainService<Demand> {
         		"demandDescription", demandDescription,
         		"ownedBy", ownedBy);
     }
+    
+    @Programmatic
+    // for Api
+    public List<Demand> findDemandByUniqueItemId(UUID uniqueItemId) {
+        return allMatches("findDemandByUniqueItemId",
+        		"uniqueItemId", uniqueItemId);
+    }
 
     @Programmatic
     public Demand createDemand(
