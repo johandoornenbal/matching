@@ -127,9 +127,9 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
     /**
      * This method can be used in combination with hideXxx() or disableXxx()
      * method of a child e.g. hideXxx(){ return
-     * super.allowedTrustLevel(TrustLevel.ENTRY_LEVEL); } Hides the Xxx field or
-     * method for all levels under ENTRY_LEVEL (OUTER_CIRCLE and BANNED) and
-     * show it for levels ENTRY_LEVEL and up (INNER_CIRCLE and INTIMATE)
+     * super.allowedTrustLevel(TrustLevel.ENTRY_LEVEL); } returns 'true' and thus hides the Xxx field or
+     * method for all levels under ENTRY_LEVEL (OUTER_CIRCLE and BANNED) and returns 'false' and thus
+     * shows it for levels ENTRY_LEVEL and up (INNER_CIRCLE and INTIMATE)
      * 
      * Exceptions are when called by the owner of the instance or admin of the
      * app

@@ -1,5 +1,6 @@
 package info.matchingservice.dom.Api;
 
+import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -7,6 +8,7 @@ import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.Tags;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +39,28 @@ public class api extends AbstractFactoryAndRepository {
 	
 	@Action(semantics=SemanticsOf.SAFE)
 	public List<Demand> getDemandByUniqueId(final UUID uniqueItemId){
+		
 		return demands.findDemandByUniqueItemId(uniqueItemId);
+		
+	}
+	
+	public String validateGetDemandByUniqueId(final UUID uniqueItemId){
+		// implementation of Trusted Circles Business Rule: demands are accessible only for INNER_CIRCLE
+		// TODO: this should be transferred to object itself for maintainability; now there are at least to places to adapt code
+		if (
+				// Not the owner
+				!demands.findDemandByUniqueItemId(uniqueItemId).get(0).getOwnedBy().equals(currentUserName())
+				
+				&&
+				
+				// At least Inner Circle
+				demands.findDemandByUniqueItemId(uniqueItemId).get(0).allowedTrustLevel(TrustLevel.INNER_CIRCLE)
+			) 
+		{
+			return "NO_ACCESS";
+		}
+		
+		return null;
 	}
 	
 	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)

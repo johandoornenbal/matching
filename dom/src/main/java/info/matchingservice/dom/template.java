@@ -41,6 +41,7 @@ public class template {
 	 * ENDDATE_BEFORE_TODAY
 	 * ENDDATE_BEFORE_STARTDATE
 	 * ONLY_ON_DEMAND
+	 * NO_ACCESS
 	 * 
 	 */
 
