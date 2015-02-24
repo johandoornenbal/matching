@@ -101,7 +101,12 @@ import org.joda.time.LocalDate;
             name = "searchNameOfProfilesOfTypeByOwner", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE demandOrSupply == :demandOrSupply && profileType == :profileType && ownedBy == :ownedBy && profileName.indexOf(:profileName) >= 0")                    
+                    + "WHERE demandOrSupply == :demandOrSupply && profileType == :profileType && ownedBy == :ownedBy && profileName.indexOf(:profileName) >= 0"),
+    @javax.jdo.annotations.Query(
+            name = "findProfileByUniqueItemId", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE uniqueItemId.matches(:uniqueItemId)")                    
 })
 @DomainObject(editing = Editing.DISABLED)
 public class Profile extends MatchingSecureMutableObject<Profile> {

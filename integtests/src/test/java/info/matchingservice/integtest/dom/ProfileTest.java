@@ -136,7 +136,7 @@ public class ProfileTest extends MatchingIntegrationTest {
             // test display values (Strings)
 //            assertThat(dropdown.getDisplayValue(), is("ijverig"));
             assertThat(numeric.getDisplayValue(), is("5"));
-            assertThat(text.getDisplayValue(), is(ELEMENT_TEXTVALUE));
+            assertThat(text.getDisplayValue(), is("Tekst op elemen"));
             assertThat(dropdownAndText.getDisplayValue(), is("ijverig - " + ELEMENT_TEXTVALUE));
             // P Elements Types test TODO: this will change..
 //            assertThat(dropdown.getProfileElementType(), is(ProfileElementType.QUALITY));

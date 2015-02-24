@@ -234,6 +234,13 @@ public class Persons extends MatchingDomainService<Person> {
         }
     }
     
+    @Programmatic
+    // for Api
+    public List<Person> findPersonByUniqueItemId(UUID uniqueItemId) {
+        return allMatches("findPersonByUniqueItemId",
+        		"uniqueItemId", uniqueItemId);
+    }
+    
     // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;

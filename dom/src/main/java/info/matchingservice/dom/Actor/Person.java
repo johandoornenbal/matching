@@ -73,7 +73,12 @@ import org.joda.time.LocalDate;
             name = "matchPersonByLastNameContains", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.Person "
-                    + "WHERE lastName.toLowerCase().indexOf(:lastName) >= 0")                    
+                    + "WHERE lastName.toLowerCase().indexOf(:lastName) >= 0"),
+    @javax.jdo.annotations.Query(
+            name = "findPersonByUniqueItemId", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Actor.Person "
+                    + "WHERE uniqueItemId.matches(:uniqueItemId)")       
 })
 @DomainObject(editing=Editing.DISABLED, autoCompleteRepository=Persons.class, autoCompleteAction = "autoComplete")
 public class Person extends Actor {

@@ -2,6 +2,9 @@ package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import java.util.UUID;
+
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -17,6 +20,7 @@ import info.matchingservice.integtest.MatchingIntegrationTest;
 
 import javax.inject.Inject;
 
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -228,12 +232,54 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         }
         
         @Test
-        public void deleteSupply() throws Exception {
+        public void deleteDemand() throws Exception {
             assertThat(demands.allDemands().size(), is(numberOfdemands));
             assertThat(profiles.allDemandProfiles().size(), is(numberOfDemandProfiles));
             d1.deleteDemand(true);
             assertThat(demands.allDemands().size(), is(numberOfdemands-1));
             assertThat(profiles.allDemandProfiles().size(), is(numberOfDemandProfiles - 1));
+        }
+        
+    }
+    
+public static class UpdateDemand extends DemandSupplyTest{
+        
+        Demand d1;
+        UUID unid;
+        Integer numberOfdemands;
+        Integer numberOfDemandProfiles;
+        
+        private static final String DEMAND_DESCRIPTION = "Dit is de vraagomschrijving";
+        private static final String DEMAND_SUMMARY = "Dit is de samenvatting";
+        private static final String DEMAND_STORY = "Dit is het hele verhaal";
+        private static final LocalDate START_DATE = new LocalDate(2015, 01, 01);
+        private static final LocalDate END_DATE = new LocalDate(2015, 01, 31);
+        private static final Integer WEIGHT = 10;
+        private static final DemandSupplyType DEMAND_SUPPLY_TYPE = DemandSupplyType.GENERIC_DEMANDSUPPLY;
+        private static final String OWNED_BY = "frans";
+        
+        @Before
+        public void setUp() throws Exception {
+            d1=demands.createDemand(DEMAND_DESCRIPTION, DEMAND_SUMMARY, DEMAND_STORY, null, START_DATE, END_DATE, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
+            unid = d1.getUniqueItemId();
+            assertThat(d1.getDemandDescription(), is(DEMAND_DESCRIPTION));
+            assertThat(d1.getUniqueItemId(), is(unid));
+            assertThat(d1.getOwnedBy(), is(OWNED_BY));
+            d1.updateDemand(DEMAND_DESCRIPTION + "test123", DEMAND_SUMMARY + "test456", DEMAND_STORY + "test789", null, START_DATE, new LocalDate(2015,12,31));
+            //unid should not change
+            assertThat(d1.getUniqueItemId(), is(unid));
+            //owner should not change
+            assertThat(d1.getOwnedBy(), is(OWNED_BY));
+            assertThat(d1.getDemandDescription(), is("Dit is de vraagomschrijvingtest123"));
+            assertThat(d1.getDemandSummary(), is("Dit is de samenvattingtest456"));
+            assertThat(d1.getDemandStory(), is("Dit is het hele verhaaltest789"));
+            assertThat(d1.getDemandOrSupplyProfileStartDate(), is(START_DATE));
+            assertThat(d1.getDemandOrSupplyProfileEndDate(), is(new LocalDate(2015,12,31)));
+        }
+        
+        @Test
+        public void updateDemand() throws Exception {
+            
         }
         
     }

@@ -48,6 +48,13 @@ public class Supplies extends MatchingDomainService<Supply> {
     }
     
     @Programmatic
+    // for Api
+    public List<Supply> findSupplyByUniqueItemId(UUID uniqueItemId) {
+        return allMatches("findSupplyByUniqueItemId",
+        		"uniqueItemId", uniqueItemId);
+    }
+    
+    @Programmatic
     // for fixtures
     public List<Supply> findSupplyByDescription(String supplyDescription, String ownedBy) {
         return allMatches("findSupplyByDescription",
