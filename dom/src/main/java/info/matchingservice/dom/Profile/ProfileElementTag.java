@@ -99,10 +99,19 @@ public class ProfileElementTag extends ProfileElement {
     public String validateCreatePassionTagHolder(final String tagProposalWord){
         // only on profile element with ProfileElementType = PASSION_TAGS
         if (this.getProfileElementType() == ProfileElementType.PASSION_TAGS){
-            return null;
+        	
+    		// every tag choice at most once (no doubles)
+    		if (!tagHolders.findTagHolderByTagDescription(this, tagProposalWord).isEmpty()){
+    			
+    			return "NO_DOUBLES";
+    			
+    		} else {
+    		
+    			return null;
+    		
+    		}
+        
         }
-        // every tag choice at most once (no doubles)
-        //TODO: Nog maken
         
         return "ONLY_ON_PASSION_TAGS_PROFILE_ELEMENT";
     }
@@ -129,7 +138,9 @@ public class ProfileElementTag extends ProfileElement {
 
     	// only on profile element with ProfileElementType = BRANCHE_TAGS
         if (this.getProfileElementType() == ProfileElementType.BRANCHE_TAGS){
-            return false;
+            
+        	return false;
+        
         }
         
         return true;
@@ -138,10 +149,19 @@ public class ProfileElementTag extends ProfileElement {
     public String validateCreateBrancheTagHolder(final String tagProposalWord){
         // only on profile element with ProfileElementType = BRANCHE_TAGS
         if (this.getProfileElementType() == ProfileElementType.BRANCHE_TAGS){
-            return null;
+        	
+    		// every tag choice at most once (no doubles)
+    		if (!tagHolders.findTagHolderByTagDescription(this, tagProposalWord).isEmpty()){
+    			
+    			return "NO_DOUBLES";
+    			
+    		} else {
+    		
+    			return null;
+    		
+    		}
+        
         }
-        // every tag choice at most once (no doubles)
-        //TODO: Nog maken
         
         return "ONLY_ON_BRANCHE_TAGS_PROFILE_ELEMENT";
     }   
@@ -165,7 +185,9 @@ public class ProfileElementTag extends ProfileElement {
 
     	// only on profile element with ProfileElementType = QUALITY_TAGS
         if (this.getProfileElementType() == ProfileElementType.QUALITY_TAGS){
+        	
             return false;
+        
         }
         
         return true;
@@ -174,10 +196,19 @@ public class ProfileElementTag extends ProfileElement {
     public String validateCreateQualityTagHolder(final String tagProposalWord){
         // only on profile element with ProfileElementType = QUALITY_TAGS
         if (this.getProfileElementType() == ProfileElementType.QUALITY_TAGS){
-            return null;
+            
+    		// every tag choice at most once (no doubles)
+    		if (!tagHolders.findTagHolderByTagDescription(this, tagProposalWord).isEmpty()){
+    			
+    			return "NO_DOUBLES";
+    			
+    		} else {
+    		
+    			return null;
+    		
+    		}
+        	
         }
-        // every tag choice at most once (no doubles)
-        //TODO: Nog maken
         
         return "ONLY_ON_QUALITY_TAGS_PROFILE_ELEMENT";
     } 
