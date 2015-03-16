@@ -574,6 +574,67 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     //-- createQualityTagElement --//
     
+    //** createWeekdayTagElement **//
+    
+    // Business rule:
+    // only on profile of type PERSON and ORGANISATION
+    // At Most one
+    // 2 dezelfde kwaliteiten kiezen heeft geen zin => TODO: Deze moet in zijn algemeenheid worden opgelost bij tags denk ik
+    
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElementTag createWeekDayTagElement(
+            @ParameterLayout(named="weight")
+            final Integer weight
+            ){
+        return profileElementTags.createProfileElementTag(
+                "WEEKDAY_TAGS_ELEMENT", 
+                weight, 
+                ProfileElementType.WEEKDAY_TAGS, 
+                this);
+    }
+    
+    public boolean hideCreateWeekDayTagElement(final Integer weight){
+        // only on profile of type PERSON and ORGANSATION
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+            return true;
+        }
+        
+        // At Most one
+        QueryDefault<ProfileElementTag> query = 
+                QueryDefault.create(
+                        ProfileElementTag.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.WEEKDAY_TAGS,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public String validateCreateWeekDayTagElement(final Integer weight){
+        // only on profile of type PERSON and ORGANSATION
+    	if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+        }
+        
+    	// At Most one
+        QueryDefault<ProfileElementTag> query = 
+                QueryDefault.create(
+                        ProfileElementTag.class, 
+                    "findProfileElementOfType", 
+                    "profileElementType", ProfileElementType.WEEKDAY_TAGS,
+                    "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return "ONE_INSTANCE_AT_MOST";
+        }
+        
+        return null;
+    }
+    //-- createWeekDayTagElement --//
+    
     //** createLocationElement **//
     // Business rule:
     // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE

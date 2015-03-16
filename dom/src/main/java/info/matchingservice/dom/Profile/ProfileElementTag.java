@@ -21,6 +21,8 @@ package info.matchingservice.dom.Profile;
 import info.matchingservice.dom.Tags.TagHolder;
 import info.matchingservice.dom.Tags.TagHolders;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -181,6 +183,72 @@ public class ProfileElementTag extends ProfileElement {
     } 
     //-- createQualityTagHolder --//
     
+    //** createWeekDayTagHolder **//
+    // Business rule:
+    // only on profile element with ProfileElementType = WEEKDAY_TAGS
+    // every tag choice at most once (no doubles)
+    // assumes there is a category 'weekdagen', otherwise creates one.
+    public ProfileElementTag createWeekDayTagHolder(
+        	@ParameterLayout(named = "tagProposalWord")
+        	final String tagProposalWord
+		)
+		{
+			tagHolders.createTagHolder(this, tagProposalWord, "weekdagen", currentUserName());
+			return this;
+		}
+    
+    public List<String> choices0CreateWeekDayTagHolder(){
+    	
+    	return Arrays.asList("maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag", "zondag");
+    	
+    }
+    
+    public boolean hideCreateWeekDayTagHolder(final String tagProposalWord){
+
+    	// only on profile element with ProfileElementType = WEEKDAY_TAGS
+        if (this.getProfileElementType() == ProfileElementType.WEEKDAY_TAGS){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public String validateCreateWeekDayTagHolder(final String tagProposalWord){
+        // only on profile element with ProfileElementType = WEEKDAY_TAGS
+        if (this.getProfileElementType() == ProfileElementType.WEEKDAY_TAGS){
+        	
+        	if (
+        			tagProposalWord.toLowerCase().equals("maandag")
+        			||
+        			tagProposalWord.toLowerCase().equals("dinsdag")
+        			||
+        			tagProposalWord.toLowerCase().equals("woensdag")
+        			||
+        			tagProposalWord.toLowerCase().equals("donderdag")
+        			||
+        			tagProposalWord.toLowerCase().equals("vrijdag")
+        			||
+        			tagProposalWord.toLowerCase().equals("zaterdag")
+        			||
+        			tagProposalWord.toLowerCase().equals("zondag")
+        			) 
+        	{
+            	
+        		return null;
+            
+        	} else {
+            	
+        		return "NOT_A_WEEKDAY";
+            
+        	}
+        }
+        // every tag choice at most once (no doubles)
+        //TODO: Nog maken
+ 
+        return "ONLY_ON_WEEKDAY_TAGS_PROFILE_ELEMENT";
+    } 
+    //-- createQualityTagHolder --//    
+    
 	//-- API: ACTIONS --//
 	//** GENERIC OBJECT STUFF **//
 	//** constructor **//
@@ -202,9 +270,6 @@ public class ProfileElementTag extends ProfileElement {
     
     @Inject
     private DomainObjectContainer container;
-    
-    @Inject
-    private ProfileElementTags profileElementTags;
     
 	//-- INJECTIONS --//
 	//** HIDDEN: PROPERTIES **//
