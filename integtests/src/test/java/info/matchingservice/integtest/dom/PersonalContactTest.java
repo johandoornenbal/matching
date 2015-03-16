@@ -1,20 +1,18 @@
 package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonalContacts;
+import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.fixture.MatchingTestsFixture;
+import info.matchingservice.integtest.MatchingIntegrationTest;
 
 import javax.inject.Inject;
 
 import org.joda.time.LocalDate;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Actor.PersonalContacts;
-import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.fixture.MatchingTestsFixture;
-import info.matchingservice.integtest.MatchingIntegrationTest;
 
 public class PersonalContactTest extends MatchingIntegrationTest {
 	

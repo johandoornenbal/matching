@@ -2,6 +2,8 @@ package info.matchingservice.dom.Api;
 
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonalContact;
+import info.matchingservice.dom.Actor.PersonalContacts;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Demands;
@@ -31,6 +33,8 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.value.Blob;
 import org.joda.time.LocalDate;
+
+import com.google.common.base.Objects;
 
 @DomainService()
 @DomainServiceLayout()
@@ -242,6 +246,42 @@ public class api extends AbstractFactoryAndRepository {
     
     //------------------------------------ END findTagsUsedMoreThanThreshold ---------------------------//
     
+    //***************************************** createPersonalContact ***********************//
+    
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public PersonalContact createPersonalContact(
+            @ParameterLayout(named="contactPerson")
+            final Person contactPerson) {
+        return personalcontacts.createPersonalContact(contactPerson, currentUserName());
+    }
+    
+    public List<Person> autoComplete0CreatePersonalContact(final String search) {
+        return persons.findPersons(search);
+    }
+    
+    /**
+     * There should be at most 1 instance for each owner - contact combination.
+     * 
+     */
+    public String validateCreatePersonalContact(final Person contactPerson) {
+        
+        if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
+            return "NO_USE";
+        }
+        
+        QueryDefault<PersonalContact> query = 
+                QueryDefault.create(
+                        PersonalContact.class, 
+                    "findPersonalContactUniqueContact", 
+                    "ownedBy", currentUserName(),
+                    "contact", contactPerson);
+        return container.firstMatch(query) != null?
+        "ONE_INSTANCE_AT_MOST"        
+        :null;
+    }
+    
+    //----------------------------------------- END createPersonalContact -------------------//
+    
     //Helpers
     private String currentUserName() {
         return container.getUser().getName();
@@ -265,5 +305,8 @@ public class api extends AbstractFactoryAndRepository {
 	
 	@Inject
 	private DomainObjectContainer container;
+	
+	@Inject
+	PersonalContacts personalcontacts;
 	
 }
