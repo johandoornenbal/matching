@@ -40,6 +40,16 @@ public abstract class TagsAbstract extends FixtureScript {
         return newHolder;
     }
     
+    protected ProfileElement createWeekDayTagHolder(
+            ProfileElement ownerElement,
+            String tagProposal,
+            String ownedBy,
+            ExecutionContext executionContext 
+            ){
+        ProfileElement newHolder = tagHolders.createTagHolder(ownerElement, tagProposal, "weekdagen", ownedBy);
+        return newHolder;
+    }
+    
     //region > injected services
     
     @javax.inject.Inject

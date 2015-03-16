@@ -206,6 +206,13 @@ public class TagsForFrans extends TagsAbstract {
                 "frans",
                 executionContext
                 );
+        
+        createWeekDayTagHolder(
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0).findProfileElementByOwnerProfileAndDescription("WEEKDAY").get(0), 
+                "maandag", 
+                "frans",
+                executionContext
+                );
     }
     
     

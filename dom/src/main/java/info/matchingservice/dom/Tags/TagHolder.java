@@ -46,7 +46,7 @@ import org.apache.isis.applib.annotation.Where;
             name = "findTagHolder", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Tags.TagHolder "
-                    + "WHERE ownerElement == :ownerElement && tag == :tag")                    
+                    + "WHERE ownerElement == :ownerElement && tag == :tag")                   
 })
 @DomainObject(editing=Editing.DISABLED)
 public class TagHolder extends MatchingSecureMutableObject<TagHolder> {

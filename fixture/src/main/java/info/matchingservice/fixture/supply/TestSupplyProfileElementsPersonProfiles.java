@@ -28,6 +28,14 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         		executionContext
         		);
         
+        createWeekDayTagsElement(
+        		"WEEKDAY_TAGS_ELEMENT",
+        		10,
+        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0),
+        		"frans",
+        		executionContext
+        		);
+        
         createPassion(
                 "PASSION_ELEMENT", 
                 10, 

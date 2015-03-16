@@ -21,7 +21,10 @@ package info.matchingservice.dom.Tags;
 
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElementTag;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,6 +67,42 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     @Programmatic
     public List<TagHolder> findTagHolder(final ProfileElement ownerElement, final Tag tag){
         return allMatches("findTagHolder", "ownerElement", ownerElement, "tag", tag);
+    }
+    
+    /**
+     * returns the TagHolders on ownerElement that contain a Tag with tagDescription = param tagDescription
+     * 
+     * @param ownerElement
+     * @param tagDescription
+     * @return
+     */
+    @Programmatic
+    public List<TagHolder> findTagHolderByTagDescription(final ProfileElementTag ownerElement, final String tagDescription){
+        
+    	List<TagHolder> tagHoldersWithDescription = new ArrayList<TagHolder>();
+    	List<Tag> tagsWithSameDescription = new ArrayList<Tag>();
+    
+    	tagsWithSameDescription = tags.findTagContains(tagDescription);
+    	
+    	for (final Iterator<TagHolder> i = ownerElement.getCollectTagHolders().iterator(); i.hasNext();) {
+    	
+    		TagHolder tagholder = i.next();
+    		
+    		for (final Iterator<Tag> it = tagsWithSameDescription.iterator(); it.hasNext();) {
+    			
+    			String description = it.next().getTagDescription();
+    			
+    			if (tagholder.getTag().getTagDescription().equals(description)) {
+    				
+    				tagHoldersWithDescription.add(tagholder);
+    				
+    			}
+    			
+    		}
+    		
+    	}
+    	
+    	return tagHoldersWithDescription;
     }
     
     
@@ -125,6 +164,7 @@ public class TagHolders extends MatchingDomainService<TagHolder> {
     }   
     
 	//-- HELPERS: programmatic actions --// 
+    
 	//-- HELPERS --//
     
 	//** INJECTIONS **//

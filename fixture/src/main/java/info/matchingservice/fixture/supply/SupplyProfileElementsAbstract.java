@@ -71,6 +71,17 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
         return executionContext.add(this,newElement);
     }
     
+    protected ProfileElementTag createWeekDayTagsElement(
+            String description,
+            Integer weight,
+            Profile profileOwner,
+            String ownedBy,
+            ExecutionContext executionContext 
+            ){
+        ProfileElementTag newElement = profileElementTags.createProfileElementTag(description, weight, ProfileElementType.WEEKDAY_TAGS, profileOwner, ownedBy);
+        return executionContext.add(this,newElement);
+    }
+    
     protected ProfileElementText createLocation(
             String description,
             String textValue,

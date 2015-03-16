@@ -188,6 +188,7 @@ public class ProfileElementTag extends ProfileElement {
     // only on profile element with ProfileElementType = WEEKDAY_TAGS
     // every tag choice at most once (no doubles)
     // assumes there is a category 'weekdagen', otherwise creates one.
+    // value should be a weekday in dutch ;-)
     public ProfileElementTag createWeekDayTagHolder(
         	@ParameterLayout(named = "tagProposalWord")
         	final String tagProposalWord
@@ -217,6 +218,7 @@ public class ProfileElementTag extends ProfileElement {
         // only on profile element with ProfileElementType = WEEKDAY_TAGS
         if (this.getProfileElementType() == ProfileElementType.WEEKDAY_TAGS){
         	
+        	// value should be a weekday in dutch ;-)
         	if (
         			tagProposalWord.toLowerCase().equals("maandag")
         			||
@@ -234,7 +236,16 @@ public class ProfileElementTag extends ProfileElement {
         			) 
         	{
             	
-        		return null;
+        		// every tag choice at most once (no doubles)
+        		if (!tagHolders.findTagHolderByTagDescription(this, tagProposalWord).isEmpty()){
+        			
+        			return "NO_DOUBLES";
+        			
+        		} else {
+        		
+        			return null;
+        		
+        		}
             
         	} else {
             	
@@ -242,8 +253,6 @@ public class ProfileElementTag extends ProfileElement {
             
         	}
         }
-        // every tag choice at most once (no doubles)
-        //TODO: Nog maken
  
         return "ONLY_ON_WEEKDAY_TAGS_PROFILE_ELEMENT";
     } 
