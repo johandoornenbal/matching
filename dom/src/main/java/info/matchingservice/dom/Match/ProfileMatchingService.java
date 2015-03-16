@@ -639,6 +639,8 @@ public class ProfileMatchingService extends AbstractService {
 						demandProfileElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS
 						||
 						demandProfileElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS
+						||
+						demandProfileElement.getProfileElementType() == ProfileElementType.WEEKDAY_TAGS
 				)
 				&&
 				demandProfileElement.getProfileElementType() == supplyProfileElement.getProfileElementType()
