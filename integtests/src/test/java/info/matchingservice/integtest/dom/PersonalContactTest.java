@@ -33,7 +33,8 @@ public class PersonalContactTest extends MatchingIntegrationTest {
 		
 				
 		@Test
-        public void shouldBeHidden() throws Exception {
+        public void shouldBeHiddenAddAndDelete() throws Exception {
+			
 			Person p1;
 			Person frans;
 			p1 = persons.createPerson("Test", "van der", "Test", new LocalDate(1962,7,16), null, "tester");
@@ -46,11 +47,18 @@ public class PersonalContactTest extends MatchingIntegrationTest {
 			frans = persons.findPersons("hals").get(0);
 			// because frans is not a contact yet, contact Action AddAsPersonalContact should NOT be hidden
 			assertThat(personalcontacts.hideAddAsPersonalContact(frans), is(false));
+			assertThat(personalcontacts.allPersonalContactsOfUser().size(), is(0));
 			personalcontacts.addAsPersonalContact(frans);
 			// because frans is now added as a personal contact Action AddAsPersonalContact should be hidden
 			assertThat(personalcontacts.hideAddAsPersonalContact(frans), is(true));
 			// and validate should indicate that frans is already a contact
 			assertThat(personalcontacts.validateAddAsPersonalContact(frans), is("ONE_INSTANCE_AT_MOST"));
+			assertThat(personalcontacts.allPersonalContactsOfUser().size(), is(1));
+			
+			personalcontacts.allPersonalContactsOfUser().get(0).deleteTrustedContact(true);
+			// because frans is not a contact anymore, contact Action AddAsPersonalContact should NOT be hidden
+			assertThat(personalcontacts.hideAddAsPersonalContact(frans), is(false));
+			assertThat(personalcontacts.allPersonalContactsOfUser().size(), is(0));
 		}
 		
 	}

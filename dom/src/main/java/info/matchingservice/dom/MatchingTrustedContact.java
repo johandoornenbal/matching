@@ -28,6 +28,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import com.google.common.base.Objects;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
@@ -37,6 +38,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
@@ -155,7 +157,8 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
     
     // Region //// Delete action //////////////////////////////
     @ActionLayout()
-    public List<MatchingTrustedContact> delete(
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public List<MatchingTrustedContact> deleteTrustedContact(
             @ParameterLayout(named="confirmDelete")
             @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
@@ -173,7 +176,7 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
         return (List<MatchingTrustedContact>) container.allMatches(query);   
     }
     
-    public String validateDelete(boolean confirmDelete) {
+    public String validateDeleteTrustedContact(boolean confirmDelete) {
         return confirmDelete? null:"CONFIRM_DELETE";
     }
     
@@ -181,7 +184,7 @@ public class MatchingTrustedContact extends MatchingSecureMutableObject<Matching
      * Hides the Delete action unless for owner / admin
      * NOTE: since the instance is hidden unless owner / admin it is a bit superfluous
      */
-    public boolean hideDelete() {
+    public boolean hideDeleteTrustedContact() {
         // user is owner
         if (Objects.equal(getOwnedBy(), currentUserName())){
             return false;
