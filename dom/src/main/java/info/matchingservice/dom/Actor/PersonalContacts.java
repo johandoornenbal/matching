@@ -29,25 +29,77 @@ import javax.inject.Inject;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 
 import com.google.common.base.Objects;
 
-@DomainService(repositoryFor = PersonalContact.class, nature=NatureOfService.DOMAIN)
-@DomainServiceLayout(menuOrder="13")
+@DomainService(repositoryFor = PersonalContact.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
+//@DomainServiceLayout(menuOrder="13")
 public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     
     public PersonalContacts() {
         super(PersonalContacts.class, PersonalContact.class);
     }
+    
+    //** CONTRIBUTED: ACTIONS **//
+    @MemberOrder(name = "Personen", sequence = "10")
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(contributed=Contributed.AS_ACTION)
+    public PersonalContact addAsPersonalContact(
+            @ParameterLayout(named="contactPerson")
+            final Person contactPerson) {
+        return createPersonalContact(contactPerson, currentUserName()); // see region>helpers
+    }
+    
+//    public List<Person> autoComplete0CreatePersonalContact(final String search) {
+//        return persons.findPersons(search);
+//    }
+    
+    public boolean hideAddAsPersonalContact(final Person contactPerson){
+
+        // do not show on own personinstance - you cannot add yourself as personal contact
+        if (contactPerson.getOwnedBy().equals(currentUserName())) {
+            return true;
+        }
+        // do not show when already contacted
+        QueryDefault<PersonalContact> query = 
+                QueryDefault.create(
+                        PersonalContact.class, 
+                    "findPersonalContactUniqueContact", 
+                    "ownedBy", currentUserName(),
+                    "contact", contactPerson);
+        return container.firstMatch(query) != null?
+        true  : false;        
+    }
+    
+    /**
+     * There should be at most 1 instance for each owner - contact combination.
+     * 
+     */
+    public String validateAddAsPersonalContact(final Person contactPerson) {
+        
+        if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
+            return "NO_USE";
+        }
+        
+        QueryDefault<PersonalContact> query = 
+                QueryDefault.create(
+                        PersonalContact.class, 
+                    "findPersonalContactUniqueContact", 
+                    "ownedBy", currentUserName(),
+                    "contact", contactPerson);
+        return container.firstMatch(query) != null?
+        "ONE_INSTANCE_AT_MOST"        
+        :null;
+    }
+    //-- CONTRIBUTED: ACTIONS --//   
     
     //** HELPERS **//
     //** HELPERS: programmatic actions **//
@@ -126,59 +178,5 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     Persons persons;
     //-- INJECTIONS --//
     
-    //** HIDDEN: ACTIONS **//
-    @MemberOrder(name = "Personen", sequence = "10")
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(hidden=Where.ANYWHERE)
-    public PersonalContact createPersonalContact(
-            @ParameterLayout(named="contactPerson")
-            final Person contactPerson) {
-        return createPersonalContact(contactPerson, currentUserName()); // see region>helpers
-    }
-    
-    public List<Person> autoComplete0CreatePersonalContact(final String search) {
-        return persons.findPersons(search);
-    }
-    
-    public boolean hideCreatePersonalContact(final Person contactPerson){
-        // show in service menu
-        if (contactPerson == null) {
-            return false;
-        }
-        // do not show on own personinstance - you cannot add yourself as personal contact
-        if (contactPerson.getOwnedBy().equals(currentUserName())) {
-            return true;
-        }
-        // do not show when already contacted
-        QueryDefault<PersonalContact> query = 
-                QueryDefault.create(
-                        PersonalContact.class, 
-                    "findPersonalContactUniqueContact", 
-                    "ownedBy", currentUserName(),
-                    "contact", contactPerson.getOwnedBy());
-        return container.firstMatch(query) != null?
-        true  : false;        
-    }
-    
-    /**
-     * There should be at most 1 instance for each owner - contact combination.
-     * 
-     */
-    public String validateCreatePersonalContact(final Person contactPerson) {
-        
-        if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
-            return "NO_USE";
-        }
-        
-        QueryDefault<PersonalContact> query = 
-                QueryDefault.create(
-                        PersonalContact.class, 
-                    "findPersonalContactUniqueContact", 
-                    "ownedBy", currentUserName(),
-                    "contact", contactPerson.getOwnedBy());
-        return container.firstMatch(query) != null?
-        "ONE_INSTANCE_AT_MOST"        
-        :null;
-    }
-    //-- HIDDEN: ACTIONS --//    
+ 
 }
