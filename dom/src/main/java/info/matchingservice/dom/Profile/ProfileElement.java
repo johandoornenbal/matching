@@ -26,6 +26,7 @@ import info.matchingservice.dom.Match.ProfileElementComparison;
 import info.matchingservice.dom.Match.ProfileMatchingService;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -195,6 +196,11 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
             @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
+    	List<PersistedProfileElementComparison> elements = comparisons.findProfileElementComparisonsByElement(this);
+    	for (final Iterator<PersistedProfileElementComparison> iterator = elements.iterator(); iterator.hasNext();)
+    	{
+    		iterator.next().deletePersistedProfileElementComparison();
+    	}
         container.removeIfNotAlready(this);
         container.informUser("Element verwijderd");
         return getProfileElementOwner();
@@ -332,6 +338,9 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 	//** INJECTIONS **//
     @javax.inject.Inject
     private DomainObjectContainer container;
+    
+    @Inject
+    PersistedProfileElementComparisons comparisons;
 	//-- INJECTIONS --//
     
 	//** HIDDEN: PROPERTIES **//

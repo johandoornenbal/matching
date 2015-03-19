@@ -47,7 +47,12 @@ import org.apache.isis.applib.annotation.Where;
             name = "findProfileElementComparisonByOwner", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Match.PersistedProfileElementComparison "
-                    + "WHERE ownedBy == :ownedBy")
+                    + "WHERE ownedBy == :ownedBy"),
+    @javax.jdo.annotations.Query(
+            name = "findProfileElementComparisonByElements", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Match.PersistedProfileElementComparison "
+                    + "WHERE demandProfileElement == :element || matchingSupplyProfileElement == :element")                    
 })
 @DomainObject(editing=Editing.DISABLED)
 public class PersistedProfileElementComparison extends MatchingSecureMutableObject<PersistedProfileElementComparison>{

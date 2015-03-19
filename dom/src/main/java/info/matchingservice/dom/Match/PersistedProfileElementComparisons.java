@@ -6,6 +6,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 
 import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Profile.ProfileElement;
 
 @DomainService(nature=NatureOfService.DOMAIN, repositoryFor=PersistedProfileElementComparison.class)
 public class PersistedProfileElementComparisons extends
@@ -19,6 +20,12 @@ public class PersistedProfileElementComparisons extends
 	{
         return allMatches("findProfileElementComparisonByOwner",
         		"ownedBy", ownedBy);
+	}
+	
+	public List<PersistedProfileElementComparison> findProfileElementComparisonsByElement(final ProfileElement element)
+	{
+        return allMatches("findProfileElementComparisonByElements",
+        		"element", element);
 	}
 	
 	public void deleteProfileElementComparisons(final String ownedBy)
