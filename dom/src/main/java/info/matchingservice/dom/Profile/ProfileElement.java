@@ -171,6 +171,21 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 	//-- API: COLLECTIONS --//
     
 	//** API: ACTIONS **//
+    
+    //** updateWeight **//
+    
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElement updateWeight(Integer weight) {
+    	this.setWeight(weight);
+    	return this;
+    }
+    
+    public Integer default0UpdateWeight() {
+        return getWeight();
+    }
+    
+    //-- updateWeight --//
 	
     //** deleteProfileElement **//
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)

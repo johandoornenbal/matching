@@ -154,6 +154,7 @@ public class Persons extends MatchingDomainService<Person> {
         person.setDateOfBirth(dateOfBirth);
         person.setOwnedBy(userName);
         person.setPicture(picture);
+        person.addRoleStudent();
         persist(person);
         return person;
     }
