@@ -22,12 +22,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import info.matchingservice.dom.FinderInteraction;
 import info.matchingservice.dom.FinderInteraction.FinderMethod;
+import info.matchingservice.dom.DemandSupply.Demand;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.apache.isis.applib.query.Query;
 import org.apache.isis.core.commons.matchers.IsisMatchers;
+import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -80,4 +82,83 @@ public class ProfilesTest {
         }
 
     }
+    
+    public static class findProfileByDemandProfileOwner extends ProfilesTest {
+    	
+    	@Mock
+    	Demand demandProfileOwner;
+    	
+        @Test
+        public void happyCase() {
+        	
+        	profiles.findProfileByDemandProfileOwner(demandProfileOwner);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            assertThat(finderInteraction.getQueryName(), is("findProfileByDemandProfileOwner"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("demandProfileOwner"), is((Object) demandProfileOwner));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+        }
+    }
+    
+    public static class allSupplyProfilesOfType extends ProfilesTest {
+    	
+    	@Mock
+    	ProfileType profileType;
+    	
+        @Test
+        public void happyCase() {
+        	
+        	profiles.allSupplyProfilesOfType(profileType);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            assertThat(finderInteraction.getQueryName(), is("allSupplyProfilesOfType"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("profileType"), is((Object) profileType));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+        }
+    }
+    
+   public static class allDemandProfilesOfType extends ProfilesTest {
+    	
+    	@Mock
+    	ProfileType profileType;
+    	
+        @Test
+        public void happyCase() {
+        	
+        	profiles.allDemandProfilesOfType(profileType);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            assertThat(finderInteraction.getQueryName(), is("allDemandProfilesOfType"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("profileType"), is((Object) profileType));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+        }
+    }
+   
+   public static class searchNameOfProfilesOfTypeByOwner extends ProfilesTest {
+   	
+   	@Mock
+   	ProfileType profileType;
+   	String profileName;
+   	DemandOrSupply demandOrSupply;
+   	String ownedBy;
+   	
+       @Test
+       public void happyCase() {
+       	
+       	profiles.searchNameOfProfilesOfTypeByOwner(profileName, demandOrSupply, profileType, ownedBy);
+
+           assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+           assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+           assertThat(finderInteraction.getQueryName(), is("searchNameOfProfilesOfTypeByOwner"));
+           assertThat(finderInteraction.getArgumentsByParameterName().get("profileName"), is((Object) profileName));
+           assertThat(finderInteraction.getArgumentsByParameterName().get("demandOrSupply"), is((Object) demandOrSupply));
+           assertThat(finderInteraction.getArgumentsByParameterName().get("profileType"), is((Object) profileType));
+           assertThat(finderInteraction.getArgumentsByParameterName().get("ownedBy"), is((Object) ownedBy));
+           assertThat(finderInteraction.getArgumentsByParameterName().size(), is(4));
+       }
+   }
+   
 }

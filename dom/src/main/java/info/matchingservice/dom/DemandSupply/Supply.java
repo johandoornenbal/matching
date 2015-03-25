@@ -266,21 +266,21 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     //-- updateSupply --//
     
     //** deleteSupply **//
-    @ActionLayout()
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public Actor deleteSupply(
-            @ParameterLayout(named="confirmDelete")
-            @Parameter(optionality=Optionality.OPTIONAL)
-            boolean confirmDelete
-            ){
-        container.removeIfNotAlready(this);
-        container.informUser("Supply deleted");
-        return getSupplyOwner();
-    }
-    
-    public String validateDeleteSupply(boolean confirmDelete) {
-        return confirmDelete? null:"CONFIRM_DELETE";
-    }
+//    @ActionLayout()
+//    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+//    public Actor deleteSupply(
+//            @ParameterLayout(named="confirmDelete")
+//            @Parameter(optionality=Optionality.OPTIONAL)
+//            boolean confirmDelete
+//            ){
+//        container.removeIfNotAlready(this);
+//        container.informUser("Supply deleted");
+//        return getSupplyOwner();
+//    }
+//    
+//    public String validateDeleteSupply(boolean confirmDelete) {
+//        return confirmDelete? null:"CONFIRM_DELETE";
+//    }
     //-- deleteSupply --//
     
     //** createPersonSupplyProfile **//

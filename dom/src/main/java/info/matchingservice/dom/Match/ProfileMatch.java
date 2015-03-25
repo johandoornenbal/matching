@@ -55,7 +55,12 @@ import org.apache.isis.applib.annotation.Where;
             name = "findProfileMatchUnique", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Match.ProfileMatch "
-                    + "WHERE ownedBy == :ownedBy && supplyCandidate == :vacancyCandidate && demandProfile == :vacancyProfile")                  
+                    + "WHERE ownedBy == :ownedBy && supplyCandidate == :vacancyCandidate && demandProfile == :vacancyProfile"),
+    @javax.jdo.annotations.Query(
+            name = "findProfileMatchesByDemandProfile", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Match.ProfileMatch "
+                    + "WHERE demandProfile == :demandProfile")                       
 })
 @DomainObject(editing=Editing.DISABLED)
 public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {

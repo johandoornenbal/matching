@@ -352,6 +352,12 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     }
     
     public String validateDeleteDemand(boolean confirmDelete) {
+    	// test if there are any profiles on this demand
+    	if (!profiles.findProfileByDemandProfileOwner(this).isEmpty()) {
+    		
+    		return "DELETE_ALL_PROFILES_FIRST";
+    	}
+    	
         return confirmDelete? null:"CONFIRM_DELETE";
     }
     //-- DeleteDemand --//

@@ -176,39 +176,39 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         }  
     }
     
-    public static class DeleteSupply extends DemandSupplyTest{
-        
-        Supply s1;
-        Integer numberOfSupplies;
-        Integer numberOfSupplyProfiles;
-        
-        private static final String SUPPLY_DESCRIPTION = "Dit is de aanbodomschrijving";
-        private static final Integer WEIGHT = 10;
-        private static final DemandSupplyType DEMAND_SUPPLY_TYPE = DemandSupplyType.GENERIC_DEMANDSUPPLY;
-        private static final String OWNED_BY = "frans";
-        private static final String SUPPLY_PROFILE_DESCRIPTION = "Dit is de profielomschrijving";
-        private static final ProfileType PROFILE_TYPE = ProfileType.PERSON_PROFILE;  
-        
-        @Before
-        public void setUp() throws Exception {
-            s1=supplies.createSupply(SUPPLY_DESCRIPTION, WEIGHT, null, null, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
-            numberOfSupplies=supplies.allSupplies().size();
-            s1.createSupplyProfile(SUPPLY_PROFILE_DESCRIPTION, WEIGHT, null, null, PROFILE_TYPE, s1, OWNED_BY);
-            numberOfSupplyProfiles=profiles.allSupplyProfiles().size();
-        }
-        
-        @Test
-        public void deleteSupply() throws Exception {
-            assertThat(supplies.allSupplies().size(), is(numberOfSupplies));
-            assertThat(profiles.allSupplyProfiles().size(), is(numberOfSupplyProfiles));
-            s1.deleteSupply(true);
-            // supply should be deleted
-            assertThat(supplies.allSupplies().size(), is(numberOfSupplies-1));
-            // supply profile should be deleted
-            assertThat(profiles.allSupplyProfiles().size(), is(numberOfSupplyProfiles-1));
-        }
-        
-    }
+//    public static class DeleteSupply extends DemandSupplyTest{
+//        
+//        Supply s1;
+//        Integer numberOfSupplies;
+//        Integer numberOfSupplyProfiles;
+//        
+//        private static final String SUPPLY_DESCRIPTION = "Dit is de aanbodomschrijving";
+//        private static final Integer WEIGHT = 10;
+//        private static final DemandSupplyType DEMAND_SUPPLY_TYPE = DemandSupplyType.GENERIC_DEMANDSUPPLY;
+//        private static final String OWNED_BY = "frans";
+//        private static final String SUPPLY_PROFILE_DESCRIPTION = "Dit is de profielomschrijving";
+//        private static final ProfileType PROFILE_TYPE = ProfileType.PERSON_PROFILE;  
+//        
+//        @Before
+//        public void setUp() throws Exception {
+//            s1=supplies.createSupply(SUPPLY_DESCRIPTION, WEIGHT, null, null, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
+//            numberOfSupplies=supplies.allSupplies().size();
+//            s1.createSupplyProfile(SUPPLY_PROFILE_DESCRIPTION, WEIGHT, null, null, PROFILE_TYPE, s1, OWNED_BY);
+//            numberOfSupplyProfiles=profiles.allSupplyProfiles().size();
+//        }
+//        
+//        @Test
+//        public void deleteSupply() throws Exception {
+//            assertThat(supplies.allSupplies().size(), is(numberOfSupplies));
+//            assertThat(profiles.allSupplyProfiles().size(), is(numberOfSupplyProfiles));
+//            s1.deleteSupply(true);
+//            // supply should be deleted
+//            assertThat(supplies.allSupplies().size(), is(numberOfSupplies-1));
+//            // supply profile should be deleted
+//            assertThat(profiles.allSupplyProfiles().size(), is(numberOfSupplyProfiles-1));
+//        }
+//        
+//    }
     
     public static class DeleteDemand extends DemandSupplyTest{
         

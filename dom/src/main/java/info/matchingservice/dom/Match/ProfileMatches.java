@@ -48,6 +48,12 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
         return container.allInstances(ProfileMatch.class);
     }
     
+    @Programmatic
+    public List<ProfileMatch> findProfileMatchesByDemandProfile(Profile demandProfile) {
+    	return allMatches("findProfileMatchesByDemandProfile",
+        		"demandProfile", demandProfile);
+    }
+    
     @ActionLayout(hidden=Where.EVERYWHERE)
     public ProfileMatch newProfileMatch(
             @ParameterLayout(named="ownerActor")

@@ -87,6 +87,11 @@ public class Profiles extends MatchingDomainService<Profile> {
     }
     
     @Programmatic
+    public List<Profile> findProfileByDemandProfileOwner(Demand demandProfileOwner) {
+        return allMatches("findProfileByDemandProfileOwner","demandProfileOwner",demandProfileOwner);
+    }
+    
+    @Programmatic
     public Profile createDemandProfile(
             final String demandProfileDescription,
             final Integer weight,

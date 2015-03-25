@@ -27,8 +27,8 @@ public class RoleTest extends MatchingIntegrationTest {
     
     public static class testRole extends RoleTest {
         
-        private static final PersonRoleType ROLE = PersonRoleType.PROFESSIONAL;
-        private static final String USERNAME = "frans";
+        private static final PersonRoleType ROLE = PersonRoleType.STUDENT;
+        private static final String USERNAME = "tester";
         
         PersonRole r1;
         

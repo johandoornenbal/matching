@@ -28,11 +28,14 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Match.ProfileComparison;
+import info.matchingservice.dom.Match.ProfileMatch;
+import info.matchingservice.dom.Match.ProfileMatches;
 import info.matchingservice.dom.Match.ProfileMatchingService;
 import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
 import info.matchingservice.dom.Tags.TagCategories;
 import info.matchingservice.dom.Tags.Tags;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -106,7 +109,12 @@ import org.joda.time.LocalDate;
             name = "findProfileByUniqueItemId", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE uniqueItemId.matches(:uniqueItemId)")                    
+                    + "WHERE uniqueItemId.matches(:uniqueItemId)"),
+    @javax.jdo.annotations.Query(
+            name = "findProfileByDemandProfileOwner", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE demandProfileOwner == :demandProfileOwner")                      
 })
 @DomainObject(editing = Editing.DISABLED)
 public class Profile extends MatchingSecureMutableObject<Profile> {
@@ -1119,20 +1127,33 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     //** deleteProfile **//
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public Actor deleteProfile( 
+    public Demand deleteProfile( 
             @ParameterLayout(named="confirmDelete")
             @Parameter(optionality=Optionality.OPTIONAL)
         boolean confirmDelete) {
+    	// first delete related data: all persisted matches
+    	for (Iterator<ProfileMatch> it = profileMatches.findProfileMatchesByDemandProfile(this).iterator(); it.hasNext();) {
+    		container.remove(it.next());
+    		container.informUser("ProfileMatch deleted");
+    	}
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
-        this.getSupplyProfileOwner().deleteSupply(true);
-        return this.getActorOwner();
+        return this.getDemandProfileOwner();
             
     }
 
     public String validateDeleteProfile(boolean confirmDelete) {
         return confirmDelete? null:"CONFIRM_DELETE";
     }
+    
+    public boolean hideDeleteProfile(boolean confirmDelete) {
+    	
+    	if (this.getDemandOrSupply() == DemandOrSupply.DEMAND) {
+    		return false;
+    	}
+        return true;
+    }
+    
     //-- deleteProfile --//
     
     
@@ -1214,6 +1235,8 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Inject
     ProfileElements profileElements;
+    
+    @Inject ProfileMatches profileMatches;
     
 	//-- INJECTIONS --//
     
