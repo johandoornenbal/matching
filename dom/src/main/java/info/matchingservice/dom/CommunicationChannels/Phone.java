@@ -17,9 +17,6 @@ import javax.jdo.annotations.*;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-@javax.jdo.annotations.Version(
-        strategy = VersionStrategy.VERSION_NUMBER,
-        column = "version")
 
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
