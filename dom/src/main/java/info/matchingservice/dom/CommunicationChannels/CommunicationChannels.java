@@ -1,6 +1,5 @@
 package info.matchingservice.dom.CommunicationChannels;
 
-import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.*;
