@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by jonathan on 3-4-15.
  */
-@DomainService(repositoryFor = CommunicationChannel.class, nature = NatureOfService.VIEW, menuOrder = "2")
+@DomainService(repositoryFor = CommunicationChannel.class, nature = NatureOfService.DOMAIN)
 public class CommunicationChannels extends MatchingDomainService<CommunicationChannel>{
 
     public CommunicationChannels(){
@@ -26,7 +26,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     // nu nog niet hidden omdat ik contribution niet kan koppelen.
 
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT, hidden = Where.NOWHERE)
+    @Programmatic
     public Phone createPhone(
             final Person person,
             final CommunicationChannelType type,

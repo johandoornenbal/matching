@@ -1,9 +1,10 @@
 package info.matchingservice.dom.CommunicationChannels;
 
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Actor.Person;
-
-import javax.jdo.annotations.*;
+import javax.jdo.annotations.Column;
+import javax.jdo.annotations.DiscriminatorStrategy;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
 
 /**
  * Created by jonathan on 27-3-15.

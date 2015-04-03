@@ -20,7 +20,6 @@ package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
@@ -31,7 +30,6 @@ import info.matchingservice.integtest.MatchingIntegrationTest;
 
 import javax.inject.Inject;
 
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,10 +38,14 @@ public class PhoneTest extends MatchingIntegrationTest {
     
     @Inject
     CommunicationChannels communicationChannels;
+    
+    @Inject
+    Persons persons;
      
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
         scenarioExecution().install(new MatchingTestsFixture());
+        
     }
     
     public static class createPhone extends PhoneTest {
@@ -51,8 +53,20 @@ public class PhoneTest extends MatchingIntegrationTest {
     	Phone ph;
     	Person p1;
     	
+    	@Before
+        public void setUp() throws Exception {
+    		//given
+    		p1 = persons.findPersons("Hals").get(0);
+    	}
+    	
         @Test
         public void valuesSet() throws Exception {
+        	//when
+        	ph = communicationChannels.createPhone(p1, CommunicationChannelType.PHONE_NUMBER, "123");
+        	
+        	//then
+        	assertThat(ph.getPhoneNumber(), is("123"));
+        	assertThat(ph.getPerson(), is(p1));
 
         }
         

@@ -1,7 +1,10 @@
 package info.matchingservice.dom.CommunicationChannels;
 
+import java.util.List;
+
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.Persons;
 
 import javax.inject.Inject;
 
@@ -39,9 +42,16 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
         communicationChannels.createPhone(person, type, phoneNumber);
         return person;
     }
+    
+    public List<Person> autoComplete0CreatePhone(final String search){
+    	return persons.findPersons(search);
+    }
 
 
     @Inject
     CommunicationChannels communicationChannels;
+    
+    @Inject
+    Persons persons;
 
 }
