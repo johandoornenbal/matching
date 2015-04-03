@@ -26,9 +26,12 @@ import info.matchingservice.dom.Actor.Person;
             name = "findByPerson", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.CommunicationChannels.Email "
-                    + "WHERE person == :personIsearchfor")  
+                    + "WHERE person == :personIsearchfor")
 })
 public class Email extends MatchingDomainObject<Email> {
+
+
+
 
 	public Email() {
 		super("email, person");
