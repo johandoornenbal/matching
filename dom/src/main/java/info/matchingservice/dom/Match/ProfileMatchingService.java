@@ -23,6 +23,7 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElementLocation;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementText;
@@ -60,6 +61,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
+import org.isisaddons.services.postalcode.postcodenunl.Haversine;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
@@ -331,8 +333,8 @@ public class ProfileMatchingService extends AbstractService {
 	 */
 	@Programmatic
 	public ProfileElementComparison getProfileElementLocationComparison(
-			final ProfileElementText demandProfileElement,
-			final ProfileElementText supplyProfileElement
+			final ProfileElementLocation demandProfileElement,
+			final ProfileElementLocation supplyProfileElement
 			)
 	{
 		
@@ -350,7 +352,51 @@ public class ProfileMatchingService extends AbstractService {
 		}
 
 		// stub
-		Integer matchValue = 100;
+		Integer matchValue = 0;
+		double distance = Haversine.haversine(supplyProfileElement.getLatitude(), supplyProfileElement.getLongitude(), demandProfileElement.getLatitude(), demandProfileElement.getLongitude());		
+		
+		if (distance < 200 ) {
+			matchValue = 10;
+		}
+		if (distance < 175 ) {
+			matchValue = 20;
+		}
+		if (distance < 150 ) {
+			matchValue = 30;
+		}
+		if (distance < 125 ) {
+			matchValue = 40;
+		}
+		if (distance < 100 ) {
+			matchValue = 50;
+		}
+		if (distance < 75 ) {
+			matchValue = 60;
+		}
+		if (distance < 50 ) {
+			matchValue = 65;
+		}
+		if (distance < 40 ) {
+			matchValue = 70;
+		}
+		if (distance < 35 ) {
+			matchValue = 75;
+		}
+		if (distance < 30 ) {
+			matchValue = 80;
+		}
+		if (distance < 25 ) {
+			matchValue = 85;
+		}
+		if (distance < 20 ) {
+			matchValue = 90;
+		}
+		if (distance < 15 ) {
+			matchValue = 95;
+		}
+		if (distance < 10 ) {
+			matchValue = 100;
+		}
 		
 		System.out.println("match from getProfileElementLocationComparison() in ProfileMatchingService.class:");
 		
@@ -743,13 +789,13 @@ public class ProfileMatchingService extends AbstractService {
 			
 			if (
 					// implement mockRule1
-					getProfileElementLocationComparison((ProfileElementText) demandProfileElement, (ProfileElementText) supplyProfileElement).getCalculatedMatchingValue()
+					getProfileElementLocationComparison((ProfileElementLocation) demandProfileElement, (ProfileElementLocation) supplyProfileElement).getCalculatedMatchingValue()
 					>= 
 //					mockRule1.getMatchingProfileElementValueThreshold()
 					1
 				) 
 			{
-				return getProfileElementLocationComparison((ProfileElementText) demandProfileElement, (ProfileElementText) supplyProfileElement);
+				return getProfileElementLocationComparison((ProfileElementLocation) demandProfileElement, (ProfileElementLocation) supplyProfileElement);
 			}
             
 		}

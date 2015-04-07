@@ -34,7 +34,7 @@ public class DemandProfileElementsForMichiel extends DemandProfileElementsAbstra
         		);
         
         createLocation(
-        		"4321 GD",
+        		"1071BB",
         		5,
         		profiles.searchNameOfProfilesOfTypeByOwner("huurling", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"michiel").get(0),
         		"michiel",

@@ -4,6 +4,8 @@ import javax.inject.Inject;
 
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElementLocation;
+import info.matchingservice.dom.Profile.ProfileElementLocations;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementTags;
 import info.matchingservice.dom.Profile.ProfileElementText;
@@ -82,7 +84,7 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
         return executionContext.add(this,newElement);
     }
     
-    protected ProfileElementText createLocation(
+    protected ProfileElementLocation createLocation(
             String description,
             String textValue,
             Integer weight,
@@ -90,7 +92,7 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
     		){
-    	ProfileElementText newElement = profileElementTexts.createProfileElementText(description, weight, textValue, ProfileElementType.LOCATION, profileOwner, ownedBy);
+    	ProfileElementLocation newElement = profileElementLocations.createProfileElementLocation(description, weight, textValue, ProfileElementType.LOCATION, profileOwner, ownedBy);
     	return executionContext.add(this,newElement);
     }
     
@@ -129,6 +131,9 @@ public abstract class SupplyProfileElementsAbstract extends FixtureScript {
     
     @Inject
     ProfileElementTexts profileElementTexts;
+    
+    @Inject
+    ProfileElementLocations profileElementLocations;
     
     @Inject
     ProfileElementTags profileElementTags;

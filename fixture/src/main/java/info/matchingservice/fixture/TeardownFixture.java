@@ -35,6 +35,10 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"Demand\"");
         isisJdoSupport.executeUpdate("delete from \"Supply\"");
         
+        isisJdoSupport.executeUpdate("delete from \"Phone\"");
+        isisJdoSupport.executeUpdate("delete from \"Email\"");
+        isisJdoSupport.executeUpdate("delete from \"CommunicationChannel\"");
+        
         isisJdoSupport.executeUpdate("delete from \"MatchingTrustedContact\"");
         isisJdoSupport.executeUpdate("delete from \"Person\"");
         isisJdoSupport.executeUpdate("delete from \"Organisation\""); 

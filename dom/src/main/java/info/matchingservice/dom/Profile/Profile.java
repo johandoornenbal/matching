@@ -647,25 +647,37 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     // Business rule:
     // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
     // er mag er hooguit een van zijn
-    // textValue moet een geldig postcode formaat zijn (4 cijfers , al of niet een spatie, 2 hoofdletters)
+    // textValue moet een geldig postcode formaat zijn (4 cijfers , geen spatie, 2 hoofdletters)
+    
+//    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+//    public Profile createLocationElement(
+//    		@ParameterLayout(named="postcode")
+//    		@Parameter(regexPattern="^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")
+//    		final String textValue,
+//    		@ParameterLayout(named="weight")
+//    		final Integer weight
+//    		){
+//    	profileElementTexts.createProfileElementText("LOCATION_ELEMENT", weight, textValue, ProfileElementType.LOCATION, this);
+//    	return this;
+//    }
     
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile createLocationElement(
     		@ParameterLayout(named="postcode")
-    		@Parameter(regexPattern="^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")
+    		@Parameter(regexPattern="^[1-9]{1}[0-9]{3}[A-Z]{2}$")
     		final String textValue,
     		@ParameterLayout(named="weight")
     		final Integer weight
     		){
-    	profileElementTexts.createProfileElementText("LOCATION_ELEMENT", weight, textValue, ProfileElementType.LOCATION, this);
+    	profileElementLocations.createProfileElementLocation("LOCATION_ELEMENT", weight, textValue, ProfileElementType.LOCATION, this);
     	return this;
     }
     
     public boolean hideCreateLocationElement(final String textValue, final Integer weight){
     	
-        QueryDefault<ProfileElementText> query = 
+        QueryDefault<ProfileElementLocation> query = 
                 QueryDefault.create(
-                        ProfileElementText.class, 
+                        ProfileElementLocation.class, 
                     "findProfileElementOfType",
                     "profileElementOwner", this, "profileElementType", ProfileElementType.LOCATION);
         if (container.firstMatch(query) != null) {
@@ -682,9 +694,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public String validateCreateLocationElement(final String textValue, final Integer weight){
     	
-        QueryDefault<ProfileElementText> query = 
+        QueryDefault<ProfileElementLocation> query = 
                 QueryDefault.create(
-                        ProfileElementText.class, 
+                        ProfileElementLocation.class, 
                     "findProfileElementOfType",
                     "profileElementOwner", this, "profileElementType", ProfileElementType.LOCATION);
         if (container.firstMatch(query) != null) {
@@ -1229,6 +1241,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Inject
     ProfileElementTexts profileElementTexts;
+    
+    @Inject
+    ProfileElementLocations profileElementLocations;
     
     @Inject
     ProfileElementNumerics profileElementNumerics;

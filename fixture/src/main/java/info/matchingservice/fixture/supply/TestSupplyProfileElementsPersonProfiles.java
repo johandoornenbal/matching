@@ -47,7 +47,7 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         
         createLocation(
         		"LOCATION_ELEMENT",
-        		"1234AB",
+        		"1216AB",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"frans").get(0),
         		"frans",
@@ -100,7 +100,7 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         
         createLocation(
         		"LOCATION_ELEMENT",
-        		"4987 VW",
+        		"8922CH",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
         		"gerard",
@@ -149,7 +149,7 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         
         createLocation(
         		"LOCATION_ELEMENT",
-        		"4351 FK",
+        		"2012ES",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"rembrandt").get(0),
         		"rembrandt",
@@ -223,7 +223,7 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         
         createLocation(
         		"LOCATION_ELEMENT",
-        		"5674 FK",
+        		"8941AA",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"michiel").get(0),
         		"michiel",
@@ -260,7 +260,7 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         
         createLocation(
         		"LOCATION_ELEMENT",
-        		"4321 ZX",
+        		"4207KK",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"antoni").get(0),
         		"antoni",

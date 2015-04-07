@@ -1,5 +1,6 @@
 package info.matchingservice.dom;
 
+import info.matchingservice.dom.Profile.ProfileElementLocation;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
 
@@ -14,5 +15,7 @@ public class DummyServiceForBootstrapping {
     public void ensureKnownEagerly(ProfileElementTimePeriod x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(ProfileElementUsePredicate x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(ProfileElementLocation x) { }
 
 }

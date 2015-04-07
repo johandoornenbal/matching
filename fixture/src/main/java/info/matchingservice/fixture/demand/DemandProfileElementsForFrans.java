@@ -75,7 +75,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         		);
         
         createLocation(
-        		"1234AB",
+        		"8926PJ",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("meelevend", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
                 "frans", 
@@ -99,7 +99,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         		);
         
         createLocation(
-        		"1234AB",
+        		"8926PJ",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("iemand die in is voor aktie", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
                 "frans", 
@@ -129,7 +129,7 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
                 );
         
         createLocation(
-        		"1234AB",
+        		"8926PJ",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("onderzoekend persoon", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
                 "frans", 

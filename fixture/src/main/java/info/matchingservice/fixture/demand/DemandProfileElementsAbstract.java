@@ -4,6 +4,8 @@ import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementDropDowns;
+import info.matchingservice.dom.Profile.ProfileElementLocation;
+import info.matchingservice.dom.Profile.ProfileElementLocations;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementNumerics;
 import info.matchingservice.dom.Profile.ProfileElementTag;
@@ -68,14 +70,14 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
         return executionContext.add(this,newElement);
     }
     
-    protected ProfileElementText createLocation(
+    protected ProfileElementLocation createLocation(
             String textValue,
             Integer weight,
             Profile profileOwner,
             String ownedBy,
             ExecutionContext executionContext 
     		){
-    	ProfileElementText newElement = profileElementTexts.createProfileElementText("LOCATION_ELEMENT", weight, textValue, ProfileElementType.LOCATION, profileOwner, ownedBy);
+    	ProfileElementLocation newElement = profileElementLocations.createProfileElementLocation("LOCATION_ELEMENT", weight, textValue, ProfileElementType.LOCATION, profileOwner, ownedBy);
     	return executionContext.add(this,newElement);
     }
     
@@ -116,6 +118,9 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     
     @Inject
     ProfileElementTexts profileElementTexts;
+    
+    @Inject
+    ProfileElementLocations profileElementLocations;
     
     @Inject
     ProfileElementTimePeriods profileElementTimePeriods;

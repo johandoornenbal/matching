@@ -60,7 +60,7 @@ public class DemandProfileElementsForRembrandt extends DemandProfileElementsAbst
         		);
         
         createLocation(
-        		"1234 AB",
+        		"1181GZ",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("model1", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0),
         		"rembrandt",
@@ -75,7 +75,7 @@ public class DemandProfileElementsForRembrandt extends DemandProfileElementsAbst
         		);
         
         createLocation(
-        		"1234 AB",
+        		"1181GZ",
         		10,
         		profiles.searchNameOfProfilesOfTypeByOwner("model2", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"rembrandt").get(0),
         		"rembrandt",
