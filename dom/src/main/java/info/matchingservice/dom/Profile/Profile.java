@@ -27,6 +27,8 @@ import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Match.PersistedProfileElementComparison;
+import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
 import info.matchingservice.dom.Match.ProfileComparison;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Match.ProfileMatches;
@@ -1148,6 +1150,11 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     		container.remove(it.next());
     		container.informUser("ProfileMatch deleted");
     	}
+    	// and all PersistedProfileElementComparisons
+    	for (Iterator<PersistedProfileElementComparison> it = persistedProfileElementComparisons.findProfileElementComparisons(ownedBy).iterator(); it.hasNext();) {
+    		container.remove(it.next());
+    		container.informUser("PersistedProfileElementComparison deleted");
+    	}
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
         return this.getDemandProfileOwner();
@@ -1252,6 +1259,8 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     ProfileElements profileElements;
     
     @Inject ProfileMatches profileMatches;
+    
+    @Inject PersistedProfileElementComparisons persistedProfileElementComparisons;
     
 	//-- INJECTIONS --//
     
