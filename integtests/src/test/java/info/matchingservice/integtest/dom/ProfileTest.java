@@ -19,12 +19,23 @@ import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
 import info.matchingservice.fixture.MatchingTestsFixture;
+import info.matchingservice.fixture.TeardownFixture;
+import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
+import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
+import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
+import info.matchingservice.fixture.demand.TestDemandProfiles;
+import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
+import info.matchingservice.fixture.supply.TestSupplyProfiles;
+import info.matchingservice.fixture.tag.TagsForFrans;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
 import javax.inject.Inject;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -50,9 +61,17 @@ public class ProfileTest extends MatchingIntegrationTest {
     @Inject
     DomainObjectContainer container;
     
-    @BeforeClass
-    public static void setupTransactionalData() throws Exception {
-        scenarioExecution().install(new MatchingTestsFixture());
+    @Before
+    public void setupData() {
+        runScript(new FixtureScript() {
+            @Override
+            protected void execute(ExecutionContext executionContext) {
+            	executionContext.executeChild(this, new TeardownFixture());
+            	executionContext.executeChild(this, new TestSupplyProfiles());
+            	executionContext.executeChild(this, new TestDemandProfiles());
+            	executionContext.executeChild(this, new ProfileElementDropDownsFixture());
+            }
+        });
     }
     
     //Dit moet een test worden voor passie maar ik kan niet de methode newPassion() los testen lijkt...

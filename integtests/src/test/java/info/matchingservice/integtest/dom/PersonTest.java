@@ -24,10 +24,15 @@ import static org.junit.Assert.assertTrue;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.fixture.MatchingTestsFixture;
+import info.matchingservice.fixture.TeardownFixture;
+import info.matchingservice.fixture.actor.TestPersons;
+import info.matchingservice.fixture.actor.TestRoles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,7 +47,18 @@ public class PersonTest extends MatchingIntegrationTest {
     
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
-        scenarioExecution().install(new MatchingTestsFixture());
+        scenarioExecution().install(new TeardownFixture());
+    }
+    
+    @Before
+    public void setupData() {
+        runScript(new FixtureScript() {
+            @Override
+            protected void execute(ExecutionContext executionContext) {  	
+                executionContext.executeChild(this, new TestPersons());
+                executionContext.executeChild(this, new TestRoles());
+            }
+        });
     }
     
     public static class TestPerson extends PersonTest {
@@ -69,7 +85,18 @@ public class PersonTest extends MatchingIntegrationTest {
         
     }
     
-    public static class FindPersonTest extends PersonTest {               
+    public static class FindPersonTest extends PersonTest {
+    	
+    	@Before
+        public void setupData() {
+            runScript(new FixtureScript() {
+                @Override
+                protected void execute(ExecutionContext executionContext) {
+                	executionContext.executeChild(this, new TeardownFixture());
+                    executionContext.executeChild(this, new TestPersons());
+                }
+            });
+        }
         
         @Test
         public void findFrans() throws Exception {
@@ -166,10 +193,16 @@ public class PersonTest extends MatchingIntegrationTest {
     }
     
     public static class thisIsYouTest extends PersonTest {
-        
-        @Test
-        public void shouldBeYou() throws Exception {
-//          assertThat(persons.thisIsYou("frans").get(0).getUniqueActorId(), is("111"));  
+    	
+    	@Before
+        public void setupData() {
+            runScript(new FixtureScript() {
+                @Override
+                protected void execute(ExecutionContext executionContext) {
+                	executionContext.executeChild(this, new TeardownFixture());
+                    executionContext.executeChild(this, new TestPersons());
+                }
+            });
         }
         
         @Test
@@ -185,6 +218,17 @@ public class PersonTest extends MatchingIntegrationTest {
     
     public static class allPersonTest extends PersonTest {
         
+    	@Before
+        public void setupData() {
+            runScript(new FixtureScript() {
+                @Override
+                protected void execute(ExecutionContext executionContext) {
+                	executionContext.executeChild(this, new TeardownFixture());
+                    executionContext.executeChild(this, new TestPersons());
+                }
+            });
+        }
+    	
         @Test
         public void allPersons() throws Exception {
             assertThat(persons.allPersons().size(), is(5));

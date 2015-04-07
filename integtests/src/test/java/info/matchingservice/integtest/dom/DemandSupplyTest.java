@@ -2,9 +2,6 @@ package info.matchingservice.integtest.dom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
-import java.util.UUID;
-
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -15,14 +12,16 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
-import info.matchingservice.fixture.MatchingTestsFixture;
+import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+
+import java.util.UUID;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class DemandSupplyTest extends MatchingIntegrationTest {
@@ -39,9 +38,15 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
     @Inject 
     Profiles profiles;
     
-    @BeforeClass
-    public static void setupTransactionalData() throws Exception {
-        scenarioExecution().install(new MatchingTestsFixture());
+    @Before
+    public void setupData() {
+        runScript(new FixtureScript() {
+            @Override
+            protected void execute(ExecutionContext executionContext) {
+                executionContext.executeChild(this, new TestPersons());
+                
+            }
+        });
     }
     
     public static class NewDemand extends DemandSupplyTest {

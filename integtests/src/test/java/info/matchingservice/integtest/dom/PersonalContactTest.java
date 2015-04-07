@@ -5,13 +5,14 @@ import static org.junit.Assert.assertThat;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.PersonalContacts;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.fixture.MatchingTestsFixture;
+import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.joda.time.LocalDate;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 public class PersonalContactTest extends MatchingIntegrationTest {
@@ -22,9 +23,15 @@ public class PersonalContactTest extends MatchingIntegrationTest {
 	@Inject
 	PersonalContacts personalcontacts;
 	
-	@BeforeClass
-    public static void setupTransactionalData() throws Exception {
-        scenarioExecution().install(new MatchingTestsFixture());
+    @Before
+    public void setupData() {
+        runScript(new FixtureScript() {
+            @Override
+            protected void execute(ExecutionContext executionContext) {
+                executionContext.executeChild(this, new TestPersons());
+                
+            }
+        });
     }
 	
 	public static class hideAddAsPersonalContact extends PersonalContactTest {

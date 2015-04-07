@@ -2,6 +2,8 @@ package info.matchingservice.integtest.dom;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,6 +12,8 @@ import info.matchingservice.dom.Actor.PersonRole;
 import info.matchingservice.dom.Actor.PersonRoleType;
 import info.matchingservice.dom.Actor.PersonRoles;
 import info.matchingservice.fixture.MatchingTestsFixture;
+import info.matchingservice.fixture.actor.TestPersons;
+import info.matchingservice.fixture.actor.TestRoles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -20,9 +24,19 @@ public class RoleTest extends MatchingIntegrationTest {
     @Inject 
     PersonRoles roles;
     
-    @BeforeClass
-    public static void setupTransactionalData() throws Exception {
-        scenarioExecution().install(new MatchingTestsFixture());
+//    @BeforeClass
+//    public static void setupTransactionalData() throws Exception {
+//        scenarioExecution().install(new MatchingTestsFixture());
+//    }
+    
+    @Before
+    public void setupData() {
+        runScript(new FixtureScript() {
+            @Override
+            protected void execute(ExecutionContext executionContext) {  	
+                executionContext.executeChild(this, new TestPersons());
+            }
+        });
     }
     
     public static class testRole extends RoleTest {
