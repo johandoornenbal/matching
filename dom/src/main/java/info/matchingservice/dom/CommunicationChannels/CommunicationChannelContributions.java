@@ -45,7 +45,25 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
                 return person;
     }
 
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(contributed = Contributed.AS_ACTION)
+    public Person createAddress(
 
+            final Person person,
+            final @ParameterLayout(named = "Woning") CommunicationChannelType type,
+            final @ParameterLayout(named = "Address Line 1") String address1,
+            final @ParameterLayout(named = "Address Line 2") @Parameter(optionality = Optionality.OPTIONAL) String address2,
+            final @ParameterLayout(named = "Address Line 3") @Parameter(optionality = Optionality.OPTIONAL) String address3,
+            final @ParameterLayout(named = "Postal Code") String postalCode
+
+    ){
+
+
+        communicationChannels.createAddress(person, type, address1, address2, address3, postalCode);
+        return person;
+
+
+}
 
 
 

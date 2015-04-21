@@ -20,10 +20,13 @@ public enum CommunicationChannelType implements TitledEnum {
     MOBILE_NUMBER(Phone.class);
 
 
-    //TODO Subtypes ,
+
+    //TODO Subtypes , sub type van telefoon bijv: huistelefoon, mobiel nr
 
 
    // EMAIL_ADDRES(Email.class);
+
+
 
     private Class<? extends CommunicationChannel> cls;
 
