@@ -1,26 +1,16 @@
 package info.matchingservice.dom.CommunicationChannels;
 
-import java.util.List;
-
-import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.MatchingDomainService;
+import org.apache.isis.applib.annotation.*;
 
 import javax.inject.Inject;
-
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.SemanticsOf;
 
 /**
  * Created by jonathan on 3-4-15.
  */
-@DomainService(nature=NatureOfService.VIEW)
+@DomainService(nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 public class CommunicationChannelContributions extends MatchingDomainService<CommunicationChannel>{
 
 
@@ -29,23 +19,39 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 	}
 
 
-	// geen idee waarom hij hem niet koppeld aan de creatPhone in communicationChannels
-    @MemberOrder(name = "CommunicationChannels", sequence = "2")
+
+  //  @MemberOrder(name = "CommunicationChannels", sequence = "2")
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createPhone(
             final @ParameterLayout(named = "Person") Person person,
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
-            final @ParameterLayout(named = "Address") String phoneNumber) {
+            final @ParameterLayout(named = "Number") String phoneNumber) {
 
         //final CommunicationChannelType type = CommunicationChannelType.PHONE_NUMBER;
         communicationChannels.createPhone(person, type, phoneNumber);
         return person;
     }
-    
-    public List<Person> autoComplete0CreatePhone(final String search){
-    	return persons.findPersons(search);
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(contributed = Contributed.AS_ACTION)
+    public Person createEmail(
+
+            final @ParameterLayout(named="Email")String adress,
+            final @ParameterLayout(named="Person/SHould not be visible")Person person)
+            {
+
+        communicationChannels.createEmail(adress, person);
+                return person;
     }
+
+
+
+
+
+   // public List<Person> autoComplete0CreatePhone(final String search){
+   // 	return persons.findPersons(search);
+  //  }
 
 
     @Inject

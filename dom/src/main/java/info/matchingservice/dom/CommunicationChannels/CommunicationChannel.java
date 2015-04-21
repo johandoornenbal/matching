@@ -34,18 +34,6 @@ public abstract class CommunicationChannel extends
 
 
 
-	// kan ook met actor.
-//	private Actor actor;
-//
-//	@Column(allowsNull = "false")
-//	public Actor getActor() {
-//		return actor;
-//	}
-//
-//
-//	public void setActor(final Actor actor) {
-//		this.actor = actor;
-//	}
 
 
 	private Person person;

@@ -14,7 +14,16 @@ import java.util.List;
  */
 public enum CommunicationChannelType implements TitledEnum {
 
-    PHONE_NUMBER(Phone.class);
+
+    NIKS(Niks.class),
+    PHONE_NUMBER(Phone.class),
+    MOBILE_NUMBER(Phone.class);
+
+
+    //TODO Subtypes ,
+
+
+   // EMAIL_ADDRES(Email.class);
 
     private Class<? extends CommunicationChannel> cls;
 

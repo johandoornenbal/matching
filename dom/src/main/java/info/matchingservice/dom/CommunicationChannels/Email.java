@@ -18,9 +18,6 @@ import info.matchingservice.dom.Actor.Person;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-@javax.jdo.annotations.Version(
-        strategy = VersionStrategy.VERSION_NUMBER,
-        column = "version")
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findByPerson", language = "JDOQL",
@@ -28,7 +25,7 @@ import info.matchingservice.dom.Actor.Person;
                     + "FROM info.matchingservice.dom.CommunicationChannels.Email "
                     + "WHERE person == :personIsearchfor")
 })
-public class Email extends MatchingDomainObject<Email> {
+public class Email extends CommunicationChannel {
 
 
 
@@ -36,6 +33,8 @@ public class Email extends MatchingDomainObject<Email> {
 	public Email() {
 		super("email, person");
 	}
+
+
 	
 	@Column(allowsNull = "false")
 	public String getEmail() {
@@ -46,19 +45,12 @@ public class Email extends MatchingDomainObject<Email> {
 		this.email = email;
 	}
 
-	@Column(allowsNull = "false")
-	public Person getPerson() {
-		return person;
-	}
 
-	public void setPerson(Person person) {
-		this.person = person;
-	}
 
 	private String email;
 	
 	
-	private Person person;
+
 	
 	
 }

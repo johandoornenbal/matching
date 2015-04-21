@@ -26,6 +26,8 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     // nu nog niet hidden omdat ik contribution niet kan koppelen.
 
+
+
     @Programmatic
     public Phone createPhone(
             final Person person,
@@ -41,6 +43,24 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         return phone;
 
 
+
+    }
+
+
+    @Programmatic
+    public Email createEmail(
+            final String adress,
+
+            final Person person){
+
+        final Email email = newTransientInstance(Email.class);
+
+        email.setEmail(adress);
+        email.setPerson(person);
+
+
+        persist(email);
+        return email;
 
     }
 
