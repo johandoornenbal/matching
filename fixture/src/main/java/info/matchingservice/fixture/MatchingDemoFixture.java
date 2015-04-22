@@ -68,8 +68,8 @@ public class MatchingDemoFixture extends FixtureScript {
 
        //TODO Deze werken niet, wel als de phone en adress al aangemaakt zijn door een persoon , maar hij kan ze niet nieuw aanmaken. geen idee waarom.
 
-        executeChild(new TestPhone(), executionContext);
-        executeChild(new TestAddress(), executionContext);
+//        executeChild(new TestPhone(), executionContext);
+//        executeChild(new TestAddress(), executionContext);
         
     }
 
