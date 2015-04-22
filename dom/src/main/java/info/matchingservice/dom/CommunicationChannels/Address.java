@@ -16,7 +16,9 @@ import javax.jdo.annotations.*;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-
+@javax.jdo.annotations.Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
                 name = "findByPerson", language = "JDOQL",
@@ -30,41 +32,20 @@ public class Address extends CommunicationChannel {
     }
 
 
-    private String address1;
+    private String address;
 
 
     @Column(allowsNull = "false")
-    public String getAddress1() {
-        return address1;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddress1(String adress1) {
-        this.address1 = adress1;
+    public void setAddress(String adress1) {
+        this.address = adress1;
     }
 
 
-    private String address2;
 
-
-    @Column(allowsNull = "true")
-    public String getAddress2() {
-        return address2;
-    }
-
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
-
-    private String address3;
-
-    @Column(allowsNull = "true")
-    public String getAddress3() {
-        return address3;
-    }
-
-    public void setAddress3(String address3) {
-        this.address3 = address3;
-    }
 
 
     private String postalCode;

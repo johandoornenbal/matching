@@ -3,6 +3,7 @@ package info.matchingservice.dom.CommunicationChannels;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.query.QueryDefault;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     }
 
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @Programmatic
     public List<CommunicationChannel> allCommunicationChannels(){
 
         return allInstances();
@@ -39,7 +40,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         phone.setType(type);
         phone.setPhoneNumber(phoneNumber);
 
-        persistIfNotAlready(phone);
+        persist(phone);
         return phone;
 
 
@@ -50,7 +51,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
     @Programmatic
     public Email createEmail(
             final String emailAddres,
-
+            final CommunicationChannelType type,
             final Person person){
 
         final Email email = newTransientInstance(Email.class);
@@ -64,13 +65,11 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     }
 
-@Programmatic
+    @Programmatic
     public Address createAddress(
             final Person person,
             final CommunicationChannelType type,
-            final @ParameterLayout(named = "Address Line 1") String address1,
-            final String address2,
-            final String address3,
+            final String address1,
             final String postalCode
 
 
@@ -82,9 +81,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     address.setPerson(person);
     address.setType(type);
-    address.setAddress1(address1);
-    address.setAddress2(address2);
-    address.setAddress3(address3);
+    address.setAddress(address1);
     address.setPostalCode(postalCode);
 
 
@@ -97,6 +94,28 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
 
     }
+
+    /** gets the specified communicationchannel of the person,
+     *
+     * @param person the person
+     * @param type the type of communicationchannel (subclass of comm channel)
+     * @return
+     */
+    @Programmatic
+    public List<CommunicationChannel> allCommunicationChannel(final Person person, Class type){
+        QueryDefault<CommunicationChannel> query =
+                QueryDefault.create(
+                        type,
+                        "findByPerson",
+                        "person", person);
+        return allMatches(query);
+
+    }
+
+
+
+
+
 
 
 }

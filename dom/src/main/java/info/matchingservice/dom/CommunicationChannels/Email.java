@@ -18,12 +18,15 @@ import info.matchingservice.dom.Actor.Person;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
+@javax.jdo.annotations.Version(
+		strategy = VersionStrategy.VERSION_NUMBER,
+		column = "version")
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findByPerson", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.CommunicationChannels.Email "
-                    + "WHERE person == :personIsearchfor")
+                    + "WHERE person == :person")
 })
 public class Email extends CommunicationChannel {
 

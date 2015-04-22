@@ -1,10 +1,6 @@
 package info.matchingservice.dom.CommunicationChannels;
 
-import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.*;
 
 /**
  * Created by jonathan on 27-3-15.
@@ -18,7 +14,9 @@ import javax.jdo.annotations.InheritanceStrategy;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-
+@javax.jdo.annotations.Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
                 name = "findByPerson", language = "JDOQL",

@@ -18,9 +18,8 @@ public class AddressTest {
 
             final Address address = new Address();
 
-            address.setAddress1("Straat123");
-            address.setAddress2("Laan213");
-            address.setAddress3("15123");
+            address.setAddress("Straat123");
+
 
             newPojoTester().withFixture(pojos(Person.class, PersonForTesting.class)).exercise(address);
 
@@ -31,14 +30,7 @@ public class AddressTest {
         }
 
 
-        @Test
-        public void test1(){
 
-
-            final Address address = new Address();
-
-
-        }
 
 
 

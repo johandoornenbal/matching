@@ -6,6 +6,7 @@ import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.*;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by jonathan on 3-4-15.
@@ -28,7 +29,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
             final @ParameterLayout(named = "Number") String phoneNumber) {
 
-        //final CommunicationChannelType type = CommunicationChannelType.PHONE_NUMBER;
+
         communicationChannels.createPhone(person, type, phoneNumber);
         return person;
     }
@@ -38,10 +39,11 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     public Person createEmail(
 
             final @ParameterLayout(named="Email")String adress,
+            final @ParameterLayout(named = "Type") CommunicationChannelType type,
             final @ParameterLayout(named="Person/SHould not be visible")Person person)
             {
 
-        communicationChannels.createEmail(adress, person);
+        communicationChannels.createEmail(adress, type, person);
                 return person;
     }
 
@@ -50,22 +52,46 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     public Person createAddress(
 
             final Person person,
-            final @ParameterLayout(named = "Woning") CommunicationChannelType type,
-            final @ParameterLayout(named = "Address Line 1") String address1,
-            final @ParameterLayout(named = "Address Line 2") @Parameter(optionality = Optionality.OPTIONAL) String address2,
-            final @ParameterLayout(named = "Address Line 3") @Parameter(optionality = Optionality.OPTIONAL) String address3,
-            final @ParameterLayout(named = "Postal Code") String postalCode
+            final @ParameterLayout(named = "Woning type") CommunicationChannelType type,
+            final @ParameterLayout(named = "Addres") String address1,
+            final @ParameterLayout(named = "Postcode") String postalCode
 
     ){
 
 
-        communicationChannels.createAddress(person, type, address1, address2, address3, postalCode);
+        communicationChannels.createAddress(person, type, address1, postalCode);
         return person;
 
 
 }
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(contributed = Contributed.AS_ACTION, named = "Email Gegevens")
+    public List<CommunicationChannel> allEmails(Person person){
+
+        return communicationChannels.allCommunicationChannel(person, Email.class);
 
 
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(contributed = Contributed.AS_ACTION, named =  "Telefoon Gegevens")
+    public List<CommunicationChannel> allPhones(Person person){
+
+        return communicationChannels.allCommunicationChannel(person, Phone.class);
+
+
+    }
+
+
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(contributed = Contributed.AS_ACTION, named = "Address Gegevens")
+    public List<CommunicationChannel> allAddress(Person person){
+
+        return communicationChannels.allCommunicationChannel(person, Address.class);
+
+
+    }
 
    // public List<Person> autoComplete0CreatePhone(final String search){
    // 	return persons.findPersons(search);

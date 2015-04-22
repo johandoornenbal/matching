@@ -16,9 +16,18 @@ public enum CommunicationChannelType implements TitledEnum {
 
 
     NIKS(Niks.class),
-    PHONE_NUMBER(Phone.class),
-    MOBILE_NUMBER(Phone.class);
+    PHONE_MAIN(Phone.class),
+    PHONE_PRIVATE(Phone.class),
+    PHONE_HOME(Phone.class),
+    PHONE_WORK(Phone.class),
 
+    EMAIL_MAIN(Email.class),
+    EMAIL_WORK(Email.class),
+    EMAIL_HOME(Email.class),
+
+    ADDRESS_MAIN(Address.class),
+    ADDRESS_COMPANY(Address.class),
+    ADDRESS_SECUNDAIR(Address.class);
 
 
     //TODO Subtypes , sub type van telefoon bijv: huistelefoon, mobiel nr
