@@ -116,7 +116,53 @@ public class ProfileElementTag extends ProfileElement {
         return "ONLY_ON_PASSION_TAGS_PROFILE_ELEMENT";
     }
     //-- createPassionTagHolder --//
-    
+
+
+
+	//TODO business rule - not sure if correct.
+	//** createQualificationTagHolder **//
+	public ProfileElementTag createQualificationTagHolder(
+			@ParameterLayout(named = "Opleiding / kwalificatie")
+			//@Parameter(regexPattern="^\\S+$")
+			final String tagProposalWord
+	)
+	{
+		tagHolders.createTagHolder(this, tagProposalWord, "kwalificatie", currentUserName());
+		return this;
+	}
+
+	public boolean hideCreateQualificationTagHolder(final String tagProposalWord){
+
+		// only on profile element with ProfileElementType = QUALIFICATION_TAGS
+		if (this.getProfileElementType() == ProfileElementType.QUALIFICATION_TAGS){
+			return false;
+		}
+
+		return true;
+	}
+
+	public String validateCreateQualificationTagHolder(final String tagProposalWord){
+		// only on profile element with ProfileElementType = QUALIFICATION_TAGS
+		if (this.getProfileElementType() == ProfileElementType.QUALIFICATION_TAGS){
+
+			// every tag choice at most once (no doubles)
+			if (!tagHolders.findTagHolderByTagDescription(this, tagProposalWord).isEmpty()){
+
+				return "NO_DOUBLES";
+
+			} else {
+
+				return null;
+
+			}
+
+		}
+
+		return "ONLY_ON_QUALIFICATION_TAGS_PROFILE_ELEMENT";
+	}
+	//-- createQualificationTagHolder --//
+
+
     //** createBrancheTagHolder **//
     
     // Business rule:

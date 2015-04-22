@@ -329,28 +329,6 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
 
 
-    //TODO Businnes Rule, alleen student, niet bij Supplies??
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout()
-    public Profile createBooleanElement(
-            @ParameterLayout(named = "Eigen Vervoer?")
-            final boolean vervoer,
-            @ParameterLayout(named = "weight")
-            final Integer weight) {
-
-        profileElementBooleans.createProfileElementBoolean(
-                "VERVOER_ELEMENT" ,
-                weight,
-                ProfileElementType.VERVOER,
-                this);
-
-
-
-    return this;
-
-
-    }
-
 
     public boolean hideCreatePassionElement(
             final String passionText,
@@ -401,6 +379,87 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return null;
     }
     //-- createPassionElement --//
+
+
+    //** createBooleanElement **//
+    //TODO Businnes Rule, alleen student, niet bij Supplies??
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public Profile createBooleanElement(
+            @ParameterLayout(named = "Eigen Vervoer?")
+            final boolean vervoer,
+            @ParameterLayout(named = "weight")
+            final Integer weight) {
+
+        profileElementBooleans.createProfileElementBoolean(
+                "VERVOER_ELEMENT" ,
+                weight,
+                ProfileElementType.VERVOER,
+                this);
+
+
+
+        return this;
+
+
+    }
+
+
+    public boolean hideCreateBooleanElement(
+            final boolean vervoer,
+            final Integer weight
+    ) {
+
+        // alleen op profile van type PERSON of ORGANISATION
+        // zowel demand als vraag -------???? not sure
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
+            return true;
+        }
+
+//        // er  mag hooguit 1 vervoer element zijn
+//        QueryDefault<ProfileElementBoolean> query =
+//                QueryDefault.create(
+//                        ProfileElementBoolean.class,
+//                        "findProfileElementOfType",
+//                        "profileElementType", ProfileElementType.VERVOER,
+//                        "profileElementOwner", this);
+//        if (container.firstMatch(query) != null) {
+//            return true;
+//        }
+
+        return false;
+    }
+
+    public String validateCreateBooleanElement(
+            final boolean vervoer,
+            final Integer weight
+    ) {
+
+        // alleen op profile van type PERSON of ORGANISATION
+        if (this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) {
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";  //TODO ..... ?? hoogstwaarschijnlijk incorect.
+        }
+
+        //TODO geeft fouten..hoe wel?
+//        // er  mag hooguit 1 VERVOER element zijn
+//        QueryDefault<ProfileElementBoolean> query =
+//                QueryDefault.create(
+//                        ProfileElementBoolean.class,
+//                        "findProfileElementOfType",
+//                        "profileElementType", ProfileElementType.VERVOER,
+//                        "profileElementOwner", this);
+//        if (container.firstMatch(query) != null) {
+//            return "ONE_INSTANCE_AT_MOST";
+//        }
+
+        return null;
+    }
+
+
+
+
+    //-- createBooleanElement --//
+
 
     //** createPassionTagElement **//
     // Business rule:
@@ -541,46 +600,69 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 this);
     }
 
-    public boolean hideCreateQualityTagElement(final Integer weight) {
-        // only on profile of type PERSON and ORGANSATION
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
-            return true;
-        }
+    //TODO werkt ook niet
+//
+//    public boolean hideCreateQualityTagElement(final Integer weight) {
+//        // only on profile of type PERSON and ORGANSATION
+//        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
+//            return true;
+//        }
+//
+//        // At Most one
+//        QueryDefault<ProfileElementTag> query =
+//                QueryDefault.create(
+//                        ProfileElementTag.class,
+//                        "findProfileElementOfType",
+//                        "profileElementType", ProfileElementType.QUALITY_TAGS,
+//                        "profileElementOwner", this);
+//        if (container.firstMatch(query) != null) {
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
-        // At Most one
-        QueryDefault<ProfileElementTag> query =
-                QueryDefault.create(
-                        ProfileElementTag.class,
-                        "findProfileElementOfType",
-                        "profileElementType", ProfileElementType.QUALITY_TAGS,
-                        "profileElementOwner", this);
-        if (container.firstMatch(query) != null) {
-            return true;
-        }
 
-        return false;
-    }
-
-    public String validateCreateQualityTagElement(final Integer weight) {
-        // only on profile of type PERSON and ORGANSATION
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
-            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
-        }
-
-        // At Most one
-        QueryDefault<ProfileElementTag> query =
-                QueryDefault.create(
-                        ProfileElementTag.class,
-                        "findProfileElementOfType",
-                        "profileElementType", ProfileElementType.QUALITY_TAGS,
-                        "profileElementOwner", this);
-        if (container.firstMatch(query) != null) {
-            return "ONE_INSTANCE_AT_MOST";
-        }
-
-        return null;
-    }
+    //TODO Werkt ook niet
+//    public String validateCreateQualityTagElement(final Integer weight) {
+//        // only on profile of type PERSON and ORGANSATION
+//        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
+//            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+//        }
+//
+//        // At Most one
+//        QueryDefault<ProfileElementTag> query =
+//                QueryDefault.create(
+//                        ProfileElementTag.class,
+//                        "findProfileElementOfType",
+//                        "profileElementType", ProfileElementType.QUALITY_TAGS,
+//                        "profileElementOwner", this);
+//        if (container.firstMatch(query) != null) {
+//            return "ONE_INSTANCE_AT_MOST";
+//        }
+//
+//        return null;
+//    }
     //-- createQualityTagElement --//
+
+
+    //** createOpleidingTagElement **//
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElementTag createQualificationTagElement(
+            @ParameterLayout(named = "weight")
+            final Integer weight
+    ) {
+        return profileElementTags.createProfileElementTag(
+                "QUALIFICATION_TAGS_ELEMENT",
+                weight,
+                ProfileElementType.QUALIFICATION_TAGS,
+                this);
+    }
+
+
+
 
     //** createWeekdayTagElement **//
 
