@@ -1,12 +1,20 @@
 package info.matchingservice.dom.CommunicationChannels;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.Contributed;
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.MatchingDomainService;
-import org.apache.isis.applib.annotation.*;
-
-import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by jonathan on 3-4-15.
@@ -68,7 +76,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     @ActionLayout(contributed = Contributed.AS_ACTION, named = "Email Gegevens")
     public List<CommunicationChannel> allEmails(Person person){
 
-        return communicationChannels.allCommunicationChannel(person, Email.class);
+        return communicationChannels.allCommunicationChannels(person, Email.class);
 
 
     }
@@ -77,7 +85,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     @ActionLayout(contributed = Contributed.AS_ACTION, named =  "Telefoon Gegevens")
     public List<CommunicationChannel> allPhones(Person person){
 
-        return communicationChannels.allCommunicationChannel(person, Phone.class);
+        return communicationChannels.allCommunicationChannels(person, Phone.class);
 
 
     }
@@ -88,7 +96,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     @ActionLayout(contributed = Contributed.AS_ACTION, named = "Address Gegevens")
     public List<CommunicationChannel> allAddress(Person person){
 
-        return communicationChannels.allCommunicationChannel(person, Address.class);
+        return communicationChannels.allCommunicationChannels(person, Address.class);
 
 
     }

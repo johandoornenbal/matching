@@ -1,11 +1,14 @@
 package info.matchingservice.dom.CommunicationChannels;
 
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.MatchingDomainService;
-import org.apache.isis.applib.annotation.*;
+import java.util.List;
+
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.query.QueryDefault;
 
-import java.util.List;
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.MatchingDomainService;
 
 /**
  * Created by jonathan on 3-4-15.
@@ -102,7 +105,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
      * @return
      */
     @Programmatic
-    public List<CommunicationChannel> allCommunicationChannel(final Person person, Class type){
+    public List<CommunicationChannel> allCommunicationChannels(final Person person, Class type){
         QueryDefault<CommunicationChannel> query =
                 QueryDefault.create(
                         type,
@@ -112,6 +115,12 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     }
 
+
+    @Programmatic
+    public List<CommunicationChannel> allCommunicationChannels(Class type){
+        return getContainer().allInstances(type);
+
+    }
 
 
 
