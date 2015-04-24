@@ -323,6 +323,11 @@
 
             <!-- this project's own modules -->
             <dependency>
+                <groupId>net.ftlines.wicket-source</groupId>
+                <artifactId>wicket-source</artifactId>
+                <version>6.0.0.8</version>
+            </dependency>
+            <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>matchingservice-dom</artifactId>
                 <version>1.0-SNAPSHOT</version>

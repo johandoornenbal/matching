@@ -405,84 +405,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //-- createPassionElement --//
 
 
-    //** createBooleanElement **//
-    //TODO Businnes Rule, alleen student, niet bij Supplies??
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout()
-    public Profile createBooleanElement(
-            @ParameterLayout(named = "Eigen Vervoer?")
-            final boolean vervoer,
-            @ParameterLayout(named = "weight")
-            final Integer weight) {
 
-        profileElementBooleans.createProfileElementBoolean(
-                "VERVOER_ELEMENT" ,
-                weight,
-                ProfileElementType.VERVOER,
-                this);
-
-
-
-        return this;
-
-
-    }
-
-
-    public boolean hideCreateBooleanElement(
-            final boolean vervoer,
-            final Integer weight
-    ) {
-
-        // alleen op profile van type PERSON of ORGANISATION
-        // zowel demand als vraag -------???? not sure
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
-            return true;
-        }
-
-//        // er  mag hooguit 1 vervoer element zijn
-//        QueryDefault<ProfileElementBoolean> query =
-//                QueryDefault.create(
-//                        ProfileElementBoolean.class,
-//                        "findProfileElementOfType",
-//                        "profileElementType", ProfileElementType.VERVOER,
-//                        "profileElementOwner", this);
-//        if (container.firstMatch(query) != null) {
-//            return true;
-//        }
-
-        return false;
-    }
-
-    public String validateCreateBooleanElement(
-            final boolean vervoer,
-            final Integer weight
-    ) {
-
-        // alleen op profile van type PERSON of ORGANISATION
-        if (this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) {
-            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";  //TODO ..... ?? hoogstwaarschijnlijk incorect.
-        }
-
-        //TODO geeft fouten..hoe wel?
-//        // er  mag hooguit 1 VERVOER element zijn
-//        QueryDefault<ProfileElementBoolean> query =
-//                QueryDefault.create(
-//                        ProfileElementBoolean.class,
-//                        "findProfileElementOfType",
-//                        "profileElementType", ProfileElementType.VERVOER,
-//                        "profileElementOwner", this);
-//        if (container.firstMatch(query) != null) {
-//            return "ONE_INSTANCE_AT_MOST";
-//        }
-
-        return null;
-    }
-
-
-
-
-    //-- createBooleanElement --//
 
 
     //** createPassionTagElement **//
@@ -923,6 +846,12 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     //-- createAgeElement --//
 
+
+
+
+
+
+
     //** createUseAgeElement **//
     // Business rule:
     // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
@@ -996,6 +925,74 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 
     }
     //-- createUseAgeElement --//
+
+
+    //** createVervoerElement **//
+    // Business rule:
+    // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    // er mag er hooguit een van zijn
+    // alleen op supplies
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    public Profile createVervoerElement(
+            @ParameterLayout(named = "weight")
+            final Integer weight) {
+
+        profileElementUsePredicates.createProfileElementUsePredicate("VERVOER_ELEMENT", weight, false, true, ProfileElementType.VERVOER, this);
+
+        return this;
+    }
+
+    public boolean hideCreateVervoerElement(final Integer weight) {
+
+        QueryDefault<ProfileElementUsePredicate> query =
+                QueryDefault.create(
+                        ProfileElementUsePredicate.class,
+                        "findProfileElementOfType",
+                        "profileElementOwner", this, "profileElementType", ProfileElementType.VERVOER);
+
+        if (
+            // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+                (this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+
+
+                        &&
+
+                        // er mag er hooguit een van zijn
+                        container.firstMatch(query) == null
+                ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public String validateCreateVervoerElement(final Integer weight) {
+
+        QueryDefault<ProfileElementUsePredicate> query =
+                QueryDefault.create(
+                        ProfileElementUsePredicate.class,
+                        "findProfileElementOfType",
+                        "profileElementOwner", this, "profileElementType", ProfileElementType.VERVOER);
+
+        if (container.firstMatch(query) != null) {
+
+            return "ONE_INSTANCE_AT_MOST";
+
+        }
+
+        if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE) {
+
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+
+        }
+
+
+        return null;
+
+    }
+    //-- createUseAgeElement --//
+
+
 
     //** createTimePeriodElement **//
     // Business rule:

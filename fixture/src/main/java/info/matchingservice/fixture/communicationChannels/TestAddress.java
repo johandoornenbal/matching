@@ -56,7 +56,7 @@ public class TestAddress extends CommunicationChannelsAbstract{
 
         List<Person> personen = persons.allPersons();
 
-
+        String woonPlaats  = "Gelderland";
         String street;
         String postcode;
         for(Person p: personen){
@@ -79,7 +79,7 @@ public class TestAddress extends CommunicationChannelsAbstract{
 
             }
 
-            createAddress(p, CommunicationChannelType.ADDRESS_MAIN, street, postcode, executionContext);
+            createAddress(p, CommunicationChannelType.ADDRESS_MAIN, street, postcode, woonPlaats, executionContext);
 
 
 

@@ -1,6 +1,10 @@
 package info.matchingservice.dom.CommunicationChannels;
 
+import java.util.List;
+
 import javax.jdo.annotations.*;
+
+import org.apache.isis.applib.annotation.ParameterLayout;
 
 /**
  * Created by jonathan on 27-3-15.
@@ -44,5 +48,31 @@ public class Phone extends CommunicationChannel {
     private String phoneNumber;
 
 
+
+
+    public Phone updatePhone(
+            final @ParameterLayout(named = "Type") CommunicationChannelType type,
+            final @ParameterLayout(named = "Phone") String phoneNumber
+    ){
+
+        setType(type);
+        setPhoneNumber(phoneNumber);
+        return this;
+    }
+
+    public CommunicationChannelType default0UpdatePhone(){
+        return getType();
+
+
+    }
+
+    public String default1UpdatePhone(){
+        return getPhoneNumber();
+
+    }
+
+    public List<CommunicationChannelType> choices0UpdatePhone(){
+        return CommunicationChannelType.matching(Phone.class);
+    }
 
 }

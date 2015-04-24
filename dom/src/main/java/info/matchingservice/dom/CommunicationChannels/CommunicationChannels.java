@@ -72,24 +72,25 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
     public Address createAddress(
             final Person person,
             final CommunicationChannelType type,
-            final String address1,
-            final String postalCode
+            final String address,
+            final String postalCode,
+            final String woonPlaats
 
 
 
     ){
 
 
-    final Address address = newTransientInstance(Address.class);
+    final Address a = newTransientInstance(Address.class);
 
-    address.setPerson(person);
-    address.setType(type);
-    address.setAddress(address1);
-    address.setPostalCode(postalCode);
+    a.setPerson(person);
+    a.setType(type);
+    a.setAddress(address);
+    a.setPostalCode(postalCode);
+    a.setWoonPlaats(woonPlaats);
 
-
-    persist(address);
-    return address;
+    persist(a);
+    return a;
 
 
 

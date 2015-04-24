@@ -56,8 +56,9 @@ public abstract class CommunicationChannelsAbstract extends FixtureScript {
             CommunicationChannelType type,
             String address1,
             String postalCode,
+            String woonPlaats,
             ExecutionContext executionContext) {
-        Address address = communicationChannels.createAddress(person, type, address1, postalCode);
+        Address address = communicationChannels.createAddress(person, type, address1, postalCode, woonPlaats);
 
         return executionContext.add(this,address);
 

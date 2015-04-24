@@ -15,7 +15,6 @@ import java.util.List;
 public enum CommunicationChannelType implements TitledEnum {
 
 
-    NIKS(Niks.class),
     PHONE_MAIN(Phone.class),
     PHONE_PRIVATE(Phone.class),
     PHONE_HOME(Phone.class),
@@ -30,10 +29,9 @@ public enum CommunicationChannelType implements TitledEnum {
     ADDRESS_SECUNDAIR(Address.class);
 
 
-    //TODO Subtypes , sub type van telefoon bijv: huistelefoon, mobiel nr
 
 
-   // EMAIL_ADDRES(Email.class);
+
 
 
 

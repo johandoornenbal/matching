@@ -31,20 +31,20 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
 
 
-  //  @MemberOrder(name = "CommunicationChannels", sequence = "2")
+
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createPhone(
-            final @ParameterLayout(named = "Person") Person person,
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
-            final @ParameterLayout(named = "Number") String phoneNumber) {
+            final @ParameterLayout(named = "Number") String phoneNumber,
+            final @ParameterLayout(named = "Person") Person person){
 
 
         communicationChannels.createPhone(person, type, phoneNumber);
         return person;
     }
 
-    public List<CommunicationChannelType> choices1CreatePhone() {
+    public List<CommunicationChannelType> choices0CreatePhone() {
         return CommunicationChannelType.matching(Phone.class);
     }
 
@@ -52,8 +52,8 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createEmail(
 
-            final @ParameterLayout(named="Email")String adress,
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
+            final @ParameterLayout(named="Email")String adress,
             final @ParameterLayout(named="Person/SHould not be visible")Person person)
             {
 
@@ -62,25 +62,34 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     }
 
 
+    public List<CommunicationChannelType> choices0CreateEmail(){
+        return CommunicationChannelType.matching(Email.class);
+
+    }
+
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createAddress(
 
-            final Person person,
-            final @ParameterLayout(named = "Woning type") CommunicationChannelType type,
-            final @ParameterLayout(named = "Addres") String address1,
-            final @ParameterLayout(named = "Postcode") String postalCode
+            final @ParameterLayout(named = "Woning Type") CommunicationChannelType type,
+            final @ParameterLayout(named = "Woonplaats") String woonPlaats,
+            final @ParameterLayout(named = "Addres") String address,
+            final @ParameterLayout(named = "Postcode") String postalCode,
+            final Person person){
 
-    ){
 
-
-        communicationChannels.createAddress(person, type, address1, postalCode);
+        communicationChannels.createAddress(person, type, address, postalCode, woonPlaats);
         return person;
+    }
+
+    public List<CommunicationChannelType> choices0CreateAddress(){
+        return CommunicationChannelType.matching(Address.class);
+
+    }
 
 
-}
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named = "Email Gegevens")
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named = "Collect Emails")
     @CollectionLayout(render = RenderType.EAGERLY)
     public List<CommunicationChannel> allEmails(Person person){
 
@@ -90,7 +99,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named =  "Telefoon Gegevens")
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named =  "Collect Phones")
     @CollectionLayout(render = RenderType.EAGERLY)
     public List<CommunicationChannel> allPhones(Person person){
 
@@ -102,7 +111,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named = "Address Gegevens")
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named = "Collect Adress")
     @CollectionLayout(render = RenderType.EAGERLY)
     public List<CommunicationChannel> allAddress(Person person){
 
