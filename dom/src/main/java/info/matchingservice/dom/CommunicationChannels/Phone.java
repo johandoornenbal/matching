@@ -10,13 +10,10 @@ import javax.jdo.annotations.*;
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
+        column = "phone_id")
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-@javax.jdo.annotations.Version(
-        strategy = VersionStrategy.VERSION_NUMBER,
-        column = "version")
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
                 name = "findByPerson", language = "JDOQL",
@@ -30,7 +27,7 @@ public class Phone extends CommunicationChannel {
 
 
     public Phone() {
-        super("phone, person");
+        super("phone");
     }
 
 
@@ -42,7 +39,6 @@ public class Phone extends CommunicationChannel {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
 
 
     private String phoneNumber;

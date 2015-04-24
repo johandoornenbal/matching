@@ -43,7 +43,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         phone.setType(type);
         phone.setPhoneNumber(phoneNumber);
 
-        persist(phone);
+        persistIfNotAlready(phone);
         return phone;
 
 
@@ -121,10 +121,6 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         return getContainer().allInstances(type);
 
     }
-
-
-
-
 
 
 }

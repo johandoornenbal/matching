@@ -1,5 +1,7 @@
 package info.matchingservice.fixture;
 
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.assessment.AssessmentsForFransFixture;
 import info.matchingservice.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
@@ -7,9 +9,7 @@ import info.matchingservice.fixture.actor.TestOrganisations;
 import info.matchingservice.fixture.actor.TestPersonalContacts;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.actor.TestRoles;
-import info.matchingservice.fixture.communicationChannels.TestAddress;
 import info.matchingservice.fixture.communicationChannels.TestEmails;
-import info.matchingservice.fixture.communicationChannels.TestPhone;
 import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
 import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
 import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
@@ -25,8 +25,6 @@ import info.matchingservice.fixture.tag.TagsForFrans;
 import info.matchingservice.fixture.tag.TagsForGerard;
 import info.matchingservice.fixture.tag.TagsForMichiel;
 import info.matchingservice.fixture.tag.TagsForRembrandt;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 public class MatchingDemoFixture extends FixtureScript {
     

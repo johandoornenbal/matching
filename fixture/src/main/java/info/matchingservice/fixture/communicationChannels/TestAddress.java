@@ -1,12 +1,14 @@
 package info.matchingservice.fixture.communicationChannels;
 
+import java.util.List;
+import java.util.Scanner;
+
+import javax.inject.Inject;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
-
-import javax.inject.Inject;
-import java.util.List;
-import java.util.Scanner;
+import info.matchingservice.fixture.actor.TestPersons;
 
 /**
  * Created by jonathan on 22-4-15.
@@ -49,10 +51,15 @@ public class TestAddress extends CommunicationChannelsAbstract{
                 "York Street\n" +
                 "Essex Court";
 
+
+
         Scanner scanner = new Scanner(streets);
 
+        //preqs
+        executionContext.executeChild(this, new TestPersons());
 
-        List<Person> personen = persons.activePerson();
+
+        List<Person> personen = persons.allPersons();
 
 
         String street;

@@ -28,7 +28,7 @@ import javax.jdo.annotations.*;
 })
 public class Address extends CommunicationChannel {
     public Address() {
-        super("person, address");
+        super("address");
     }
 
 

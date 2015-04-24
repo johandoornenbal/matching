@@ -7,8 +7,13 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.VersionStrategy;
 
-import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.Actor.Person;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.Contributed;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -28,6 +33,7 @@ import info.matchingservice.dom.Actor.Person;
                     + "FROM info.matchingservice.dom.CommunicationChannels.Email "
                     + "WHERE person == :person")
 })
+@DomainObject(editing = Editing.DISABLED)
 public class Email extends CommunicationChannel {
 
 
@@ -51,9 +57,24 @@ public class Email extends CommunicationChannel {
 
 
 	private String email;
-	
-	
 
-	
-	
+
+	@Action(semantics = SemanticsOf.IDEMPOTENT)
+	@ActionLayout(contributed = Contributed.AS_ACTION)
+	public Email updateEmail(
+
+			final @ParameterLayout(named="Email")String address)	{
+
+		setEmail(address);
+		return this;
+	}
+
+	public String default0UpdateEmail(){
+		return this.getEmail();
+	}
+
+
+
+
+
 }

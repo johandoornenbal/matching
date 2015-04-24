@@ -6,10 +6,12 @@ import javax.inject.Inject;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
 import info.matchingservice.dom.Actor.Person;
@@ -59,6 +61,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
                 return person;
     }
 
+
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createAddress(
@@ -76,8 +79,9 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
 
 }
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(contributed = Contributed.AS_ACTION, named = "Email Gegevens")
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named = "Email Gegevens")
+    @CollectionLayout(render = RenderType.EAGERLY)
     public List<CommunicationChannel> allEmails(Person person){
 
         return communicationChannels.allCommunicationChannels(person, Email.class);
@@ -85,8 +89,9 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
     }
 
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(contributed = Contributed.AS_ACTION, named =  "Telefoon Gegevens")
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named =  "Telefoon Gegevens")
+    @CollectionLayout(render = RenderType.EAGERLY)
     public List<CommunicationChannel> allPhones(Person person){
 
         return communicationChannels.allCommunicationChannels(person, Phone.class);
@@ -96,8 +101,9 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
 
 
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(contributed = Contributed.AS_ACTION, named = "Address Gegevens")
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named = "Address Gegevens")
+    @CollectionLayout(render = RenderType.EAGERLY)
     public List<CommunicationChannel> allAddress(Person person){
 
         return communicationChannels.allCommunicationChannels(person, Address.class);
@@ -108,6 +114,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
    // public List<Person> autoComplete0CreatePhone(final String search){
    // 	return persons.findPersons(search);
   //  }
+
 
 
     @Inject
