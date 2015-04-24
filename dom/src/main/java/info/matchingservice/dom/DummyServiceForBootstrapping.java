@@ -1,11 +1,13 @@
 package info.matchingservice.dom;
 
-import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
-import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
-
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Where;
+
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannelContributions;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
+import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
+import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
 
 @DomainService
 public class DummyServiceForBootstrapping {
@@ -14,5 +16,9 @@ public class DummyServiceForBootstrapping {
     public void ensureKnownEagerly(ProfileElementTimePeriod x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(ProfileElementUsePredicate x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(CommunicationChannels x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(CommunicationChannelContributions x) { }
 
 }

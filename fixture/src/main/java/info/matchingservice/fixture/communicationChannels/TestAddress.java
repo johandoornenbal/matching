@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
-import info.matchingservice.fixture.actor.TestPersons;
 
 /**
  * Created by jonathan on 22-4-15.
@@ -55,10 +54,6 @@ public class TestAddress extends CommunicationChannelsAbstract{
 
         Scanner scanner = new Scanner(streets);
 
-        //preqs
-        executionContext.executeChild(this, new TestPersons());
-
-
         List<Person> personen = persons.allPersons();
 
 
@@ -89,9 +84,6 @@ public class TestAddress extends CommunicationChannelsAbstract{
 
 
         }
-
-
-
 
 
 

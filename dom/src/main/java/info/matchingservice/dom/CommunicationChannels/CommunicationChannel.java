@@ -24,14 +24,12 @@ import info.matchingservice.dom.MatchingDomainObject;
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
 @DomainObject(autoCompleteRepository=CommunicationChannels.class, autoCompleteAction = "autoComplete")
-public class CommunicationChannel extends
+public abstract class CommunicationChannel extends
 		MatchingDomainObject<CommunicationChannel> {
 
 	public CommunicationChannel(String keyProperties) {
 		super("person, type");
 	}
-
-
 
 
 
@@ -45,6 +43,7 @@ public class CommunicationChannel extends
 	public void setPerson(Person person) {
 		this.person = person;
 	}
+
 
 	private CommunicationChannelType type;
 

@@ -1,12 +1,16 @@
 package info.matchingservice.fixture.communicationChannels;
 
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.CommunicationChannels.*;
-import info.matchingservice.fixture.actor.TestPersons;
+import javax.inject.Inject;
+
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
-import javax.inject.Inject;
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.CommunicationChannels.Address;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
+import info.matchingservice.dom.CommunicationChannels.Email;
+import info.matchingservice.dom.CommunicationChannels.Phone;
 
 /**
  * Created by jonathan on 22-4-15.
@@ -33,7 +37,11 @@ public abstract class CommunicationChannelsAbstract extends FixtureScript {
     }
 
 
-    protected Phone createPhone(Person person, CommunicationChannelType type,String phoneNumber, ExecutionContext executionContext) {
+    protected Phone createPhone(
+            String phoneNumber,
+            CommunicationChannelType type,
+            Person person,
+            ExecutionContext executionContext) {
 
         Phone phone = communicationChannels.createPhone(person, type, phoneNumber);
 
@@ -43,11 +51,12 @@ public abstract class CommunicationChannelsAbstract extends FixtureScript {
 
     }
 
-    protected Address createAddress(Person person,
-                                    CommunicationChannelType type,
-                                    String address1,
-                                    String postalCode,
-                                    ExecutionContext executionContext) {
+    protected Address createAddress(
+            Person person,
+            CommunicationChannelType type,
+            String address1,
+            String postalCode,
+            ExecutionContext executionContext) {
         Address address = communicationChannels.createAddress(person, type, address1, postalCode);
 
         return executionContext.add(this,address);

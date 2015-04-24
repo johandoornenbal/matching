@@ -53,15 +53,15 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     @Programmatic
     public Email createEmail(
-            final String emailAddres,
+            final String emailAddress,
             final CommunicationChannelType type,
             final Person person){
 
         final Email email = newTransientInstance(Email.class);
 
-        email.setEmail(emailAddres);
+        email.setEmail(emailAddress);
         email.setPerson(person);
-
+        email.setType(type);
 
         persist(email);
         return email;

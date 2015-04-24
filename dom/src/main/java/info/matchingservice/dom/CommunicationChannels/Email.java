@@ -1,11 +1,8 @@
 package info.matchingservice.dom.CommunicationChannels;
 
 import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
@@ -16,16 +13,16 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
-@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
-@javax.jdo.annotations.Version(
-		strategy = VersionStrategy.VERSION_NUMBER,
-		column = "version")
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
+//@javax.jdo.annotations.DatastoreIdentity(
+//        strategy = IdGeneratorStrategy.NATIVE,
+//        column = "id")
+//@javax.jdo.annotations.Discriminator(
+//        strategy = DiscriminatorStrategy.CLASS_NAME,
+//        column = "discriminator")
+//@javax.jdo.annotations.Version(
+//		strategy = VersionStrategy.VERSION_NUMBER,
+//		column = "version")
 @javax.jdo.annotations.Queries({
     @javax.jdo.annotations.Query(
             name = "findByPerson", language = "JDOQL",
