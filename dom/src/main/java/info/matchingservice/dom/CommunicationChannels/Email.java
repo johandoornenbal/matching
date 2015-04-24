@@ -7,11 +7,8 @@ import javax.jdo.annotations.InheritanceStrategy;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Title;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -31,7 +28,6 @@ import org.apache.isis.applib.annotation.Title;
                     + "FROM info.matchingservice.dom.CommunicationChannels.Email "
                     + "WHERE person == :person")
 })
-@DomainObject(editing = Editing.DISABLED)
 public class Email extends CommunicationChannel {
 
 

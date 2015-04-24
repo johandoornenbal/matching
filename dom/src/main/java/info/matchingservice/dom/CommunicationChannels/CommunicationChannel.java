@@ -8,6 +8,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainObject;
@@ -23,7 +24,9 @@ import info.matchingservice.dom.MatchingDomainObject;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
-@DomainObject(autoCompleteRepository=CommunicationChannels.class, autoCompleteAction = "autoComplete")
+@DomainObject(autoCompleteRepository=CommunicationChannels.class,
+		autoCompleteAction = "autoComplete",
+		editing = Editing.DISABLED)
 public abstract class CommunicationChannel extends
 		MatchingDomainObject<CommunicationChannel> {
 
