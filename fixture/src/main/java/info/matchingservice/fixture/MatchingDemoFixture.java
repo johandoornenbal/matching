@@ -9,7 +9,9 @@ import info.matchingservice.fixture.actor.TestOrganisations;
 import info.matchingservice.fixture.actor.TestPersonalContacts;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.actor.TestRoles;
+import info.matchingservice.fixture.communicationChannels.TestAddress;
 import info.matchingservice.fixture.communicationChannels.TestEmails;
+import info.matchingservice.fixture.communicationChannels.TestPhone;
 import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
 import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
 import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
@@ -63,11 +65,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new TagsForMichiel(), executionContext);
         executeChild(new TagsForAntoni(), executionContext);
         executeChild(new TestEmails(), executionContext);
-
-       //TODO Deze werken niet, wel als de phone en adress al aangemaakt zijn door een persoon , maar hij kan ze niet nieuw aanmaken. geen idee waarom.
-
-//        executeChild(new TestPhone(), executionContext);
-//        executeChild(new TestAddress(), executionContext);
+        executeChild(new TestPhone(), executionContext);
+        executeChild(new TestAddress(), executionContext);
         
     }
 
