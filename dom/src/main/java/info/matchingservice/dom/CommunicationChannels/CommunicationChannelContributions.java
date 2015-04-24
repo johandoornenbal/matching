@@ -42,6 +42,10 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
         return person;
     }
 
+    public List<CommunicationChannelType> choices1CreatePhone() {
+        return CommunicationChannelType.matching(Phone.class);
+    }
+
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createEmail(
