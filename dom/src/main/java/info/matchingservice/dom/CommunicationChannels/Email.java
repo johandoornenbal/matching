@@ -73,5 +73,4 @@ public class Email extends CommunicationChannel {
 
 
 
-
 }

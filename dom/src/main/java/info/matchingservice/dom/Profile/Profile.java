@@ -19,6 +19,38 @@
 
 package info.matchingservice.dom.Profile;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.inject.Inject;
+import javax.jdo.annotations.DiscriminatorStrategy;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
+
+import org.joda.time.LocalDate;
+
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.query.QueryDefault;
+
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -34,14 +66,6 @@ import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
 import info.matchingservice.dom.Tags.TagCategories;
 import info.matchingservice.dom.Tags.Tags;
 import info.matchingservice.dom.TrustLevel;
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.*;
-import org.apache.isis.applib.query.QueryDefault;
-import org.joda.time.LocalDate;
-
-import javax.inject.Inject;
-import javax.jdo.annotations.*;
-import java.util.*;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -600,54 +624,56 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 this);
     }
 
-    //TODO werkt ook niet
-//
-//    public boolean hideCreateQualityTagElement(final Integer weight) {
-//        // only on profile of type PERSON and ORGANSATION
-//        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
-//            return true;
-//        }
-//
-//        // At Most one
-//        QueryDefault<ProfileElementTag> query =
-//                QueryDefault.create(
-//                        ProfileElementTag.class,
-//                        "findProfileElementOfType",
-//                        "profileElementType", ProfileElementType.QUALITY_TAGS,
-//                        "profileElementOwner", this);
-//        if (container.firstMatch(query) != null) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
+
+    public boolean hideCreateQualityTagElement(final Integer weight) {
+        // only on profile of type PERSON and ORGANSATION
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
+            return true;
+        }
+
+        // At Most one
+        QueryDefault<ProfileElementTag> query =
+                QueryDefault.create(
+                        ProfileElementTag.class,
+                        "findProfileElementOfType",
+                        "profileElementType", ProfileElementType.QUALITY_TAGS,
+                        "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+
+        return false;
+    }
 
 
-    //TODO Werkt ook niet
-//    public String validateCreateQualityTagElement(final Integer weight) {
-//        // only on profile of type PERSON and ORGANSATION
-//        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
-//            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
-//        }
-//
-//        // At Most one
-//        QueryDefault<ProfileElementTag> query =
-//                QueryDefault.create(
-//                        ProfileElementTag.class,
-//                        "findProfileElementOfType",
-//                        "profileElementType", ProfileElementType.QUALITY_TAGS,
-//                        "profileElementOwner", this);
-//        if (container.firstMatch(query) != null) {
-//            return "ONE_INSTANCE_AT_MOST";
-//        }
-//
-//        return null;
-//    }
+    public String validateCreateQualityTagElement(final Integer weight) {
+        // only on profile of type PERSON and ORGANSATION
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+        }
+
+        // At Most one
+        QueryDefault<ProfileElementTag> query =
+                QueryDefault.create(
+                        ProfileElementTag.class,
+                        "findProfileElementOfType",
+                        "profileElementType", ProfileElementType.QUALITY_TAGS,
+                        "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return "ONE_INSTANCE_AT_MOST";
+        }
+
+        return null;
+    }
     //-- createQualityTagElement --//
 
 
-    //** createOpleidingTagElement **//
+    //** createQualificationTagElement **//
 
+
+    // Business rule:
+    // only on profile of type PERSON and ORGANISATION
+    // At Most one
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout()
     public ProfileElementTag createQualificationTagElement(
@@ -661,7 +687,49 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
                 this);
     }
 
+    public boolean hideCreateQualificationTagElement(final Integer weight) {
 
+        // only on profile of type PERSON and ORGANSATION
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
+            return true;
+        }
+
+        // At Most one
+        // At Most one
+        QueryDefault<ProfileElementTag> query =
+                QueryDefault.create(
+                        ProfileElementTag.class,
+                        "findProfileElementOfType",
+                        "profileElementType", ProfileElementType.QUALIFICATION_TAGS,
+                        "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public String validateCreateQualificationTagElement(final Integer weight) {
+
+        // only on profile of type PERSON and ORGANSATION
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)) {
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+        }
+
+        // At Most one
+        // At Most one
+        QueryDefault<ProfileElementTag> query =
+                QueryDefault.create(
+                        ProfileElementTag.class,
+                        "findProfileElementOfType",
+                        "profileElementType", ProfileElementType.QUALIFICATION_TAGS,
+                        "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return "ONE_INSTANCE_AT_MOST";
+        }
+
+        return null;
+    }
 
 
     //** createWeekdayTagElement **//
