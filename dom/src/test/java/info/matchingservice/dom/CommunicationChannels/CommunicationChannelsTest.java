@@ -69,7 +69,22 @@ public class CommunicationChannelsTest {
         	communicationChannels.allCommunicationChannels();
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_INSTANCES));
+
+
+
+
         }
+
+        @Test
+        public void testDelete(){
+
+
+
+
+        }
+
+
+
 
     }
     

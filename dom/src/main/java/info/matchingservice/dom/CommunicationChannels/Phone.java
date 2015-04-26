@@ -75,4 +75,5 @@ public class Phone extends CommunicationChannel {
         return CommunicationChannelType.matching(Phone.class);
     }
 
+
 }
