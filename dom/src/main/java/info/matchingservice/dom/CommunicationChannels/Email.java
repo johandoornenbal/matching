@@ -11,6 +11,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
+
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 //@javax.jdo.annotations.DatastoreIdentity(
@@ -30,6 +31,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
                     + "WHERE person == :person")
 })
 public class Email extends CommunicationChannel {
+
 
 
 

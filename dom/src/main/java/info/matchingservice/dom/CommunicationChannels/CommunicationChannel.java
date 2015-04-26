@@ -20,6 +20,7 @@ import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Title;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Match.PersistedProfileElementComparison;
@@ -82,6 +83,7 @@ public abstract class CommunicationChannel extends
 	private CommunicationChannelType type;
 
 	@Column(allowsNull = "false")
+	@Title(append = "")
 	public CommunicationChannelType getType() {
 		return type;
 	}
