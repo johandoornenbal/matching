@@ -7,6 +7,7 @@ import javax.jdo.annotations.*;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Contributed;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
@@ -86,9 +87,14 @@ public class Address extends CommunicationChannel {
     public Address updateAddress(
 
             final @ParameterLayout(named = "Woning Type") CommunicationChannelType type,
-            final @ParameterLayout(named = "Woonplaats") String woonPlaats,
-            final @ParameterLayout(named = "Addres") String address,
-            final @ParameterLayout(named = "Postcode") String postalCode)
+            final @ParameterLayout(named = "Woonplaats")
+            @Parameter(regexPattern = "^([a-zA-Z]{3,})")String woonPlaats,
+            final @ParameterLayout(named = "Addres")
+            @Parameter(regexPattern = "^([a-zA-Z]{3,}) ([0-9]{1,})([a-zA-Z]*)$")String address,
+
+
+            final @ParameterLayout(named = "Postcode")
+            @Parameter(regexPattern = "^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")String postalCode)
 
             {
 

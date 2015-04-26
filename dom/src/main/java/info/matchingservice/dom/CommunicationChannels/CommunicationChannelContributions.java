@@ -10,6 +10,7 @@ import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
@@ -31,12 +32,15 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
 
 
-
+    // regex: of mobiel nummer, of vast telefoon nummer
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createPhone(
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
-            final @ParameterLayout(named = "Number") String phoneNumber,
+            final @ParameterLayout(named = "Number")
+
+            @Parameter(regexPattern ="(^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$)"
+                    + "|(^(((\\\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$)") String phoneNumber,
             final @ParameterLayout(named = "Person") Person person){
 
 
@@ -53,7 +57,8 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     public Person createEmail(
 
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
-            final @ParameterLayout(named="Email")String adress,
+            final @ParameterLayout(named="Email")
+            @Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")String adress,
             final @ParameterLayout(named="Person/SHould not be visible")Person person)
             {
 
@@ -67,15 +72,24 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
     }
 
+    // Address, 3 of meer letters gevolgd door cijfer, met evt een letter
+    // postcode 4 cijfers, evt spatie. gevolgd door 2 Hoofdletters
+    // Woonplaats, 3 of meer letters
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createAddress(
 
-            final @ParameterLayout(named = "Woning Type") CommunicationChannelType type,
-            final @ParameterLayout(named = "Woonplaats") String woonPlaats,
-            final @ParameterLayout(named = "Addres") String address,
-            final @ParameterLayout(named = "Postcode") String postalCode,
+            final @ParameterLayout(named = "Woning Type")
+            CommunicationChannelType type,
+            final @ParameterLayout(named = "Woonplaats")
+            @Parameter(regexPattern = "^([a-zA-Z]{3,})")String woonPlaats,
+            final @ParameterLayout(named = "Addres")
+            @Parameter(regexPattern = "^([a-zA-Z]{3,}) ([0-9]{1,})([a-zA-Z]*)$") String address,
+            final @ParameterLayout(named = "Postcode")
+            @Parameter(regexPattern = "^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")String postalCode,
             final Person person){
+
+
 
 
         communicationChannels.createAddress(person, type, address, postalCode, woonPlaats);

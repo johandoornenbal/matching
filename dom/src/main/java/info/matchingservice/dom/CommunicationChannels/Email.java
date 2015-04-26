@@ -7,6 +7,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Contributed;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
@@ -57,7 +58,8 @@ public class Email extends CommunicationChannel {
 	@ActionLayout(contributed = Contributed.AS_ACTION)
 	public Email updateEmail(
 
-			final @ParameterLayout(named="Email")String address)	{
+			final @ParameterLayout(named="Email")
+			@Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")String address)	{
 
 		setEmail(address);
 		return this;
