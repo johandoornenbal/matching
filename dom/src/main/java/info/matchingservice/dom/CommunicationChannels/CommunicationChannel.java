@@ -1,9 +1,5 @@
 package info.matchingservice.dom.CommunicationChannels;
 
-import java.util.Iterator;
-import java.util.List;
-
-import javax.inject.Inject;
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -23,9 +19,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Title;
 
 import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Match.PersistedProfileElementComparison;
 import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.Profile.Profile;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -48,7 +42,7 @@ public abstract class CommunicationChannel extends
 		super("person, type");
 	}
 
-	//** deletePCommunicationChannel **//
+	//** deleteCommunicationChannel **//
 	@Action(semantics= SemanticsOf.NON_IDEMPOTENT)
 	@ActionLayout()
 	public Person deleteCommunicationChannel(

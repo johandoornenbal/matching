@@ -20,11 +20,11 @@ package info.matchingservice.fixture.tag;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.TagCategory;
 import info.matchingservice.dom.Tags.Tags;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 public abstract class TagAbstract extends FixtureScript {
 

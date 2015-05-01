@@ -353,7 +353,7 @@ AddDefaultCharset utf-8
 # not using HTTPS.
 
 # <IfModule mod_headers.c>
-#    Header set Strict-Transport-Security "max-age=16070400; includeSubDomains"
+#    Header set Strict-Transport-Security "max-dateOfBirth=16070400; includeSubDomains"
 # </IfModule>
 
 # ------------------------------------------------------------------------------

@@ -105,7 +105,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named = "Collect Emails")
     @CollectionLayout(render = RenderType.EAGERLY)
-    public List<CommunicationChannel> allEmails(Person person){
+    public List<CommunicationChannel> collectEmails(Person person){
 
         return communicationChannels.allCommunicationChannels(person, Email.class);
 
@@ -115,7 +115,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named =  "Collect Phones")
     @CollectionLayout(render = RenderType.EAGERLY)
-    public List<CommunicationChannel> allPhones(Person person){
+    public List<CommunicationChannel> collectPhones(Person person){
 
         return communicationChannels.allCommunicationChannels(person, Phone.class);
 
@@ -127,7 +127,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(contributed = Contributed.AS_ASSOCIATION, named = "Collect Adress")
     @CollectionLayout(render = RenderType.EAGERLY)
-    public List<CommunicationChannel> allAddress(Person person){
+    public List<CommunicationChannel> collectAddresses(Person person){
 
         return communicationChannels.allCommunicationChannels(person, Address.class);
 

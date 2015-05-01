@@ -18,8 +18,12 @@
  */
 package info.matchingservice.integtest.dom;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import javax.inject.Inject;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
@@ -27,12 +31,8 @@ import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.CommunicationChannels.Phone;
 import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
-
-import javax.inject.Inject;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class PhoneTest extends MatchingIntegrationTest {
     
@@ -70,6 +70,12 @@ public class PhoneTest extends MatchingIntegrationTest {
 
         }
         
+    }
+
+    public static class deletePhone extends PhoneTest {
+
+        //TODO:
+
     }
     
 }
