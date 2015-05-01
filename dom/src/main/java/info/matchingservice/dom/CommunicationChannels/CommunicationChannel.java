@@ -15,12 +15,16 @@ import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Title;
+import org.apache.isis.applib.annotation.Where;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.MatchingMutableObject;
+import info.matchingservice.dom.MatchingSecureMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -37,7 +41,7 @@ import info.matchingservice.dom.MatchingMutableObject;
 		autoCompleteAction = "autoComplete",
 		editing = Editing.DISABLED)
 public abstract class CommunicationChannel extends
-		MatchingMutableObject<CommunicationChannel> {
+		MatchingSecureMutableObject<CommunicationChannel> {
 
 	public CommunicationChannel(String keyProperties) {
 		super("person, type");
@@ -51,6 +55,7 @@ public abstract class CommunicationChannel extends
 			@Parameter(optionality= Optionality.OPTIONAL)
 			boolean confirmDelete
 	){
+
 
 
 		container.removeIfNotAlready(this);
@@ -89,6 +94,27 @@ public abstract class CommunicationChannel extends
 
 	@javax.inject.Inject
 	private DomainObjectContainer container;
+
+
+
+	//** ownedBy - Override for secure object **//
+	private String ownedBy;
+
+
+	//allows null false
+
+	@Override
+	@javax.jdo.annotations.Column(allowsNull = "true")
+	@Property(editing=Editing.DISABLED)
+	@PropertyLayout(hidden= Where.EVERYWHERE)
+	public String getOwnedBy() {
+		return ownedBy;
+	}
+
+	public void setOwnedBy(final String owner) {
+		this.ownedBy = owner;
+	}
+
 
 
 
