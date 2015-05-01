@@ -20,6 +20,7 @@ import org.apache.isis.applib.annotation.Title;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainObject;
+import info.matchingservice.dom.MatchingMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -36,7 +37,7 @@ import info.matchingservice.dom.MatchingDomainObject;
 		autoCompleteAction = "autoComplete",
 		editing = Editing.DISABLED)
 public abstract class CommunicationChannel extends
-		MatchingDomainObject<CommunicationChannel> {
+		MatchingMutableObject<CommunicationChannel> {
 
 	public CommunicationChannel(String keyProperties) {
 		super("person, type");
