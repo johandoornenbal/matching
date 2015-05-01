@@ -39,8 +39,8 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
             final @ParameterLayout(named = "Number")
 
-            @Parameter(regexPattern ="(^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$)"
-                    + "|(^(((\\\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$)") String phoneNumber,
+            @Parameter(regexPattern ="(^(((0)[1-9]{2}[0-9][-| ]?[1-9]( ?[0-9]){5})|((\\+31|0|0031)[-| ]?[1-9][0-9][1-9]( ?[0-9]){6}))$)"
+                    + "|(^(((\\\\+31|0|0031)6){1}[-| ]?[1-9]{1}( ?[0-9]){7})$)") String phoneNumber,
             final @ParameterLayout(named = "Person") Person person){
 
 
@@ -84,7 +84,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
             final @ParameterLayout(named = "Woonplaats")
             @Parameter(regexPattern = "^([a-zA-Z]{3,})")String woonPlaats,
             final @ParameterLayout(named = "Addres")
-            @Parameter(regexPattern = "^([a-zA-Z]{3,}) ([0-9]{1,})([a-zA-Z]*)$") String address,
+            @Parameter(regexPattern = "^([a-zA-Z.]{1,})(( [a-zA-Z.]{1,})*) ([0-9]{1,})([a-zA-Z]*)$") String address,
             final @ParameterLayout(named = "Postcode")
             @Parameter(regexPattern = "^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")String postalCode,
             final Person person){

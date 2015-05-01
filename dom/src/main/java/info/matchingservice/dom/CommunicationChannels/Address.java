@@ -90,7 +90,7 @@ public class Address extends CommunicationChannel {
             final @ParameterLayout(named = "Woonplaats")
             @Parameter(regexPattern = "^([a-zA-Z]{3,})")String woonPlaats,
             final @ParameterLayout(named = "Addres")
-            @Parameter(regexPattern = "^([a-zA-Z]{3,}) ([0-9]{1,})([a-zA-Z]*)$")String address,
+            @Parameter(regexPattern = "^([a-zA-Z.]{1,})(( [a-zA-Z.]{1,})*) ([0-9]{1,})([a-zA-Z]*)$") String address,
 
 
             final @ParameterLayout(named = "Postcode")
