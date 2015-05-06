@@ -1,5 +1,7 @@
 package info.matchingservice.fixture;
 
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.assessment.AssessmentsForFransFixture;
 import info.matchingservice.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
@@ -12,18 +14,16 @@ import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
 import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.demand.TestDemands;
+import info.matchingservice.fixture.match.ProfileMatchesForTesting;
 import info.matchingservice.fixture.supply.TestSupplies;
 import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
 import info.matchingservice.fixture.tag.TagsFixture;
-import info.matchingservice.fixture.tag.TagsForAntoni;
 import info.matchingservice.fixture.tag.TagsForFrans;
 import info.matchingservice.fixture.tag.TagsForGerard;
 import info.matchingservice.fixture.tag.TagsForMichiel;
 import info.matchingservice.fixture.tag.TagsForRembrandt;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 public class MatchingDemoFixture extends FixtureScript {
     
@@ -60,7 +60,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new TagsForGerard(), executionContext);
         executeChild(new TagsForRembrandt(), executionContext);
         executeChild(new TagsForMichiel(), executionContext);
-        executeChild(new TagsForAntoni(), executionContext);
+        executeChild(new ProfileMatchesForTesting(), executionContext);
+
         
     }
 

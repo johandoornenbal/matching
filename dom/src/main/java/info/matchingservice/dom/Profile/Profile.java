@@ -19,24 +19,6 @@
 
 package info.matchingservice.dom.Profile;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.TrustLevel;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Assessment.ProfileAssessment;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
-import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
-import info.matchingservice.dom.Match.PersistedProfileElementComparison;
-import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
-import info.matchingservice.dom.Match.ProfileComparison;
-import info.matchingservice.dom.Match.ProfileMatch;
-import info.matchingservice.dom.Match.ProfileMatches;
-import info.matchingservice.dom.Match.ProfileMatchingService;
-import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
-import info.matchingservice.dom.Tags.TagCategories;
-import info.matchingservice.dom.Tags.Tags;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
@@ -49,6 +31,8 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
+
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -66,7 +50,25 @@ import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
-import org.joda.time.LocalDate;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Assessment.ProfileAssessment;
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Match.CandidateStatus;
+import info.matchingservice.dom.Match.PersistedProfileElementComparison;
+import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
+import info.matchingservice.dom.Match.ProfileComparison;
+import info.matchingservice.dom.Match.ProfileMatch;
+import info.matchingservice.dom.Match.ProfileMatches;
+import info.matchingservice.dom.Match.ProfileMatchingService;
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
+import info.matchingservice.dom.Tags.TagCategories;
+import info.matchingservice.dom.Tags.Tags;
+import info.matchingservice.dom.TrustLevel;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -309,7 +311,25 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     public boolean hideCollectAssessments() {
         return this.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
-	//-- collectAssessments --//
+    //-- collectAssessments --//
+
+    //** collectPersistedProfileMatches **//
+    private SortedSet<ProfileMatch> collectPersistedProfileMatches = new TreeSet<ProfileMatch>();
+
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "demandProfile", dependentElement = "true")
+    public SortedSet<ProfileMatch> getCollectPersistedProfileMatches() {return collectPersistedProfileMatches; }
+
+    public void setCollectPersistedProfileMatches(final SortedSet<ProfileMatch> profileMatches) {
+        this.collectPersistedProfileMatches = profileMatches;
+    }
+
+    public boolean hideCollectPersistedProfileMatches() {
+        return this.demandOrSupply == DemandOrSupply.SUPPLY;
+    }
+    //-- collectPersistedProfileMatches --//
+
+
     
 	//-- API: COLLECTIONS --//
     
@@ -1174,7 +1194,27 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
     
     //-- deleteProfile --//
-    
+
+    //** getChosenProfileMatch **//
+
+    public ProfileMatch getChosenProfileMatch() {
+
+        if (profileMatches.findProfileMatchesByDemandProfileAndStatus(this, CandidateStatus.CHOSEN).size()>0) {
+            return profileMatches.findProfileMatchesByDemandProfileAndStatus(this, CandidateStatus.CHOSEN).get(0);
+        }
+
+        if (profileMatches.findProfileMatchesByDemandProfileAndStatus(this, CandidateStatus.RESERVED).size()>0) {
+            return profileMatches.findProfileMatchesByDemandProfileAndStatus(this, CandidateStatus.RESERVED).get(0);
+        }
+
+        return null;
+    }
+
+    public boolean hideChosenProfileMatch() {
+        return this.demandOrSupply.equals(DemandOrSupply.SUPPLY);
+    }
+
+    //** getChosenProfileMatch **//
     
 	//-- API: ACTIONS --//
     

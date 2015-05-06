@@ -18,18 +18,19 @@
  */
 package info.matchingservice.dom.Match;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import info.matchingservice.dom.FinderInteraction;
-import info.matchingservice.dom.FinderInteraction.FinderMethod;
-import info.matchingservice.dom.Profile.Profile;
-
 import java.util.List;
 
-import org.apache.isis.applib.query.Query;
 import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.apache.isis.applib.query.Query;
+
+import info.matchingservice.dom.FinderInteraction;
+import info.matchingservice.dom.FinderInteraction.FinderMethod;
+import info.matchingservice.dom.Profile.Profile;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ProfileMatchesTest {
 
@@ -67,6 +68,9 @@ public class ProfileMatchesTest {
 
     	@Mock
     	Profile demandprofile;
+
+        @Mock
+        CandidateStatus candidateStatus;
     	
         @Test
         public void happyCase() {
@@ -80,6 +84,13 @@ public class ProfileMatchesTest {
             assertThat(finderInteraction.getQueryName(), is("findProfileMatchesByDemandProfile"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("demandprofile"), is((Object) demandprofile));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+
+            profileMatches.findProfileMatchesByDemandProfileAndStatus(demandprofile, candidateStatus);
+            assertThat(finderInteraction.getQueryName(), is("findProfileMatchesByDemandProfileAndStatus"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("demandprofile"), is((Object) demandprofile));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("candidateStatus"), is((Object) candidateStatus));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(2));
+
         }
 
     }

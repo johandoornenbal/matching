@@ -19,10 +19,6 @@
 
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Profile.Profile;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +30,10 @@ import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Where;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Profile.Profile;
 
 @DomainService(repositoryFor = ProfileMatch.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 @DomainServiceLayout(menuOrder="100")
@@ -51,7 +51,13 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
     @Programmatic
     public List<ProfileMatch> findProfileMatchesByDemandProfile(Profile demandProfile) {
     	return allMatches("findProfileMatchesByDemandProfile",
-        		"demandProfile", demandProfile);
+                "demandProfile", demandProfile);
+    }
+
+    @Programmatic
+    public List<ProfileMatch> findProfileMatchesByDemandProfileAndStatus(final Profile demandProfile, final CandidateStatus candidateStatus) {
+        return allMatches("findProfileMatchesByDemandProfileAndStatus",
+                "demandProfile", demandProfile, "candidateStatus", candidateStatus);
     }
     
     @ActionLayout(hidden=Where.EVERYWHERE)
@@ -99,4 +105,5 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
     // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;
+
 }

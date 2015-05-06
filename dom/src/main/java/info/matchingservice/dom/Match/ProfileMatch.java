@@ -21,10 +21,6 @@ package info.matchingservice.dom.Match;
 
 import java.util.UUID;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Profile.Profile;
-
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 
@@ -39,6 +35,10 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Profile.Profile;
 
 /**
  * It takes an action on a Demand Profile to create and persist a ProfileMatch instance
@@ -60,7 +60,12 @@ import org.apache.isis.applib.annotation.Where;
             name = "findProfileMatchesByDemandProfile", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Match.ProfileMatch "
-                    + "WHERE demandProfile == :demandProfile")                       
+                    + "WHERE demandProfile == :demandProfile"),
+    @javax.jdo.annotations.Query(
+            name = "findProfileMatchesByDemandProfileAndStatus", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Match.ProfileMatch "
+                    + "WHERE demandProfile == :demandProfile && candidateStatus == :candidateStatus")
 })
 @DomainObject(editing=Editing.DISABLED)
 public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
