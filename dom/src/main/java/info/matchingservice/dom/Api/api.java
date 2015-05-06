@@ -1,6 +1,30 @@
 package info.matchingservice.dom.Api;
 
-import info.matchingservice.dom.TrustLevel;
+import java.util.List;
+import java.util.UUID;
+
+import javax.inject.Inject;
+
+import com.google.common.base.Objects;
+
+import org.joda.time.LocalDate;
+
+import org.apache.isis.applib.AbstractFactoryAndRepository;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.Contributed;
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.RestrictTo;
+import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.value.Blob;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.PersonalContact;
 import info.matchingservice.dom.Actor.PersonalContacts;
@@ -14,29 +38,7 @@ import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.Tags;
-
-import java.util.List;
-import java.util.UUID;
-
-import javax.inject.Inject;
-
-import org.apache.isis.applib.AbstractFactoryAndRepository;
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.query.QueryDefault;
-import org.apache.isis.applib.value.Blob;
-import org.joda.time.LocalDate;
-
-import com.google.common.base.Objects;
+import info.matchingservice.dom.TrustLevel;
 
 @DomainService()
 @DomainServiceLayout()
@@ -284,6 +286,16 @@ public class api extends AbstractFactoryAndRepository {
     }
     
     //----------------------------------------- END createPersonalContact -------------------//
+
+	//***************************************** deletePersonOwnedBy ***********************//
+
+	@Action(semantics=SemanticsOf.IDEMPOTENT, restrictTo = RestrictTo.PROTOTYPING)
+	public void deletePersonOwnedBy(String ownedBy) {
+		persons.deletePerson(ownedBy);
+	}
+
+
+	//----------------------------------------- END deletePersonOwnedBy -------------------//
     
     //Helpers
     private String currentUserName() {

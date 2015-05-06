@@ -18,10 +18,14 @@
  */
 package info.matchingservice.dom.Actor;
 
-import info.matchingservice.dom.MatchingDomainService;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -39,11 +43,8 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.value.Blob;
-import org.joda.time.LocalDate;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import info.matchingservice.dom.MatchingDomainService;
 
 
 @DomainService(repositoryFor = Person.class, nature=NatureOfService.DOMAIN)
@@ -163,9 +164,9 @@ public class Persons extends MatchingDomainService<Person> {
     public boolean hideCreatePerson(String userName) {
         QueryDefault<Person> query = 
                 QueryDefault.create(
-                        Person.class, 
-                    "findPersonUnique", 
-                    "ownedBy", userName);        
+                        Person.class,
+                        "findPersonUnique",
+                        "ownedBy", userName);
         return container.firstMatch(query) != null?
         true        
         :false;        
@@ -241,6 +242,19 @@ public class Persons extends MatchingDomainService<Person> {
         return allMatches("findPersonByUniqueItemId",
         		"uniqueItemId", uniqueItemId);
     }
+
+    @Programmatic
+    // for Api
+    public void deletePerson(String ownedBy) {
+        QueryDefault<Person> query =
+                QueryDefault.create(
+                        Person.class,
+                        "findPersonUnique",
+                        "ownedBy", ownedBy);
+        Person personToDelete = allMatches(query).get(0);
+        container.removeIfNotAlready(personToDelete);
+    }
+
     
     // Region>injections ////////////////////////////
     @javax.inject.Inject
