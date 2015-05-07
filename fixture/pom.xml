@@ -33,6 +33,7 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>matchingservice-dom</artifactId>
 		</dependency>
+
 	</dependencies>
 
 </project>

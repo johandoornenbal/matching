@@ -101,6 +101,13 @@
 			<artifactId>isis-core-applib</artifactId>
 		</dependency>
 
+        <!--  For security module add-on -->
+        <dependency>
+            <groupId>org.isisaddons.module.security</groupId>
+            <artifactId>isis-module-security-dom</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+
         <!--
         uncomment to use the AppSettings or UserSettings services
         (also uncomment corresponding dependency in webapp module)

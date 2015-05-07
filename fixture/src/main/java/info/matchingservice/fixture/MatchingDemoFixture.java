@@ -15,6 +15,17 @@ import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.demand.TestDemands;
 import info.matchingservice.fixture.match.ProfileMatchesForTesting;
+import info.matchingservice.fixture.security.MatchingRegularRoleAndPermissions;
+import info.matchingservice.fixture.security.antoniUser;
+import info.matchingservice.fixture.security.antoniUser_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.fransUser;
+import info.matchingservice.fixture.security.fransUser_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.gerardUser;
+import info.matchingservice.fixture.security.gerardUser_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.michielUser;
+import info.matchingservice.fixture.security.michielUser_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.rembrandtUser;
+import info.matchingservice.fixture.security.rembrandtUser_Has_MatchingRegularRole;
 import info.matchingservice.fixture.supply.TestSupplies;
 import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
@@ -37,6 +48,17 @@ public class MatchingDemoFixture extends FixtureScript {
 //        executeChild(new TeardownFixture(), executionContext);
         
         // create
+        executionContext.executeChild(this, new fransUser());
+        executionContext.executeChild(this, new rembrandtUser());
+        executionContext.executeChild(this, new gerardUser());
+        executionContext.executeChild(this, new michielUser());
+        executionContext.executeChild(this, new antoniUser());
+        executionContext.executeChild(this, new MatchingRegularRoleAndPermissions());
+        executionContext.executeChild(this, new fransUser_Has_MatchingRegularRole());
+        executionContext.executeChild(this, new gerardUser_Has_MatchingRegularRole());
+        executionContext.executeChild(this, new rembrandtUser_Has_MatchingRegularRole());
+        executionContext.executeChild(this, new michielUser_Has_MatchingRegularRole());
+        executionContext.executeChild(this, new antoniUser_Has_MatchingRegularRole());
     	executeChild(new TestMatchingProfileTypeRules(), executionContext);
     	executeChild(new TestConfig(), executionContext);
         executeChild(new ProfileElementDropDownsFixture(), executionContext);
@@ -62,7 +84,6 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new TagsForMichiel(), executionContext);
         executeChild(new ProfileMatchesForTesting(), executionContext);
 
-        
     }
 
 }

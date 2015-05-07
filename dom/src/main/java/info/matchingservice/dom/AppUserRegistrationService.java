@@ -34,10 +34,10 @@ import org.isisaddons.module.security.userreg.SecurityModuleAppUserRegistrationS
 @DomainService
 public class AppUserRegistrationService extends SecurityModuleAppUserRegistrationServiceAbstract {
     protected ApplicationRole getInitialRole() {
-        return findRole("");
+        return findRole("matching-regular-role");
     }
     protected Set<ApplicationRole> getAdditionalInitialRoles() {
-        return Collections.singleton(findRole(""));
+        return Collections.singleton(findRole("matching-regular-role"));
     }
     private ApplicationRole findRole(final String roleName) {
         return applicationRoles.findRoleByName(roleName);
