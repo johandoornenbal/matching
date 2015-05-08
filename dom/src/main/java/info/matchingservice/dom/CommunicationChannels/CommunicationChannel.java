@@ -22,8 +22,6 @@ import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.annotation.Where;
 
 import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.MatchingMutableObject;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -43,7 +41,7 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 public class CommunicationChannel extends
 		MatchingSecureMutableObject<CommunicationChannel> {
 
-	public CommunicationChannel(String keyProperties) {
+	public CommunicationChannel() {
 		super("person, type, ownedBy");
 	}
 
