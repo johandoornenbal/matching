@@ -1,7 +1,7 @@
 package info.matchingservice.fixture;
 
-import info.matchingservice.assessment.AssessmentsForFransFixture;
-import info.matchingservice.assessment.AssessmentsForRembrandtFixture;
+import info.matchingservice.fixture.assessment.AssessmentsForFransFixture;
+import info.matchingservice.fixture.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
 import info.matchingservice.fixture.actor.TestOrganisations;
 import info.matchingservice.fixture.actor.TestPersonalContacts;

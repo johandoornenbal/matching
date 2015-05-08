@@ -1,10 +1,10 @@
-package info.matchingservice.assessment;
+package info.matchingservice.fixture.assessment;
+
+import javax.inject.Inject;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.fixture.demand.TestDemands;
-
-import javax.inject.Inject;
 
 public class AssessmentsForRembrandtFixture extends AssessmentAbstract {
 

@@ -1,20 +1,23 @@
-package info.matchingservice.assessment;
+package info.matchingservice.fixture.assessment;
 
+import javax.inject.Inject;
+
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.fixture.demand.TestDemands;
 
-import javax.inject.Inject;
-
 public class AssessmentsForFransFixture extends AssessmentAbstract {
+
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         
       //preqs
-        executeChild(new TestDemands(), executionContext);
-        executeChild(new TestDemands(), executionContext);
+        executionContext.executeChild(this, new TestDemands());
+        executionContext.executeChild(this, new TestDemands());
 
+        Person ASSESSMENT_OWNER_ACTOR = persons.findPersons("Hals").get(0);
         Demand demandOfRembrandt;
         Demand demandOfMichiel;
         demandOfRembrandt=persons.findPersons("Rijn").get(0).getCollectDemands().first();
@@ -22,7 +25,7 @@ public class AssessmentsForFransFixture extends AssessmentAbstract {
         
         createAssessment(
                 demandOfRembrandt,
-                persons.findPersons("Hals").get(0),
+                ASSESSMENT_OWNER_ACTOR,
                 "Verklaar je nader",
                 "Hoi van Rijn. Verklaar je nader... Wat ben je nu precies van plan? Gr. v Frans",
                 "frans",
@@ -30,7 +33,7 @@ public class AssessmentsForFransFixture extends AssessmentAbstract {
         
         createAssessment(
                 demandOfMichiel,
-                persons.findPersons("Hals").get(0),
+                ASSESSMENT_OWNER_ACTOR,
                 "Alweer?",
                 "Waarom alweer een oorlog? Ga eens met pensioen man! Groeten van Frans.",
                 "frans",

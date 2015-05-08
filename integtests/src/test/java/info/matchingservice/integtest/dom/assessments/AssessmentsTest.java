@@ -36,10 +36,13 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestPersons;
+import info.matchingservice.fixture.assessment.AssessmentsForFransFixture;
+import info.matchingservice.fixture.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -191,6 +194,43 @@ public class AssessmentsTest extends MatchingIntegrationTest {
             assertThat(profileFeedback.getTargetOfAssessment(), is((Object) assessmentTarget));
             assertThat(profileFeedback.getTargetOwnerActor(), is((Object) assessmentTargetOwner));
             assertThat(profileFeedback.getFeedback(), is(FEEDBACK));
+        }
+
+    }
+
+    public static class AssessmentCollectionsTest extends AssessmentsTest {
+
+        Person frans;
+
+        // given
+        @Before
+        public void setupData() {
+            runScript(new FixtureScript() {
+                @Override
+                protected void execute(ExecutionContext executionContext) {
+                    scenarioExecution().install(new TeardownFixture());
+                    executionContext.executeChild(this, new TestPersons());
+                    executionContext.executeChild(this, new TestDemandProfiles());
+                    executionContext.executeChild(this, new TestSupplyProfiles());
+                    executionContext.executeChild(this, new AssessmentsForFransFixture());
+                    executionContext.executeChild(this, new AssessmentsForRembrandtFixture());
+                }
+            });
+
+            // when
+            frans = persons.findPersons("Hals").get(0);
+        }
+
+
+        @Test
+        public void valuesSet() throws Exception {
+
+            // then
+            assertThat(frans.getCollectAssessmentsReceivedByActor().size(), is(1));
+            assertThat(frans.getCollectAssessmentsGivenByActor().size(), is(2));
+
+            assertFalse(frans.getCollectAssessmentsReceivedByActor().first().getOwnedBy().equals("frans"));
+            assertTrue(frans.getCollectAssessmentsGivenByActor().first().getOwnedBy().equals("frans"));
         }
 
     }
