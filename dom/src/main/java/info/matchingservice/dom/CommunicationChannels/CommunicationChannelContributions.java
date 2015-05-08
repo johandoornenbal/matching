@@ -44,7 +44,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
             final @ParameterLayout(named = "Person") Person person,
             final String ownedBy){
 
-        communicationChannels.createPhone(person, type, phoneNumber, getContainer().getUser().getName());
+        communicationChannels.createPhone(person, type, phoneNumber);
         return person;
     }
 

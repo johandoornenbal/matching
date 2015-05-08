@@ -21,6 +21,7 @@ public class AddressTest {
             address.setAddress("Straat123");
 
 
+
             newPojoTester().withFixture(pojos(Person.class, PersonForTesting.class)).exercise(address);
 
 

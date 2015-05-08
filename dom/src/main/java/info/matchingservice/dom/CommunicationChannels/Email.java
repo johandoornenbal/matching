@@ -4,12 +4,7 @@ import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.*;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -71,7 +66,19 @@ public class Email extends CommunicationChannel {
 		return this.getEmail();
 	}
 
+	private String ownedBy;
 
+	@Override
+	@javax.jdo.annotations.Column(allowsNull = "false")
+	@Property(editing=Editing.DISABLED)
+	@PropertyLayout(hidden= Where.EVERYWHERE)
+	public String getOwnedBy() {
+		return ownedBy;
+	}
+
+	public void setOwnedBy(final String owner) {
+		this.ownedBy = owner;
+	}
 
 
 }

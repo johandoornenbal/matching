@@ -33,7 +33,7 @@ public class TestPhone extends CommunicationChannelsAbstract{
 
 
 
-            createPhone(phoneNumber, CommunicationChannelType.PHONE_HOME, p, p.getOwnedBy(), executionContext);
+            createPhone(phoneNumber, CommunicationChannelType.PHONE_HOME, p, executionContext);
 
 
 

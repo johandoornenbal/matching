@@ -4,12 +4,7 @@ import java.util.List;
 
 import javax.jdo.annotations.*;
 
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.*;
 
 import info.matchingservice.dom.Actor.Person;
 
@@ -122,6 +117,22 @@ public class Address extends CommunicationChannel {
     public List<CommunicationChannelType> choices0UpdateAddress(){
         return CommunicationChannelType.matching(Address.class);
 
+    }
+
+
+
+    private  String ownedBy;
+
+    @Override
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden= Where.EVERYWHERE)
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
     }
 
 

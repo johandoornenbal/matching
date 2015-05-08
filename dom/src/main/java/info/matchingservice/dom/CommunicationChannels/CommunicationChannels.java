@@ -36,14 +36,14 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
     public Phone createPhone(
             final Person person,
             final CommunicationChannelType type,
-            final String phoneNumber,
-            final String ownedBy){
+            final String phoneNumber){
+           // final String ownedBy){
 
         final Phone phone = newTransientInstance(Phone.class);
         phone.setPerson(person);
         phone.setType(type);
         phone.setPhoneNumber(phoneNumber);
-        phone.setOwnedBy(ownedBy);
+        phone.setOwnedBy(person.getFirstName());
 
         persistIfNotAlready(phone);
         return phone;
@@ -64,6 +64,8 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         email.setEmail(emailAddress);
         email.setPerson(person);
         email.setType(type);
+
+        email.setOwnedBy(person.getFirstName());
 
         persist(email);
         return email;
@@ -90,6 +92,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
     a.setAddress(address);
     a.setPostalCode(postalCode);
     a.setWoonPlaats(woonPlaats);
+        a.setOwnedBy(person.getFirstName());
 
     persist(a);
     return a;

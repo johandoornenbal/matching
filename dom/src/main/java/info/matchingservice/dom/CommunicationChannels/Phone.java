@@ -4,8 +4,7 @@ import java.util.List;
 
 import javax.jdo.annotations.*;
 
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.*;
 
 /**
  * Created by jonathan on 27-3-15.
@@ -26,8 +25,6 @@ import org.apache.isis.applib.annotation.ParameterLayout;
                         + "FROM info.matchingservice.dom.CommunicationChannels.Phone "
                         + "WHERE person == :person")
 })
-
-
 public class Phone extends CommunicationChannel {
 
 
@@ -60,6 +57,7 @@ public class Phone extends CommunicationChannel {
 
         setType(type);
         setPhoneNumber(phoneNumber);
+
         return this;
     }
 
@@ -78,5 +76,17 @@ public class Phone extends CommunicationChannel {
         return CommunicationChannelType.matching(Phone.class);
     }
 
+    private String ownedBy;
 
+    @Override
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing= Editing.DISABLED)
+    @PropertyLayout(hidden= Where.EVERYWHERE)
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(final String owner) {
+        this.ownedBy = owner;
+    }
 }

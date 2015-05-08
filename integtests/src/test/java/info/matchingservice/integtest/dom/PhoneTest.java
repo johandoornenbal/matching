@@ -62,7 +62,7 @@ public class PhoneTest extends MatchingIntegrationTest {
         @Test
         public void valuesSet() throws Exception {
         	//when
-        	ph = communicationChannels.createPhone(p1, CommunicationChannelType.PHONE_PRIVATE, "123", p1.getOwnedBy());
+        	ph = communicationChannels.createPhone(p1, CommunicationChannelType.PHONE_PRIVATE, "123");
         	
         	//then
         	assertThat(ph.getPhoneNumber(), is("123"));

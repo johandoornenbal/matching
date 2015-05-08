@@ -104,7 +104,7 @@ public class CommunicationChannel extends
 
 
 	@Override
-	@javax.jdo.annotations.Column(allowsNull = "true")
+	@javax.jdo.annotations.Column(allowsNull = "false")
 	@Property(editing=Editing.DISABLED)
 	@PropertyLayout(hidden= Where.EVERYWHERE)
 	public String getOwnedBy() {
@@ -115,10 +115,10 @@ public class CommunicationChannel extends
 		this.ownedBy = owner;
 	}
 
-	//** HELPERS: generic object helpers **//
-	private String currentUserName() {
-		return container.getUser().getName();
-	}
+//	//** HELPERS: generic object helpers **//
+//	private String currentUserName() {
+//		return container.getUser().getName();
+//	}
 
 
 
