@@ -18,14 +18,6 @@
  */
 package info.matchingservice.dom.Assessment;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Profile.DemandOrSupply;
-import info.matchingservice.dom.Profile.Profile;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +28,14 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Profile.DemandOrSupply;
+import info.matchingservice.dom.Profile.Profile;
 
 
 @DomainService(repositoryFor = Assessment.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
@@ -61,7 +61,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-    	return createDemandAssessment(targetOfAssessment, targetOfAssessment.getDemandOwner(), assessmentDescription, feedback, currentUserName());
+    	return createDemandAssessment(targetOfAssessment, persons.findPersonUnique(currentUserName()), assessmentDescription, feedback, currentUserName());
     }
     
     // Business rule:
@@ -88,7 +88,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-        return createSupplyAssessment(targetOfAssessment, targetOfAssessment.getSupplyOwner(), assessmentDescription, feedback, currentUserName());
+        return createSupplyAssessment(targetOfAssessment, persons.findPersonUnique(currentUserName()), assessmentDescription, feedback, currentUserName());
     }
     
     //BUSINESS RULE
