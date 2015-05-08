@@ -40,11 +40,11 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 @DomainObject(autoCompleteRepository=CommunicationChannels.class,
 		autoCompleteAction = "autoComplete",
 		editing = Editing.DISABLED)
-public abstract class CommunicationChannel extends
+public class CommunicationChannel extends
 		MatchingSecureMutableObject<CommunicationChannel> {
 
 	public CommunicationChannel(String keyProperties) {
-		super("person, type");
+		super("person, type, ownedBy");
 	}
 
 	//** deleteCommunicationChannel **//
@@ -101,7 +101,7 @@ public abstract class CommunicationChannel extends
 	private String ownedBy;
 
 
-	//allows null false
+
 
 	@Override
 	@javax.jdo.annotations.Column(allowsNull = "true")
@@ -114,6 +114,13 @@ public abstract class CommunicationChannel extends
 	public void setOwnedBy(final String owner) {
 		this.ownedBy = owner;
 	}
+
+	//** HELPERS: generic object helpers **//
+	private String currentUserName() {
+		return container.getUser().getName();
+	}
+
+
 
 
 

@@ -36,12 +36,14 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
     public Phone createPhone(
             final Person person,
             final CommunicationChannelType type,
-            final String phoneNumber){
+            final String phoneNumber,
+            final String ownedBy){
 
         final Phone phone = newTransientInstance(Phone.class);
         phone.setPerson(person);
         phone.setType(type);
         phone.setPhoneNumber(phoneNumber);
+        phone.setOwnedBy(ownedBy);
 
         persistIfNotAlready(phone);
         return phone;

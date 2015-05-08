@@ -41,9 +41,10 @@ public abstract class CommunicationChannelsAbstract extends FixtureScript {
             String phoneNumber,
             CommunicationChannelType type,
             Person person,
+            String ownedBy,
             ExecutionContext executionContext) {
 
-        Phone phone = communicationChannels.createPhone(person, type, phoneNumber);
+        Phone phone = communicationChannels.createPhone(person, type, phoneNumber, ownedBy );
 
 
         return executionContext.add(this, phone);

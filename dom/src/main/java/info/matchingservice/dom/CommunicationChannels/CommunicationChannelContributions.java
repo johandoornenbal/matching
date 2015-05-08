@@ -41,10 +41,10 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
             @Parameter(regexPattern ="(^(((0)[1-9]{2}[0-9][-| ]?[1-9]( ?[0-9]){5})|((\\+31|0|0031)[-| ]?[1-9][0-9][1-9]( ?[0-9]){6}))$)"
                     + "|(^(((\\\\+31|0|0031)6){1}[-| ]?[1-9]{1}( ?[0-9]){7})$)") String phoneNumber,
-            final @ParameterLayout(named = "Person") Person person){
+            final @ParameterLayout(named = "Person") Person person,
+            final String ownedBy){
 
-
-        communicationChannels.createPhone(person, type, phoneNumber);
+        communicationChannels.createPhone(person, type, phoneNumber, getContainer().getUser().getName());
         return person;
     }
 
