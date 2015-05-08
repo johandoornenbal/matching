@@ -34,7 +34,6 @@ import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 
 
@@ -115,21 +114,12 @@ public class Assessments extends MatchingDomainService<Assessment> {
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-        final ProfileFeedback newAs = newTransientInstance(ProfileFeedback.class);
-        final UUID uuid=UUID.randomUUID();
-        newAs.setUniqueItemId(uuid);
-        newAs.setTargetOfAssessment(targetOfAssessment);
-        if (targetOfAssessment.getDemandOrSupply().equals(DemandOrSupply.SUPPLY)){
-            newAs.setTargetOwnerActor(targetOfAssessment.getSupplyProfileOwner().getSupplyOwner());
-        } else {
-            newAs.setTargetOwnerActor(targetOfAssessment.getDemandProfileOwner().getDemandOwner());
-        }
-        newAs.setAssessmentOwnerActor(persons.findPersonUnique(currentUserName()));
-        newAs.setAssessmentDescription(assessmentDescription);
-        newAs.setFeedback(feedback);
-        newAs.setOwnedBy(currentUserName());
-        persist(newAs);
-        return newAs;
+        return createProfileAssessment(
+                targetOfAssessment,
+                persons.findPersonUnique(currentUserName()),
+                assessmentDescription,
+                feedback,
+                currentUserName());
     }
     
     //BUSINESS RULE
@@ -197,9 +187,30 @@ public class Assessments extends MatchingDomainService<Assessment> {
         newAs.setOwnedBy(ownedBy);
         persist(newAs);
         return newAs;
-    }    
-    
-  	//-- HELPERS: programmatic actions --// 
+    }
+
+    @Programmatic
+    public Assessment createProfileAssessment(
+            final Profile targetObject,
+            final Actor ownerActor,
+            final String description,
+            final String feedback,
+            final String ownedBy
+    ){
+        final ProfileFeedback newAs = newTransientInstance(ProfileFeedback.class);
+        final UUID uuid=UUID.randomUUID();
+        newAs.setUniqueItemId(uuid);
+        newAs.setTargetOfAssessment(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getActorOwner());
+        newAs.setAssessmentOwnerActor(ownerActor);
+        newAs.setAssessmentDescription(description);
+        newAs.setFeedback(feedback);
+        newAs.setOwnedBy(ownedBy);
+        persist(newAs);
+        return newAs;
+    }
+
+    //-- HELPERS: programmatic actions --//
     
     //-- HELPERS --//
     
