@@ -29,7 +29,7 @@ public class Phone extends CommunicationChannel {
 
 
     public Phone() {
-        super("phone");
+       // super("phone");
     }
 
 

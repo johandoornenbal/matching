@@ -32,7 +32,7 @@ public class Email extends CommunicationChannel {
 
 
 	public Email() {
-		super("email, person");
+		//super("email, person");
 	}
 
 

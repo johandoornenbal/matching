@@ -34,7 +34,8 @@ import info.matchingservice.dom.Actor.Person;
 })
 public class Address extends CommunicationChannel {
     public Address() {
-        super("address");
+
+        //super("address");
     }
 
 
