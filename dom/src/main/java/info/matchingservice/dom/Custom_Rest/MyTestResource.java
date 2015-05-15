@@ -32,7 +32,7 @@ import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 /**
  * Created by jodo on 15/05/15.
  */
-@Path("/myTestResource")
+@Path("/register")
 public class MyTestResource extends ResourceAbstract implements DomainServiceResource {
 
     @Override
@@ -40,7 +40,7 @@ public class MyTestResource extends ResourceAbstract implements DomainServiceRes
     @Path("/")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
     public Response services() {
-        return Response.ok("{SomeJson}").build();
+        return Response.status(200).entity("{\"someJson\" : \"Hello\"}").build();
     }
 
 
