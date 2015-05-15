@@ -19,6 +19,7 @@ package info.matchingservice.dom.Custom_Rest;
 
 import java.io.InputStream;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -26,9 +27,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.isis.applib.services.userreg.UserDetails;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
 import org.apache.isis.viewer.restfulobjects.applib.domainobjects.DomainServiceResource;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
+
+import info.matchingservice.dom.AppUserRegistrationService;
 
 /**
  * Created by jodo on 15/05/15.
@@ -44,11 +48,20 @@ public class MyTestResource extends ResourceAbstract implements DomainServiceRes
         return Response.status(200).entity("{\"someJson\" : \"Hello\"}").build();
     }
 
+    @Inject
+    AppUserRegistrationService appUserRegistrationService;
+
     @GET
-    @Path("/test/{search}")
+    @Path("/test/{logon}")
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response object(@PathParam("search") String search) {
-        return Response.status(200).entity(search).build();
+    public Response object(@PathParam("logon") String logon) {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setUsername(logon);
+        userDetails.setPassword(logon);
+        userDetails.setConfirmPassword(logon);
+        userDetails.setEmailAddress(logon + "@example.com");
+        appUserRegistrationService.registerUser(userDetails);
+        return Response.status(200).entity("user: "  + logon + " registered").build();
     }
 
 
