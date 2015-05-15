@@ -18,13 +18,6 @@
  */
 package info.matchingservice.dom.Actor;
 
-import info.matchingservice.dom.TrustLevel;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.DemandSupplyType;
-import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileType;
-
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -32,6 +25,8 @@ import javax.inject.Inject;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
+
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -52,7 +47,13 @@ import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 import org.apache.isis.applib.value.Blob;
-import org.joda.time.LocalDate;
+
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.TrustLevel;
 
 
 
@@ -249,7 +250,7 @@ public class Person extends Actor {
     //** API: ACTIONS **//
     
     //** updatePerson **//
-    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Person updatePerson(
     		@ParameterLayout(named="firstName")
     		final String firstName,
