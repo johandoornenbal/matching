@@ -21,6 +21,7 @@ import java.io.InputStream;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -41,6 +42,13 @@ public class MyTestResource extends ResourceAbstract implements DomainServiceRes
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
     public Response services() {
         return Response.status(200).entity("{\"someJson\" : \"Hello\"}").build();
+    }
+
+    @GET
+    @Path("/test/{search}")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response object(@PathParam("search") String search) {
+        return Response.status(200).entity(search).build();
     }
 
 
