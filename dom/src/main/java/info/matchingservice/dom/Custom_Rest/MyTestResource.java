@@ -19,7 +19,6 @@ package info.matchingservice.dom.Custom_Rest;
 
 import java.io.InputStream;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -28,10 +27,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.isis.applib.services.userreg.UserDetails;
+import org.apache.isis.applib.services.userreg.UserRegistrationService;
+import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
 import org.apache.isis.viewer.restfulobjects.applib.domainobjects.DomainServiceResource;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
+import org.isisaddons.module.security.dom.user.ApplicationUsers;
+
+import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
 
 /**
@@ -48,8 +52,6 @@ public class MyTestResource extends ResourceAbstract implements DomainServiceRes
         return Response.status(200).entity("{\"someJson\" : \"Hello\"}").build();
     }
 
-    @Inject
-    AppUserRegistrationService appUserRegistrationService;
 
     @GET
     @Path("/test/{logon}")
@@ -60,6 +62,16 @@ public class MyTestResource extends ResourceAbstract implements DomainServiceRes
         userDetails.setPassword(logon);
         userDetails.setConfirmPassword(logon);
         userDetails.setEmailAddress(logon + "@example.com");
+        final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
+        if (persons.findPersonUnique(logon)!= null){
+            return Response.status(200).entity("user: " + persons.findPersonUnique(logon).getOwnedBy() + " already registered and cannot be registered again").build();
+        }
+        final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
+        if (applicationUsers.findUserByUsername(logon)!=null) {
+            return Response.status(200).entity("user: " + applicationUsers.findUserByUsername(logon).getUsername() + " already registered but has no Person record yet.").build();
+        }
+        final UserRegistrationService appUserRegistrationService =
+                IsisContext.getPersistenceSession().getServicesInjector().lookupService(AppUserRegistrationService.class);
         appUserRegistrationService.registerUser(userDetails);
         return Response.status(200).entity("user: "  + logon + " registered").build();
     }
