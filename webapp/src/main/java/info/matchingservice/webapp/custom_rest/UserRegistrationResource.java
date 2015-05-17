@@ -166,5 +166,5 @@ public class UserRegistrationResource extends ResourceAbstract {
     public Response getServicesNotAllowed() {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the services resource is not allowed.", new Object[0]);
     }
-    
+
 }
