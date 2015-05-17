@@ -2,11 +2,20 @@ package info.matchingservice.dom.CommunicationChannels;
 
 import java.util.List;
 
-import javax.jdo.annotations.*;
+import javax.jdo.annotations.Column;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.*;
-
-import info.matchingservice.dom.Actor.Person;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.Contributed;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 
 /**
  * Created by jonathan on 21-4-15.
@@ -16,15 +25,6 @@ import info.matchingservice.dom.Actor.Person;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
-//@javax.jdo.annotations.DatastoreIdentity(
-//        strategy = IdGeneratorStrategy.NATIVE,
-//        column = "id")
-//@javax.jdo.annotations.Discriminator(
-//        strategy = DiscriminatorStrategy.CLASS_NAME,
-//        column = "discriminator")
-//@javax.jdo.annotations.Version(
-//        strategy = VersionStrategy.VERSION_NUMBER,
-//        column = "version")
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
                 name = "findByPerson", language = "JDOQL",
@@ -50,8 +50,6 @@ public class Address extends CommunicationChannel {
     public void setAddress(String adress1) {
         this.address = adress1;
     }
-
-
 
 
 

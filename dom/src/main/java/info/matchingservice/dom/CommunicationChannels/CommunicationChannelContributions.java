@@ -59,7 +59,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
             final @ParameterLayout(named="Email")
             @Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")String adress,
-            final @ParameterLayout(named="Person/SHould not be visible")Person person)
+            final @ParameterLayout(named="Person/Should not be visible")Person person)
             {
 
         communicationChannels.createEmail(adress, type, person);

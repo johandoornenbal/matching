@@ -13,11 +13,10 @@ import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.communicationChannels.TestAddress;
-import info.matchingservice.fixture.communicationChannels.TestEmails;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
 
 
 /**
@@ -53,13 +52,10 @@ public class AddressTest extends MatchingIntegrationTest {
         @Before
         public void setUp() throws Exception {
 
-
             //given
             frans = persons.findPersons("Hals").get(0);
 
             address = (Address)communicationChannels.allCommunicationChannels(frans, Address.class).get(0);
-
-
 
 
 

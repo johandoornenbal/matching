@@ -12,12 +12,6 @@ import org.apache.isis.applib.annotation.*;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
-//@javax.jdo.annotations.DatastoreIdentity(
-//        strategy = IdGeneratorStrategy.NATIVE,
-//        column = "phone_id")
-//@javax.jdo.annotations.Discriminator(
-//        strategy = DiscriminatorStrategy.CLASS_NAME,
-//        column = "discriminator")
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
                 name = "findByPerson", language = "JDOQL",
