@@ -26,7 +26,7 @@ public class CustomRestfulObjectsApplication extends RestfulObjectsApplication {
 
     public CustomRestfulObjectsApplication() {
 
-        addClass(MyTestResource.class);
+        addClass(UserRegistrationResource.class);
 
     }
 
