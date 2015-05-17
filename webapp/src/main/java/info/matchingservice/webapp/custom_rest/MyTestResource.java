@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package info.matchingservice.dom.Custom_Rest;
+package info.matchingservice.webapp.custom_rest;
 
 import java.io.InputStream;
 
