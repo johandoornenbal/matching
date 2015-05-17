@@ -101,7 +101,9 @@ public class ProfileElementTagTest extends MatchingIntegrationTest {
     		assertThat(pet.validateCreateWeekDayTagHolder("maandag"), is("NO_DOUBLES"));
     		// only weekdays (dutch) are allowed
     		assertThat(pet.validateCreateWeekDayTagHolder("maandagmiddag"), is("NOT_A_WEEKDAY"));
-    		
+
+
+
     	}
     	
     }

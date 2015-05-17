@@ -22,8 +22,8 @@ XAMPP, MAMP, or WAMP.
 1. The latest version of jQuery may not be compatible with the existing
    plugins/code on the site. Version updating should be an intentional
    decision.
-2. The latest version has a very short `max-age=3600` compares to the specific
-   version of `max-age=31536000`, which means you won't get the benefits of
+2. The latest version has a very short `max-dateOfBirth=3600` compares to the specific
+   version of `max-dateOfBirth=31536000`, which means you won't get the benefits of
    long-term caching.
 
 

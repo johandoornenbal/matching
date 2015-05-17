@@ -2,13 +2,16 @@ package info.matchingservice.fixture;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
-import info.matchingservice.fixture.assessment.AssessmentsForFransFixture;
-import info.matchingservice.fixture.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
 import info.matchingservice.fixture.actor.TestOrganisations;
 import info.matchingservice.fixture.actor.TestPersonalContacts;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.actor.TestRoles;
+import info.matchingservice.fixture.assessment.AssessmentsForFransFixture;
+import info.matchingservice.fixture.assessment.AssessmentsForRembrandtFixture;
+import info.matchingservice.fixture.communicationChannels.TestAddress;
+import info.matchingservice.fixture.communicationChannels.TestEmails;
+import info.matchingservice.fixture.communicationChannels.TestPhone;
 import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
 import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
 import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
@@ -83,6 +86,9 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new TagsForRembrandt(), executionContext);
         executeChild(new TagsForMichiel(), executionContext);
         executeChild(new ProfileMatchesForTesting(), executionContext);
+        executeChild(new TestEmails(), executionContext);
+        executeChild(new TestPhone(), executionContext);
+        executeChild(new TestAddress(), executionContext);
 
     }
 

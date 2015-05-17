@@ -18,14 +18,10 @@
  */
 package info.matchingservice.fixture;
 
-import info.matchingservice.dom.Config;
-import info.matchingservice.dom.Configs;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
@@ -34,6 +30,8 @@ import org.apache.isis.applib.fixturescripts.FixtureResult;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.apache.isis.applib.fixturescripts.FixtureScripts;
 import org.apache.isis.applib.fixturescripts.SimpleFixtureScript;
+
+import info.matchingservice.dom.Configs;
 
 /**
  * Enables fixtures to be installed from the application.
@@ -66,10 +64,34 @@ public class MatchingFixturesService extends FixtureScripts {
         return runFixtureScript(new MatchingDemoFixture(), null);
         // return "Demo fixtures successfully installed";
     }
-    
+
     public boolean hideInstallDemoFixtures(){
-    	
+
     	return !configs.allConfigs().isEmpty();
+    }
+
+    @Prototype
+    @MemberOrder(sequence="90.1")
+    public List<FixtureResult> installAddressFixtures() {
+        return runFixtureScript(new MatchingAddressFixture(), null);
+        // return "Demo fixtures successfully installed";
+    }
+
+    public boolean hideInstallAddressFixtures(){
+
+        return configs.allConfigs().isEmpty();
+    }
+
+    @Prototype
+    @MemberOrder(sequence="90.2")
+    public List<FixtureResult> installPhoneFixtures() {
+        return runFixtureScript(new MatchingPhoneFixture(), null);
+        // return "Demo fixtures successfully installed";
+    }
+
+    public boolean hideInstallPhoneFixtures(){
+
+        return configs.allConfigs().isEmpty();
     }
     
     @Inject
