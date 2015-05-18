@@ -46,12 +46,14 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
         String authStr = httpServletRequest.getHeader("Authorization");
 
         //extension by yodo for signup through REST api
+        //TODO: parameterize '/simple/restful/register' (This is dependent on deploy!)
         String uri = httpServletRequest.getRequestURI();
-        String uriSubstring = uri.substring(0, 17);
+        String uriSubstring = uri.substring(0, 24); /*NOTA BENE: NEEDS TO MATCH LENGHT OF uri /simple/restful/register*/
+        System.out.println(uri);
 
-        if (uriSubstring.equals("/restful/register")) {
+        if (uriSubstring.equals("/simple/restful/register")) {
 
-            System.out.println("passes for uri starts with '/restful/register' ");
+            System.out.println("passes for uri starts with '/simple/restful/register' ");
             AuthenticationRequestExploration request = new AuthenticationRequestExploration();
             return IsisContext.getAuthenticationManager().authenticate(request);
 
