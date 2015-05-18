@@ -1,11 +1,13 @@
 package info.matchingservice.dom.CommunicationChannels;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.annotation.*;
 
+import org.isisaddons.module.security.dom.user.ApplicationUsers;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -43,10 +45,18 @@ public class Email extends CommunicationChannel {
 	@ActionLayout(contributed = Contributed.AS_ACTION)
 	public Email updateEmail(
 
-			final @ParameterLayout(named="Email")
+			final @ParameterLayout(named="address")
 			@Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$") String address)	{
 
 		setEmail(address);
+
+		//If email.type is EMAIL_MAIN we need to update the email addres in security module as well
+		if (this.getType().equals(CommunicationChannelType.EMAIL_MAIN)){
+
+			applicationUsers.findUserByUsername(this.getOwnedBy()).setEmailAddress(address);
+
+		}
+
 		return this;
 	}
 
@@ -67,6 +77,10 @@ public class Email extends CommunicationChannel {
 	public void setOwnedBy(final String owner) {
 		this.ownedBy = owner;
 	}
+
+
+	@Inject
+	ApplicationUsers applicationUsers;
 
 
 }

@@ -37,7 +37,6 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
             final Person person,
             final CommunicationChannelType type,
             final String phoneNumber){
-           // final String ownedBy){
 
         final Phone phone = newTransientInstance(Phone.class);
         phone.setPerson(person);
@@ -48,6 +47,24 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         persistIfNotAlready(phone);
         return phone;
 
+
+    }
+
+    @Programmatic
+    public Phone createPhone(
+            final Person person,
+            final CommunicationChannelType type,
+            final String phoneNumber,
+            final String ownedBy){
+
+        final Phone phone = newTransientInstance(Phone.class);
+        phone.setPerson(person);
+        phone.setType(type);
+        phone.setPhoneNumber(phoneNumber);
+        phone.setOwnedBy(ownedBy);
+
+        persistIfNotAlready(phone);
+        return phone;
 
 
     }
@@ -64,10 +81,28 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         email.setEmail(emailAddress);
         email.setPerson(person);
         email.setType(type);
-
         email.setOwnedBy(getContainer().getUser().getName());
 
-        persist(email);
+        persistIfNotAlready(email);
+        return email;
+
+    }
+
+    @Programmatic
+    public Email createEmail(
+            final String emailAddress,
+            final CommunicationChannelType type,
+            final Person person,
+            final String ownedBy){
+
+        final Email email = newTransientInstance(Email.class);
+
+        email.setEmail(emailAddress);
+        email.setPerson(person);
+        email.setType(type);
+        email.setOwnedBy(ownedBy);
+
+        persistIfNotAlready(email);
         return email;
 
     }
@@ -78,30 +113,41 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
             final CommunicationChannelType type,
             final String address,
             final String postalCode,
-            final String woonPlaats
-
-
-
+            final String town
     ){
+        final Address newAddress = newTransientInstance(Address.class);
 
+        newAddress.setPerson(person);
+        newAddress.setType(type);
+        newAddress.setAddress(address);
+        newAddress.setPostalCode(postalCode);
+        newAddress.setTown(town);
+        newAddress.setOwnedBy(getContainer().getUser().getName());
 
-    final Address a = newTransientInstance(Address.class);
+        persistIfNotAlready(newAddress);
+        return newAddress;
+    }
 
-        a.setPerson(person);
-        a.setType(type);
-        a.setAddress(address);
-        a.setPostalCode(postalCode);
-        a.setTown(woonPlaats);
-        a.setOwnedBy(getContainer().getUser().getName());
+    @Programmatic
+    public Address createAddress(
+            final Person person,
+            final CommunicationChannelType type,
+            final String address,
+            final String postalCode,
+            final String town,
+            final String ownedBy
+    ){
+        final Address newAddress = newTransientInstance(Address.class);
 
-    persist(a);
-    return a;
+        newAddress.setPerson(person);
+        newAddress.setType(type);
+        newAddress.setAddress(address);
+        newAddress.setPostalCode(postalCode);
+        newAddress.setTown(town);
+        newAddress.setOwnedBy(ownedBy);
 
-
-
-
-
-
+        persistIfNotAlready(newAddress);
+        return newAddress;
     }
 
     /** gets the specified communicationchannel of the person,
@@ -121,10 +167,46 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     }
 
+    @Programmatic
+    public List<CommunicationChannel> findCommunicationChannelByPersonAndType(final Person person, final CommunicationChannelType communicationChannelType) {
+        QueryDefault<CommunicationChannel> query =
+                QueryDefault.create(
+                        CommunicationChannel.class,
+                        "findCommunicationChannelByPersonAndType",
+                        "person", person,
+                        "communicationChannelType", communicationChannelType);
+        return allMatches(query);
+    }
+
 
     @Programmatic
     public List<CommunicationChannel> allCommunicationChannels(Class type){
         return getContainer().allInstances(type);
+
+    }
+
+
+    public List<CommunicationChannel> allEmails(){
+
+        return allCommunicationChannels(Email.class);
+
+
+    }
+
+
+    public List<CommunicationChannel> allPhones(){
+
+        return allCommunicationChannels(Phone.class);
+
+
+    }
+
+
+
+    public List<CommunicationChannel> allAddresses(){
+
+        return allCommunicationChannels(Address.class);
+
 
     }
 

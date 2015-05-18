@@ -18,25 +18,24 @@
  */
 package info.matchingservice.integtest.dom;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.fixture.MatchingTestsFixture;
-import info.matchingservice.fixture.TeardownFixture;
-import info.matchingservice.fixture.actor.TestPersons;
-import info.matchingservice.fixture.actor.TestRoles;
-import info.matchingservice.integtest.MatchingIntegrationTest;
-
 import javax.inject.Inject;
 
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.fixture.TeardownFixture;
+import info.matchingservice.fixture.actor.TestPersons;
+import info.matchingservice.fixture.actor.TestRoles;
+import info.matchingservice.integtest.MatchingIntegrationTest;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class PersonTest extends MatchingIntegrationTest {
     

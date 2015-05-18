@@ -35,6 +35,13 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
+@javax.jdo.annotations.Queries({
+		@javax.jdo.annotations.Query(
+				name = "findCommunicationChannelByPersonAndType", language = "JDOQL",
+				value = "SELECT "
+						+ "FROM info.matchingservice.dom.CommunicationChannels.CommunicationChannel "
+						+ "WHERE person == :person && type == :communicationChannelType")
+})
 @DomainObject(autoCompleteRepository=CommunicationChannels.class,
 		autoCompleteAction = "autoComplete",
 		editing = Editing.DISABLED)
@@ -53,16 +60,26 @@ public class CommunicationChannel extends
 			@Parameter(optionality= Optionality.OPTIONAL)
 			boolean confirmDelete
 	){
-
-
-
 		container.removeIfNotAlready(this);
 		container.informUser("Element verwijderd");
 		return getPerson();
 	}
 
+	//Implementing business rule: EMAIL_MAIN cannot be deleted (syncs with email in security module
 	public String validateDeleteCommunicationChannel(boolean confirmDelete) {
+
+		if (this.getType().equals(CommunicationChannelType.EMAIL_MAIN)) {
+			return "EMAIL_MAIN_CANNOT_BE_DELETED";
+		}
 		return confirmDelete? null:"CONFIRM_DELETE";
+	}
+
+	public boolean hideDeleteCommunicationChannel(boolean confirmDelete) {
+
+		if (this.getType().equals(CommunicationChannelType.EMAIL_MAIN)) {
+			return true;
+		}
+		return false;
 	}
 	//-- deleteCommunicationChannel --//
 

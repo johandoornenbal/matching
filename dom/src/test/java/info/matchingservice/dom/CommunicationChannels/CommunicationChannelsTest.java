@@ -18,16 +18,19 @@
  */
 package info.matchingservice.dom.CommunicationChannels;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import info.matchingservice.dom.FinderInteraction;
-import info.matchingservice.dom.FinderInteraction.FinderMethod;
-
 import java.util.List;
 
-import org.apache.isis.applib.query.Query;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.apache.isis.applib.query.Query;
+
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonForTesting;
+import info.matchingservice.dom.FinderInteraction;
+import info.matchingservice.dom.FinderInteraction.FinderMethod;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class CommunicationChannelsTest {
 
@@ -85,6 +88,25 @@ public class CommunicationChannelsTest {
 
 
 
+
+    }
+
+    public static class findCommunicationChannelByPersonAndType extends CommunicationChannelsTest {
+        Person person = new PersonForTesting();
+        CommunicationChannelType communicationChannelType = CommunicationChannelType.EMAIL_MAIN;
+
+        @Test
+        public void happyCase() {
+
+            communicationChannels.findCommunicationChannelByPersonAndType(person, communicationChannelType);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            assertThat(finderInteraction.getQueryName(), is("findCommunicationChannelByPersonAndType"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("person"), is((Object) person));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("communicationChannelType"), is((Object) communicationChannelType));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(2));
+
+        }
 
     }
     

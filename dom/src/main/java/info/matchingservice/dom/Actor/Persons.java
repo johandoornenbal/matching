@@ -21,6 +21,8 @@ package info.matchingservice.dom.Actor;
 import java.util.List;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -44,6 +46,10 @@ import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.value.Blob;
 
+import org.isisaddons.module.security.dom.user.ApplicationUsers;
+
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.MatchingDomainService;
 
 
@@ -157,6 +163,11 @@ public class Persons extends MatchingDomainService<Person> {
         person.setPicture(picture);
         person.addRoleStudent();
         persist(person);
+
+        // create first emailAddress contributed to Person copied from securityModule
+        final String emailAddress = applicationUsers.findUserByUsername(userName).getEmailAddress();
+        emails.createEmail(emailAddress, CommunicationChannelType.EMAIL_MAIN, person);
+
         return person;
     }
     
@@ -259,4 +270,12 @@ public class Persons extends MatchingDomainService<Person> {
     // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;
+
+    @Inject
+    private CommunicationChannels emails;
+
+    @Inject
+    ApplicationUsers applicationUsers;
+
+
 }

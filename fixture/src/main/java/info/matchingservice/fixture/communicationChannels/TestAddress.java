@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
+import info.matchingservice.fixture.actor.TestPersons;
 
 /**
  * Created by jonathan on 22-4-15.
@@ -17,6 +18,9 @@ public class TestAddress extends CommunicationChannelsAbstract{
 
     @Override
     protected void execute(ExecutionContext executionContext) {
+
+        //preqs
+        executeChild(new TestPersons(), executionContext);
 
 
         String streets = "Madison Avenue\n" +
@@ -81,7 +85,7 @@ public class TestAddress extends CommunicationChannelsAbstract{
 
             String finalPostcode = postcode.toString() + " AB";
 
-            createAddress(p, CommunicationChannelType.ADDRESS_MAIN, street, finalPostcode, woonPlaats, executionContext);
+            createAddress(p, CommunicationChannelType.ADDRESS_MAIN, street, finalPostcode, woonPlaats, p.getFirstName().toLowerCase(), executionContext);
 
 
 

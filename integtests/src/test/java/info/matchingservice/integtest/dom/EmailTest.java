@@ -22,8 +22,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import org.isisaddons.module.security.dom.user.ApplicationUser;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannelContributions;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.CommunicationChannels.Email;
 import info.matchingservice.fixture.actor.TestPersons;
@@ -39,47 +43,138 @@ public class EmailTest extends MatchingIntegrationTest {
     
     @Inject
     Persons persons;
+
      
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
 
         scenarioExecution().install(new TestPersons());
         scenarioExecution().install(new TestEmails());
-        
     }
     
     public static class updateEmail extends EmailTest {
-    	
-    	Email em;
-    	Person p1;
-    	
-    	@Before
-        public void setUp() throws Exception {
-    		//given
-    		p1 = persons.findPersons("Hals").get(0);
-            em = (Email) communicationChannels.allCommunicationChannels(p1, Email.class).get(0);
 
-    	}
-    	
+        Email em;
+        Person p1;
+
+        @Before
+        public void setUp() throws Exception {
+            //given
+            p1 = persons.findPersons("Hals").get(0);
+            em = (Email) communicationChannels.findCommunicationChannelByPersonAndType(p1, CommunicationChannelType.EMAIL_HOME).get(0);
+
+        }
+
         @Test
         public void valuesSet() throws Exception {
 
             assertThat(em.getEmail(), is("Frans.Hals@Xtalus.com"));
 
-        	//when
-        	em.updateEmail("johan@test123.nl");
-        	
-        	//then
-        	assertThat(em.getEmail(), is("johan@test123.nl"));
-        	assertThat(em.getPerson(), is(p1));
+            //when
+            em.updateEmail("johan@test123.nl");
+
+            //then
+            assertThat(em.getEmail(), is("johan@test123.nl"));
+            assertThat(em.getPerson(), is(p1));
 
         }
 
         @Inject
         CommunicationChannels communicationChannels;
-        
+
     }
 
+    public static class createSecondMainEmail extends EmailTest {
+
+        Email em;
+        Person p1;
+
+        @Before
+        public void setUp() throws Exception {
+            //given
+            p1 = persons.findPersons("Hals").get(0);
+            em = (Email) communicationChannels.findCommunicationChannelByPersonAndType(p1, CommunicationChannelType.EMAIL_MAIN).get(0);
+
+        }
+
+        @Test
+        public void valuesSet() throws Exception {
+
+            //given
+            assertThat(em.getEmail(), is("frans@example.com"));
+            assertThat(em.getType(), is((Object) CommunicationChannelType.EMAIL_MAIN));
+
+            //when, then
+            assertThat(communicationChannelContributions.validateCreateEmail(CommunicationChannelType.EMAIL_MAIN, "some@address.com", p1), is("ONE_INSTANCE_AT_MOST"));
+
+        }
+
+        public static class updateMainEmail extends EmailTest {
+
+            Email em;
+            Person p1;
+            ApplicationUser user = new ApplicationUser();
+
+            @Before
+            public void setUp() throws Exception {
+                //given
+                p1 = persons.findPersons("Hals").get(0);
+                em = (Email) communicationChannels.findCommunicationChannelByPersonAndType(p1, CommunicationChannelType.EMAIL_MAIN).get(0);
+
+            }
+
+            @Test
+            public void valuesSet() throws Exception {
+
+                //given
+                assertThat(em.getEmail(), is("frans@example.com"));
+                assertThat(em.getType(), is((Object) CommunicationChannelType.EMAIL_MAIN));
+
+                //when
+                em.updateEmail("some.other@email.com");
+
+                //then
+                assertThat(em.getEmail(), is("some.other@email.com"));
+
+            }
+        }
+
+        public static class hideDeleteMainEmail extends EmailTest {
+
+            Email em;
+            Person p1;
+            ApplicationUser user = new ApplicationUser();
+
+            @Before
+            public void setUp() throws Exception {
+                //given
+                p1 = persons.findPersons("Hals").get(0);
+                em = (Email) communicationChannels.findCommunicationChannelByPersonAndType(p1, CommunicationChannelType.EMAIL_MAIN).get(0);
+
+            }
+
+            @Test
+            public void valuesSet() throws Exception {
+
+                //given
+                assertThat(em.getEmail(), is("frans@example.com"));
+                assertThat(em.getType(), is((Object) CommunicationChannelType.EMAIL_MAIN));
+
+                //when, then
+                assertThat(em.hideDeleteCommunicationChannel(true), is(true));
+
+            }
+
+
+        }
+
+        @Inject
+        CommunicationChannels communicationChannels;
+
+        @Inject
+        CommunicationChannelContributions communicationChannelContributions;
+
+    }
 
     
 }

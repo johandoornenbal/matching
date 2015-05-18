@@ -52,14 +52,17 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
         return CommunicationChannelType.matching(Phone.class);
     }
 
+    //Adding businessRule: only one Email of type EMAIL_MAIN
+    //This one will be synced with the one used for security
+
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createEmail(
 
-            final @ParameterLayout(named = "Type") CommunicationChannelType type,
-            final @ParameterLayout(named="Email")
+            final @ParameterLayout(named = "type") CommunicationChannelType type,
+            final @ParameterLayout(named="address")
             @Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")String address,
-            final @ParameterLayout(named="Person/Should not be visible")Person person)
+            final @ParameterLayout(named="person")Person person)
             {
 
         communicationChannels.createEmail(address, type, person);
@@ -72,9 +75,23 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
     }
 
+    public String validateCreateEmail(CommunicationChannelType type, String address, Person person){
+
+        if (
+                type.equals(CommunicationChannelType.EMAIL_MAIN)
+                &&
+                communicationChannels.findCommunicationChannelByPersonAndType(person, type).size() > 0
+                ) {
+
+            return "ONE_INSTANCE_AT_MOST";
+
+        }
+        return null;
+    }
+
     // Address, 3 of meer letters gevolgd door cijfer, met evt een letter
     // postcode 4 cijfers, evt spatie. gevolgd door 2 Hoofdletters
-    // Woonplaats, 3 of meer letters
+
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Person createAddress(

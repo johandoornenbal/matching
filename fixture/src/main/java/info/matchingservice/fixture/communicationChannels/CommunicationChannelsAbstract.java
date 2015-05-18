@@ -26,9 +26,10 @@ public abstract class CommunicationChannelsAbstract extends FixtureScript {
             String emailAddres,
             CommunicationChannelType type,
             Person person,
+            String ownedBy,
             ExecutionContext executionContext) {
 
-        Email email = communicationChannels.createEmail(emailAddres, type, person);
+        Email email = communicationChannels.createEmail(emailAddres, type, person, ownedBy);
 
 
         return executionContext.add(this, email);
@@ -41,9 +42,10 @@ public abstract class CommunicationChannelsAbstract extends FixtureScript {
             String phoneNumber,
             CommunicationChannelType type,
             Person person,
+            String ownedBy,
             ExecutionContext executionContext) {
 
-        Phone phone = communicationChannels.createPhone(person, type, phoneNumber);
+        Phone phone = communicationChannels.createPhone(person, type, phoneNumber, ownedBy);
 
 
         return executionContext.add(this, phone);
@@ -57,8 +59,9 @@ public abstract class CommunicationChannelsAbstract extends FixtureScript {
             String address1,
             String postalCode,
             String woonPlaats,
+            String ownedBy,
             ExecutionContext executionContext) {
-        Address address = communicationChannels.createAddress(person, type, address1, postalCode, woonPlaats);
+        Address address = communicationChannels.createAddress(person, type, address1, postalCode, woonPlaats, ownedBy);
 
         return executionContext.add(this,address);
 
