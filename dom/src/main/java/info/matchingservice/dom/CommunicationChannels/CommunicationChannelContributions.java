@@ -58,11 +58,11 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
             final @ParameterLayout(named = "Type") CommunicationChannelType type,
             final @ParameterLayout(named="Email")
-            @Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")String adress,
+            @Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")String address,
             final @ParameterLayout(named="Person/Should not be visible")Person person)
             {
 
-        communicationChannels.createEmail(adress, type, person);
+        communicationChannels.createEmail(address, type, person);
                 return person;
     }
 
@@ -82,7 +82,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
             final @ParameterLayout(named = "type")
             CommunicationChannelType addresType,
             final @ParameterLayout(named = "town")
-            @Parameter(regexPattern = "^([a-zA-Z]{3,})")String town,
+            String town,
             final @ParameterLayout(named = "address")
             @Parameter(regexPattern = "^([a-zA-Z.]{1,})(( [a-zA-Z.]{1,})*) ([0-9]{1,})([a-zA-Z]*)$") String address,
             final @ParameterLayout(named = "postalCode")

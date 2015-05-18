@@ -79,7 +79,9 @@ public class TestAddress extends CommunicationChannelsAbstract{
 
             }
 
-            createAddress(p, CommunicationChannelType.ADDRESS_MAIN, street, postcode, woonPlaats, executionContext);
+            String finalPostcode = postcode.toString() + " AB";
+
+            createAddress(p, CommunicationChannelType.ADDRESS_MAIN, street, finalPostcode, woonPlaats, executionContext);
 
 
 

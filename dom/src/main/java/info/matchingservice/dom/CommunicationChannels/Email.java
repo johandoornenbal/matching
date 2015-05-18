@@ -19,9 +19,6 @@ import org.apache.isis.applib.annotation.*;
 public class Email extends CommunicationChannel {
 
 
-
-
-
 	public Email() {
 		//super("email, person");
 	}
@@ -47,7 +44,7 @@ public class Email extends CommunicationChannel {
 	public Email updateEmail(
 
 			final @ParameterLayout(named="Email")
-			@Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")String address)	{
+			@Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$") String address)	{
 
 		setEmail(address);
 		return this;

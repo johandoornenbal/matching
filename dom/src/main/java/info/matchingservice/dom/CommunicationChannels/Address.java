@@ -65,35 +65,33 @@ public class Address extends CommunicationChannel {
     }
 
 
-    private String woonPlaats;
+    private String town;
 
     @Column(allowsNull = "false")
-    public String getWoonPlaats() {
-        return woonPlaats;
+    public String getTown() {
+        return town;
     }
 
-    public void setWoonPlaats(final String woonPlaats) {
-        this.woonPlaats = woonPlaats;
+    public void setTown(final String town) {
+        this.town = town;
     }
 
     @Action(semantics = SemanticsOf.IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
     public Address updateAddress(
 
-            final @ParameterLayout(named = "Woning Type") CommunicationChannelType type,
-            final @ParameterLayout(named = "Woonplaats")
-            @Parameter(regexPattern = "^([a-zA-Z]{3,})")String woonPlaats,
-            final @ParameterLayout(named = "Addres")
-            @Parameter(regexPattern = "^([a-zA-Z.]{1,})(( [a-zA-Z.]{1,})*) ([0-9]{1,})([a-zA-Z]*)$") String address,
-
-
-            final @ParameterLayout(named = "Postcode")
+            final @ParameterLayout(named = "type") CommunicationChannelType type,
+            final @ParameterLayout(named = "town")
+            @Parameter(regexPattern = "^([a-zA-Z]{3,})")String town,
+            final @ParameterLayout(named = "address")
+            String address,
+            final @ParameterLayout(named = "postalCode")
             @Parameter(regexPattern = "^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")String postalCode)
 
             {
 
                 setType(type);
-                setWoonPlaats(woonPlaats);
+                setTown( town);
                 setPostalCode(postalCode);
                 setAddress(address);
 
@@ -104,7 +102,7 @@ public class Address extends CommunicationChannel {
         return getType();
     }
     public String default1UpdateAddress(){
-        return getWoonPlaats();
+        return getTown();
     }
     public String default2UpdateAddress(){
         return getAddress();

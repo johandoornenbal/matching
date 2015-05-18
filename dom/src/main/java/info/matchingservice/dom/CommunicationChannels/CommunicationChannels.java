@@ -43,7 +43,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         phone.setPerson(person);
         phone.setType(type);
         phone.setPhoneNumber(phoneNumber);
-        phone.setOwnedBy(person.getFirstName());
+        phone.setOwnedBy(getContainer().getUser().getName());
 
         persistIfNotAlready(phone);
         return phone;
@@ -65,7 +65,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         email.setPerson(person);
         email.setType(type);
 
-        email.setOwnedBy(person.getFirstName());
+        email.setOwnedBy(getContainer().getUser().getName());
 
         persist(email);
         return email;
@@ -87,12 +87,12 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
 
     final Address a = newTransientInstance(Address.class);
 
-    a.setPerson(person);
-    a.setType(type);
-    a.setAddress(address);
-    a.setPostalCode(postalCode);
-    a.setWoonPlaats(woonPlaats);
-        a.setOwnedBy(person.getFirstName());
+        a.setPerson(person);
+        a.setType(type);
+        a.setAddress(address);
+        a.setPostalCode(postalCode);
+        a.setTown(woonPlaats);
+        a.setOwnedBy(getContainer().getUser().getName());
 
     persist(a);
     return a;
