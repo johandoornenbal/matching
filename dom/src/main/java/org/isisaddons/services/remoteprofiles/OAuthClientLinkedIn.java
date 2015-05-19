@@ -34,10 +34,10 @@ public class OAuthClientLinkedIn {
 
         OAuthClientRequest request = OAuthClientRequest
             .authorizationProvider(OAuthProviderType.LINKEDIN)
-            .setClientId("78njpgu4gtzva7")
+            .setClientId("")
             .setRedirectURI("http://xtalus.apps.gedge.nl/simple/restful/register/oauth/")
             .setResponseType("code")
-            .setState("L4bn3nr00dIsmyString")
+            .setState("")
             .buildQueryMessage();
 
         //TODO: This code is not working on deployment server
