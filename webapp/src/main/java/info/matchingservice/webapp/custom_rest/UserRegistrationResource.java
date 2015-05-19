@@ -189,7 +189,7 @@ public class UserRegistrationResource extends ResourceAbstract {
                     .setGrantType(GrantType.AUTHORIZATION_CODE)
                     .setClientId("78njpgu4gtzva7")
                     .setClientSecret("Yeum6PUOEP2MwFVb")
-                    .setRedirectURI("http://localhost:8080/restful/register/oauth/")
+                    .setRedirectURI("http://http://xtalus.apps.gedge.nl/simple/restful/register/oauth/")
                     .setCode(code)
                     .buildBodyMessage();
 

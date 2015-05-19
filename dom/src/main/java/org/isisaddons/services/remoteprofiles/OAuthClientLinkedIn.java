@@ -35,11 +35,12 @@ public class OAuthClientLinkedIn {
         OAuthClientRequest request = OAuthClientRequest
             .authorizationProvider(OAuthProviderType.LINKEDIN)
             .setClientId("78njpgu4gtzva7")
-            .setRedirectURI("http://localhost:8080/restful/register/oauth/")
+            .setRedirectURI("http://http://xtalus.apps.gedge.nl/simple/restful/register/oauth/")
             .setResponseType("code")
             .setState("L4bn3nr00dIsmyString")
             .buildQueryMessage();
 
+        //TODO: This code is not working on server
         try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create(request.getLocationUri()));
         }
