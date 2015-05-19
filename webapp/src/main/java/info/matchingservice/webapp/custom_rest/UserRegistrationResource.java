@@ -187,8 +187,8 @@ public class UserRegistrationResource extends ResourceAbstract {
             OAuthClientRequest request = OAuthClientRequest
                     .tokenProvider(OAuthProviderType.LINKEDIN)
                     .setGrantType(GrantType.AUTHORIZATION_CODE)
-                    .setClientId("78njpgu4gtzva7")
-                    .setClientSecret("Yeum6PUOEP2MwFVb")
+                    .setClientId("")
+                    .setClientSecret("")
                     .setRedirectURI("http://xtalus.apps.gedge.nl/simple/restful/register/oauth/")
                     .setCode(code)
                     .buildBodyMessage();
