@@ -40,7 +40,7 @@ public class OAuthClientLinkedIn {
             .setState("L4bn3nr00dIsmyString")
             .buildQueryMessage();
 
-        //TODO: This code is not working on server
+        //TODO: This code is not working on deployment server
 //        try {
 //            java.awt.Desktop.getDesktop().browse(java.net.URI.create(request.getLocationUri()));
 //
@@ -52,6 +52,5 @@ public class OAuthClientLinkedIn {
         return request.getLocationUri();
 
     }
-
 
 }
