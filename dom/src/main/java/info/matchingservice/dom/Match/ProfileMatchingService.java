@@ -674,10 +674,10 @@ public class ProfileMatchingService extends AbstractService {
 			final ProfileElement supplyProfileElement
 			){
 		
-		final ProfileElementTypeMatchingRule mockRule1 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule1", "SAME_PROFILE_ELEMENT_TYPE", 1);
-		final ProfileElementTypeMatchingRule mockRule2 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule2", "PASSION_TAGS_TO_PASSION", 1);
-		final ProfileElementTypeMatchingRule mockRule3 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule3", "TIME_PERIOD_TO_SUPPLY_PROFILE", 1);
-		final ProfileElementTypeMatchingRule mockRule4 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule4", "AGE_TO_PERSON", 1);
+//		final ProfileElementTypeMatchingRule mockRule1 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule1", "SAME_PROFILE_ELEMENT_TYPE", 1);
+//		final ProfileElementTypeMatchingRule mockRule2 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule2", "PASSION_TAGS_TO_PASSION", 1);
+//		final ProfileElementTypeMatchingRule mockRule3 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule3", "TIME_PERIOD_TO_SUPPLY_PROFILE", 1);
+//		final ProfileElementTypeMatchingRule mockRule4 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule4", "AGE_TO_PERSON", 1);
 		
 		if (
 				//implementation of mockRule1

@@ -27,8 +27,18 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.apache.oltu.oauth2.client.OAuthClient;
+import org.apache.oltu.oauth2.client.URLConnectionClient;
+import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
+import org.apache.oltu.oauth2.common.OAuthProviderType;
+import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
+import org.apache.oltu.oauth2.common.message.types.GrantType;
 
 import org.apache.isis.applib.services.userreg.UserDetails;
 import org.apache.isis.applib.services.userreg.UserRegistrationService;
@@ -45,6 +55,7 @@ import org.isisaddons.module.security.dom.user.ApplicationUsers;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
+import info.matchingservice.dom.TestObjects.Tokens;
 
 /**
  * Created by jodo on 15/05/15.
@@ -166,5 +177,42 @@ public class UserRegistrationResource extends ResourceAbstract {
     public Response getServicesNotAllowed() {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the services resource is not allowed.", new Object[0]);
     }
+
+    @GET
+    @Path("/oauth")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response getServices(@QueryParam("code") String code) {
+        System.out.println("code = " + code);
+        try {
+            OAuthClientRequest request = OAuthClientRequest
+                    .tokenProvider(OAuthProviderType.LINKEDIN)
+                    .setGrantType(GrantType.AUTHORIZATION_CODE)
+                    .setClientId("78njpgu4gtzva7")
+                    .setClientSecret("Yeum6PUOEP2MwFVb")
+                    .setRedirectURI("http://localhost:8080/restful/register/oauth/")
+                    .setCode(code)
+                    .buildBodyMessage();
+
+            OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
+
+            OAuthJSONAccessTokenResponse oAuthResponse = oAuthClient.accessToken(request);
+
+            System.out.println(
+                    "Access Token: " + oAuthResponse.getAccessToken() + ", Expires in: " + oAuthResponse
+                            .getExpiresIn());
+
+            final Tokens tokensService =
+                    IsisContext.getPersistenceSession().getServicesInjector().lookupService(Tokens.class);
+            tokensService.create(oAuthResponse.getAccessToken());
+
+        } catch (OAuthSystemException e) {
+            e.printStackTrace();
+        } catch (OAuthProblemException e) {
+            e.printStackTrace();
+        }
+
+        return Response.status(200).entity(code).build();
+    }
+
 
 }
