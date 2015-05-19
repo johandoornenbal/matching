@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package info.matchingservice.dom.TestObjects;
+package info.matchingservice.dom.TestLinkedInObjects;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
@@ -34,9 +34,9 @@ import org.apache.isis.applib.util.ObjectContracts;
 @javax.jdo.annotations.Version(
         strategy= VersionStrategy.VERSION_NUMBER,
         column="version")
-public class Token implements Comparable<Token> {
+public class LinkedInToken implements Comparable<LinkedInToken> {
 
-    //region > Token (property)
+    //region > LinkedInToken (property)
     private String token;
 
     @MemberOrder(sequence = "1")
@@ -49,7 +49,7 @@ public class Token implements Comparable<Token> {
         this.token = token;
     }
 
-    @Override public int compareTo(final Token o) {
+    @Override public int compareTo(final LinkedInToken o) {
         return ObjectContracts.compare(this, o, "token");
     }
     //endregion

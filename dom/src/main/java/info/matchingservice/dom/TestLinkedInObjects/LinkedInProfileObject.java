@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package info.matchingservice.dom.TestObjects;
+package info.matchingservice.dom.TestLinkedInObjects;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;

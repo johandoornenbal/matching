@@ -15,12 +15,10 @@
  * under the License.
  */
 
-package info.matchingservice.dom.TestObjects;
+package info.matchingservice.dom.TestLinkedInObjects;
 
-import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
-
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -30,52 +28,55 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
-import org.isisaddons.services.remoteprofiles.OAuthClientLinkedIn;
+import org.isisaddons.services.remoteprofiles.LinkedInProfile;
+import org.isisaddons.services.remoteprofiles.LinkedInProfileService;
 
-@DomainService(repositoryFor = Token.class)
-@DomainServiceLayout(menuOrder = "10")
-public class Tokens {
+@DomainService(repositoryFor = LinkedInProfileObject.class)
+@DomainServiceLayout(named = "RemoteProfiles")
+public class LinkedInProfileObjects {
 
     //region > listAll (action)
     @Action(
             semantics = SemanticsOf.SAFE
     )
     @ActionLayout(
-            bookmarking = BookmarkPolicy.AS_ROOT
+            bookmarking = BookmarkPolicy.AS_ROOT,
+            named = "All LinkedIn Profiles"
     )
     @MemberOrder(sequence = "1")
-    public List<Token> listAll() {
-        return container.allInstances(Token.class);
+    public List<LinkedInProfileObject> listAll() {
+        return container.allInstances(LinkedInProfileObject.class);
     }
     //endregion
 
-
     //region > create (action)
-    @MemberOrder(sequence = "2")
-    public Token create(
-            final @ParameterLayout(named="Token") String token) {
-        final Token obj = container.newTransientInstance(Token.class);
-        obj.setToken(token);
+    @MemberOrder(sequence = "3")
+    @Programmatic
+    public LinkedInProfileObject createLinkedInProfile(
+            final @ParameterLayout(named="LinkedInToken")  String token
+    		) {
+        final LinkedInProfileObject obj = container.newTransientInstance(LinkedInProfileObject.class);
+        LinkedInProfileService service = new LinkedInProfileService();
+        LinkedInProfile profile = service.runLinkedInService(token);
+        obj.setId(profile.getId());
+        obj.setFirstName(profile.getFirstName());
+        obj.setLastName(profile.getLastName());
+        obj.setHeadline(profile.getHeadline());
+        
         container.persistIfNotAlready(obj);
         return obj;
     }
 
     //endregion
 
-    @ActionLayout(named = "LinkedIn")
-    @MemberOrder(sequence = "3")
-    public String startLinkedOAuth() throws IOException, OAuthSystemException {
-        try {
-            return OAuthClientLinkedIn.LinkedInOAuth();
-        } catch (OAuthSystemException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void removeLinkedInProfiles(){
+        for (Iterator<LinkedInProfileObject> it = this.listAll().iterator(); it.hasNext();){
 
-        return null;
+            container.removeIfNotAlready(it.next());
+        }
     }
 
     //region > injected services

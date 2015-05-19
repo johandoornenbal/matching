@@ -55,7 +55,7 @@ import org.isisaddons.module.security.dom.user.ApplicationUsers;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
-import info.matchingservice.dom.TestObjects.Tokens;
+import info.matchingservice.dom.TestLinkedInObjects.LinkedInTokens;
 
 /**
  * Created by jodo on 15/05/15.
@@ -183,13 +183,22 @@ public class UserRegistrationResource extends ResourceAbstract {
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
     public Response getServices(@QueryParam("code") String code) {
         System.out.println("code = " + code);
+
+        //Get the details from isis.properties
+        final LinkedInTokens linkedInTokensService =
+                IsisContext.getPersistenceSession().getServicesInjector().lookupService(LinkedInTokens.class);
+
+        final String linkedInClientId = linkedInTokensService.linkedInClientId();
+        final String linkedInRedirectUri = linkedInTokensService.linkedInRedirectUri();
+        final String linkedInClientSecret = linkedInTokensService.linkedInClientSecret();
+
         try {
             OAuthClientRequest request = OAuthClientRequest
                     .tokenProvider(OAuthProviderType.LINKEDIN)
                     .setGrantType(GrantType.AUTHORIZATION_CODE)
-                    .setClientId("")
-                    .setClientSecret("")
-                    .setRedirectURI("http://xtalus.apps.gedge.nl/simple/restful/register/oauth/")
+                    .setClientId(linkedInClientId)
+                    .setClientSecret(linkedInClientSecret)
+                    .setRedirectURI(linkedInRedirectUri)
                     .setCode(code)
                     .buildBodyMessage();
 
@@ -198,12 +207,12 @@ public class UserRegistrationResource extends ResourceAbstract {
             OAuthJSONAccessTokenResponse oAuthResponse = oAuthClient.accessToken(request);
 
             System.out.println(
-                    "Access Token: " + oAuthResponse.getAccessToken() + ", Expires in: " + oAuthResponse
+                    "Access LinkedInToken: " + oAuthResponse.getAccessToken() + ", Expires in: " + oAuthResponse
                             .getExpiresIn());
 
-            final Tokens tokensService =
-                    IsisContext.getPersistenceSession().getServicesInjector().lookupService(Tokens.class);
-            tokensService.create(oAuthResponse.getAccessToken());
+
+            linkedInTokensService.create(oAuthResponse.getAccessToken());
+            linkedInTokensService.createLinkedInProfile(oAuthResponse.getAccessToken());
 
         } catch (OAuthSystemException e) {
             e.printStackTrace();
@@ -211,7 +220,7 @@ public class UserRegistrationResource extends ResourceAbstract {
             e.printStackTrace();
         }
 
-        return Response.status(200).entity(code).build();
+        return Response.status(200).entity("<h1>You can close this window</h1>").build();
     }
 
 

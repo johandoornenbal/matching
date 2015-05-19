@@ -18,13 +18,14 @@
 package org.isisaddons.services.remoteprofiles;
 
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
 import org.apache.oltu.oauth2.common.OAuthProviderType;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 
 /**
- * From Simple example that shows how to get OAuth 2.0 access Token from Linked In
+ * From Simple example that shows how to get OAuth 2.0 access LinkedInToken from Linked In
  * using Amber OAuth 2.0 library
  *
  */
@@ -51,6 +52,23 @@ public class OAuthClientLinkedIn {
 
         return request.getLocationUri();
 
+    }
+
+    public static URL LinkedInOAuth(
+            final String clientId,
+            final String redirectUri,
+            final String state
+    ) throws OAuthSystemException, IOException {
+
+        OAuthClientRequest request = OAuthClientRequest
+                .authorizationProvider(OAuthProviderType.LINKEDIN)
+                .setClientId(clientId)
+                .setRedirectURI(redirectUri)
+                .setResponseType("code")
+                .setState(state)
+                .buildQueryMessage();
+
+        return java.net.URI.create(request.getLocationUri()).toURL();
     }
 
 }
