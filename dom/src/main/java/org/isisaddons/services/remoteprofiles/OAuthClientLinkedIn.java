@@ -30,24 +30,28 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
  */
 public class OAuthClientLinkedIn {
 
-    public static void LinkedInOAuth() throws OAuthSystemException, IOException {
+    public static String LinkedInOAuth() throws OAuthSystemException, IOException {
 
         OAuthClientRequest request = OAuthClientRequest
             .authorizationProvider(OAuthProviderType.LINKEDIN)
             .setClientId("78njpgu4gtzva7")
-            .setRedirectURI("http://http://xtalus.apps.gedge.nl/simple/restful/register/oauth/")
+            .setRedirectURI("http://xtalus.apps.gedge.nl/simple/restful/register/oauth/")
             .setResponseType("code")
             .setState("L4bn3nr00dIsmyString")
             .buildQueryMessage();
 
         //TODO: This code is not working on server
-        try {
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create(request.getLocationUri()));
-        }
-        catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            java.awt.Desktop.getDesktop().browse(java.net.URI.create(request.getLocationUri()));
+//
+//        }
+//        catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
+
+        return request.getLocationUri();
 
     }
+
 
 }

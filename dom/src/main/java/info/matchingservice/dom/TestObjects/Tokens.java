@@ -66,14 +66,16 @@ public class Tokens {
 
     @ActionLayout(named = "LinkedIn")
     @MemberOrder(sequence = "3")
-    public void startLinkedOAuth() throws IOException, OAuthSystemException {
+    public String startLinkedOAuth() throws IOException, OAuthSystemException {
         try {
-            OAuthClientLinkedIn.LinkedInOAuth();
+            return OAuthClientLinkedIn.LinkedInOAuth();
         } catch (OAuthSystemException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     //region > injected services
