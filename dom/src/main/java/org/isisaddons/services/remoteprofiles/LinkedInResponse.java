@@ -84,5 +84,111 @@ public class LinkedInResponse implements LinkedInProfile{
 	}
 	//endregion
 
+	//region > emailAddress (property)
+	private String emailAddress;
 
+	@Override
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(final String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	//endregion
+
+	//region > formattedName (property)
+	private String formattedName;
+
+	@Override
+	public String getFormattedName() {
+		return formattedName;
+	}
+
+	public void setFormattedName(final String formattedName) {
+		this.formattedName = formattedName;
+	}
+	//endregion
+
+	//region > industry (property)
+	private String industry;
+
+	@Override
+	public String getIndustry() {
+		return industry;
+	}
+
+	public void setIndustry(final String industry) {
+		this.industry = industry;
+	}
+	//endregion
+
+	//region > location (property)
+	private Object location;
+
+	@Override
+	public Object getLocation() {
+		return location;
+	}
+
+	public void setLocation(final Object location) {
+		this.location = location;
+	}
+	//endregion
+
+	//region > pictureUrl (property)
+	private String pictureUrl;
+
+	@Override
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(final String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+	//endregion
+
+	//region > positions (property)
+	private LinkedInPositionsResource positions;
+
+	@Override
+	public LinkedInPositionsResource getPositions() {
+		return positions;
+	}
+
+	public void setPositions(final LinkedInPositionsResource positions) {
+		this.positions = positions;
+	}
+	//endregion
+
+	//region > publicProfileUrl (property)
+	private String publicProfileUrl;
+
+	@Override
+	public String getPublicProfileUrl() {
+		return publicProfileUrl;
+	}
+
+	public void setPublicProfileUrl(final String publicProfileUrl) {
+		this.publicProfileUrl = publicProfileUrl;
+	}
+	//endregion
+
+	//region > summary (property)
+	private String summary;
+
+	@Override
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(final String summary) {
+		this.summary = summary;
+	}
+	//endregion
+
+
+	
 }

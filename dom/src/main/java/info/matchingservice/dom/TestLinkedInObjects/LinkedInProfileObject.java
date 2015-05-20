@@ -17,8 +17,19 @@
 
 package info.matchingservice.dom.TestLinkedInObjects;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
+
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.DomainObjectLayout;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.util.ObjectContracts;
 
 @javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(
@@ -27,12 +38,25 @@ import javax.jdo.annotations.VersionStrategy;
 @javax.jdo.annotations.Version(
         strategy=VersionStrategy.VERSION_NUMBER, 
         column="version")
-public class LinkedInProfileObject {
+@DomainObject
+@DomainObjectLayout()
+public class LinkedInProfileObject implements Comparable<LinkedInProfileObject> {
+
+	public String title(){
+		return "LinkedIn profiel van " + getFormattedName();
+	}
 	
 	private String id;
 	private String firstName;
 	private String lastName;
 	private String headline;
+	private String emailAddress;
+	private String formattedName;
+	private String summary;
+	public String industry;
+	public String pictureUrl;
+	public String publicProfileUrl;
+
 		
 	@javax.jdo.annotations.Column(allowsNull="true")
 	public String getId() {
@@ -65,6 +89,73 @@ public class LinkedInProfileObject {
 	public void setHeadline(String headline) {
 		this.headline = headline;
 	}
-	
 
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getFormattedName() {
+		return formattedName;
+	}
+	public void setFormattedName(String formattedName) {
+		this.formattedName = formattedName;
+	}
+
+	@javax.jdo.annotations.Column(allowsNull="true", length = 4094)
+	@PropertyLayout(multiLine = 10)
+	public String getSummary() {
+		return summary;
+	}
+	public void setSummary(final String summary) {
+		this.summary = summary;
+	}
+
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getIndustry() {
+		return industry;
+	}
+	public void setIndustry(final String industry) {
+		this.industry = industry;
+	}
+
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+	public void setPictureUrl(final String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getPublicProfileUrl() {
+		return publicProfileUrl;
+	}
+	public void setPublicProfileUrl(final String publicProfileUrl) {
+		this.publicProfileUrl = publicProfileUrl;
+	}
+
+	//Collections
+
+	private SortedSet<LinkedInCompanyObject> companiesWorkedFor = new TreeSet<LinkedInCompanyObject>();
+
+	@Persistent(mappedBy = "linkedInProfile", dependentElement = "true")
+	@CollectionLayout(render= RenderType.EAGERLY)
+	public SortedSet<LinkedInCompanyObject> getCompaniesWorkedFor() {
+		return companiesWorkedFor;
+	}
+
+	public void setCompaniesWorkedFor(final SortedSet<LinkedInCompanyObject> companiesWorkedFor) {
+		this.companiesWorkedFor = companiesWorkedFor;
+	}
+
+	@Override public int compareTo(final LinkedInProfileObject o) {
+		{
+			return ObjectContracts.compare(this, o, "id");
+		}
+	}
 }

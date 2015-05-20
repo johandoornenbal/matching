@@ -1,0 +1,15 @@
+{
+  "columns": [
+    {
+      "span": 12,
+      "memberGroups": {
+        "Persoon details": {
+          "members": {
+            "firstName" : {},
+            "summary" : {}
+          }
+        }
+      }
+    }
+  ]
+}

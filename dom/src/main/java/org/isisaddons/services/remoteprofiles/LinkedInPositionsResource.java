@@ -17,19 +17,35 @@
 
 package org.isisaddons.services.remoteprofiles;
 
-public interface LinkedInProfile {
-	
-	public boolean getSuccess();
-	public String getId();
-	public String getFirstName();
-	public String getLastName();
-	public String getHeadline();
-	public String getEmailAddress();
-	public String getFormattedName();
-	public String getIndustry();
-	public Object getLocation();
-	public String getPictureUrl();
-	public LinkedInPositionsResource getPositions();
-	public String getPublicProfileUrl();
-	public String getSummary();
+import java.util.List;
+
+/**
+ * Created by jodo on 20/05/15.
+ */
+public class LinkedInPositionsResource {
+
+    //region > _total (property)
+    private Integer _total;
+
+    public Integer getTotal() {
+        return _total;
+    }
+
+    public void setTotal(final Integer _total) {
+        this._total = _total;
+    }
+    //endregion
+
+    //region > values (property)
+    private List<LinkedInPositionValueResource> values;
+
+    public List<LinkedInPositionValueResource> getValues() {
+        return values;
+    }
+
+    public void setValues(final List<LinkedInPositionValueResource> values) {
+        this.values = values;
+    }
+    //endregion
+
 }

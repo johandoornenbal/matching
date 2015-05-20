@@ -31,6 +31,7 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
+import org.isisaddons.services.remoteprofiles.LinkedInPositionValueResource;
 import org.isisaddons.services.remoteprofiles.LinkedInProfile;
 import org.isisaddons.services.remoteprofiles.LinkedInProfileService;
 
@@ -61,11 +62,105 @@ public class LinkedInProfileObjects {
         final LinkedInProfileObject obj = container.newTransientInstance(LinkedInProfileObject.class);
         LinkedInProfileService service = new LinkedInProfileService();
         LinkedInProfile profile = service.runLinkedInService(token);
-        obj.setId(profile.getId());
-        obj.setFirstName(profile.getFirstName());
-        obj.setLastName(profile.getLastName());
-        obj.setHeadline(profile.getHeadline());
-        
+        if (profile.getId()!= null) {
+            obj.setId(profile.getId());
+        }
+        if (profile.getFirstName()!= null) {
+            obj.setFirstName(profile.getFirstName());
+        }
+        if (profile.getLastName()!=null) {
+            obj.setLastName(profile.getLastName());
+        }
+        if (profile.getHeadline()!=null) {
+            obj.setHeadline(profile.getHeadline());
+        }
+        if (profile.getEmailAddress()!=null) {
+            obj.setEmailAddress(profile.getEmailAddress());
+        }
+        if (profile.getFormattedName()!=null) {
+            obj.setFormattedName(profile.getFormattedName());
+        }
+        if (profile.getSummary()!=null) {
+            obj.setSummary(profile.getSummary());
+        }
+        if (profile.getIndustry()!=null) {
+            obj.setIndustry(profile.getIndustry());
+        }
+        if (profile.getPictureUrl()!=null) {
+            obj.setPictureUrl(profile.getPictureUrl());
+        }
+        if (profile.getPublicProfileUrl()!=null) {
+            obj.setPublicProfileUrl(profile.getPublicProfileUrl());
+        }
+
+        for (Iterator<LinkedInPositionValueResource> it = profile.getPositions().getValues().iterator(); it.hasNext();) {
+
+            LinkedInCompanyObject companyObject = container.newTransientInstance(LinkedInCompanyObject.class);
+            LinkedInPositionValueResource resource = it.next();
+
+            companyObject.setLinkedInProfile(obj);
+            try {
+                companyObject.setStartMonth(resource.getStartDate().getMonth());
+            } catch (Exception e) {
+                companyObject.setStartMonth(0);
+            }
+            try {
+                companyObject.setStartYear(resource.getStartDate().getYear());
+            } catch (Exception e) {
+                companyObject.setStartYear(0);
+            }
+            try {
+                companyObject.setIsCurrent(resource.getIsCurrent());
+            } catch (Exception e) {
+                companyObject.setIsCurrent(false);
+            }
+            try {
+                companyObject.setJobTitle(resource.getTitle());
+            } catch (Exception e) {
+                companyObject.setJobTitle("");
+            }
+            try {
+                companyObject.setPositionSummary(resource.getSummary());
+            } catch (Exception e) {
+                companyObject.setPositionSummary("");
+            }
+            try {
+                companyObject.setPositionSummary(resource.getSummary());
+            } catch (Exception e) {
+                companyObject.setPositionSummary("");
+            }
+            try {
+                companyObject.setName(resource.getCompany().getName());
+            } catch (Exception e) {
+                companyObject.setName("");
+            }
+            try {
+                companyObject.setIndustry(resource.getCompany().getIndustry());
+            } catch (Exception e) {
+                companyObject.setIndustry("");
+            }
+
+            try {
+                companyObject.setSize(resource.getCompany().getSize());
+            } catch (Exception e) {
+                companyObject.setSize("");
+            }
+
+            try {
+                companyObject.setType(resource.getCompany().getType());
+            } catch (Exception e) {
+                companyObject.setType("");
+            }
+
+            try {
+                companyObject.setId(resource.getCompany().getId());
+            } catch (Exception e) {
+                companyObject.setId(0);
+            }
+
+            container.persistIfNotAlready(companyObject);
+        }
+
         container.persistIfNotAlready(obj);
         return obj;
     }

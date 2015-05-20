@@ -17,19 +17,33 @@
 
 package org.isisaddons.services.remoteprofiles;
 
-public interface LinkedInProfile {
-	
-	public boolean getSuccess();
-	public String getId();
-	public String getFirstName();
-	public String getLastName();
-	public String getHeadline();
-	public String getEmailAddress();
-	public String getFormattedName();
-	public String getIndustry();
-	public Object getLocation();
-	public String getPictureUrl();
-	public LinkedInPositionsResource getPositions();
-	public String getPublicProfileUrl();
-	public String getSummary();
+/**
+ * Created by jodo on 20/05/15.
+ */
+public class LinkedInDateResource {
+
+    //region > month (property)
+    private Integer month;
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(final Integer month) {
+        this.month = month;
+    }
+    //endregion
+
+    //region > year (property)
+    private Integer year;
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(final Integer year) {
+        this.year = year;
+    }
+    //endregion
+
 }

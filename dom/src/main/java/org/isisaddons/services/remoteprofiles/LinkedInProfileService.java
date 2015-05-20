@@ -43,7 +43,7 @@ public class LinkedInProfileService extends AbstractService  {
 			client.property(ClientProperties.CONNECT_TIMEOUT, 1000);
 		    client.property(ClientProperties.READ_TIMEOUT,    1000);
 			
-			String resourceString = "https://api.linkedin.com/v1/people/~?format=json&oauth2_access_token="
+			String resourceString = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,location,headline,email-address,summary,formatted-name,industry,positions,picture-url,public-profile-url)?format=json&oauth2_access_token="
 					.concat(token);
 			WebTarget webResource2 = client.target(resourceString);
 			Invocation.Builder invocationBuilder =
@@ -55,6 +55,7 @@ public class LinkedInProfileService extends AbstractService  {
 			System.out.println("running LinkedInService: " + response.getStatus());
 
 			LinkedInResponse linkedInResponse = new LinkedInResponse();
+//			System.out.println(response.readEntity(String.class));
 			linkedInResponse = gson.fromJson(response.readEntity(String.class), LinkedInResponse.class);
 			linkedInResponse.setSuccess(true);
 //			System.out.println(linkedInResponse.getFirstName());
@@ -62,6 +63,11 @@ public class LinkedInProfileService extends AbstractService  {
 //			System.out.println(linkedInResponse.getId());
 //			System.out.println(linkedInResponse.getHeadline());
 //			System.out.println(linkedInResponse.getSuccess());
+			System.out.println(linkedInResponse.getPositions().getTotal());
+			System.out.println(linkedInResponse.getPositions().getValues().size());
+			System.out.println(linkedInResponse.getPositions().getValues().get(0).getSummary());
+			System.out.println(linkedInResponse.getPositions().getValues().get(0).getCompany().getName());
+
 			return linkedInResponse;
 
 		} catch (Exception e) {
@@ -77,7 +83,13 @@ public class LinkedInProfileService extends AbstractService  {
 			emptyResponse.setId("");
 			emptyResponse.setFirstName("");
 			emptyResponse.setLastName("");
+			emptyResponse.setFormattedName("");
 			emptyResponse.setHeadline("");
+			emptyResponse.setEmailAddress("");
+			emptyResponse.setPictureUrl("");
+			emptyResponse.setPublicProfileUrl("");
+			emptyResponse.setIndustry("");
+			emptyResponse.setSummary("");
 			emptyResponse.setSuccess(false);
 			return emptyResponse;
 		}
