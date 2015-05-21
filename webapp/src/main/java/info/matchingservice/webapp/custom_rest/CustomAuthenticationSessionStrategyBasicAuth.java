@@ -45,11 +45,17 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
         String authStr = httpServletRequest.getHeader("Authorization");
 
+        //TODO: does not work because there is no session for this request. Caught in a loop ;-)
+//        final IsisPropertiesLookUpService isisPropertiesLookUpService =
+//                IsisContext.getPersistenceSession().getServicesInjector().lookupService(IsisPropertiesLookUpService.class);
+//        final String signUpUri = isisPropertiesLookUpService.SignUpUri();
+
         //extension by yodo for signup through REST api
         //TODO: parameterize '/simple/restful/register' (This is dependent on deploy!)
         String uri = httpServletRequest.getRequestURI();
         String uriSubstring = uri.substring(0, 24); /*NOTA BENE: NEEDS TO MATCH LENGHT OF uri /simple/restful/register*/
         System.out.println(uri);
+//        System.out.println("from isis properties: " + signUpUri);
 
         if (uriSubstring.equals("/simple/restful/register")) {
 

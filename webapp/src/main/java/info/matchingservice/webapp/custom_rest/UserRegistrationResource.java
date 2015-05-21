@@ -27,8 +27,19 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.apache.oltu.oauth2.client.OAuthClient;
+import org.apache.oltu.oauth2.client.URLConnectionClient;
+import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.GitHubTokenResponse;
+import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
+import org.apache.oltu.oauth2.common.OAuthProviderType;
+import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
+import org.apache.oltu.oauth2.common.message.types.GrantType;
 
 import org.apache.isis.applib.services.userreg.UserDetails;
 import org.apache.isis.applib.services.userreg.UserRegistrationService;
@@ -45,6 +56,9 @@ import org.isisaddons.module.security.dom.user.ApplicationUsers;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
+import info.matchingservice.dom.IsisPropertiesLookUpService;
+import info.matchingservice.dom.TestFacebookObjects.FbTokens;
+import info.matchingservice.dom.TestLinkedInObjects.LinkedInTokens;
 
 /**
  * Created by jodo on 15/05/15.
@@ -166,5 +180,104 @@ public class UserRegistrationResource extends ResourceAbstract {
     public Response getServicesNotAllowed() {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the services resource is not allowed.", new Object[0]);
     }
+
+    @GET
+    @Path("/oauth/LinkedIn")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response getServices(@QueryParam("code") String code) {
+        System.out.println("code = " + code);
+
+        //Get the details from isis.properties
+        final IsisPropertiesLookUpService isisPropertiesLookUpService =
+                IsisContext.getPersistenceSession().getServicesInjector().lookupService(IsisPropertiesLookUpService.class);
+
+        final String linkedInClientId = isisPropertiesLookUpService.linkedInClientId();
+        final String linkedInRedirectUri = isisPropertiesLookUpService.linkedInRedirectUri();
+        final String linkedInClientSecret = isisPropertiesLookUpService .linkedInClientSecret();
+
+        try {
+            OAuthClientRequest request = OAuthClientRequest
+                    .tokenProvider(OAuthProviderType.LINKEDIN)
+                    .setGrantType(GrantType.AUTHORIZATION_CODE)
+                    .setClientId(linkedInClientId)
+                    .setClientSecret(linkedInClientSecret)
+                    .setRedirectURI(linkedInRedirectUri)
+                    .setCode(code)
+                    .buildBodyMessage();
+
+            OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
+
+            OAuthJSONAccessTokenResponse oAuthResponse = oAuthClient.accessToken(request);
+
+            System.out.println(
+                    "Access LinkedInToken: " + oAuthResponse.getAccessToken() + ", Expires in: " + oAuthResponse
+                            .getExpiresIn());
+
+            final LinkedInTokens linkedInTokensService =
+                    IsisContext.getPersistenceSession().getServicesInjector().lookupService(LinkedInTokens.class);
+
+            linkedInTokensService.create(oAuthResponse.getAccessToken());
+            linkedInTokensService.createLinkedInProfile(oAuthResponse.getAccessToken());
+
+        } catch (OAuthSystemException e) {
+            e.printStackTrace();
+        } catch (OAuthProblemException e) {
+            e.printStackTrace();
+        }
+
+        return Response.status(200).entity("<h1>You can close this window</h1>").build();
+    }
+
+    @GET
+    @Path("/oauth/fb")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response getFbServices(@QueryParam("code") String code) {
+        System.out.println("code = " + code);
+
+        //Get the details from isis.properties
+        final IsisPropertiesLookUpService isisPropertiesLookUpService =
+                IsisContext.getPersistenceSession().getServicesInjector().lookupService(IsisPropertiesLookUpService.class);
+
+        final String fbClientId = isisPropertiesLookUpService.FbClientId();
+        final String fbRedirectUri = isisPropertiesLookUpService.FbRedirectUri();
+        final String fbClientSecret = isisPropertiesLookUpService .FbClientSecret();
+
+        try {
+            OAuthClientRequest request = OAuthClientRequest
+                    .tokenProvider(OAuthProviderType.FACEBOOK)
+                    .setGrantType(GrantType.AUTHORIZATION_CODE)
+                    .setClientId(fbClientId)
+                    .setClientSecret(fbClientSecret)
+                    .setRedirectURI(fbRedirectUri)
+                    .setCode(code)
+                    .buildBodyMessage();
+
+            OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
+
+            //Facebook is not fully compatible with OAuth 2.0 draft 10, access token response is
+            //application/x-www-form-urlencoded, not json encoded so we use dedicated response class for that
+            //Own response class is an easy way to deal with oauth providers that introduce modifications to
+            //OAuth specification
+            GitHubTokenResponse oAuthResponse = oAuthClient.accessToken(request, GitHubTokenResponse.class);
+
+            System.out.println(
+                    "Access FacebookToken: " + oAuthResponse.getAccessToken() + ", Expires in: " + oAuthResponse
+                            .getExpiresIn());
+
+            final FbTokens fbTokensService =
+                    IsisContext.getPersistenceSession().getServicesInjector().lookupService(FbTokens.class);
+
+            fbTokensService.create(oAuthResponse.getAccessToken());
+            fbTokensService.createFbProfile(oAuthResponse.getAccessToken());
+
+        } catch (OAuthSystemException e) {
+            e.printStackTrace();
+        } catch (OAuthProblemException e) {
+            e.printStackTrace();
+        }
+
+        return Response.status(200).entity("<h1>You can close this window</h1>").build();
+    }
+
 
 }
