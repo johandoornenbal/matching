@@ -34,6 +34,7 @@ import javax.ws.rs.core.Response;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.GitHubTokenResponse;
 import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
 import org.apache.oltu.oauth2.common.OAuthProviderType;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
@@ -56,6 +57,7 @@ import org.isisaddons.module.security.dom.user.ApplicationUsers;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
 import info.matchingservice.dom.IsisPropertiesLookUpService;
+import info.matchingservice.dom.TestFacebookObjects.FbTokens;
 import info.matchingservice.dom.TestLinkedInObjects.LinkedInTokens;
 
 /**
@@ -180,7 +182,7 @@ public class UserRegistrationResource extends ResourceAbstract {
     }
 
     @GET
-    @Path("/oauth")
+    @Path("/oauth/LinkedIn")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
     public Response getServices(@QueryParam("code") String code) {
         System.out.println("code = " + code);
@@ -216,6 +218,57 @@ public class UserRegistrationResource extends ResourceAbstract {
 
             linkedInTokensService.create(oAuthResponse.getAccessToken());
             linkedInTokensService.createLinkedInProfile(oAuthResponse.getAccessToken());
+
+        } catch (OAuthSystemException e) {
+            e.printStackTrace();
+        } catch (OAuthProblemException e) {
+            e.printStackTrace();
+        }
+
+        return Response.status(200).entity("<h1>You can close this window</h1>").build();
+    }
+
+    @GET
+    @Path("/oauth/fb")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response getFbServices(@QueryParam("code") String code) {
+        System.out.println("code = " + code);
+
+        //Get the details from isis.properties
+        final IsisPropertiesLookUpService isisPropertiesLookUpService =
+                IsisContext.getPersistenceSession().getServicesInjector().lookupService(IsisPropertiesLookUpService.class);
+
+        final String fbClientId = isisPropertiesLookUpService.FbClientId();
+        final String fbRedirectUri = isisPropertiesLookUpService.FbRedirectUri();
+        final String fbClientSecret = isisPropertiesLookUpService .FbClientSecret();
+
+        try {
+            OAuthClientRequest request = OAuthClientRequest
+                    .tokenProvider(OAuthProviderType.FACEBOOK)
+                    .setGrantType(GrantType.AUTHORIZATION_CODE)
+                    .setClientId(fbClientId)
+                    .setClientSecret(fbClientSecret)
+                    .setRedirectURI(fbRedirectUri)
+                    .setCode(code)
+                    .buildBodyMessage();
+
+            OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
+
+            //Facebook is not fully compatible with OAuth 2.0 draft 10, access token response is
+            //application/x-www-form-urlencoded, not json encoded so we use dedicated response class for that
+            //Own response class is an easy way to deal with oauth providers that introduce modifications to
+            //OAuth specification
+            GitHubTokenResponse oAuthResponse = oAuthClient.accessToken(request, GitHubTokenResponse.class);
+
+            System.out.println(
+                    "Access FacebookToken: " + oAuthResponse.getAccessToken() + ", Expires in: " + oAuthResponse
+                            .getExpiresIn());
+
+            final FbTokens fbTokensService =
+                    IsisContext.getPersistenceSession().getServicesInjector().lookupService(FbTokens.class);
+
+            fbTokensService.create(oAuthResponse.getAccessToken());
+            fbTokensService.createFbProfile(oAuthResponse.getAccessToken());
 
         } catch (OAuthSystemException e) {
             e.printStackTrace();

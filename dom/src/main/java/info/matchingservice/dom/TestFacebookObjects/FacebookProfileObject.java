@@ -15,20 +15,15 @@
  * under the License.
  */
 
-package info.matchingservice.dom.TestLinkedInObjects;
+package info.matchingservice.dom.TestFacebookObjects;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.net.URL;
 
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
-import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.util.ObjectContracts;
 
 @javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE)
@@ -40,22 +35,19 @@ import org.apache.isis.applib.util.ObjectContracts;
         column="version")
 @DomainObject
 @DomainObjectLayout()
-public class LinkedInProfileObject implements Comparable<LinkedInProfileObject> {
+public class FacebookProfileObject implements Comparable<FacebookProfileObject> {
 
 	public String title(){
-		return "LinkedIn profiel van " + getFormattedName();
+		return "Facebook profiel van " + getName();
 	}
 	
 	private String id;
 	private String firstName;
 	private String lastName;
-	private String headline;
+	private String gender;
 	private String emailAddress;
-	private String formattedName;
-	private String summary;
-	private String industry;
-	private String pictureUrl;
-	private String publicProfileUrl;
+	private String name;
+	private URL publicProfileUrl;
 
 		
 	@javax.jdo.annotations.Column(allowsNull="true")
@@ -83,11 +75,11 @@ public class LinkedInProfileObject implements Comparable<LinkedInProfileObject> 
 	}
 	
 	@javax.jdo.annotations.Column(allowsNull="true")
-	public String getHeadline() {
-		return headline;
+	public String getGender() {
+		return gender;
 	}
-	public void setHeadline(String headline) {
-		this.headline = headline;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	@javax.jdo.annotations.Column(allowsNull="true")
@@ -99,61 +91,23 @@ public class LinkedInProfileObject implements Comparable<LinkedInProfileObject> 
 	}
 
 	@javax.jdo.annotations.Column(allowsNull="true")
-	public String getFormattedName() {
-		return formattedName;
+	public String getName() {
+		return name;
 	}
-	public void setFormattedName(String formattedName) {
-		this.formattedName = formattedName;
-	}
-
-	@javax.jdo.annotations.Column(allowsNull="true", length = 4094)
-	@PropertyLayout(multiLine = 10)
-	public String getSummary() {
-		return summary;
-	}
-	public void setSummary(final String summary) {
-		this.summary = summary;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@javax.jdo.annotations.Column(allowsNull="true")
-	public String getIndustry() {
-		return industry;
-	}
-	public void setIndustry(final String industry) {
-		this.industry = industry;
-	}
-
-	@javax.jdo.annotations.Column(allowsNull="true")
-	public String getPictureUrl() {
-		return pictureUrl;
-	}
-	public void setPictureUrl(final String pictureUrl) {
-		this.pictureUrl = pictureUrl;
-	}
-
-	@javax.jdo.annotations.Column(allowsNull="true")
-	public String getPublicProfileUrl() {
+	public URL getPublicProfileUrl() {
 		return publicProfileUrl;
 	}
-	public void setPublicProfileUrl(final String publicProfileUrl) {
+	public void setPublicProfileUrl(final URL publicProfileUrl) {
 		this.publicProfileUrl = publicProfileUrl;
 	}
 
-	//Collections
 
-	private SortedSet<LinkedInCompanyObject> companiesWorkedFor = new TreeSet<LinkedInCompanyObject>();
-
-	@Persistent(mappedBy = "linkedInProfile", dependentElement = "true")
-	@CollectionLayout(render= RenderType.EAGERLY)
-	public SortedSet<LinkedInCompanyObject> getCompaniesWorkedFor() {
-		return companiesWorkedFor;
-	}
-
-	public void setCompaniesWorkedFor(final SortedSet<LinkedInCompanyObject> companiesWorkedFor) {
-		this.companiesWorkedFor = companiesWorkedFor;
-	}
-
-	@Override public int compareTo(final LinkedInProfileObject o) {
+	@Override public int compareTo(final FacebookProfileObject o) {
 		{
 			return ObjectContracts.compare(this, o, "id");
 		}

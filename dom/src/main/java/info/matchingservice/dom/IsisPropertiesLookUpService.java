@@ -79,4 +79,48 @@ public class IsisPropertiesLookUpService {
         }
         return string;
     }
+
+    public String FbClientId() {
+        String string = properties.get("FbClientId");
+        if (string == null) {
+            return "FbClientId not configured in isis.properties";
+        }
+        return string;
+    }
+
+
+    public String FbRedirectUri() {
+        String string = properties.get("FbRedirectUri");
+        if (string == null) {
+            return "FbRedirectUri not configured in isis.properties";
+        }
+        return string;
+    }
+
+
+    public String FbScope() {
+        String string = properties.get("FbScope");
+        if (string == null) {
+            return "FbScope not configured in isis.properties";
+        }
+        return string;
+    }
+
+
+    public String FbClientSecret() {
+        String string = properties.get("FbClientSecret");
+        if (string == null) {
+            return "FbClientSecret not configured in isis.properties";
+        }
+        return string;
+    }
+
+    public String FbAppSecretProof() {
+        String string = properties.get("FbAppSecretProof");
+        if (string == null) {
+            return "FbAppSecretProof not configured in isis.properties";
+        }
+        return string;
+    }
+
 }
