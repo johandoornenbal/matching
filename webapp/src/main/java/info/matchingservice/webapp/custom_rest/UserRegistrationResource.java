@@ -55,6 +55,7 @@ import org.isisaddons.module.security.dom.user.ApplicationUsers;
 
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
+import info.matchingservice.dom.IsisPropertiesLookUpService;
 import info.matchingservice.dom.TestLinkedInObjects.LinkedInTokens;
 
 /**
@@ -185,12 +186,12 @@ public class UserRegistrationResource extends ResourceAbstract {
         System.out.println("code = " + code);
 
         //Get the details from isis.properties
-        final LinkedInTokens linkedInTokensService =
-                IsisContext.getPersistenceSession().getServicesInjector().lookupService(LinkedInTokens.class);
+        final IsisPropertiesLookUpService isisPropertiesLookUpService =
+                IsisContext.getPersistenceSession().getServicesInjector().lookupService(IsisPropertiesLookUpService.class);
 
-        final String linkedInClientId = linkedInTokensService.linkedInClientId();
-        final String linkedInRedirectUri = linkedInTokensService.linkedInRedirectUri();
-        final String linkedInClientSecret = linkedInTokensService.linkedInClientSecret();
+        final String linkedInClientId = isisPropertiesLookUpService.linkedInClientId();
+        final String linkedInRedirectUri = isisPropertiesLookUpService.linkedInRedirectUri();
+        final String linkedInClientSecret = isisPropertiesLookUpService .linkedInClientSecret();
 
         try {
             OAuthClientRequest request = OAuthClientRequest
@@ -210,6 +211,8 @@ public class UserRegistrationResource extends ResourceAbstract {
                     "Access LinkedInToken: " + oAuthResponse.getAccessToken() + ", Expires in: " + oAuthResponse
                             .getExpiresIn());
 
+            final LinkedInTokens linkedInTokensService =
+                    IsisContext.getPersistenceSession().getServicesInjector().lookupService(LinkedInTokens.class);
 
             linkedInTokensService.create(oAuthResponse.getAccessToken());
             linkedInTokensService.createLinkedInProfile(oAuthResponse.getAccessToken());

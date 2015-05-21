@@ -21,9 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
@@ -41,54 +39,11 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 
 import org.isisaddons.services.remoteprofiles.OAuthClientLinkedIn;
 
+import info.matchingservice.dom.IsisPropertiesLookUpService;
+
 @DomainService(repositoryFor = LinkedInToken.class)
 @DomainServiceLayout(menuOrder = "10", named = "RemoteProfiles")
 public class LinkedInTokens {
-
-    private Map<String, String> properties;
-
-    @Programmatic
-    @PostConstruct
-    public void init(final Map<String, String> properties) {
-        this.properties = properties;
-    }
-
-    @Programmatic
-    public String linkedInClientId() {
-        String string = properties.get("LinkedInClientId");
-        if (string == null) {
-            return "LinkedInClientId not configured in isis.properties";
-        }
-        return string;
-    }
-
-    @Programmatic
-    public String linkedInRedirectUri() {
-        String string = properties.get("LinkedInRedirectUri");
-        if (string == null) {
-            return "LinkedInRedirectUri not configured in isis.properties";
-        }
-        return string;
-    }
-
-    @Programmatic
-    public String linkedInState() {
-        String string = properties.get("LinkedInState");
-        if (string == null) {
-            return "LinkedInState not configured in isis.properties";
-        }
-        return string;
-    }
-
-    @Programmatic
-    public String linkedInClientSecret() {
-        String string = properties.get("LinkedInClientSecret");
-        if (string == null) {
-            return "LinkedInClientSecret not configured in isis.properties";
-        }
-        return string;
-    }
-
 
     //region > listAll (action)
     @Action(
@@ -121,7 +76,7 @@ public class LinkedInTokens {
     @MemberOrder(sequence = "3")
     public URL startLinkedOAuth() throws IOException, OAuthSystemException {
         try {
-            return OAuthClientLinkedIn.LinkedInOAuth(this.linkedInClientId(), this.linkedInRedirectUri(), this.linkedInState());
+            return OAuthClientLinkedIn.LinkedInOAuth(isisPropertiesLookUpService.linkedInClientId(), isisPropertiesLookUpService.linkedInRedirectUri(), isisPropertiesLookUpService.linkedInState());
         } catch (OAuthSystemException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -152,6 +107,9 @@ public class LinkedInTokens {
 
     @Inject
     LinkedInProfileObjects linkedInProfileObjects;
+
+    @Inject
+    IsisPropertiesLookUpService isisPropertiesLookUpService;
 
     //endregion
 }
