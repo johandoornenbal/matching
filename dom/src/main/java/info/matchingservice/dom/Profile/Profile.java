@@ -84,6 +84,11 @@ import info.matchingservice.dom.TrustLevel;
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
                     + "WHERE supplyProfileOwner != null"),
+        @javax.jdo.annotations.Query(
+                name = "allSupplyProfilesOtherOwners", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM info.matchingservice.dom.Profile.Profile "
+                        + "WHERE supplyProfileOwner != null && ownedBy != :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "allSupplyProfilesOfType", language = "JDOQL",
             value = "SELECT "

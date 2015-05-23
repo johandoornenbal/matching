@@ -18,19 +18,20 @@
  */
 package info.matchingservice.dom.Profile;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import info.matchingservice.dom.FinderInteraction;
-import info.matchingservice.dom.FinderInteraction.FinderMethod;
-import info.matchingservice.dom.DemandSupply.Demand;
-
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.isis.applib.query.Query;
 import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.apache.isis.applib.query.Query;
+
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.FinderInteraction;
+import info.matchingservice.dom.FinderInteraction.FinderMethod;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ProfilesTest {
 
@@ -159,5 +160,23 @@ public class ProfilesTest {
            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(4));
        }
    }
+
+    public static class allSupplyProfilesOtherOwners extends ProfilesTest {
+
+        @Mock
+        String ownedBy;
+
+        @Test
+        public void happyCase() {
+
+            profiles.allSupplyProfilesOtherOwners(ownedBy);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            assertThat(finderInteraction.getQueryName(), is("allSupplyProfilesOtherOwners"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("ownedBy"), is((Object) ownedBy));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+        }
+    }
    
 }

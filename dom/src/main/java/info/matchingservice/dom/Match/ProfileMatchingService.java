@@ -19,32 +19,16 @@
 
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Profile.DemandOrSupply;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElementLocation;
-import info.matchingservice.dom.Profile.ProfileElementNumeric;
-import info.matchingservice.dom.Profile.ProfileElementTag;
-import info.matchingservice.dom.Profile.ProfileElementText;
-import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
-import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
-import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.dom.Profile.Profiles;
-import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRule;
-import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRules;
-import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
-import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
-import info.matchingservice.dom.Tags.Tag;
-import info.matchingservice.dom.Tags.TagHolder;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
 
 import org.apache.isis.applib.AbstractService;
 import org.apache.isis.applib.DomainObjectContainer;
@@ -61,10 +45,26 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
+
 import org.isisaddons.services.postalcode.postcodenunl.Haversine;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.Years;
+
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Profile.DemandOrSupply;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElementLocation;
+import info.matchingservice.dom.Profile.ProfileElementNumeric;
+import info.matchingservice.dom.Profile.ProfileElementTag;
+import info.matchingservice.dom.Profile.ProfileElementText;
+import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
+import info.matchingservice.dom.Profile.ProfileElementType;
+import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
+import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRules;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
+import info.matchingservice.dom.Tags.Tag;
+import info.matchingservice.dom.Tags.TagHolder;
 
 /**
  * 
@@ -115,7 +115,7 @@ public class ProfileMatchingService extends AbstractService {
 	 * Both start and endDate on the demand profile Time Period element are obligatory
 	 * 
 	 * @param demandProfileElement
-	 * @param supplyProfile
+	 * @param supplyProfileElement
 	 * @return
 	 */
 	@Programmatic
@@ -777,11 +777,7 @@ public class ProfileMatchingService extends AbstractService {
 		
 		if (
 				//implementation of mockRule1
-				(
-						demandProfileElement.getProfileElementType() == ProfileElementType.LOCATION
-						||
-						demandProfileElement.getProfileElementType() == ProfileElementType.LOCATION
-				)
+				demandProfileElement.getProfileElementType() == ProfileElementType.LOCATION
 				&&
 				demandProfileElement.getProfileElementType() == supplyProfileElement.getProfileElementType()
 			)
@@ -828,7 +824,7 @@ public class ProfileMatchingService extends AbstractService {
 		
 		ProfileComparison profileComparison = new ProfileComparison(demandProfile, supplyProfile, 0);
 		
-		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
+//		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
 		
 		// check the validity - if not valid: return null
 		if (
@@ -987,15 +983,12 @@ public class ProfileMatchingService extends AbstractService {
 		
 		List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
 		
-		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
+//		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
 		
-		for (Profile supplyProfile: profiles.allSupplyProfiles()) {
+		for (Profile supplyProfile: profiles.allSupplyProfilesOtherOwners(demandProfile.getOwnedBy())) {
 			
 			
 			if (
-					// loop over all supply profiles owned by different owner (username) then the one on the demand profile
-					supplyProfile.getOwnedBy() != demandProfile.getOwnedBy()
-					&&
 					// implement mockRule1
 					demandProfile.getProfileType() == supplyProfile.getProfileType()
 					

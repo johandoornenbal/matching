@@ -19,19 +19,20 @@
 
 package info.matchingservice.dom.Profile;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
-
 import java.util.List;
 import java.util.UUID;
+
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.joda.time.LocalDate;
+
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
 
 @DomainService(repositoryFor = Profile.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -52,6 +53,11 @@ public class Profiles extends MatchingDomainService<Profile> {
     @Programmatic
     public List<Profile> allSupplyProfiles() {
         return allMatches("allSupplyProfiles");
+    }
+
+    @Programmatic
+    public List<Profile> allSupplyProfilesOtherOwners(final String ownedBy) {
+        return allMatches("allSupplyProfilesOtherOwners", "ownedBy", ownedBy);
     }
     
     @Programmatic
