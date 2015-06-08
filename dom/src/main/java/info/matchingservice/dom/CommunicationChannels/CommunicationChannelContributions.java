@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
@@ -31,7 +32,6 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 	}
 
 
-
     // regex: of mobiel nummer, of vast telefoon nummer
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout(contributed = Contributed.AS_ACTION)
@@ -41,8 +41,7 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
             @Parameter(regexPattern ="(^(((0)[1-9]{2}[0-9][-| ]?[1-9]( ?[0-9]){5})|((\\+31|0|0031)[-| ]?[1-9][0-9][1-9]( ?[0-9]){6}))$)"
                     + "|(^(((\\\\+31|0|0031)6){1}[-| ]?[1-9]{1}( ?[0-9]){7})$)") String phoneNumber,
-            final @ParameterLayout(named = "Person") Person person,
-            final String ownedBy){
+            final @ParameterLayout(named = "Person") Person person){
 
         communicationChannels.createPhone(person, type, phoneNumber);
         return person;
@@ -50,6 +49,14 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
     public List<CommunicationChannelType> choices0CreatePhone() {
         return CommunicationChannelType.matching(Phone.class);
+    }
+
+    public boolean hideCreatePhone(CommunicationChannelType type, String phoneNumber, Person person){
+        if (person.getOwnedBy().equals(domainObjectContainer.getUser().getName())){
+            return false;
+        }
+
+        return true;
     }
 
     //Adding businessRule: only one Email of type EMAIL_MAIN
@@ -89,6 +96,14 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
         return null;
     }
 
+    public boolean hideCreateEmail(CommunicationChannelType type, String address, Person person){
+        if (person.getOwnedBy().equals(domainObjectContainer.getUser().getName())){
+            return false;
+        }
+
+        return true;
+    }
+
     // Address, 3 of meer letters gevolgd door cijfer, met evt een letter
     // postcode 4 cijfers, evt spatie. gevolgd door 2 Hoofdletters
 
@@ -106,9 +121,6 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
             @Parameter(regexPattern = "^[1-9]{1}[0-9]{3} ?[A-Z]{2}$")String postalCode,
             final Person person){
 
-
-
-
         communicationChannels.createAddress(person, addresType, address, postalCode, town);
         return person;
     }
@@ -116,6 +128,14 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
     public List<CommunicationChannelType> choices0CreateAddress(){
         return CommunicationChannelType.matching(Address.class);
 
+    }
+
+    public boolean hideCreateAddress(CommunicationChannelType addresType, String town, String address,String postalCode,Person person){
+        if (person.getOwnedBy().equals(domainObjectContainer.getUser().getName())){
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -151,16 +171,13 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
     }
 
-   // public List<Person> autoComplete0CreatePhone(final String search){
-   // 	return persons.findPersons(search);
-  //  }
-
-
-
     @Inject
     CommunicationChannels communicationChannels;
     
     @Inject
     Persons persons;
+
+    @Inject
+    DomainObjectContainer domainObjectContainer;
 
 }
