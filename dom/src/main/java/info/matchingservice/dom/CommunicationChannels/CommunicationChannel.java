@@ -40,7 +40,12 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 				name = "findCommunicationChannelByPersonAndType", language = "JDOQL",
 				value = "SELECT "
 						+ "FROM info.matchingservice.dom.CommunicationChannels.CommunicationChannel "
-						+ "WHERE person == :person && type == :communicationChannelType")
+						+ "WHERE person == :person && type == :communicationChannelType"),
+		@javax.jdo.annotations.Query(
+				name = "findCommunicationChannelByPerson", language = "JDOQL",
+				value = "SELECT "
+						+ "FROM info.matchingservice.dom.CommunicationChannels.CommunicationChannel "
+						+ "WHERE person == :person")
 })
 @DomainObject(autoCompleteRepository=CommunicationChannels.class,
 		autoCompleteAction = "autoComplete",

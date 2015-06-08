@@ -18,20 +18,6 @@
  */
 package info.matchingservice.dom.Actor;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.TrustLevel;
-import info.matchingservice.dom.Assessment.Assessment;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.DemandSupplyType;
-import info.matchingservice.dom.DemandSupply.Demands;
-import info.matchingservice.dom.DemandSupply.Supplies;
-import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Match.ProfileMatch;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.dom.Profile.Profiles;
-import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
-
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -44,6 +30,8 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
+import org.joda.time.LocalDate;
+
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Editing;
@@ -53,7 +41,20 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.value.Blob;
-import org.joda.time.LocalDate;
+
+import info.matchingservice.dom.Assessment.Assessment;
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.DemandSupply.Demands;
+import info.matchingservice.dom.DemandSupply.Supplies;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Match.ProfileMatch;
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
+import info.matchingservice.dom.TrustLevel;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -85,8 +86,22 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public void setUniqueItemId(final UUID uniqueItemId) {
         this.uniqueItemId = uniqueItemId;
     }
-	
-	//-- API: PROPERTIES --//
+
+    //region > activated (property)
+    private boolean activated;
+
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(final boolean activated) {
+        this.activated = activated;
+    }
+    //endregion
+
+    //-- API: PROPERTIES --//
 	
 	//** API: COLLECTIONS **//
 	

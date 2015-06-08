@@ -151,7 +151,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, OWNED_BY);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, null, OWNED_BY);
         }
         
         @Test
@@ -171,7 +171,7 @@ public class PersonTest extends MatchingIntegrationTest {
 //            assertThat(p2.getUniqueActorId(), is(UNIQUE_ID));
             assertThat(p2.getOwnedBy(), is(OWNED_BY));
             
-            assertThat(p1,is(p2));
+            assertThat(p1, is(p2));
             
         }
         
@@ -181,12 +181,12 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void shouldNotBeValidNewPerson() throws Exception {
-            assertThat(persons.validateCreatePerson("Frans", "van", "Oldenbarneveld", new LocalDate(1962,7,16), "frans", null).isEmpty(), is(false));
+            assertThat(persons.validateCreatePerson("Frans", "van", "Oldenbarneveld", new LocalDate(1962, 7, 16), "frans", null).isEmpty(), is(false));
         }
         
         @Test
         public void shouldBeValidNewPerson() throws Exception {
-            assertTrue(persons.validateCreatePerson("Johan", "van", "Oldenbarneveld", new LocalDate(1962,7,16), "johan", null) == null);
+            assertTrue(persons.validateCreatePerson("Johan", "van", "Oldenbarneveld", new LocalDate(1962, 7, 16), "johan", null) == null);
         }        
         
     }
@@ -230,13 +230,13 @@ public class PersonTest extends MatchingIntegrationTest {
     	
         @Test
         public void allPersons() throws Exception {
-            assertThat(persons.allPersons().size(), is(5));
+            assertThat(persons.allPersons().size(), is(6));
         }
         
         @Test
         public void allOtherPersons() throws Exception {
             Person thisIsMe = persons.activePerson("frans").get(0);
-            assertThat(persons.AllOtherPersons(thisIsMe).size(), is(4));
+            assertThat(persons.AllOtherPersons(thisIsMe).size(), is(5));
         }
     }
    
@@ -255,8 +255,8 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, OWNED_BY);
-            p2=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, "different_owner");
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, null, OWNED_BY);
+            p2=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, null, "different_owner");
             p3=persons.allPersons().get(0);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
@@ -291,7 +291,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, OWNED_BY);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, null, OWNED_BY);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
             p1.addRolePrincipal(OWNED_BY);
@@ -325,7 +325,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, OWNED_BY);
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, null, OWNED_BY);
             p1.addRoleStudent(OWNED_BY);
             p1.addRoleProfessional(OWNED_BY);
             p1.addRolePrincipal(OWNED_BY);
@@ -352,5 +352,42 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p1.hideDeleteRolePrincipal(p1, OWNED_BY), is(true));   
         }
         
-    }   
+    }
+
+    public static class activatePerson extends PersonTest {
+
+        private static final String LAST_NAME = "Test1";
+        private static final String MIDDLE_NAME = "van der";
+        private static final String FIRST_NAME = "T.";
+        private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
+        private static final String OWNED_BY = "test1";
+
+        Person p1; // new person with all roles
+
+        //given
+        @Before
+        public void setUp() throws Exception {
+            p1=persons.createPerson(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null, null, OWNED_BY);
+        }
+
+        @Test
+        public void activationAndDeactivation() throws Exception {
+            assertThat(p1.getActivated(), is(false));
+
+            //when
+            assertThat(persons.activatePerson(OWNED_BY), is("ACTIVATED"));
+
+            //then
+            assertThat(p1.getActivated(), is(true));
+
+            //when
+            assertThat(persons.deActivatePerson(OWNED_BY), is("DEACTIVATED"));
+
+            //then
+            assertThat(p1.getActivated(), is(false));
+
+        }
+
+    }
+
 }

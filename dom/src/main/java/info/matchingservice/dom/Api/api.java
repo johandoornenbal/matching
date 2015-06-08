@@ -26,6 +26,7 @@ import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.value.Blob;
 
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonRoleType;
 import info.matchingservice.dom.Actor.PersonalContact;
 import info.matchingservice.dom.Actor.PersonalContacts;
 import info.matchingservice.dom.Actor.Persons;
@@ -196,9 +197,11 @@ public class api extends AbstractFactoryAndRepository {
             final LocalDate dateOfBirth,
             @ParameterLayout(named="picture")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final Blob picture
+            final Blob picture,
+			@ParameterLayout(named="personRole")
+			final PersonRoleType personRoleType
 			){
-		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture);
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, personRoleType);
 	}
 	
     @Programmatic //userName can now also be set by fixtures
@@ -207,7 +210,8 @@ public class api extends AbstractFactoryAndRepository {
             final String middleName,
             final String lastName,
             final LocalDate dateOfBirth,
-            final Blob picture) {
+            final Blob picture,
+			final PersonRoleType personRoleType) {
         
         QueryDefault<Person> query = 
                 QueryDefault.create(
@@ -221,6 +225,129 @@ public class api extends AbstractFactoryAndRepository {
     }
     
     //------------------------------------ END createPerson ---------------------------//
+
+	//***************************************** createStudent ***********************//
+
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	public Person createStudent(
+			@ParameterLayout(named="firstName")
+			final String firstName,
+			@ParameterLayout(named="middleName")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String middleName,
+			@ParameterLayout(named="lastName")
+			final String lastName,
+			@ParameterLayout(named="dateOfBirth")
+			final LocalDate dateOfBirth,
+			@ParameterLayout(named="picture")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final Blob picture
+	){
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.STUDENT);
+	}
+
+	@Programmatic //userName can now also be set by fixtures
+	public String validateCreateStudent(
+			final String firstName,
+			final String middleName,
+			final String lastName,
+			final LocalDate dateOfBirth,
+			final Blob picture) {
+
+		QueryDefault<Person> query =
+				QueryDefault.create(
+						Person.class,
+						"findPersonUnique",
+						"ownedBy", currentUserName());
+		return container.firstMatch(query) != null?
+				"ONE_INSTANCE_AT_MOST"
+				:null;
+
+	}
+
+	//------------------------------------ END createStudent ---------------------------//
+
+	//***************************************** createProfessional ***********************//
+
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	public Person createProfessional(
+			@ParameterLayout(named="firstName")
+			final String firstName,
+			@ParameterLayout(named="middleName")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String middleName,
+			@ParameterLayout(named="lastName")
+			final String lastName,
+			@ParameterLayout(named="dateOfBirth")
+			final LocalDate dateOfBirth,
+			@ParameterLayout(named="picture")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final Blob picture
+	){
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PROFESSIONAL);
+	}
+
+	@Programmatic //userName can now also be set by fixtures
+	public String validateCreateProfessional(
+			final String firstName,
+			final String middleName,
+			final String lastName,
+			final LocalDate dateOfBirth,
+			final Blob picture) {
+
+		QueryDefault<Person> query =
+				QueryDefault.create(
+						Person.class,
+						"findPersonUnique",
+						"ownedBy", currentUserName());
+		return container.firstMatch(query) != null?
+				"ONE_INSTANCE_AT_MOST"
+				:null;
+
+	}
+
+	//------------------------------------ END createProfessional ---------------------------//
+
+	//***************************************** createPrincipal ***********************//
+
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	public Person createPrincipal(
+			@ParameterLayout(named="firstName")
+			final String firstName,
+			@ParameterLayout(named="middleName")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String middleName,
+			@ParameterLayout(named="lastName")
+			final String lastName,
+			@ParameterLayout(named="dateOfBirth")
+			final LocalDate dateOfBirth,
+			@ParameterLayout(named="picture")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final Blob picture
+	){
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PRINCIPAL);
+	}
+
+	@Programmatic //userName can now also be set by fixtures
+	public String validateCreatePrincipal(
+			final String firstName,
+			final String middleName,
+			final String lastName,
+			final LocalDate dateOfBirth,
+			final Blob picture) {
+
+		QueryDefault<Person> query =
+				QueryDefault.create(
+						Person.class,
+						"findPersonUnique",
+						"ownedBy", currentUserName());
+		return container.firstMatch(query) != null?
+				"ONE_INSTANCE_AT_MOST"
+				:null;
+
+	}
+
+	//------------------------------------ END createStudent ---------------------------//
     
     //***************************************** findPersons **************************************//
     
@@ -286,6 +413,27 @@ public class api extends AbstractFactoryAndRepository {
     }
     
     //----------------------------------------- END createPersonalContact -------------------//
+
+
+	//***************************************** activatePersonOwnedBy ***********************//
+
+	@Action(semantics=SemanticsOf.IDEMPOTENT)
+	public String activatePersonOwnedBy(String ownedBy) {
+		return persons.activatePerson(ownedBy);
+	}
+
+
+	//----------------------------------------- END activatePersonOwnedBy -------------------//
+
+	//***************************************** deActivatePersonOwnedBy ***********************//
+
+	@Action(semantics=SemanticsOf.IDEMPOTENT)
+	public String deActivatePersonOwnedBy(String ownedBy) {
+		return persons.deActivatePerson(ownedBy);
+	}
+
+
+	//----------------------------------------- END activatePersonOwnedBy -------------------//
 
 	//***************************************** deletePersonOwnedBy ***********************//
 

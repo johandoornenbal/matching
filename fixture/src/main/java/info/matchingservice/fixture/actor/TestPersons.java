@@ -6,6 +6,7 @@ import info.matchingservice.fixture.security.antoniUser;
 import info.matchingservice.fixture.security.differentUser;
 import info.matchingservice.fixture.security.fransUser;
 import info.matchingservice.fixture.security.gerardUser;
+import info.matchingservice.fixture.security.jeanneUser;
 import info.matchingservice.fixture.security.michielUser;
 import info.matchingservice.fixture.security.rembrandtUser;
 import info.matchingservice.fixture.security.test1User;
@@ -23,18 +24,20 @@ public class TestPersons extends PersonAbstract {
             executeChild(new michielUser(), executionContext);
             executeChild(new rembrandtUser(), executionContext);
             executeChild(new gerardUser(), executionContext);
+            executeChild(new jeanneUser(), executionContext);
             executeChild(new test1User(), executionContext);
             executeChild(new test2User(), executionContext);
             executeChild(new differentUser(), executionContext);
             executeChild(new testerUser(), executionContext);
 
         createPerson(
-                "Frans", 
-                "", 
+                "Frans",
+                "",
                 "Hals",
                 new LocalDate(1962, 7, 16),
                 null,
                 "frans",
+                true,
                 executionContext);
         
         createPerson( 
@@ -44,6 +47,7 @@ public class TestPersons extends PersonAbstract {
                 new LocalDate(1970, 1, 18),
                 null,
                 "gerard",
+                true,
                 executionContext);
         
         createPerson( 
@@ -53,6 +57,7 @@ public class TestPersons extends PersonAbstract {
                 new LocalDate(1963, 12, 30),
                 null,
                 "rembrandt",
+                true,
                 executionContext);
         
         createPerson( 
@@ -62,6 +67,7 @@ public class TestPersons extends PersonAbstract {
                 new LocalDate(1980, 8, 12),
                 null,
                 "michiel",
+                true,
                 executionContext);
     	
         createPerson(
@@ -71,7 +77,18 @@ public class TestPersons extends PersonAbstract {
                 new LocalDate(1632, 10, 24),
                 null,
                 "antoni",
+                true,
                 executionContext);
+
+            createPerson(
+                    "Jeanne",
+                    "d'",
+                    "Arc",
+                    new LocalDate(1970, 7, 10),
+                    null,
+                    "jeanne",
+                    false,
+                    executionContext);
     }
 
 }

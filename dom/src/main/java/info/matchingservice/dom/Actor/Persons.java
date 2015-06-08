@@ -48,6 +48,7 @@ import org.apache.isis.applib.value.Blob;
 
 import org.isisaddons.module.security.dom.user.ApplicationUsers;
 
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.MatchingDomainService;
@@ -75,9 +76,10 @@ public class Persons extends MatchingDomainService<Person> {
             final LocalDate dateOfBirth,
             @ParameterLayout(named="picture")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final Blob picture
+            final Blob picture,
+            final PersonRoleType personRoleType
             ) {
-        return createPerson(firstName, middleName, lastName, dateOfBirth, picture, currentUserName()); // see region>helpers
+        return createPerson(firstName, middleName, lastName, dateOfBirth, picture, personRoleType, currentUserName()); // see region>helpers
     }
     
     public boolean hideCreatePerson() {
@@ -93,7 +95,8 @@ public class Persons extends MatchingDomainService<Person> {
             final String middleName,
             final String lastName,
             final LocalDate dateOfBirth,
-            final Blob picture) {
+            final Blob picture,
+            final PersonRoleType personRoleType) {
         return validateCreatePerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture);
     }
     
@@ -151,6 +154,7 @@ public class Persons extends MatchingDomainService<Person> {
             final String lastName,
             final LocalDate dateOfBirth,
             final Blob picture,
+            final PersonRoleType personRoleType,
             final String userName) {
         final Person person = newTransientInstance(Person.class);
         final UUID uuid=UUID.randomUUID();
@@ -161,12 +165,23 @@ public class Persons extends MatchingDomainService<Person> {
         person.setDateOfBirth(dateOfBirth);
         person.setOwnedBy(userName);
         person.setPicture(picture);
-        person.addRoleStudent();
+        if (personRoleType!=null) {
+            if (personRoleType.equals(PersonRoleType.STUDENT)) {
+                person.addRoleStudent();
+            }
+            if (personRoleType.equals(PersonRoleType.PROFESSIONAL)) {
+                person.addRoleProfessional();
+            }
+            if (personRoleType.equals(PersonRoleType.PRINCIPAL)) {
+                person.addRolePrincipal();
+            }
+        }
+        person.setActivated(false);
         persist(person);
 
         // create first emailAddress contributed to Person copied from securityModule
         final String emailAddress = applicationUsers.findUserByUsername(userName).getEmailAddress();
-        emails.createEmail(emailAddress, CommunicationChannelType.EMAIL_MAIN, person);
+        communicationChannels.createEmail(emailAddress, CommunicationChannelType.EMAIL_MAIN, person);
 
         return person;
     }
@@ -263,7 +278,43 @@ public class Persons extends MatchingDomainService<Person> {
                         "findPersonUnique",
                         "ownedBy", ownedBy);
         Person personToDelete = allMatches(query).get(0);
+        List<CommunicationChannel> channels = communicationChannels.findCommunicationChannelByPerson(personToDelete);
+        for (CommunicationChannel channel : channels){
+            channel.deleteCommunicationChannel(true);
+        }
         container.removeIfNotAlready(personToDelete);
+    }
+
+    @Programmatic
+    // for Api
+    public String activatePerson(String ownedBy){
+        QueryDefault<Person> query =
+                QueryDefault.create(
+                        Person.class,
+                        "findPersonUnique",
+                        "ownedBy", ownedBy);
+        Person personToActivate = allMatches(query).get(0);
+        if (personToActivate!=null){
+            personToActivate.setActivated(true);
+            return "ACTIVATED";
+        }
+        return "NOT_ACTIVATED";
+    }
+
+    @Programmatic
+    // for Api
+    public String deActivatePerson(String ownedBy){
+        QueryDefault<Person> query =
+                QueryDefault.create(
+                        Person.class,
+                        "findPersonUnique",
+                        "ownedBy", ownedBy);
+        Person personToDeActivate = allMatches(query).get(0);
+        if (personToDeActivate!=null){
+            personToDeActivate.setActivated(false);
+            return "DEACTIVATED";
+        }
+        return "NOT_DEACTIVATED";
     }
 
     
@@ -272,7 +323,7 @@ public class Persons extends MatchingDomainService<Person> {
     private DomainObjectContainer container;
 
     @Inject
-    private CommunicationChannels emails;
+    private CommunicationChannels communicationChannels;
 
     @Inject
     ApplicationUsers applicationUsers;

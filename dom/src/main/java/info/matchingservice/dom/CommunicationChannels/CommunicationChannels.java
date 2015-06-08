@@ -178,6 +178,16 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         return allMatches(query);
     }
 
+    @Programmatic
+    public List<CommunicationChannel> findCommunicationChannelByPerson(final Person person) {
+        QueryDefault<CommunicationChannel> query =
+                QueryDefault.create(
+                        CommunicationChannel.class,
+                        "findCommunicationChannelByPerson",
+                        "person", person);
+        return allMatches(query);
+    }
+
 
     @Programmatic
     public List<CommunicationChannel> allCommunicationChannels(Class type){

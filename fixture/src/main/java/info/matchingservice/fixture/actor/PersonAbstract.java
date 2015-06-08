@@ -1,11 +1,12 @@
 package info.matchingservice.fixture.actor;
 
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Actor.Persons;
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.apache.isis.applib.value.Blob;
-import org.joda.time.LocalDate;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Persons;
 
 public abstract class PersonAbstract extends FixtureScript {
 
@@ -19,9 +20,11 @@ public abstract class PersonAbstract extends FixtureScript {
             LocalDate dateOfBirth,
             Blob picture,
             String user,
+            boolean activated,
             ExecutionContext executionContext
             ) {
-        Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, user);
+        Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, null, user);
+        newPerson.setActivated(activated);
                        
         return executionContext.add(this, newPerson);
     }

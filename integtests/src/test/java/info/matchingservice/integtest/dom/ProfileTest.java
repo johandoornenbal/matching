@@ -1,7 +1,14 @@
 package info.matchingservice.integtest.dom;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import javax.inject.Inject;
+
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -20,26 +27,12 @@ import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
-import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.fixture.TeardownFixture;
-import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
-import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
-import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
-import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
-import info.matchingservice.fixture.tag.TagsForFrans;
 import info.matchingservice.integtest.MatchingIntegrationTest;
-
-import javax.inject.Inject;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ProfileTest extends MatchingIntegrationTest {
     
@@ -89,7 +82,7 @@ public class ProfileTest extends MatchingIntegrationTest {
     	
     	@Before
     	public void setUp() throws Exception {
-    		p1=persons.createPerson("TESTvn", "", "TESTan", new LocalDate(1962,7,16), null);
+    		p1=persons.createPerson("TESTvn", "", "TESTan", new LocalDate(1962,7,16), null, null);
     		s1=supplies.createSupply("TESTSUP", 10, null, null, DemandSupplyType.PERSON_DEMANDSUPPLY, p1, container.getUser().getName());
     		pf1=s1.createPersonSupplyProfile();
     		pf1.createPassionElement(ELEMENT_PASSIONVALUE, ELEMENT_INTVALUE);

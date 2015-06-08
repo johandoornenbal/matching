@@ -109,6 +109,23 @@ public class CommunicationChannelsTest {
         }
 
     }
+
+    public static class findCommunicationChannelByPerson extends CommunicationChannelsTest {
+        Person person = new PersonForTesting();
+
+        @Test
+        public void happyCase() {
+
+            communicationChannels.findCommunicationChannelByPerson(person);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            assertThat(finderInteraction.getQueryName(), is("findCommunicationChannelByPerson"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("person"), is((Object) person));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+
+        }
+
+    }
     
 
    

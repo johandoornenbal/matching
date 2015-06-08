@@ -2,22 +2,19 @@ package info.matchingservice.integtest.dom;
 
 import javax.inject.Inject;
 
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 import info.matchingservice.dom.Actor.PersonRole;
 import info.matchingservice.dom.Actor.PersonRoleType;
 import info.matchingservice.dom.Actor.PersonRoles;
-import info.matchingservice.fixture.MatchingTestsFixture;
 import info.matchingservice.fixture.actor.TestPersons;
-import info.matchingservice.fixture.actor.TestRoles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.is;
 
 public class RoleTest extends MatchingIntegrationTest {
     
@@ -38,22 +35,7 @@ public class RoleTest extends MatchingIntegrationTest {
             }
         });
     }
-    
-    public static class testRole extends RoleTest {
-        
-        private static final PersonRoleType ROLE = PersonRoleType.STUDENT;
-        private static final String USERNAME = "tester";
-        
-        PersonRole r1;
-        
-        @Test
-        public void valuesSet() throws Exception {
-            r1 = roles.allRoles().get(0);
-            assertThat(r1.getRole(), is(ROLE));
-            assertThat(r1.getOwnedBy(), is(USERNAME));
-        }
-    }
-    
+
     public static class NewRole extends RoleTest {
         
         private static final PersonRoleType ROLE = PersonRoleType.PROFESSIONAL;

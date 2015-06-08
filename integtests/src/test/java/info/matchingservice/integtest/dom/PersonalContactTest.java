@@ -1,19 +1,20 @@
 package info.matchingservice.integtest.dom;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import javax.inject.Inject;
+
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.PersonalContacts;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.integtest.MatchingIntegrationTest;
-
-import javax.inject.Inject;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class PersonalContactTest extends MatchingIntegrationTest {
 	
@@ -42,7 +43,7 @@ public class PersonalContactTest extends MatchingIntegrationTest {
 			
 			Person p1;
 			Person frans;
-			p1 = persons.createPerson("Test", "van der", "Test", new LocalDate(1962,7,16), null, "tester");
+			p1 = persons.createPerson("Test", "van der", "Test", new LocalDate(1962,7,16), null, null, "tester");
 			assertThat(p1.getOwnedBy(),is("tester"));
 			// because p1 is owned by tester Action AddAsPersonalContact should be hidden
 			assertThat(personalcontacts.hideAddAsPersonalContact(p1), is(true));
