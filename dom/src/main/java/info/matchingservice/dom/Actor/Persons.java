@@ -293,8 +293,8 @@ public class Persons extends MatchingDomainService<Person> {
                         Person.class,
                         "findPersonUnique",
                         "ownedBy", ownedBy);
-        Person personToActivate = allMatches(query).get(0);
-        if (personToActivate!=null){
+        if (allMatches(query).size()>0) {
+            Person personToActivate = allMatches(query).get(0);
             personToActivate.setActivated(true);
             return "ACTIVATED";
         }
@@ -309,10 +309,11 @@ public class Persons extends MatchingDomainService<Person> {
                         Person.class,
                         "findPersonUnique",
                         "ownedBy", ownedBy);
-        Person personToDeActivate = allMatches(query).get(0);
-        if (personToDeActivate!=null){
+        if (allMatches(query).size()>0) {
+            Person personToDeActivate = allMatches(query).get(0);
             personToDeActivate.setActivated(false);
             return "DEACTIVATED";
+
         }
         return "NOT_DEACTIVATED";
     }

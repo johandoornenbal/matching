@@ -388,6 +388,14 @@ public class PersonTest extends MatchingIntegrationTest {
 
         }
 
+        @Test
+        public void activationAndDeactivationProblem() throws Exception {
+
+            assertThat(persons.activatePerson("someone_not_existing"), is("NOT_ACTIVATED"));
+            assertThat(persons.deActivatePerson("someone_not_existing"), is("NOT_DEACTIVATED"));
+
+        }
+
     }
 
 }
