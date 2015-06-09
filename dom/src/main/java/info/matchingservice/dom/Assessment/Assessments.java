@@ -21,23 +21,19 @@ package info.matchingservice.dom.Assessment;
 import java.util.List;
 import java.util.UUID;
 
-import javax.inject.Inject;
-
-import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.Profile;
 
 
-@DomainService(repositoryFor = Assessment.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
+@DomainService(repositoryFor = Assessment.class, nature=NatureOfService.DOMAIN)
 public class Assessments extends MatchingDomainService<Assessment> {
 
     public Assessments() {
@@ -48,104 +44,6 @@ public class Assessments extends MatchingDomainService<Assessment> {
     public List<Assessment> allAssessments(){
         return allInstances();
     }
-    
-    //** API: ACTIONS **//
-    
-    //** createDemandAssessment **//
-    public Assessment createDemandAssessment(
-            @ParameterLayout(named="targetOfAssessment")
-            final Demand targetOfAssessment,
-            @ParameterLayout(named="assessmentDescription")
-            final String assessmentDescription,
-            @ParameterLayout(named="feedback", multiLine=3)
-            final String feedback
-            ){
-    	return createDemandAssessment(targetOfAssessment, persons.findPersonUnique(currentUserName()), assessmentDescription, feedback, currentUserName());
-    }
-    
-    // Business rule:
-    // No feedback on own demand
-    public boolean hideCreateDemandAssessment(
-            final Demand targetOfAssessment,
-            final String assessmentDescription,
-            final String feedback            
-            ){
-        if (targetOfAssessment.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        
-        return false;
-    }
-    //-- createDemandAssessment --//
-    
-    //** createSupplyAssessment **//
-    public Assessment createSupplyAssessment(
-            @ParameterLayout(named="targetOfAssessment")
-            final Supply targetOfAssessment,
-            @ParameterLayout(named="assessmentDescription")
-            final String assessmentDescription,
-            @ParameterLayout(named="feedback", multiLine=3)
-            final String feedback
-            ){
-        return createSupplyAssessment(targetOfAssessment, persons.findPersonUnique(currentUserName()), assessmentDescription, feedback, currentUserName());
-    }
-    
-    //BUSINESS RULE
-    //Geen feedback op eigen supply
-    public boolean hideCreateSupplyAssessment(
-            final Supply targetObject,
-            final String description,
-            final String feedback            
-            ){
-        if (targetObject.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        
-        return false;
-    }
-    //-- createSupplyAssessment --//
-    
-    //** createProfileAssessment **//
-    public Assessment createProfileAssessment(
-            @ParameterLayout(named="targetOfAssessment")
-            final Profile targetOfAssessment,
-            @ParameterLayout(named="assessmentDescription")
-            final String assessmentDescription,
-            @ParameterLayout(named="feedback", multiLine=3)
-            final String feedback
-            ){
-        return createProfileAssessment(
-                targetOfAssessment,
-                persons.findPersonUnique(currentUserName()),
-                assessmentDescription,
-                feedback,
-                currentUserName());
-    }
-    
-    //BUSINESS RULE
-    //Geen feedback op eigen profile
-    public boolean hideCreateProfileAssessment(
-            final Profile targetObject,
-            final String description,
-            final String feedback            
-            ){
-        if (targetObject.getOwnedBy().equals(currentUserName())){
-            return true;
-        }
-        
-        return false;
-    }
-    //-- createProfileAssessment --//
-    
-    //-- API: ACTIONS --//
-
-    //** HELPERS **//
-    //** HELPERS: generic service helpers **//
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
-    //-- HELPERS: generic service helpers --//
-    //** HELPERS: programmatic actions **//
     
     @Programmatic
     public Assessment createDemandAssessment(
@@ -210,16 +108,28 @@ public class Assessments extends MatchingDomainService<Assessment> {
         return newAs;
     }
 
-    //-- HELPERS: programmatic actions --//
-    
-    //-- HELPERS --//
+    @Programmatic
+    public Assessment createProfileMatchAssessment(
+            final ProfileMatch targetObject,
+            final Actor ownerActor,
+            final String description,
+            final String ownedBy
+    ){
+        final ProfileMatchAssessment newAs = newTransientInstance(ProfileMatchAssessment.class);
+        final UUID uuid=UUID.randomUUID();
+        newAs.setUniqueItemId(uuid);
+        newAs.setTargetOfAssessment(targetObject);
+        newAs.setTargetOwnerActor(targetObject.getOwnerActor());
+        newAs.setAssessmentOwnerActor(ownerActor);
+        newAs.setAssessmentDescription(description);
+        newAs.setOwnedBy(ownedBy);
+        persist(newAs);
+        return newAs;
+    }
+
     
 	//** INJECTIONS **//
-    @javax.inject.Inject
-    private DomainObjectContainer container;
-    
-    @Inject
-    private Persons persons;
+
 	//-- INJECTIONS --//
 
 }

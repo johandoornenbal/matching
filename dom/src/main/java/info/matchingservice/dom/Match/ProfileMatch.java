@@ -21,6 +21,7 @@ package info.matchingservice.dom.Match;
 
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 
@@ -37,6 +38,8 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
 import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Assessment.ProfileMatchAssessment;
+import info.matchingservice.dom.Assessment.ProfileMatchAssessments;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
 
@@ -186,6 +189,10 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
             @Parameter(optionality=Optionality.OPTIONAL)
             boolean confirmDelete
             ){
+        //first delete profileMatchAssessments belonging to this profileMatch
+        for (ProfileMatchAssessment profileMatchAssessment : profileMatchAssessments.findProfileMatchesAssessmentByProfileMatch(this)) {
+            profileMatchAssessment.deleteAssessment(true);
+        }
         container.removeIfNotAlready(this);
         return this.getDemandProfile();
     }
@@ -198,5 +205,8 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     
     @javax.inject.Inject
     private DomainObjectContainer container;
+
+    @Inject
+    ProfileMatchAssessments profileMatchAssessments;
 
 }

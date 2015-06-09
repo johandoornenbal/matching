@@ -26,6 +26,7 @@ public class TeardownFixture extends FixtureScript {
     	isisJdoSupport.executeUpdate("delete from \"DemandAssessment\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileAssessment\"");
         isisJdoSupport.executeUpdate("delete from \"SupplyAssessment\"");
+        isisJdoSupport.executeUpdate("delete from \"ProfileMatchAssessment\"");
         isisJdoSupport.executeUpdate("delete from \"Assessment\"");
         
         isisJdoSupport.executeUpdate("delete from \"PersonRole\"");

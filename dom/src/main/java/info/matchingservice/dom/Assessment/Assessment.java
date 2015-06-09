@@ -20,9 +20,6 @@ package info.matchingservice.dom.Assessment;
 
 import java.util.UUID;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Actor.Actor;
-
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
@@ -36,6 +33,9 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.MatchingSecureMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)

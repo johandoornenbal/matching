@@ -30,15 +30,18 @@ import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Assessment.Assessments;
 import info.matchingservice.dom.Assessment.DemandFeedback;
 import info.matchingservice.dom.Assessment.ProfileFeedback;
+import info.matchingservice.dom.Assessment.ProfileMatchAssessment;
 import info.matchingservice.dom.Assessment.SupplyFeedback;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.assessment.AssessmentsForFransFixture;
 import info.matchingservice.fixture.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
+import info.matchingservice.fixture.match.ProfileMatchesForTesting;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 import static org.hamcrest.CoreMatchers.is;
@@ -194,6 +197,51 @@ public class AssessmentsTest extends MatchingIntegrationTest {
             assertThat(profileFeedback.getTargetOfAssessment(), is((Object) assessmentTarget));
             assertThat(profileFeedback.getTargetOwnerActor(), is((Object) assessmentTargetOwner));
             assertThat(profileFeedback.getFeedback(), is(FEEDBACK));
+        }
+
+    }
+
+    public static class CreateProfileMatchAssessment extends AssessmentsTest {
+
+        @Before
+        public void setupData() {
+            runScript(new FixtureScript() {
+                @Override
+                protected void execute(ExecutionContext executionContext) {
+                    scenarioExecution().install(new TeardownFixture());
+                    executionContext.executeChild(this, new TestPersons());
+                    executionContext.executeChild(this, new TestDemandProfiles());
+                    executionContext.executeChild(this, new TestSupplyProfiles());
+                    executionContext.executeChild(this, new ProfileMatchesForTesting());
+                }
+            });
+        }
+
+        Person assessmentOwner;
+        Person assessmentTargetOwner;
+        ProfileMatch assessmentTarget;
+        String ownedBy;
+
+        private static final String DESCRIPTION = "Test on profile match";
+
+        @Test
+        public void valuesSet() throws Exception {
+
+            //given
+            assessmentOwner = persons.findPersons("Rijn").get(0);
+            assessmentTargetOwner = persons.findPersons("Hals").get(0);
+            assessmentTarget = assessmentTargetOwner.getCollectSavedMatches().first();
+            ownedBy = "rembrandt";
+
+            //when
+            ProfileMatchAssessment profileFeedback = (ProfileMatchAssessment) assessments.createProfileMatchAssessment(assessmentTarget, assessmentOwner, DESCRIPTION, ownedBy);
+
+            //then
+            assertThat(profileFeedback.getOwnedBy(), is(ownedBy));
+            assertThat(profileFeedback.getAssessmentDescription(), is(DESCRIPTION));
+            assertThat(profileFeedback.getAssessmentOwnerActor(), is((Object) assessmentOwner));
+            assertThat(profileFeedback.getTargetOfAssessment(), is((Object) assessmentTarget));
+            assertThat(profileFeedback.getTargetOwnerActor(), is((Object) assessmentTargetOwner));
         }
 
     }
