@@ -23,9 +23,7 @@ import javax.inject.Inject;
 
 import com.google.common.collect.ComparisonChain;
 
-import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.ViewModel;
-import org.apache.isis.applib.annotation.Where;
 
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.MatchingDomainObject;
@@ -47,8 +45,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     }
     
     private Profile demandProfile;
-    
-    @PropertyLayout(hidden=Where.EVERYWHERE)
+
     public Profile getDemandProfile() {
         return demandProfile;
     }
@@ -89,7 +86,9 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     public Actor getProposedPerson() {
         return getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner();
-    }    
+    }
+
+    public Actor getDemandingPerson() {return getDemandProfile().getActorOwner(); }
     
     public int compareTo(ProfileComparison that) {
         return ComparisonChain.start()

@@ -84,11 +84,16 @@ import info.matchingservice.dom.TrustLevel;
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
                     + "WHERE supplyProfileOwner != null"),
-        @javax.jdo.annotations.Query(
-                name = "allSupplyProfilesOtherOwners", language = "JDOQL",
-                value = "SELECT "
-                        + "FROM info.matchingservice.dom.Profile.Profile "
-                        + "WHERE supplyProfileOwner != null && ownedBy != :ownedBy"),
+    @javax.jdo.annotations.Query(
+            name = "allSupplyProfilesOtherOwners", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE supplyProfileOwner != null && ownedBy != :ownedBy"),
+    @javax.jdo.annotations.Query(
+            name = "allDemandProfilesOtherOwners", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.Profile "
+                    + "WHERE demandProfileOwner != null && ownedBy != :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "allSupplyProfilesOfType", language = "JDOQL",
             value = "SELECT "
@@ -354,6 +359,19 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     	return this.getDemandOrSupply() != DemandOrSupply.DEMAND;
     }
     
+    //-- collectProfileComparisons--//
+
+    //** collectDemandProfileComparisons**//
+
+    @Action(semantics=SemanticsOf.SAFE)
+    public List<ProfileComparison> actionCollectDemandProfileComparisons(){
+        return profileMatchingService.collectDemandProfileComparisons(this);
+    }
+
+    public boolean hideActionCollectDemandProfileComparisons(){
+        return this.getDemandOrSupply() != DemandOrSupply.SUPPLY;
+    }
+
     //-- collectProfileComparisons--//
     
     //** createPassionElement **//

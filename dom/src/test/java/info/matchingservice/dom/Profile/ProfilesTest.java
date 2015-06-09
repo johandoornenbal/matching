@@ -178,5 +178,23 @@ public class ProfilesTest {
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
         }
     }
+
+    public static class allDemandProfilesOtherOwners extends ProfilesTest {
+
+        @Mock
+        String ownedBy;
+
+        @Test
+        public void happyCase() {
+
+            profiles.allDemandProfilesOtherOwners(ownedBy);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            assertThat(finderInteraction.getQueryName(), is("allDemandProfilesOtherOwners"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("ownedBy"), is((Object) ownedBy));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+        }
+    }
    
 }

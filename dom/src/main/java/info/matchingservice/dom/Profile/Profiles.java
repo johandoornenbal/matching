@@ -74,7 +74,12 @@ public class Profiles extends MatchingDomainService<Profile> {
     public List<Profile> allDemandProfilesOfType(ProfileType profileType) {
         return allMatches("allDemandProfilesOfType","profileType",profileType);
     }
-    
+
+    @Programmatic
+    public List<Profile> allDemandProfilesOtherOwners(final String ownedBy) {
+        return allMatches("allDemandProfilesOtherOwners", "ownedBy", ownedBy);
+    }
+
     @Programmatic
     // for Api
     public List<Profile> findProfileByUniqueItemId(UUID uniqueItemId) {

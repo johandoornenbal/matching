@@ -35,7 +35,7 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"TagHolder\"");
         
         isisJdoSupport.executeUpdate("delete from \"ProfileMatch\"");
-        
+
         isisJdoSupport.executeUpdate("delete from \"ProfileElement\"");
         
         isisJdoSupport.executeUpdate("delete from \"Profile\"");

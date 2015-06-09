@@ -1022,6 +1022,62 @@ public class ProfileMatchingService extends AbstractService {
 		return profileComparisons;
 		
 	}
+
+	/**
+	 * Collects all profile comparisons between the supplyProfile and all matching demandProfiles
+	 *
+	 * Business logic:
+	 * Implements ProfileTypeMatching Rule
+	 *
+	 * @param supplyProfile
+	 * @return
+	 */
+	@Programmatic
+	public List<ProfileComparison> collectDemandProfileComparisons(final Profile supplyProfile){
+
+		List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
+
+		//		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
+
+		for (Profile demandProfile: profiles.allDemandProfilesOtherOwners(supplyProfile.getOwnedBy())) {
+
+
+			if (
+				// implement mockRule1
+					supplyProfile.getProfileType() == demandProfile.getProfileType()
+
+					)
+			{
+
+				try
+				{
+					// implement mockRule1
+					if (
+							this.getProfileComparison(demandProfile, supplyProfile).getCalculatedMatchingValue()
+									>=
+									//						mockRule1.getMatchingProfileValueThreshold()
+									1
+							)
+					{
+
+						profileComparisons.add(this.getProfileComparison(demandProfile, supplyProfile));
+
+					}
+				}
+				catch(NullPointerException e)
+				{
+
+				}
+
+			}
+
+		}
+
+		return profileComparisons;
+
+	}
+
+
 	
 	//********************************************************************* END collectProfileComparisons ************************************************************************	
 	
@@ -1051,9 +1107,38 @@ public class ProfileMatchingService extends AbstractService {
     public boolean hideCollectProfileMatches(Profile demandProfile){
         return demandProfile.getDemandOrSupply() != DemandOrSupply.DEMAND;
     }
-    
 
-    // Region>injections ////////////////////////////
+
+	@Action(semantics=SemanticsOf.SAFE, invokeOn=InvokeOn.OBJECT_ONLY)
+	@ActionLayout(contributed=Contributed.AS_ASSOCIATION)
+	@CollectionLayout(render=RenderType.EAGERLY)
+	@Render(Type.EAGERLY) // because of bug @CollectionLayout
+	public List<ProfileComparison> collectDemandProfileMatches(Profile supplyProfile) {
+
+		List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
+
+		//***********INIT**************//
+		//Init Test: Only if there are any Profiles
+		if (container.allInstances(Profile.class).isEmpty()) {
+			return profileComparisons;
+		}
+
+		profileComparisons = this.collectDemandProfileComparisons(supplyProfile);
+
+		Collections.sort(profileComparisons);
+		Collections.reverse(profileComparisons);
+
+		return profileComparisons;
+	}
+
+	// this one is meant for supply profiles only
+	public boolean hideCollectDemandProfileMatches(Profile demandProfile){
+		return demandProfile.getDemandOrSupply() != DemandOrSupply.SUPPLY;
+	}
+
+
+
+	// Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;
     
