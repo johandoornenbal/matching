@@ -358,6 +358,30 @@ public class api extends AbstractFactoryAndRepository {
             ){
 		return persons.findPersons(lastName);
 	}
+
+	//Business Rule: Person of login has to be activated
+	public boolean hideFindPersons(
+			final String lastName
+		){
+		if (persons.findPersonUnique(currentUserName())!=null &&
+				persons.findPersonUnique(currentUserName()).getActivated()
+				){
+			return false;
+		}
+		return true;
+	}
+
+	public String validateFindPersons(
+			final String lastName
+	){
+
+		if (persons.findPersonUnique(currentUserName())!=null &&
+				persons.findPersonUnique(currentUserName()).getActivated()
+				){
+			return null;
+		}
+		return "PERSON_NOT_ACTIVATED";
+	}
     
     //------------------------------------ END findPersons ---------------------------//
     
