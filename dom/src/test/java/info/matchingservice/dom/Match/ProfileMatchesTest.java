@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import org.apache.isis.applib.query.Query;
 
+import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.FinderInteraction;
 import info.matchingservice.dom.FinderInteraction.FinderMethod;
 import info.matchingservice.dom.Profile.Profile;
@@ -92,6 +93,24 @@ public class ProfileMatchesTest {
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(2));
 
         }
+
+    }
+
+    public static class FindProfileMatchesBySupplyCandidate extends ProfileMatchesTest {
+
+        @Mock
+        Actor supplyCandidate;
+
+        @Test
+        public void happyCase() {
+            profileMatches.collectProfileMatches(supplyCandidate);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            assertThat(finderInteraction.getQueryName(), is("findProfileMatchesBySupplyCandidate"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("supplyCandidate"), is((Object) supplyCandidate));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+        }
+
 
     }
  

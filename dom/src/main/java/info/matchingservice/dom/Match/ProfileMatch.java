@@ -62,6 +62,11 @@ import info.matchingservice.dom.Profile.Profile;
                     + "FROM info.matchingservice.dom.Match.ProfileMatch "
                     + "WHERE demandProfile == :demandProfile"),
     @javax.jdo.annotations.Query(
+            name = "findProfileMatchesBySupplyCandidate", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Match.ProfileMatch "
+                    + "WHERE supplyCandidate == :supplyCandidate"),
+    @javax.jdo.annotations.Query(
             name = "findProfileMatchesByDemandProfileAndStatus", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Match.ProfileMatch "

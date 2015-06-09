@@ -23,17 +23,23 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.TrustLevel;
 
 @DomainService(repositoryFor = ProfileMatch.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 @DomainServiceLayout(menuOrder="100")
@@ -73,7 +79,20 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
             ){
         return newProfileMatch(ownerActor, vacancyCandidate, vacancyProfile, matchingSupplyProfile, currentUserName(), CandidateStatus.CANDIDATE);
     }
-    
+
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
+    @CollectionLayout(render = RenderType.EAGERLY)
+    public List<ProfileMatch> collectProfileMatches(final Actor supplyCandidate){
+        return allMatches("findProfileMatchesBySupplyCandidate",
+                "supplyCandidate", supplyCandidate);
+    }
+
+    // BusinessRule: hide for users not in intimate circle
+    public boolean hideCollectProfileMatches(final Actor supplyCandidate){
+        return supplyCandidate.allowedTrustLevel(TrustLevel.INTIMATE);
+    }
+
     //Region> Helpers ///////////////////////////////
     private String currentUserName() {
         return container.getUser().getName();
