@@ -1,13 +1,13 @@
 package info.matchingservice.fixture.demand;
 
+import javax.inject.Inject;
+
+import org.joda.time.LocalDate;
+
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.fixture.actor.TestPersons;
-
-import javax.inject.Inject;
-
-import org.joda.time.LocalDate;
 
 public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract {
 
@@ -28,13 +28,22 @@ public class DemandProfileElementsForFrans extends DemandProfileElementsAbstract
         		);
         
         
-        createPassionTagsElement( 
-                10, 
-                profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtige", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE,"frans").get(0),
-                "frans", 
+        createPassionTagsElement(
+                10,
+                profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtige", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE, "frans").get(0),
+                "frans",
                 executionContext
-                );
-        
+        );
+
+        createRequiredRoleElement(
+                true,
+                true,
+                false,
+                10,
+                profiles.searchNameOfProfilesOfTypeByOwner("oorlogszuchtige", DemandOrSupply.DEMAND, ProfileType.PERSON_PROFILE, "frans").get(0),
+                "frans",
+                executionContext
+        );
         
         createQualityTagsElement(
         		10,

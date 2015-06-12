@@ -381,6 +381,91 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     }
 
     //-- collectProfileComparisons--//
+
+    //** createRequiredProfileElementRole **//
+    // Business rule:
+    // alleen op profile van type PERSON of ORGANISATION
+    // alleen op aanbod profiel
+    // slechts 1 per profile
+
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public Profile createRequiredProfileElementRole(
+            @ParameterLayout(named="weight")
+            final Integer weight,
+            @ParameterLayout(named="student")
+            final boolean professional,
+            @ParameterLayout(named="professional")
+            final boolean student,
+            @ParameterLayout(named="principal")
+            final boolean principal
+    ){
+        requiredProfileElementRoles.createRequiredProfileElementRole(
+                "REQUIRED_ROLE_ELEMENT",
+                weight,
+                ProfileElementType.ROLE_REQUIRED,
+                this,
+                student,
+                professional,
+                principal
+        );
+        return this;
+    }
+
+    public boolean hideCreateRequiredProfileElementRole(
+            final Integer weight,
+            final boolean student,
+            final boolean professional,
+            final boolean principal
+    ){
+
+        // alleen op profile van type PERSON of ORGANISATION
+        // alleen op demand profiel
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
+            return true;
+        }
+
+        // er  mag hooguit 1 Role element zijn
+        QueryDefault<RequiredProfileElementRole> query =
+                QueryDefault.create(
+                        RequiredProfileElementRole.class,
+                        "findProfileElementOfType",
+                        "profileElementType", ProfileElementType.ROLE_REQUIRED,
+                        "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public String validateCreateRequiredProfileElementRole(
+            final Integer weight,
+            final boolean student,
+            final boolean professional,
+            final boolean principal
+    ){
+
+        // alleen op profile van type PERSON of ORGANISATION
+        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
+            return "ONLY_ON_PERSON_DEMAND_AND_PERSON_OR_ORGANISATION_PROFILE";
+        }
+
+        // er  mag hooguit 1 Role element zijn
+        QueryDefault<RequiredProfileElementRole> query =
+                QueryDefault.create(
+                        RequiredProfileElementRole.class,
+                        "findProfileElementOfType",
+                        "profileElementType", ProfileElementType.ROLE_REQUIRED,
+                        "profileElementOwner", this);
+        if (container.firstMatch(query) != null) {
+            return "ONE_INSTANCE_AT_MOST";
+        }
+
+        return null;
+    }
+
+    //-- createRequiredProfileElementRole --//
     
     //** createPassionElement **//
     // Business rule:
@@ -396,7 +481,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     		final Integer weight
     		){
     	profileElementTexts.createProfileElementText(
-    			"PASSION_ELEMENT", 
+    			"PASSION_ELEMENT",
     			weight, 
     			textValue, 
     			ProfileElementType.PASSION, 
@@ -1329,9 +1414,14 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     @Inject
     ProfileElements profileElements;
     
-    @Inject ProfileMatches profileMatches;
+    @Inject
+    ProfileMatches profileMatches;
     
-    @Inject PersistedProfileElementComparisons persistedProfileElementComparisons;
+    @Inject
+    PersistedProfileElementComparisons persistedProfileElementComparisons;
+
+    @Inject
+    RequiredProfileElementRoles requiredProfileElementRoles;
 
     @Inject
     ProfileComparisons profileComparisons;

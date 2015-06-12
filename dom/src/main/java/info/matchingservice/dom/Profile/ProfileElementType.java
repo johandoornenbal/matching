@@ -37,7 +37,8 @@ public enum ProfileElementType implements TitledEnum {
     AGE("Age"),
     USE_AGE("Use_age"),
     VERVOER("Eigen_Vervoer"),
-    QUALIFICATION_TAGS("Qualification_tags")
+    QUALIFICATION_TAGS("Qualification_tags"),
+    ROLE_REQUIRED("Role")
     ;
 
     private String title;

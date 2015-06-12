@@ -1,10 +1,9 @@
 package info.matchingservice.dom.Profile;
 
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
+
+import org.apache.isis.applib.annotation.PropertyLayout;
 
 /**
  * Created by jonathan on 22-4-15.
@@ -18,7 +17,7 @@ import javax.jdo.annotations.InheritanceStrategy;
         @javax.jdo.annotations.Query(
                 name = "findProfileElementOfType", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM info.matchingservice.dom.Profile.ProfileElementBoolean"
+                        + "FROM info.matchingservice.dom.Profile.ProfileElementBoolean "
                         + "WHERE profileElementOwner == :profileElementOwner && profileElementType == :profileElementType")
 })
 public class ProfileElementBoolean extends ProfileElement{

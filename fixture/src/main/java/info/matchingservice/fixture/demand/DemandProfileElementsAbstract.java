@@ -1,5 +1,11 @@
 package info.matchingservice.fixture.demand;
 
+import javax.inject.Inject;
+
+import org.joda.time.LocalDate;
+
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
@@ -10,17 +16,13 @@ import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementNumerics;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Profile.ProfileElementTags;
-import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementTexts;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriods;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.Profiles;
-
-import javax.inject.Inject;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.joda.time.LocalDate;
+import info.matchingservice.dom.Profile.RequiredProfileElementRole;
+import info.matchingservice.dom.Profile.RequiredProfileElementRoles;
 
 public abstract class DemandProfileElementsAbstract extends FixtureScript {
 
@@ -103,6 +105,19 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     	ProfileElementNumeric newElement = profileElementNumerics.createProfileElementNumeric("AGE_ELEMENT", weight, numericValue, ProfileElementType.AGE, profileOwner, ownedBy);
     	return executionContext.add(this,newElement);
     }
+
+    protected RequiredProfileElementRole createRequiredRoleElement(
+            final boolean student,
+            final boolean professional,
+            final boolean principal,
+            final Integer weight,
+            final Profile profileOwner,
+            final String ownedBy,
+            ExecutionContext executionContext
+    ){
+        RequiredProfileElementRole newElement = requiredProfileElementRoles.createRequiredProfileElementRole("REQUIRED_ROLE_ELEMENT", weight, ProfileElementType.ROLE_REQUIRED, profileOwner, student, professional, principal, ownedBy);
+        return executionContext.add(this,newElement);
+    }
     
     
     
@@ -127,4 +142,7 @@ public abstract class DemandProfileElementsAbstract extends FixtureScript {
     
     @Inject
     ProfileElementNumerics profileElementNumerics;
+
+    @Inject
+    RequiredProfileElementRoles requiredProfileElementRoles;
 }

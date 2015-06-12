@@ -12,6 +12,7 @@ import info.matchingservice.dom.Match.ProfileComparison;
 import info.matchingservice.dom.Profile.ProfileElementLocation;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
+import info.matchingservice.dom.Profile.RequiredProfileElementRole;
 
 @DomainService
 public class DummyServiceForBootstrapping {
@@ -22,6 +23,8 @@ public class DummyServiceForBootstrapping {
     public void ensureKnownEagerly(ProfileElementUsePredicate x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(ProfileElementLocation x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(RequiredProfileElementRole x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(CommunicationChannel x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
