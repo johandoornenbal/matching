@@ -20,7 +20,6 @@
 package info.matchingservice.dom.Match;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,24 +31,14 @@ import org.joda.time.Years;
 
 import org.apache.isis.applib.AbstractService;
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.InvokeOn;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Render.Type;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
 
 import org.isisaddons.services.postalcode.postcodenunl.Haversine;
 
 import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementLocation;
@@ -817,12 +806,12 @@ public class ProfileMatchingService extends AbstractService {
 	 * @return
 	 */
 	@Programmatic
-	public ProfileComparison getProfileComparison(
+	public void getProfileComparison(
 			final Profile demandProfile,
 			final Profile supplyProfile
 			){
 		
-		ProfileComparison profileComparison = new ProfileComparison(demandProfile, supplyProfile, 0);
+//		ProfileComparison profileComparison = new ProfileComparison(demandProfile, supplyProfile, 0);
 		
 //		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
 		
@@ -957,16 +946,17 @@ public class ProfileMatchingService extends AbstractService {
 					1
 				) 
 			{
-				profileComparison.setCalculatedMatchingValue(calculatedMatchingValue.intValue());
-				profileComparison.setDemandProfile(demandProfile);
-				profileComparison.setMatchingSupplyProfile(supplyProfile);
+//				profileComparison.setCalculatedMatchingValue(calculatedMatchingValue.intValue());
+//				profileComparison.setDemandProfile(demandProfile);
+//				profileComparison.setMatchingSupplyProfile(supplyProfile);
+				profileComparisons.createProfileComparison(demandProfile, supplyProfile,calculatedMatchingValue.intValue());
 			}
 			
-			return profileComparison;	
+//			return profileComparison;
 			
 		} else {
 			
-			return null;
+//			return null;
 		}
 		
 	}
@@ -989,16 +979,12 @@ public class ProfileMatchingService extends AbstractService {
 	 */
 	@Programmatic
 	public List<ProfileComparison> collectProfileComparisons(final Profile demandProfile){
-		
-		List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
-		
-//		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
-		
+
+
 		for (Profile supplyProfile: profiles.allSupplyProfilesOtherOwners(demandProfile.getOwnedBy())) {
 			
 			
 			if (
-					// implement mockRule1
 					demandProfile.getProfileType() == supplyProfile.getProfileType()
 					
 					) 
@@ -1006,18 +992,8 @@ public class ProfileMatchingService extends AbstractService {
 				
 				try
 				{
-					// implement mockRule1
-					if (
-							this.getProfileComparison(demandProfile, supplyProfile).getCalculatedMatchingValue() 
-							>= 
-	//						mockRule1.getMatchingProfileValueThreshold() 
-							1
-						) 
-					{
-						
-						profileComparisons.add(this.getProfileComparison(demandProfile, supplyProfile));
-						
-					}
+					getProfileComparison(demandProfile,supplyProfile);
+
 				}
 				catch(NullPointerException e)
 				{
@@ -1028,7 +1004,7 @@ public class ProfileMatchingService extends AbstractService {
 			
 		}
 		
-		return profileComparisons;
+		return profileComparisons.allProfileComparisons();
 		
 	}
 
@@ -1060,18 +1036,6 @@ public class ProfileMatchingService extends AbstractService {
 
 				try
 				{
-					// implement mockRule1
-					if (
-							this.getProfileComparison(demandProfile, supplyProfile).getCalculatedMatchingValue()
-									>=
-									//						mockRule1.getMatchingProfileValueThreshold()
-									1
-							)
-					{
-
-						profileComparisons.add(this.getProfileComparison(demandProfile, supplyProfile));
-
-					}
 				}
 				catch(NullPointerException e)
 				{
@@ -1090,61 +1054,18 @@ public class ProfileMatchingService extends AbstractService {
 	
 	//********************************************************************* END collectProfileComparisons ************************************************************************	
 	
-    @Action(semantics=SemanticsOf.SAFE, invokeOn=InvokeOn.OBJECT_ONLY)
-    @ActionLayout(contributed=Contributed.AS_ASSOCIATION)
-    @CollectionLayout(render=RenderType.EAGERLY)
-    @Render(Type.EAGERLY) // because of bug @CollectionLayout
+    @Programmatic
     public List<ProfileComparison> collectProfileMatches(Profile demandProfile) {
-        
-    	List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
-        
+
+
         //***********INIT**************//
         //Init Test: Only if there are any Profiles
         if (container.allInstances(Profile.class).isEmpty()) {
-            return profileComparisons;
+            return null;
         }
         
-        profileComparisons = this.collectProfileComparisons(demandProfile);
- 
-        Collections.sort(profileComparisons);
-        Collections.reverse(profileComparisons);
-        
-        return profileComparisons;
+        return this.collectProfileComparisons(demandProfile);
     }
-    
-    // this one is meant for demand profiles only
-    public boolean hideCollectProfileMatches(Profile demandProfile){
-        return demandProfile.getDemandOrSupply() != DemandOrSupply.DEMAND;
-    }
-
-
-	@Action(semantics=SemanticsOf.SAFE, invokeOn=InvokeOn.OBJECT_ONLY)
-	@ActionLayout(contributed=Contributed.AS_ASSOCIATION)
-	@CollectionLayout(render=RenderType.EAGERLY)
-	@Render(Type.EAGERLY) // because of bug @CollectionLayout
-	public List<ProfileComparison> collectDemandProfileMatches(Profile supplyProfile) {
-
-		List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
-
-		//***********INIT**************//
-		//Init Test: Only if there are any Profiles
-		if (container.allInstances(Profile.class).isEmpty()) {
-			return profileComparisons;
-		}
-
-		profileComparisons = this.collectDemandProfileComparisons(supplyProfile);
-
-		Collections.sort(profileComparisons);
-		Collections.reverse(profileComparisons);
-
-		return profileComparisons;
-	}
-
-	// this one is meant for supply profiles only
-	public boolean hideCollectDemandProfileMatches(Profile demandProfile){
-		return demandProfile.getDemandOrSupply() != DemandOrSupply.SUPPLY;
-	}
-
 
 
 	// Region>injections ////////////////////////////
@@ -1153,6 +1074,9 @@ public class ProfileMatchingService extends AbstractService {
     
     @javax.inject.Inject
     private Profiles profiles;
+
+	@Inject
+	private ProfileComparisons profileComparisons;
         
 
 }
