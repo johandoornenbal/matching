@@ -48,8 +48,10 @@ import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
+import info.matchingservice.dom.Profile.ProfileElements;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Profile.RequiredProfileElementRole;
 import info.matchingservice.dom.Rules.ProfileElementTypeMatchingRules;
 import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 import info.matchingservice.dom.Tags.Tag;
@@ -662,14 +664,8 @@ public class ProfileMatchingService extends AbstractService {
 			final Profile supplyProfile,
 			final ProfileElement supplyProfileElement
 			){
-		
-//		final ProfileElementTypeMatchingRule mockRule1 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule1", "SAME_PROFILE_ELEMENT_TYPE", 1);
-//		final ProfileElementTypeMatchingRule mockRule2 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule2", "PASSION_TAGS_TO_PASSION", 1);
-//		final ProfileElementTypeMatchingRule mockRule3 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule3", "TIME_PERIOD_TO_SUPPLY_PROFILE", 1);
-//		final ProfileElementTypeMatchingRule mockRule4 = profileElementTypeMatchingRules.createProfileElementTypeMatchingRule("mockrule4", "AGE_TO_PERSON", 1);
-		
+
 		if (
-				//implementation of mockRule1
 				(
 						demandProfileElement.getProfileElementType() == ProfileElementType.BRANCHE_TAGS
 						||
@@ -683,11 +679,8 @@ public class ProfileMatchingService extends AbstractService {
 		{
 			
 			if (
-					// implement mockRule1
 					getProfileElementTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementTag) supplyProfileElement).getCalculatedMatchingValue()
-					>= 
-//					mockRule1.getMatchingProfileElementValueThreshold()
-					1
+					>= 1
 				) 
 			{
 				return getProfileElementTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementTag) supplyProfileElement);
@@ -696,7 +689,6 @@ public class ProfileMatchingService extends AbstractService {
 		}
 		
 		if (
-				//implementation of mockRule2
 				demandProfileElement.getProfileElementType() == ProfileElementType.PASSION_TAGS
 				&&
 				supplyProfileElement.getProfileElementType() == ProfileElementType.PASSION
@@ -704,11 +696,8 @@ public class ProfileMatchingService extends AbstractService {
 			)
 		{
 			if (
-					// implement mockRule2
 					getProfileElementPassionTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementText) supplyProfileElement).getCalculatedMatchingValue()
-					>=
-//					mockRule2.getMatchingProfileElementValueThreshold()
-					1
+					>= 1
 				)
 			{
 				return getProfileElementPassionTagComparison((ProfileElementTag) demandProfileElement, (ProfileElementText) supplyProfileElement);
@@ -717,7 +706,6 @@ public class ProfileMatchingService extends AbstractService {
 		}
 		
 		if (
-				//implementation of mockRule3
 				demandProfileElement.getProfileElementType() == ProfileElementType.TIME_PERIOD
 				&&
 				supplyProfileElement.getProfileElementType() == ProfileElementType.USE_TIME_PERIOD
@@ -725,12 +713,9 @@ public class ProfileMatchingService extends AbstractService {
 			)
 		{
 			if (
-				
-					// implement mockRule3
+
 					getProfileElementTimePeriodComparison((ProfileElementTimePeriod) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement).getCalculatedMatchingValue()
-					>=
-//					mockRule3.getMatchingProfileElementValueThreshold()
-					1
+					>= 1
 					
 				)
 			{
@@ -741,7 +726,6 @@ public class ProfileMatchingService extends AbstractService {
 		}
 		
 		if (
-				//implementation of mockRule4
 				demandProfileElement.getProfileElementType() == ProfileElementType.AGE
 				&&
 				supplyProfileElement.getProfileElementType() == ProfileElementType.USE_AGE
@@ -749,12 +733,9 @@ public class ProfileMatchingService extends AbstractService {
 			)
 		{
 			if (
-				
-					// implement mockRule4
+
 					getProfileElementAgeComparison((ProfileElementNumeric) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement).getCalculatedMatchingValue()
-					>=
-//					mockRule4.getMatchingProfileElementValueThreshold()
-					1
+					>= 1
 					
 				)
 			{
@@ -765,7 +746,6 @@ public class ProfileMatchingService extends AbstractService {
 		}
 		
 		if (
-				//implementation of mockRule1
 				demandProfileElement.getProfileElementType() == ProfileElementType.LOCATION
 				&&
 				demandProfileElement.getProfileElementType() == supplyProfileElement.getProfileElementType()
@@ -773,11 +753,8 @@ public class ProfileMatchingService extends AbstractService {
 		{
 			
 			if (
-					// implement mockRule1
 					getProfileElementLocationComparison((ProfileElementLocation) demandProfileElement, (ProfileElementLocation) supplyProfileElement).getCalculatedMatchingValue()
-					>= 
-//					mockRule1.getMatchingProfileElementValueThreshold()
-					1
+					>= 1
 				) 
 			{
 				return getProfileElementLocationComparison((ProfileElementLocation) demandProfileElement, (ProfileElementLocation) supplyProfileElement);
@@ -810,11 +787,7 @@ public class ProfileMatchingService extends AbstractService {
 			final Profile demandProfile,
 			final Profile supplyProfile
 			){
-		
-//		ProfileComparison profileComparison = new ProfileComparison(demandProfile, supplyProfile, 0);
-		
-//		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
-		
+
 		// check the validity - if not valid: return null
 		if (
 				// filter niet active Actors uit
@@ -843,6 +816,10 @@ public class ProfileMatchingService extends AbstractService {
 				
 				//there are elements on the supply profile
 				supplyProfile.getCollectProfileElements().size() > 0
+
+				&&
+
+				checkRequiredProfileElements(demandProfile, supplyProfile)
 				
 				)
 		{
@@ -940,27 +917,16 @@ public class ProfileMatchingService extends AbstractService {
 			// create the profileComparison
 			
 			if (
-					calculatedMatchingValue 
-					>= 
-//					mockRule1.getMatchingProfileValueThreshold()
-					1
+					calculatedMatchingValue >=	1
 				) 
 			{
-//				profileComparison.setCalculatedMatchingValue(calculatedMatchingValue.intValue());
-//				profileComparison.setDemandProfile(demandProfile);
-//				profileComparison.setMatchingSupplyProfile(supplyProfile);
 				profileComparisons.createProfileComparison(demandProfile, supplyProfile,calculatedMatchingValue.intValue());
 			}
 			
-//			return profileComparison;
-			
-		} else {
-			
-//			return null;
 		}
-		
 	}
-	
+
+
 	@Inject
 	ProfileTypeMatchingRules profileTypeMatchingRules;
 	
@@ -1047,19 +1013,45 @@ public class ProfileMatchingService extends AbstractService {
 
 	
 	//********************************************************************* END collectProfileComparisons ************************************************************************	
-	
-    @Programmatic
-    public List<ProfileComparison> collectProfileMatches(Profile demandProfile) {
 
+	//********************************************************************* checkRequiredProfileElements ************************************************************************
 
-        //***********INIT**************//
-        //Init Test: Only if there are any Profiles
-        if (container.allInstances(Profile.class).isEmpty()) {
-            return null;
-        }
-        
-        return this.collectProfileComparisons(demandProfile);
-    }
+	private boolean checkRequiredProfileElements(final Profile demandProfile, final Profile supplyProfile) {
+
+		RequiredProfileElementRole profileElement;
+
+		// business rule: when there is a element of ProfileElementType.ROLE_REQUIRED filter out the roles excluded by returning false; defaults to true
+		if (profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).size() > 0) {
+			profileElement = (RequiredProfileElementRole) profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).get(0);
+
+			Person  supplyActorOwner;
+			supplyActorOwner = (Person) supplyProfile.getActorOwner();
+
+			//case student is asked for and isStudent is found
+			if (profileElement.getStudent() && supplyActorOwner.getIsStudent()) {
+				return true;
+			}
+
+			//case professional is asked for and isProfessional is found
+			if (profileElement.getProfessional() && supplyActorOwner.getIsProfessional()) {
+				return true;
+			}
+
+			//case principal is asked for and isPrincipal is found
+			if (profileElement.getPrincipal()  && supplyActorOwner.getIsPrincipal()) {
+				return true;
+			}
+
+			// default: filter out all
+			return false;
+
+		}
+
+		return true;
+	}
+
+	//********************************************************************* END checkRequiredProfileElements ************************************************************************
+
 
 
 	// Region>injections ////////////////////////////
@@ -1071,6 +1063,9 @@ public class ProfileMatchingService extends AbstractService {
 
 	@Inject
 	private ProfileComparisons profileComparisons;
+
+	@Inject
+	private ProfileElements profileElements;
         
 
 }

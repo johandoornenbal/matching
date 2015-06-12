@@ -1,6 +1,14 @@
 package info.matchingservice.dom.Match;
 
-import static org.junit.Assert.*;
+import org.jmock.auto.Mock;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2;
+import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2.Mode;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.DemandOrSupply;
@@ -10,14 +18,9 @@ import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
 import info.matchingservice.dom.Profile.ProfileType;
-
-import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2;
-import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2.Mode;
-import org.jmock.auto.Mock;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ProfileMatchingServiceTest {
 	
@@ -49,6 +52,25 @@ public class ProfileMatchingServiceTest {
     public void setup() {
 		
 	}
+
+
+	//************* TEST checkRequiredProfileElements *********************//
+	@Test
+	public void testCheckRequiredProfileElements() {
+
+		ProfileMatchingService service = new ProfileMatchingService();
+		Person supplier = new Person();
+		Supply supply = new Supply();
+		Profile supplyProfile = new Profile();
+		Profile demandProfile = new Profile();
+
+		assertNotNull(service);
+
+		// TODO: afmaken; nu in integtests opgenomen
+
+
+	}
+	//---------------- END TEST checkRequiredProfileElements --------------------//
 	
 	//************* TEST getProfileElementTimePeriodComparison *********************//
 	

@@ -394,9 +394,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             @ParameterLayout(named="weight")
             final Integer weight,
             @ParameterLayout(named="student")
-            final boolean professional,
-            @ParameterLayout(named="professional")
             final boolean student,
+            @ParameterLayout(named="professional")
+            final boolean professional,
             @ParameterLayout(named="principal")
             final boolean principal
     ){
