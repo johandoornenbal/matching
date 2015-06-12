@@ -370,6 +370,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 
     @Action(semantics=SemanticsOf.SAFE)
     public List<ProfileComparison> actionCollectDemandProfileComparisons(){
+        for(ProfileComparison profileComparison : profileComparisons.collectDemandProfileComparisons(this)) {
+            profileComparison.delete();
+        }
         return profileMatchingService.collectDemandProfileComparisons(this);
     }
 
@@ -1152,7 +1155,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //-- createPriceElement --//
     
     //** updateProfile **//
-    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile updateProfile(
             @ParameterLayout(named="profileName")
             String newString,

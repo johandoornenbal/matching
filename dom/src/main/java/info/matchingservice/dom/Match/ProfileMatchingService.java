@@ -986,7 +986,6 @@ public class ProfileMatchingService extends AbstractService {
 			
 			if (
 					demandProfile.getProfileType() == supplyProfile.getProfileType()
-					
 					) 
 			{
 				
@@ -1020,22 +1019,17 @@ public class ProfileMatchingService extends AbstractService {
 	@Programmatic
 	public List<ProfileComparison> collectDemandProfileComparisons(final Profile supplyProfile){
 
-		List<ProfileComparison> profileComparisons = new ArrayList<ProfileComparison>();
-
-		//		final ProfileTypeMatchingRule mockRule1 = profileTypeMatchingRules.createProfileTypeMatchingRule("mockrule1", "SAME_PROFILE_TYPE", 1);
-
 		for (Profile demandProfile: profiles.allDemandProfilesOtherOwners(supplyProfile.getOwnedBy())) {
 
 
 			if (
-				// implement mockRule1
 					supplyProfile.getProfileType() == demandProfile.getProfileType()
-
 					)
 			{
 
 				try
 				{
+					getProfileComparison(demandProfile,supplyProfile);
 				}
 				catch(NullPointerException e)
 				{
@@ -1046,7 +1040,7 @@ public class ProfileMatchingService extends AbstractService {
 
 		}
 
-		return profileComparisons;
+		return profileComparisons.allProfileComparisons();
 
 	}
 

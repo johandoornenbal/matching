@@ -58,7 +58,7 @@ public class ProfileElementNumeric extends ProfileElement {
         this.numericValue = value;
     }
     
-    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public ProfileElementNumeric updateAge(
             @ParameterLayout(named="Age")
             final Integer value,

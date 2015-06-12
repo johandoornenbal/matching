@@ -23,10 +23,11 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
+import org.joda.time.LocalDate;
+
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
-import org.joda.time.LocalDate;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
@@ -72,7 +73,7 @@ public class ProfileElementTimePeriod extends ProfileElement {
     // Business rules:
     // Only on type TIME_PERIOD
 	// Normal validation of date: Start before End and End after toDay
-    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public ProfileElement updateTimePeriod(
     		@ParameterLayout(named = "startDate")
             LocalDate startDate,

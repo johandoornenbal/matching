@@ -58,7 +58,7 @@ public class ProfileElementText extends ProfileElement {
     
     // BUSINESS RULE
     // Alleen op type PASSION (Anders komt deze ook bij bijvoorbeeld Postcode)
-    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public ProfileElement updatePassion(
     		@ParameterLayout(
     				named = "textValue",
@@ -85,7 +85,7 @@ public class ProfileElementText extends ProfileElement {
     
     // BUSINESS RULE
     // Alleen op type LPOCATION (Anders komt deze ook bij bijvoorbeeld Passie)
-    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public ProfileElement updateLocation(
     		@ParameterLayout(
     				named = "postcode"

@@ -19,12 +19,6 @@
 
 package info.matchingservice.dom.Profile;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Match.PersistedProfileElementComparison;
-import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
-import info.matchingservice.dom.Match.ProfileElementComparison;
-import info.matchingservice.dom.Match.ProfileMatchingService;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +43,12 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
+
+import info.matchingservice.dom.Match.PersistedProfileElementComparison;
+import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
+import info.matchingservice.dom.Match.ProfileElementComparison;
+import info.matchingservice.dom.Match.ProfileMatchingService;
+import info.matchingservice.dom.MatchingSecureMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -175,7 +175,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
     //** updateWeight **//
     
-    @Action(semantics=SemanticsOf.IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     @ActionLayout()
     public ProfileElement updateWeight(Integer weight) {
     	this.setWeight(weight);
