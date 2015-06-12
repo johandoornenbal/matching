@@ -55,8 +55,8 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
 
         String uri = httpServletRequest.getRequestURI();
 
-//        String compareUriTo = "/simple/restful/register";
-        String compareUriTo = "/restful/register";
+        String compareUriTo = "/simple/restful/register";
+//        String compareUriTo = "/restful/register";
 
 //        System.out.println(compareUriTo.length());
         String uriSubstring = uri;

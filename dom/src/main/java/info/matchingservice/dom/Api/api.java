@@ -441,7 +441,7 @@ public class api extends AbstractFactoryAndRepository {
 
 	//***************************************** activatePersonOwnedBy ***********************//
 
-	@Action(semantics=SemanticsOf.IDEMPOTENT)
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
 	public String activatePersonOwnedBy(String ownedBy) {
 		return persons.activatePerson(ownedBy);
 	}
@@ -451,7 +451,7 @@ public class api extends AbstractFactoryAndRepository {
 
 	//***************************************** deActivatePersonOwnedBy ***********************//
 
-	@Action(semantics=SemanticsOf.IDEMPOTENT)
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
 	public String deActivatePersonOwnedBy(String ownedBy) {
 		return persons.deActivatePerson(ownedBy);
 	}
@@ -461,7 +461,7 @@ public class api extends AbstractFactoryAndRepository {
 
 	//***************************************** deletePersonOwnedBy ***********************//
 
-	@Action(semantics=SemanticsOf.IDEMPOTENT, restrictTo = RestrictTo.PROTOTYPING)
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT, restrictTo = RestrictTo.PROTOTYPING)
 	public void deletePersonOwnedBy(String ownedBy) {
 		persons.deletePerson(ownedBy);
 	}

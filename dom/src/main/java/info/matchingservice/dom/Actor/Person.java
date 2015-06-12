@@ -250,7 +250,7 @@ public class Person extends Actor {
     //** API: ACTIONS **//
     
     //** updatePerson **//
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @Action(semantics=SemanticsOf.IDEMPOTENT)
     public Person updatePerson(
     		@ParameterLayout(named="firstName")
     		final String firstName,
