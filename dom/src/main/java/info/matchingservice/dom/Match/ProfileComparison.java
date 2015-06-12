@@ -20,32 +20,48 @@
 package info.matchingservice.dom.Match;
 
 import javax.inject.Inject;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 
 import com.google.common.collect.ComparisonChain;
 
-import org.apache.isis.applib.annotation.ViewModel;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Property;
 
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Profile.Profile;
 
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.DatastoreIdentity(
+        strategy = IdGeneratorStrategy.NATIVE,
+        column = "id")
+@javax.jdo.annotations.Queries({
+        @javax.jdo.annotations.Query(
+                name = "findProfileComparisonByDemandProfile", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM info.matchingservice.dom.Match.ProfileComparison "
+                        + "WHERE demandProfile == :demandProfile"),
+        @javax.jdo.annotations.Query(
+                name = "findProfileComparisonBySupplyProfile", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM info.matchingservice.dom.Match.ProfileComparison "
+                        + "WHERE matchingSupplyProfile == :supplyProfile"),
 
-@ViewModel
+})
+@DomainObject()
 public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     public ProfileComparison() {
         super("demandProfile, uniqueItemId");
     }
-
-    public ProfileComparison(Profile demandProfile, Profile matchingSupplyProfile, Integer calculatedMatchingValue) {
-        super("matchInitiator");
-        this.demandProfile = demandProfile;
-        this.matchingSupplyProfile = matchingSupplyProfile;
-        this.calculatedMatchingValue = calculatedMatchingValue;
-    }
     
     private Profile demandProfile;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing= Editing.DISABLED)
     public Profile getDemandProfile() {
         return demandProfile;
     }
@@ -56,6 +72,8 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     private Profile matchingSupplyProfile;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
     public Profile getMatchingSupplyProfile() {
         return matchingSupplyProfile;
     }
@@ -66,6 +84,8 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     private Integer calculatedMatchingValue;
 
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Property(editing=Editing.DISABLED)
     public Integer getCalculatedMatchingValue() {
         return calculatedMatchingValue;
     }
@@ -89,17 +109,26 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     }
 
     public Actor getDemandingPerson() {return getDemandProfile().getActorOwner(); }
+
+    public void delete() {
+        container.removeIfNotAlready(this);
+        container.informUser("profileComparison deleted");
+    }
     
     public int compareTo(ProfileComparison that) {
         return ComparisonChain.start()
             .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
             .compare(this.matchingSupplyProfile, that.matchingSupplyProfile)
+            .compare(this.demandProfile, that.demandProfile)
             .result();
     }
-    
+
     // Region>injections ////////////////////////////    
     @Inject
     private ProfileMatches profileMatches;
+
+    @Inject
+    private DomainObjectContainer container;
 
 
 }

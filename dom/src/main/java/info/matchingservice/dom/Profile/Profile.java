@@ -61,6 +61,7 @@ import info.matchingservice.dom.Match.CandidateStatus;
 import info.matchingservice.dom.Match.PersistedProfileElementComparison;
 import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
 import info.matchingservice.dom.Match.ProfileComparison;
+import info.matchingservice.dom.Match.ProfileComparisons;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Match.ProfileMatches;
 import info.matchingservice.dom.Match.ProfileMatchingService;
@@ -352,7 +353,11 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     @Action(semantics=SemanticsOf.SAFE)
     public List<ProfileComparison> actionCollectProfileComparisons(){
-    	return profileMatchingService.collectProfileComparisons(this);
+    	for(ProfileComparison profileComparison : profileComparisons.collectProfileComparisons(this)) {
+            profileComparison.delete();
+        }
+
+        return profileMatchingService.collectProfileComparisons(this);
     }
     
     public boolean hideActionCollectProfileComparisons(){
@@ -1324,6 +1329,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     @Inject ProfileMatches profileMatches;
     
     @Inject PersistedProfileElementComparisons persistedProfileElementComparisons;
+
+    @Inject
+    ProfileComparisons profileComparisons;
     
 	//-- INJECTIONS --//
     

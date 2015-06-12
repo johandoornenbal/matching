@@ -8,6 +8,7 @@ import info.matchingservice.dom.CommunicationChannels.Address;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.Email;
 import info.matchingservice.dom.CommunicationChannels.Phone;
+import info.matchingservice.dom.Match.ProfileComparison;
 import info.matchingservice.dom.Profile.ProfileElementLocation;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
@@ -29,5 +30,7 @@ public class DummyServiceForBootstrapping {
     public void ensureKnownEagerly(Address x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(Phone x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(ProfileComparison x) { }
 
 }
