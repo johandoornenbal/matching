@@ -494,7 +494,77 @@ public class ProfileMatchingService extends AbstractService {
 	
 	//********************************************************************* END getProfileElementAgeComparison ************************************************************************
 
-	
+	//********************************************************************* getProfileElementHourlyRateComparison ************************************************************************
+
+	/**
+	 *
+	 * @param demandProfileElement
+	 * @param supplyProfileElement
+	 * @return
+	 */
+	@Programmatic
+	public ProfileElementComparison getProfileElementHourlyRateComparison(
+			final ProfileElementNumeric demandProfileElement,
+			final ProfileElementNumeric supplyProfileElement
+	)
+	{
+
+		// return null if types are not as expected
+		if (
+				demandProfileElement.getProfileElementType() != ProfileElementType.HOURLY_RATE
+
+						||
+
+						supplyProfileElement.getProfileElementType() != ProfileElementType.HOURLY_RATE
+
+				)
+		{
+			return null;
+		}
+
+		Integer matchValue = 0;
+
+		if (supplyProfileElement.getNumericValue() <= demandProfileElement.getNumericValue()) {
+			matchValue = 100;
+		} else {
+			Long delta = Long.valueOf(supplyProfileElement.getNumericValue() - demandProfileElement.getNumericValue());
+			System.out.println("delta: " + delta);
+			// delta more than 40% of demand adds no points
+			Long percentageDelta = delta * 100 / demandProfileElement.getNumericValue();
+			System.out.println("percentageDelta: " + percentageDelta);
+			if (percentageDelta >= 40 ){
+				matchValue = 0;
+			} else {
+				//divide 100 points over 40% and subtract from max matchingValue of 100
+				Long subtraction = percentageDelta * 100 / 40;
+				matchValue = (int) (long)  (100 - subtraction);
+			}
+
+		}
+
+		System.out.println("match from getProfileElementHourlyRateComparison() in ProfileMatchingService.class:");
+		System.out.println("supplied hourlyRate: " + supplyProfileElement.getNumericValue());
+		System.out.println("demanded hourlyRate: " + demandProfileElement.getNumericValue() + " - matchValue: " + matchValue);
+
+
+		ProfileElementComparison profileElementComparison = new ProfileElementComparison(
+				demandProfileElement.getProfileElementOwner(),
+				demandProfileElement,
+				supplyProfileElement,
+				supplyProfileElement.getProfileElementOwner(),
+				supplyProfileElement.getProfileElementOwner().getActorOwner(),
+				matchValue,
+				demandProfileElement.getWeight()
+		);
+		return profileElementComparison;
+
+	}
+
+
+	//********************************************************************* END getProfileElementHourlyRateComparison ************************************************************************
+
+
+
 	//********************************************************************* getProfileElementPassionTagComparison ************************************************************************
 	
 	/**
@@ -742,6 +812,23 @@ public class ProfileMatchingService extends AbstractService {
 				
 				return getProfileElementAgeComparison((ProfileElementNumeric) demandProfileElement, (ProfileElementUsePredicate) supplyProfileElement);
 		
+			}
+		}
+
+		if (
+				demandProfileElement.getProfileElementType() == ProfileElementType.HOURLY_RATE
+						&&
+						supplyProfileElement.getProfileElementType() == ProfileElementType.HOURLY_RATE
+
+				)
+		{
+			if (
+
+					getProfileElementHourlyRateComparison((ProfileElementNumeric) demandProfileElement, (ProfileElementNumeric) supplyProfileElement).getCalculatedMatchingValue()
+							>= 1
+					)
+			{
+				return getProfileElementHourlyRateComparison((ProfileElementNumeric) demandProfileElement, (ProfileElementNumeric) supplyProfileElement);
 			}
 		}
 		

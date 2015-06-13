@@ -852,6 +852,72 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     	return null;
     }
     //-- createLocationElement --//
+
+    //** createHourlyRateElement **//
+    // Business rule:
+    // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    // er mag er hooguit een van zijn
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createHourlyRateElement(
+            @ParameterLayout(named="hourly rate")
+            final Integer rate,
+            @ParameterLayout(named="weight")
+            final Integer weight
+    )
+    {
+        profileElementNumerics.createProfileElementNumeric("HOURLY_RATE_ELEMENT", weight, rate, ProfileElementType.HOURLY_RATE, this);
+
+        return this;
+    }
+
+    public boolean hideCreateHourlyRateElement(final Integer rate, final Integer weight){
+
+        QueryDefault<ProfileElementNumeric> query =
+                QueryDefault.create(
+                        ProfileElementNumeric.class,
+                        "findProfileElementOfType",
+                        "profileElementOwner", this, "profileElementType", ProfileElementType.HOURLY_RATE);
+
+        if (
+                        // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+                        (this.getProfileType() == ProfileType.PERSON_PROFILE || this.getProfileType() == ProfileType.ORGANISATION_PROFILE)
+
+                        &&
+
+                        // er mag er hooguit een van zijn
+                        container.firstMatch(query) == null
+                )
+        {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public String validateCreateHourlyRateElement(final Integer rate, final Integer weight){
+
+        QueryDefault<ProfileElementNumeric> query =
+                QueryDefault.create(
+                        ProfileElementNumeric.class,
+                        "findProfileElementOfType",
+                        "profileElementOwner", this, "profileElementType", ProfileElementType.HOURLY_RATE);
+
+        if (container.firstMatch(query) != null) {
+
+            return "ONE_INSTANCE_AT_MOST";
+
+        }
+
+        if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+
+        }
+
+        return null;
+    }
+    //-- createHourlyRateElement --//
     
     //** createAgeElement **//
     // Business rule:

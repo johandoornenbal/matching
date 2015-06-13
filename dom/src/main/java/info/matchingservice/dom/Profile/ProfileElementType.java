@@ -31,14 +31,15 @@ public enum ProfileElementType implements TitledEnum {
     PASSION_TAGS("Passion_tags"),
     BRANCHE_TAGS("Branche_tags"),
     QUALITY_TAGS("Quality_tags"),
-    WEEKDAY_TAGS("Weekday_tags"), 
+    WEEKDAY_TAGS("Weekday_tags"),
     TIME_PERIOD ("Time_period"),
     USE_TIME_PERIOD ("Use_time_period"),
     AGE("Age"),
     USE_AGE("Use_age"),
     VERVOER("Eigen_Vervoer"),
     QUALIFICATION_TAGS("Qualification_tags"),
-    ROLE_REQUIRED("Role")
+    ROLE_REQUIRED("Role"),
+    HOURLY_RATE("Hourly_rate")
     ;
 
     private String title;

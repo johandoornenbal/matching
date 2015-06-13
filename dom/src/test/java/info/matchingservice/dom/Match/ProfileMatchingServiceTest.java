@@ -225,9 +225,105 @@ public class ProfileMatchingServiceTest {
 		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
 		ProfileElementComparison comp3 = service.getProfileElementAgeComparison(demandProfileElement, supplyProfileElement);
 		assertNull(comp3);
-	
+
 	}
 	
 	//------------- TEST getProfileElementAgeComparison ----------------------------------//
+
+	//************* TEST getProfileElementHourlyRateComparison *********************//
+
+	@Test
+	public void testProfileElementHourlyRateComparison(){
+
+		ProfileMatchingService service = new ProfileMatchingService();
+
+		Person supplier = new Person();
+		Supply supply = new Supply();
+		Profile supplyProfile = new Profile();
+		ProfileElementNumeric supplyProfileElement = new ProfileElementNumeric();
+		Profile demandProfile = new Profile();
+		ProfileElementNumeric demandProfileElement = new ProfileElementNumeric();
+
+		supply.setSupplyOwner(supplier);
+		supplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
+		supplyProfile.setSupplyProfileOwner(supply);
+		demandProfileElement.setProfileElementOwner(demandProfile);
+		supplyProfileElement.setProfileElementOwner(supplyProfile);
+		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+
+		assertNotNull(service);
+		assertEquals(supplyProfile.getSupplyProfileOwner(), supply);
+		assertEquals(supplyProfile.getActorOwner(), supplier);
+		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
+
+		// wrong profile element type
+		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
+		ProfileElementComparison comp = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp);
+		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+
+		// wrong profile element type again
+		supplyProfileElement.setProfileElementType(ProfileElementType.TIME_PERIOD);
+		ProfileElementComparison comp2 = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp2);
+
+		// wrong profile element type again
+		supplyProfileElement.setProfileElementType(ProfileElementType.TIME_PERIOD);
+		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
+		ProfileElementComparison comp3 = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp3);
+
+		//same supply and demand
+		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		demandProfileElement.setNumericValue(50);
+		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		supplyProfileElement.setNumericValue(50);
+		ProfileElementComparison comp4 = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertEquals(comp4.getCalculatedMatchingValue().intValue(), 100);
+
+		//supply lower than demand
+		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		demandProfileElement.setNumericValue(50);
+		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		supplyProfileElement.setNumericValue(49);
+		ProfileElementComparison comp5 = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertEquals(comp5.getCalculatedMatchingValue().intValue(), 100);
+
+		//supply higher than demand
+		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		demandProfileElement.setNumericValue(100);
+		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		supplyProfileElement.setNumericValue(140);
+		ProfileElementComparison comp6 = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertEquals(comp6.getCalculatedMatchingValue().intValue(), 0);
+
+		//supply higher than demand
+		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		demandProfileElement.setNumericValue(100);
+		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		supplyProfileElement.setNumericValue(120);
+		ProfileElementComparison comp7 = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertEquals(comp7.getCalculatedMatchingValue().intValue(), 50);
+
+		//supply higher than demand
+		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		demandProfileElement.setNumericValue(100);
+		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		supplyProfileElement.setNumericValue(110);
+		ProfileElementComparison comp8 = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertEquals(comp8.getCalculatedMatchingValue().intValue(), 75);
+
+		//supply higher than demand
+		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		demandProfileElement.setNumericValue(100);
+		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
+		supplyProfileElement.setNumericValue(130);
+		ProfileElementComparison comp9 = service.getProfileElementHourlyRateComparison(demandProfileElement, supplyProfileElement);
+		assertEquals(comp9.getCalculatedMatchingValue().intValue(), 25);
+
+
+	}
+	//---------------- END TEST getProfileElementHourlyRateComparison --------------------//
 	
 }

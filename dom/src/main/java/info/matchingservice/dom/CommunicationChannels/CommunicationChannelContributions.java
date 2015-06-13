@@ -159,16 +159,21 @@ public class CommunicationChannelContributions extends MatchingDomainService<Com
 
     }
 
-
-
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
     @CollectionLayout(render = RenderType.EAGERLY)
     public List<CommunicationChannel> collectAddresses(Person person){
-
         return communicationChannels.allCommunicationChannels(person, Address.class);
+    }
 
-
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
+    public String email(Person person) {
+        Email emailMain = new Email();
+        if (communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.EMAIL_MAIN).size() > 0 ) {
+            emailMain = (Email) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.EMAIL_MAIN).get(0);
+        }
+        return emailMain.getEmail();
     }
 
     @Inject

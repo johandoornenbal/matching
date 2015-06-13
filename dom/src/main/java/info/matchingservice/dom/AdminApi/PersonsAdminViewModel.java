@@ -29,6 +29,8 @@ import info.matchingservice.dom.Actor.Persons;
 /**
  * Created by jodo on 13/06/15.
  */
+//TODO: NOT IN USE; HOW TO GET THIS WORKING?
+
 @ViewModel
 public class PersonsAdminViewModel {
 

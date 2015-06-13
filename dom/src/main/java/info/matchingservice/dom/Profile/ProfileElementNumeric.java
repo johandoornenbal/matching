@@ -88,4 +88,35 @@ public class ProfileElementNumeric extends ProfileElement {
     	return true;
     }
 
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public ProfileElementNumeric updateHourlyRate(
+            @ParameterLayout(named="Hourly rate")
+            final Integer value,
+            @ParameterLayout(named="Weight")
+            final Integer weight
+    ){
+        this.setNumericValue(value);
+        this.setDisplayValue(value.toString());
+        this.setWeight(weight);
+        return this;
+    }
+
+    public Integer default0UpdateHourlyRate(){
+        return this.getNumericValue();
+    }
+
+    public Integer default1UpdateHourlyRate(){
+        return this.getWeight();
+    }
+
+    public boolean hideUpdateHourlyRate() {
+
+        if (this.getProfileElementType() == ProfileElementType.HOURLY_RATE){
+            return false;
+        }
+
+        return true;
+    }
+
+
 }
