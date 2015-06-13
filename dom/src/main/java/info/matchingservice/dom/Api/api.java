@@ -43,7 +43,7 @@ import info.matchingservice.dom.TrustLevel;
 
 @DomainService()
 @DomainServiceLayout()
-public class api extends AbstractFactoryAndRepository {
+public class Api extends AbstractFactoryAndRepository {
 	
 	//***************************************** activePerson ***********************//
 	

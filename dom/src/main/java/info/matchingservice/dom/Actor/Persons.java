@@ -44,6 +44,7 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.services.clock.ClockService;
 import org.apache.isis.applib.value.Blob;
 
 import org.isisaddons.module.security.dom.user.ApplicationUsers;
@@ -140,7 +141,7 @@ public class Persons extends MatchingDomainService<Person> {
     	
         return allMatches("matchPersonByLastNameContains", "lastName", lastName.toLowerCase());
     }
-    
+
     // Region>helpers ////////////////////////////
     
     private String currentUserName() {
@@ -163,6 +164,7 @@ public class Persons extends MatchingDomainService<Person> {
         person.setMiddleName(middleName);
         person.setLastName(lastName);
         person.setDateOfBirth(dateOfBirth);
+        person.setDateCreated(clockService.now());
         person.setOwnedBy(userName);
         person.setPicture(picture);
         if (personRoleType!=null) {
@@ -327,7 +329,10 @@ public class Persons extends MatchingDomainService<Person> {
     private CommunicationChannels communicationChannels;
 
     @Inject
-    ApplicationUsers applicationUsers;
+    private ApplicationUsers applicationUsers;
+
+    @Inject
+    private ClockService clockService;
 
 
 }

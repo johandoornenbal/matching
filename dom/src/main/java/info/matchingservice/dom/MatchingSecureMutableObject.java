@@ -79,7 +79,7 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
             return null;
         }
         // user is admin of matching app
-        if (container.getUser().hasRole(".*matching-admin")) {
+        if (container.getUser().hasRole(".*matching-admin-role")) {
             return null;
         }
         // user is neither owner nor admin
@@ -108,7 +108,7 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
 
     public boolean hideChangeOwner(final String owner) {
         // user is admin of matching app
-        if (container.getUser().hasRole(".*matching-admin")) {
+        if (container.getUser().hasRole(".*matching-admin-role")) {
             return false;
         }
         return true;
@@ -144,7 +144,7 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
             return false;
         }
         // user is admin of app
-        if (container.getUser().hasRole(".*matching-admin")) {
+        if (container.getUser().hasRole(".*matching-admin-role")) {
             return false;
         }
         if (getViewerRights() != null && trustlevel.compareTo(getViewerRights()) <= 0) {

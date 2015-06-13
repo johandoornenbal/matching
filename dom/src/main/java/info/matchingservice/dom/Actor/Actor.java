@@ -101,6 +101,20 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     }
     //endregion
 
+    //region > dateCreated (property)
+    private LocalDate dateCreated;
+
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(final LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+    //endregion
+
     //-- API: PROPERTIES --//
 	
 	//** API: COLLECTIONS **//

@@ -18,11 +18,10 @@
  */
 package info.matchingservice.dom.Actor;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Utils.StringUtils;
-
 import java.util.List;
 import java.util.UUID;
+
+import javax.inject.Inject;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -35,6 +34,10 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.services.clock.ClockService;
+
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Utils.StringUtils;
 
 
 @DomainService(repositoryFor = System.class, nature=NatureOfService.DOMAIN)
@@ -113,6 +116,7 @@ public class Systems extends MatchingDomainService<System> {
         final UUID uuid=UUID.randomUUID();
         system.setUniqueItemId(uuid);
         system.setSystemName(systemName);
+        system.setDateCreated(clockService.now());
         system.setOwnedBy(userName);
         persist(system);
         return system;
@@ -160,4 +164,7 @@ public class Systems extends MatchingDomainService<System> {
     // Region>injections ////////////////////////////
     @javax.inject.Inject
     private DomainObjectContainer container;
+
+    @Inject
+    private ClockService clockService;
 }

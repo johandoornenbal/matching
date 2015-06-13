@@ -27,7 +27,7 @@ import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.Api.api;
+import info.matchingservice.dom.Api.Api;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.actor.TestRoles;
@@ -40,7 +40,7 @@ import static org.junit.Assert.assertTrue;
 public class ApiTest extends MatchingIntegrationTest {
     
     @Inject
-    api api;
+    Api api;
 
     @Inject
     Persons persons;
