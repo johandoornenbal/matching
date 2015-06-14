@@ -1,12 +1,13 @@
 package info.matchingservice.fixture.supply;
 
+import javax.inject.Inject;
+
+import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.fixture.actor.TestPersons;
-
-import javax.inject.Inject;
 
 public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElementsAbstract {
 
@@ -91,51 +92,61 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
         		);
         
         createBranche(
-        		"BRANCHE_ELEMENT", 
-        		10, 
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
-        		"gerard", 
-        		executionContext
-        		);
+				"BRANCHE_ELEMENT",
+				10,
+				profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE, "gerard").get(0),
+				"gerard",
+				executionContext
+		);
         
         createLocation(
-        		"LOCATION_ELEMENT",
-        		"8922CH",
-        		10,
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
-        		"gerard",
-        		executionContext
-        		);
+				"LOCATION_ELEMENT",
+				"8922CH",
+				10,
+				profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE, "gerard").get(0),
+				"gerard",
+				executionContext
+		);
         
         createPassion(
-                "PASSION_ELEMENT", 
-                10, 
-                "Ik ben natuurlijk bezeten van schilderen. Het witte doek bekladden: ik doe niets liever dan dat. "
-                + "Kleurgebruik en lichtinval ben ik helemaal gek van. De geur van olieverf en het gevoel van een verse"
-                + "penseel in de hand doet me opstijgen. Mijn passie voor het portret in de gouden eeuw gaat me"
-                + " tot grote hoogten brengen.", 
-                ProfileElementType.PASSION, 
-                profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
-                "gerard", 
-                executionContext);
+				"PASSION_ELEMENT",
+				10,
+				"Ik ben natuurlijk bezeten van schilderen. Het witte doek bekladden: ik doe niets liever dan dat. "
+						+ "Kleurgebruik en lichtinval ben ik helemaal gek van. De geur van olieverf en het gevoel van een verse"
+						+ "penseel in de hand doet me opstijgen. Mijn passie voor het portret in de gouden eeuw gaat me"
+						+ " tot grote hoogten brengen.",
+				ProfileElementType.PASSION,
+				profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE, "gerard").get(0),
+				"gerard",
+				executionContext);
         
         createUseTimePeriod(
-        		"USE_TIME_PERIOD",
-        		true,
-        		false,
-        		10,
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
-        		"gerard", 
-                executionContext);
+				"USE_TIME_PERIOD",
+				true,
+				false,
+				10,
+				profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE, "gerard").get(0),
+				"gerard",
+				executionContext);
         
         createUseAge(
-        		"USE_AGE",
-        		false,
-        		true,
-        		10,
-        		profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE,"gerard").get(0),
-        		"gerard", 
-                executionContext);
+				"USE_AGE",
+				false,
+				true,
+				10,
+				profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE, "gerard").get(0),
+				"gerard",
+				executionContext);
+
+		createDropDownElement(
+				"EDUCATION_LEVEL",
+				10,
+				dropDownForProfileElements.findDropDowns("hbo",ProfileElementType.EDUCATION_LEVEL).get(0),
+				ProfileElementType.EDUCATION_LEVEL,
+				profiles.searchNameOfProfilesOfTypeByOwner("PERSON_PROFILE_OF", DemandOrSupply.SUPPLY, ProfileType.PERSON_PROFILE, "gerard").get(0),
+				"gerard",
+				executionContext
+		);
         
         //** rembrandt **//
         
@@ -308,6 +319,9 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
     
     
     @Inject Profiles profiles;
+
+	@Inject
+	DropDownForProfileElements dropDownForProfileElements;
     
     
 }

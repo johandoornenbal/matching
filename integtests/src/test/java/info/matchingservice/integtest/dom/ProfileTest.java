@@ -123,7 +123,7 @@ public class ProfileTest extends MatchingIntegrationTest {
             d1=demands.allDemands().get(0);
             dropDownValue=dropDowns.allProfileElementDropDowns().get(0);
             pf1=d1.createDemandProfile(DEMAND_PROFILE_DESCRIPTION, WEIGHT, null, null, PROFILE_TYPE, d1, null, d1.getOwnedBy());
-//            dropdown=pf1.newProfileElementDropDown(WEIGHT, dropDownValue);
+//            dropdown=pf1.createDropDownForProfileELements(WEIGHT, dropDownValue);
             numeric=pf1.newProfileElementNumeric(ELEMENT_DESCRIPTION, WEIGHT, ELEMENT_INTVALUE);
             text=pf1.newProfileElementText(ELEMENT_DESCRIPTION, WEIGHT, ELEMENT_TEXTVALUE);
             dropdownAndText=pf1.newProfileElementDropDownAndText(ELEMENT_DESCRIPTION, WEIGHT, dropDownValue, ELEMENT_TEXTVALUE);
@@ -197,7 +197,7 @@ public class ProfileTest extends MatchingIntegrationTest {
             d1=demands.allDemands().get(0);
             dropDownValue=dropDowns.allProfileElementDropDowns().get(0);
             pf1=d1.createDemandProfile(DEMAND_PROFILE_DESCRIPTION, WEIGHT, null, null, PROFILE_TYPE, d1, null, d1.getOwnedBy());
-//            dropdown=pf1.newProfileElementDropDown(ELEMENT_DESCRIPTION, WEIGHT, dropDownValue);
+//            dropdown=pf1.createDropDownForProfileELements(ELEMENT_DESCRIPTION, WEIGHT, dropDownValue);
             numeric=pf1.newProfileElementNumeric(ELEMENT_DESCRIPTION, WEIGHT, ELEMENT_INTVALUE);
             text=pf1.newProfileElementText(ELEMENT_DESCRIPTION, WEIGHT, ELEMENT_TEXTVALUE);
             dropdownAndText=pf1.newProfileElementDropDownAndText(ELEMENT_DESCRIPTION, WEIGHT, dropDownValue, ELEMENT_TEXTVALUE);
@@ -243,7 +243,7 @@ public class ProfileTest extends MatchingIntegrationTest {
             d1=demands.allDemands().get(0);
             dropDownValue=dropDowns.allProfileElementDropDowns().get(0);
             pf1=d1.createDemandProfile(DEMAND_PROFILE_DESCRIPTION, WEIGHT, null, null, PROFILE_TYPE, d1, null, d1.getOwnedBy());
-//            dropdown=pf1.newProfileElementDropDown(ELEMENT_DESCRIPTION, WEIGHT, dropDownValue);
+//            dropdown=pf1.createDropDownForProfileELements(ELEMENT_DESCRIPTION, WEIGHT, dropDownValue);
         }
         
         public void edit() throws Exception {

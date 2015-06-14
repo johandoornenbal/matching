@@ -3,6 +3,9 @@ package info.matchingservice.fixture;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
+import info.matchingservice.fixture.Dropdowns.DropDownHbo;
+import info.matchingservice.fixture.Dropdowns.DropDownMbo;
+import info.matchingservice.fixture.Dropdowns.DropDownWo;
 import info.matchingservice.fixture.actor.TestOrganisations;
 import info.matchingservice.fixture.actor.TestPersonalContacts;
 import info.matchingservice.fixture.actor.TestPersons;
@@ -100,6 +103,9 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new TestEmails(), executionContext);
         executeChild(new TestPhone(), executionContext);
         executeChild(new TestAddress(), executionContext);
+        executeChild(new DropDownHbo(), executionContext);
+        executeChild(new DropDownMbo(), executionContext);
+        executeChild(new DropDownWo(), executionContext);
 
     }
 

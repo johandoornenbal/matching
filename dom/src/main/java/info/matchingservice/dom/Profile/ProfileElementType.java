@@ -39,7 +39,8 @@ public enum ProfileElementType implements TitledEnum {
     VERVOER("Eigen_Vervoer"),
     QUALIFICATION_TAGS("Qualification_tags"),
     ROLE_REQUIRED("Role"),
-    HOURLY_RATE("Hourly_rate")
+    HOURLY_RATE("Hourly_rate"),
+    EDUCATION_LEVEL("Education_level")
     ;
 
     private String title;

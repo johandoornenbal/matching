@@ -1039,9 +1039,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
    	
    	QueryDefault<ProfileElementUsePredicate> query = 
                QueryDefault.create(
-               		ProfileElementUsePredicate.class, 
-                   "findProfileElementOfType",
-                   "profileElementOwner", this, "profileElementType", ProfileElementType.USE_AGE);
+                       ProfileElementUsePredicate.class,
+                       "findProfileElementOfType",
+                       "profileElementOwner", this, "profileElementType", ProfileElementType.USE_AGE);
    	
    	if (container.firstMatch(query) != null) {
    		
@@ -1219,9 +1219,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     	
     	QueryDefault<ProfileElementUsePredicate> query = 
                 QueryDefault.create(
-                		ProfileElementUsePredicate.class, 
-                    "findProfileElementOfType",
-                    "profileElementOwner", this, "profileElementType", ProfileElementType.USE_TIME_PERIOD);
+                        ProfileElementUsePredicate.class,
+                        "findProfileElementOfType",
+                        "profileElementOwner", this, "profileElementType", ProfileElementType.USE_TIME_PERIOD);
     	
     	if (container.firstMatch(query) != null) {
     		
@@ -1245,7 +1245,81 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     	
     }
     //-- createUseTimePeriodElement --//
-    
+
+
+    //** createEducationLevelElement **//
+    // Business rule:
+    // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+    // er mag er hooguit een van zijn
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createEducationLevelElement(
+            final Integer weight,
+            final DropDownForProfileElement dropDown
+    ){
+        profileElementDropDowns.createProfileElementDropDown(
+                "EDUCATION_LEVEL",
+                weight,
+                dropDown,
+                ProfileElementType.EDUCATION_LEVEL,
+                this);
+        return this;
+    }
+
+    public List<DropDownForProfileElement> autoComplete1CreateEducationLevelElement(String search) {
+        return dropDownForProfileElements.findDropDowns(search, ProfileElementType.EDUCATION_LEVEL);
+    }
+
+    public boolean hideCreateEducationLevelElement(final Integer weight, final DropDownForProfileElement dropDown) {
+
+        QueryDefault<ProfileElementDropDown> query =
+                QueryDefault.create(
+                        ProfileElementDropDown.class,
+                        "findProfileElementOfType",
+                        "profileElementOwner", this, "profileElementType", ProfileElementType.EDUCATION_LEVEL);
+
+        if (
+            // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
+                (this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+
+                        &&
+
+                        // er mag er hooguit een van zijn
+                        container.firstMatch(query) == null
+                )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public String validateCreateEducationLevelElement(final Integer weight, final DropDownForProfileElement dropDown) {
+
+        QueryDefault<ProfileElementDropDown> query =
+                QueryDefault.create(
+                        ProfileElementDropDown.class,
+                        "findProfileElementOfType",
+                        "profileElementOwner", this, "profileElementType", ProfileElementType.EDUCATION_LEVEL);
+
+        if (container.firstMatch(query) != null) {
+
+            return "ONE_INSTANCE_AT_MOST";
+
+        }
+
+        if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+
+            return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
+
+        }
+
+        return null;
+
+    }
+
+
+    //-- createEducationLevelElement --//
+
     //** createPriceElement **//
     // Business rule:
     // Er kan maar een prijs element zijn
@@ -1511,26 +1585,26 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 	//-- HIDDEN: PROPERTIES --//
     
 	//** HIDDEN: ACTIONS **//
-    
+
     @ActionLayout(hidden=Where.EVERYWHERE)
     public Profile newProfileElementDropDown(
             final Integer weight,
             final DropDownForProfileElement dropDown
             ){
         profileElementDropDowns.createProfileElementDropDown(
-                "kwaliteit " + dropDown.title(), 
+                "kwaliteit " + dropDown.title(),
                 weight,
                 dropDown,
-                ProfileElementType.QUALITY, 
+                ProfileElementType.QUALITY,
                 this);
         return this;
     }
-    
+
     public List<DropDownForProfileElement> autoComplete1NewProfileElementDropDown(String search) {
-        return dropDownForProfileElements.findDropDowns(search);
+        return dropDownForProfileElements.findDropDowns(search, ProfileElementType.QUALITY);
     }
 
-    
+
     @ActionLayout(hidden=Where.EVERYWHERE)
     public ProfileElementDropDownAndText newProfileElementDropDownAndText(
             final String description,
@@ -1541,18 +1615,18 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             final String text
             ){
         return profileElementDropDownsAndTexts.createProfileElementDropDownAndText(
-                description, 
+                description,
                 weight,
                 dropDown,
                 text,
-                ProfileElementType.QUALITY, 
+                ProfileElementType.QUALITY,
                 this);
     }
-    
+
     public List<DropDownForProfileElement> autoComplete2NewProfileElementDropDownAndText(String search) {
-        return dropDownForProfileElements.findDropDowns(search);
+        return dropDownForProfileElements.findDropDowns(search, ProfileElementType.QUALITY);
     }
-    
+
     @ActionLayout(hidden=Where.EVERYWHERE)
     public ProfileElementText newProfileElementText(
             final String description,
@@ -1560,13 +1634,13 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             final String textValue
             ){
         return profileElementTexts.createProfileElementText(
-                description, 
+                description,
                 weight,
                 textValue,
-                ProfileElementType.TEXT, 
+                ProfileElementType.TEXT,
                 this);
     }
-    
+
     @ActionLayout(hidden=Where.EVERYWHERE)
     public ProfileElementNumeric newProfileElementNumeric(
             final String description,
@@ -1574,10 +1648,10 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             final Integer numericValue
             ){
         return profileElementNumerics.createProfileElementNumeric(
-                description, 
+                description,
                 weight,
                 numericValue,
-                ProfileElementType.NUMERIC, 
+                ProfileElementType.NUMERIC,
                 this);
     }
 

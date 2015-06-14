@@ -41,6 +41,7 @@ import org.isisaddons.services.postalcode.postcodenunl.Haversine;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementLocation;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementTag;
@@ -564,6 +565,63 @@ public class ProfileMatchingService extends AbstractService {
 	//********************************************************************* END getProfileElementHourlyRateComparison ************************************************************************
 
 
+	//********************************************************************* getProfileElementDropDownComparison ************************************************************************
+
+	/**
+	 *
+	 * @param demandProfileElement
+	 * @param supplyProfileElement
+	 * @return
+	 */
+	@Programmatic
+	public ProfileElementComparison getProfileElementDropDownComparison(
+			final ProfileElementDropDown demandProfileElement,
+			final ProfileElementDropDown supplyProfileElement
+	)
+	{
+
+		// return null if types are not as expected
+		if (
+				demandProfileElement.getProfileElementType() != ProfileElementType.EDUCATION_LEVEL
+
+						||
+
+						supplyProfileElement.getProfileElementType() != ProfileElementType.EDUCATION_LEVEL
+
+				)
+		{
+			return null;
+		}
+
+		Integer matchValue = 0;
+
+		if (supplyProfileElement.getDropDownValue().equals(demandProfileElement.getDropDownValue())) {
+			matchValue = 100;
+		} else {
+			matchValue = 0;
+		}
+
+		System.out.println("match from getProfileElementDropDownComparison() in ProfileMatchingService.class:");
+		System.out.println("supplied DropDownValue: " + supplyProfileElement.getDropDownValue());
+		System.out.println("demanded DropDownValue: " + demandProfileElement.getDropDownValue() + " - matchValue: " + matchValue);
+
+
+		ProfileElementComparison profileElementComparison = new ProfileElementComparison(
+				demandProfileElement.getProfileElementOwner(),
+				demandProfileElement,
+				supplyProfileElement,
+				supplyProfileElement.getProfileElementOwner(),
+				supplyProfileElement.getProfileElementOwner().getActorOwner(),
+				matchValue,
+				demandProfileElement.getWeight()
+		);
+		return profileElementComparison;
+
+	}
+
+
+	//********************************************************************* END getProfileElementDropDownComparison ************************************************************************
+
 
 	//********************************************************************* getProfileElementPassionTagComparison ************************************************************************
 	
@@ -829,6 +887,23 @@ public class ProfileMatchingService extends AbstractService {
 					)
 			{
 				return getProfileElementHourlyRateComparison((ProfileElementNumeric) demandProfileElement, (ProfileElementNumeric) supplyProfileElement);
+			}
+		}
+
+		if (
+				demandProfileElement.getProfileElementType() == ProfileElementType.EDUCATION_LEVEL
+						&&
+						supplyProfileElement.getProfileElementType() == ProfileElementType.EDUCATION_LEVEL
+
+				)
+		{
+			if (
+
+					getProfileElementDropDownComparison((ProfileElementDropDown) demandProfileElement, (ProfileElementDropDown) supplyProfileElement).getCalculatedMatchingValue()
+							>= 1
+					)
+			{
+				return getProfileElementDropDownComparison((ProfileElementDropDown) demandProfileElement, (ProfileElementDropDown) supplyProfileElement);
 			}
 		}
 		

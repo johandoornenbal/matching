@@ -23,6 +23,7 @@ import org.isisaddons.module.security.seed.scripts.AbstractRoleAndPermissionsFix
 
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.AdminApi.AdminApi;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 
 public class MatchingAdminRoleAndPermissions extends AbstractRoleAndPermissionsFixtureScript {
 
@@ -43,6 +44,11 @@ public class MatchingAdminRoleAndPermissions extends AbstractRoleAndPermissionsF
                 ApplicationPermissionRule.ALLOW,
                 ApplicationPermissionMode.CHANGING,
                 Actor.class.getPackage().getName()
+        );
+        newPackagePermissions(
+                ApplicationPermissionRule.ALLOW,
+                ApplicationPermissionMode.CHANGING,
+                DropDownForProfileElement.class.getPackage().getName()
         );
     }
 

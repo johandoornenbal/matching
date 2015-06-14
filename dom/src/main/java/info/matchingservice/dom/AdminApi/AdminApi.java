@@ -29,6 +29,9 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Profile.ProfileElementType;
 
 /**
  * Created by jodo on 13/06/15.
@@ -69,10 +72,18 @@ public class AdminApi {
         return foundPersons;
     }
 
+    public DropDownForProfileElement createEducationLevel(String level) {
+        return dropDownForProfileElements.createDropDownForProfileELements(ProfileElementType.EDUCATION_LEVEL, level);
+    }
+
+
     @Inject
     private Persons persons;
 
     @Inject
     private DomainObjectContainer container;
+
+    @Inject
+    DropDownForProfileElements dropDownForProfileElements;
 
 }

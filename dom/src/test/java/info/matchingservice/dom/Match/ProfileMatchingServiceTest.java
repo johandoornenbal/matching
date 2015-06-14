@@ -11,8 +11,10 @@ import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2.Mode;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementNumeric;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementType;
@@ -325,5 +327,74 @@ public class ProfileMatchingServiceTest {
 
 	}
 	//---------------- END TEST getProfileElementHourlyRateComparison --------------------//
+
+	//************* TEST getProfileElementEducationLevelComparison *********************//
+
+	DropDownForProfileElement dropDownHbo = new DropDownForProfileElement();
+	DropDownForProfileElement dropDownMbo = new DropDownForProfileElement();
+
+	@Test
+	public void testProfileElementEducationLevelComparison(){
+
+		ProfileMatchingService service = new ProfileMatchingService();
+
+		Person supplier = new Person();
+		Supply supply = new Supply();
+		Profile supplyProfile = new Profile();
+		ProfileElementDropDown supplyProfileElement = new ProfileElementDropDown();
+		Profile demandProfile = new Profile();
+		ProfileElementDropDown demandProfileElement = new ProfileElementDropDown();
+
+		supply.setSupplyOwner(supplier);
+		supplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
+		supplyProfile.setSupplyProfileOwner(supply);
+		demandProfileElement.setProfileElementOwner(demandProfile);
+		supplyProfileElement.setProfileElementOwner(supplyProfile);
+		demandProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
+		supplyProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
+
+		assertNotNull(service);
+		assertEquals(supplyProfile.getSupplyProfileOwner(), supply);
+		assertEquals(supplyProfile.getActorOwner(), supplier);
+		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
+
+		// wrong profile element type
+		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
+		ProfileElementComparison comp = service.getProfileElementDropDownComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp);
+		demandProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
+
+		// wrong profile element type again
+		supplyProfileElement.setProfileElementType(ProfileElementType.TIME_PERIOD);
+		ProfileElementComparison comp2 = service.getProfileElementDropDownComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp2);
+
+		// wrong profile element type again
+		supplyProfileElement.setProfileElementType(ProfileElementType.TIME_PERIOD);
+		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
+		ProfileElementComparison comp3 = service.getProfileElementDropDownComparison(demandProfileElement, supplyProfileElement);
+		assertNull(comp3);
+
+//		dropDownHbo.setValue("hbo");
+//		dropDownMbo.setValue("mbo");
+
+		//same supply and demand
+		demandProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
+		demandProfileElement.setDropDownValue(dropDownHbo);
+		supplyProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
+		supplyProfileElement.setDropDownValue(dropDownHbo);
+		ProfileElementComparison comp4 = service.getProfileElementDropDownComparison(demandProfileElement, supplyProfileElement);
+		assertEquals(comp4.getCalculatedMatchingValue().intValue(), 100);
+
+		//not same supply and demand
+		demandProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
+		demandProfileElement.setDropDownValue(dropDownHbo);
+		supplyProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
+		supplyProfileElement.setDropDownValue(dropDownMbo);
+		ProfileElementComparison comp5 = service.getProfileElementDropDownComparison(demandProfileElement, supplyProfileElement);
+		assertEquals(comp5.getCalculatedMatchingValue().intValue(), 0);
+
+	}
+	//---------------- END TEST getProfileElementEducationLevelComparison --------------------//
 	
 }

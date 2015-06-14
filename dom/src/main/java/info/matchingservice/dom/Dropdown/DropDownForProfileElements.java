@@ -19,20 +19,18 @@
 
 package info.matchingservice.dom.Dropdown;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Profile.ProfileElementType;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Where;
+
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Profile.ProfileElementType;
 
 @DomainService(repositoryFor = DropDownForProfileElement.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -53,46 +51,29 @@ public class DropDownForProfileElements extends MatchingDomainService<DropDownFo
     
     @Programmatic
     public List<DropDownForProfileElement> findDropDowns(
-            final String value
+            final String value,
+            final ProfileElementType profileElementType
             ) {
-        return allMatches("matchDropDownByKeyWord", "value", value);
+        return allMatches("matchDropDownByKeyWord", "type", profileElementType, "value", value);
     }
     
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public DropDownForProfileElement newProfileElementDropDown(
+    @Programmatic
+    public DropDownForProfileElement createDropDownForProfileELements(
             final ProfileElementType category,
             final String value
-            ){
-        final DropDownForProfileElement newProfileElementDropDown = newTransientInstance(DropDownForProfileElement.class);
-        newProfileElementDropDown.setType(category);
-        newProfileElementDropDown.setValue(value.toLowerCase());
-        persist(newProfileElementDropDown);
-        return newProfileElementDropDown;
+    ){
+        final DropDownForProfileElement dropDownForProfileElement = newTransientInstance(DropDownForProfileElement.class);
+        dropDownForProfileElement.setType(category);
+        dropDownForProfileElement.setValue(value.toLowerCase());
+        persist(dropDownForProfileElement);
+        container.informUser("Dropdown element " + value + " created");
+        return dropDownForProfileElement;
     }
-    
-    @ActionLayout(hidden=Where.EVERYWHERE)
-    public DropDownForProfileElement newQualityDropDown(
-            @ParameterLayout(named="value")
-            final String value
-            ){
-        final DropDownForProfileElement newProfileElementDropDown = newTransientInstance(DropDownForProfileElement.class);
-        newProfileElementDropDown.setType(ProfileElementType.QUALITY);
-        newProfileElementDropDown.setValue(value.toLowerCase());
-        persist(newProfileElementDropDown);
-        return newProfileElementDropDown;
-    }
-    
-    public List<DropDownForProfileElement> autoComplete0NewQualityDropDown(final String search) {
-        return dropDownForProfileElements.findDropDowns(search);
-    }
-    
-    public String validateNewQualityDropDown(final String value){
-        if (!this.findDropDowns(value.toLowerCase()).isEmpty()){
-            return "ONE_INSTANCE_AT_MOST";
-        }
-        return null;
-    }
+
     
     @Inject
     DropDownForProfileElements dropDownForProfileElements;
+
+    @Inject
+    DomainObjectContainer container;
 }
