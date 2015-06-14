@@ -41,6 +41,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RestrictTo;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
@@ -117,6 +118,19 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.uniqueItemId = uniqueItemId;
     }
     //-- uniqueItemId --//
+
+    //region > widgetType (property)
+    private ProfileElementWidgetType widgetType;
+
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public ProfileElementWidgetType getWidgetType() {
+        return widgetType;
+    }
+
+    public void setWidgetType(final ProfileElementWidgetType widgetType) {
+        this.widgetType = widgetType;
+    }
+    //endregion
     
     //** profileElementOwner **//
     @Persistent
@@ -186,19 +200,34 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     
 	//** API: ACTIONS **//
     
-    //** updateWeight **//
+    //** updateWidgetType **//
     
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT, restrictTo = RestrictTo.PROTOTYPING)
     @ActionLayout()
-    public ProfileElement updateWeight(Integer weight) {
-    	this.setWeight(weight);
+    public ProfileElement updateWidgetType(ProfileElementWidgetType widgetType) {
+    	this.setWidgetType(widgetType);
     	return this;
     }
     
+    public ProfileElementWidgetType default0UpdateWidgetType() {
+        return getWidgetType();
+    }
+    
+    //-- updateWidgetType --//
+
+    //** updateWeight **//
+
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElement updateWeight(Integer weight) {
+        this.setWeight(weight);
+        return this;
+    }
+
     public Integer default0UpdateWeight() {
         return getWeight();
     }
-    
+
     //-- updateWeight --//
 
     //** activate **//

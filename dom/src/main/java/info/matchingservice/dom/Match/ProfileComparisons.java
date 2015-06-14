@@ -21,16 +21,13 @@ import java.util.List;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
 import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 
 /**
@@ -48,29 +45,31 @@ public class ProfileComparisons extends MatchingDomainService<ProfileComparison>
         return container.allInstances(ProfileComparison.class);
     }
 
-    // Contributed collection
-    @Action(semantics = SemanticsOf.SAFE)
-    @CollectionLayout(render = RenderType.EAGERLY)
+//    // Contributed collection
+//    @Action(semantics = SemanticsOf.SAFE)
+//    @CollectionLayout(render = RenderType.EAGERLY)
+    @Programmatic
     public List<ProfileComparison> collectProfileComparisons(final Profile demandProfile) {
         return allMatches("findProfileComparisonByDemandProfile", "demandProfile", demandProfile);
     }
 
-    public boolean hideCollectProfileComparisons(final Profile demandProfile) {
+//    public boolean hideCollectProfileComparisons(final Profile demandProfile) {
+//
+//        return demandProfile.getDemandOrSupply()== DemandOrSupply.SUPPLY;
+//    }
 
-        return demandProfile.getDemandOrSupply()== DemandOrSupply.SUPPLY;
-    }
-
-    // Contributed collection
-    @Action(semantics = SemanticsOf.SAFE)
-    @CollectionLayout(render = RenderType.EAGERLY)
+//    // Contributed collection
+//    @Action(semantics = SemanticsOf.SAFE)
+//    @CollectionLayout(render = RenderType.EAGERLY)
+    @Programmatic
     public List<ProfileComparison> collectDemandProfileComparisons(final Profile supplyProfile) {
         return allMatches("findProfileComparisonBySupplyProfile", "supplyProfile", supplyProfile);
     }
 
-    public boolean hideCollectDemandProfileComparisons(final Profile supplyProfile) {
-
-        return supplyProfile.getDemandOrSupply()== DemandOrSupply.DEMAND;
-    }
+//    public boolean hideCollectDemandProfileComparisons(final Profile supplyProfile) {
+//
+//        return supplyProfile.getDemandOrSupply()== DemandOrSupply.DEMAND;
+//    }
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @Programmatic

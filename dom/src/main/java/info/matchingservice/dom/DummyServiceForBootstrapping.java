@@ -9,6 +9,7 @@ import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.Email;
 import info.matchingservice.dom.CommunicationChannels.Phone;
 import info.matchingservice.dom.Match.ProfileComparison;
+import info.matchingservice.dom.Profile.ProfileElementChoice;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
 import info.matchingservice.dom.Profile.ProfileElementLocation;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
@@ -38,5 +39,7 @@ public class DummyServiceForBootstrapping {
     public void ensureKnownEagerly(Phone x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(ProfileComparison x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(ProfileElementChoice x) { }
 
 }

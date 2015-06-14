@@ -77,6 +77,7 @@ public class ProfileElementUsePredicates extends MatchingDomainService<ProfileEl
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setIsActive(true);
+        newProfileElement.setWidgetType(ProfileElementWidgetType.PREDICATE);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;

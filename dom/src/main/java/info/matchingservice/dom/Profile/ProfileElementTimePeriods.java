@@ -79,6 +79,7 @@ public class ProfileElementTimePeriods extends MatchingDomainService<ProfileElem
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setIsActive(true);
+        newProfileElement.setWidgetType(ProfileElementWidgetType.DATE);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;

@@ -68,6 +68,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setIsActive(true);
+        newProfileElement.setWidgetType(ProfileElementWidgetType.SELECT);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;

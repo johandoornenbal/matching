@@ -75,6 +75,7 @@ public class RequiredProfileElementRoles extends MatchingDomainService<RequiredP
         newProfileElement.setProfessional(professional);
         newProfileElement.setPrincipal(principal);
         newProfileElement.setIsActive(true);
+        newProfileElement.setWidgetType(ProfileElementWidgetType.MULTICHECKBOX);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
 

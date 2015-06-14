@@ -67,6 +67,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
         newProfileElement.setIsActive(true);
+        newProfileElement.setWidgetType(ProfileElementWidgetType.NUMBER);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;

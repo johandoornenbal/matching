@@ -23,8 +23,6 @@ import javax.inject.Inject;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 
-import com.google.common.collect.ComparisonChain;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
@@ -55,7 +53,7 @@ import info.matchingservice.dom.Profile.Profile;
 public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     public ProfileComparison() {
-        super("demandProfile, uniqueItemId");
+        super("demandProfile, matchingSupplyProfile, calculatedMatchingValue");
     }
     
     private Profile demandProfile;
@@ -115,13 +113,13 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         container.informUser("profileComparison deleted");
     }
     
-    public int compareTo(ProfileComparison that) {
-        return ComparisonChain.start()
-            .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
-            .compare(this.matchingSupplyProfile, that.matchingSupplyProfile)
-            .compare(this.demandProfile, that.demandProfile)
-            .result();
-    }
+//    public int compareTo(ProfileComparison that) {
+//        return ComparisonChain.start()
+//            .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
+//            .compare(this.matchingSupplyProfile, that.matchingSupplyProfile)
+//            .compare(this.demandProfile, that.demandProfile)
+//            .result();
+//    }
 
     // Region>injections ////////////////////////////    
     @Inject
