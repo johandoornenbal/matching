@@ -17,6 +17,7 @@
 
 package info.matchingservice.dom.ProvidedServices;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,6 +31,8 @@ import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.RestrictTo;
@@ -55,10 +58,35 @@ public class ServiceContributions extends MatchingDomainService<Service> {
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT, restrictTo = RestrictTo.PROTOTYPING)
     public Service createService(
+            @ParameterLayout(named = "description")
             final String description,
+            @ParameterLayout(named = "summary")
             final String summary,
-            final ServiceType type){
-        return services.createService(description, summary, persons.findPersonUnique(container.getUser().getName()), type);
+            @ParameterLayout(named = "type")
+            final ServiceType type,
+            @ParameterLayout(named = "priceEuro")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final BigDecimal priceEuro,
+            @ParameterLayout(named = "priceCredits")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final BigDecimal priceCredits,
+            @ParameterLayout(named = "priceStreet")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final BigDecimal priceStreet,
+            @ParameterLayout(named = "postalCode")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final String postalCode
+    ){
+        return services.createService(
+                description,
+                summary,
+                persons.findPersonUnique(container.getUser().getName()),
+                type,
+                priceEuro,
+                priceCredits,
+                priceStreet,
+                postalCode
+                );
     }
 
 

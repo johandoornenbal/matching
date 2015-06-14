@@ -17,6 +17,7 @@
 
 package info.matchingservice.dom.ProvidedServices;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +26,9 @@ import javax.inject.Inject;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.query.QueryDefault;
 
@@ -36,26 +40,57 @@ public class Services extends MatchingDomainService<Service> implements Services
 
     public Services() {
         super(Services.class, Service.class);
-
     }
 
-
     @Programmatic
-    public Service createService(final String description,
+    public Service createService(
+            @ParameterLayout(named = "description")
+            final String description,
+            @ParameterLayout(named = "summary")
             final String summary,
+            @ParameterLayout(named = "owner")
             final Person owner,
-            final ServiceType type){
+            @ParameterLayout(named = "type")
+            final ServiceType type,
+            @ParameterLayout(named = "priceEuro")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final BigDecimal priceEuro,
+            @ParameterLayout(named = "priceCredits")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final BigDecimal priceCredits,
+            @ParameterLayout(named = "priceStreet")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final BigDecimal priceStreet,
+            @ParameterLayout(named = "postalCode")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final String postalCode
+    ){
 
-        return createService(description,summary,owner,type,currentUsername());
+        return createService(
+                description,
+                summary,
+                owner,
+                type,
+                priceEuro,
+                priceCredits,
+                priceStreet,
+                postalCode,
+                currentUsername()
+        );
     }
 
     @Programmatic
-    public Service createService(final String description,
+    public Service createService(
+            final String description,
             final String summary,
             final Person owner,
             final ServiceType type,
-            final String ownedBy){
-
+            final BigDecimal priceEuro,
+            final BigDecimal priceCredits,
+            final BigDecimal priceStreet,
+            final String postalCode,
+            final String ownedBy
+    ){
 
         Service service = newTransientInstance(Service.class);
 
@@ -63,7 +98,12 @@ public class Services extends MatchingDomainService<Service> implements Services
         service.setServiceSummary(summary);
         service.setServiceOwner(owner);
         service.setServiceType(type);
+        service.setPriceEuro(priceEuro);
+        service.setPriceCredits(priceCredits);
+        service.setPriceStreet(priceStreet);
+        service.setPostalCode(postalCode);
         service.setUniqueItemId(UUID.randomUUID());
+
         service.setOwnedBy(ownedBy);
 
         persistIfNotAlready(service);

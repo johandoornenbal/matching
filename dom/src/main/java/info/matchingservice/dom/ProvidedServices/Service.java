@@ -179,20 +179,20 @@ public class Service extends MatchingSecureMutableObject<Service> {
     }
     //endregion
 
-
-    //region > town (property)
-    private String town;
-
-    @Column(allowsNull = "true")
-    public String getTown() {
-        return town;
-    }
-
-    public void setTown(final String town) {
-        this.town = town;
-    }
-    //endregion
-
+//
+//    //region > town (property)
+//    private String town;
+//
+//    @Column(allowsNull = "true")
+//    public String getTown() {
+//        return town;
+//    }
+//
+//    public void setTown(final String town) {
+//        this.town = town;
+//    }
+//    //endregion
+//
 
 
     //region > priceCredits (property)
