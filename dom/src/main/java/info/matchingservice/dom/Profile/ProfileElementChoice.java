@@ -51,7 +51,7 @@ import info.matchingservice.dom.MatchingDomainObject;
 public class ProfileElementChoice extends MatchingDomainObject<ProfileElementChoice>{
 
     public ProfileElementChoice() {
-        super("demandOrSupply, widgetType, elementDescription, action");
+        super("demandOrSupply, widgetType, description, action");
     }
 
     //region > demandOrSupply (property)
@@ -82,17 +82,17 @@ public class ProfileElementChoice extends MatchingDomainObject<ProfileElementCho
     }
     //endregion
 
-    //region > elementDescription (property)
-    private String elementDescription;
+    //region > description (property)
+    private String description;
 
     @MemberOrder(sequence = "3")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getElementDescription() {
-        return elementDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setElementDescription(final String elementDescription) {
-        this.elementDescription = elementDescription;
+    public void setDescription(final String description) {
+        this.description = description;
     }
     //endregion
 

@@ -66,7 +66,7 @@ public class RequiredProfileElementRoles extends MatchingDomainService<RequiredP
         final UUID uuid=UUID.randomUUID();
 
 
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setWeight(weight);
         newProfileElement.setProfileElementType(profileElementType);

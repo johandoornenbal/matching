@@ -129,10 +129,10 @@ public class ProfileTest extends MatchingIntegrationTest {
         
         @Test
         public void newProfile() throws Exception {
-//            assertThat(dropdown.getProfileElementDescription(), is(ELEMENT_DESCRIPTION));
-            assertThat(numeric.getProfileElementDescription(), is(ELEMENT_DESCRIPTION));
-            assertThat(text.getProfileElementDescription(), is(ELEMENT_DESCRIPTION));
-            assertThat(dropdownAndText.getProfileElementDescription(), is(ELEMENT_DESCRIPTION));
+//            assertThat(dropdown.getDescription(), is(ELEMENT_DESCRIPTION));
+            assertThat(numeric.getDescription(), is(ELEMENT_DESCRIPTION));
+            assertThat(text.getDescription(), is(ELEMENT_DESCRIPTION));
+            assertThat(dropdownAndText.getDescription(), is(ELEMENT_DESCRIPTION));
             // the creator owns the element
 //            assertThat(dropdown.getOwnedBy(), is("tester"));
             assertThat(numeric.getOwnedBy(), is("tester"));
@@ -245,10 +245,10 @@ public class ProfileTest extends MatchingIntegrationTest {
         }
         
         public void edit() throws Exception {
-//            assertThat(dropdown.getProfileElementDescription(), is(DEMAND_PROFILE_DESCRIPTION));
+//            assertThat(dropdown.getDescription(), is(DEMAND_PROFILE_DESCRIPTION));
 //            assertThat(dropdown.default0EditProfileDescription(), is(DEMAND_PROFILE_DESCRIPTION));
 //            dropdown.EditProfileDescription(EDITED_DEMAND_PROFILE_DESCRIPTION);
-//            assertThat(dropdown.getProfileElementDescription(), is(EDITED_DEMAND_PROFILE_DESCRIPTION));
+//            assertThat(dropdown.getDescription(), is(EDITED_DEMAND_PROFILE_DESCRIPTION));
 //            assertThat(dropdown.getWeight(), is(WEIGHT));
 //            assertThat(dropdown.default0EditWeight(), is(WEIGHT));
 //            dropdown.EditWeight(EDITED_WEIGHT);

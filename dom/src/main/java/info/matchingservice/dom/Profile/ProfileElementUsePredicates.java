@@ -70,7 +70,7 @@ public class ProfileElementUsePredicates extends MatchingDomainService<ProfileEl
         final ProfileElementUsePredicate newProfileElement = newTransientInstance(ProfileElementUsePredicate.class);
         final UUID uuid=UUID.randomUUID();
         newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setUseTimePeriod(useTimePeriod);
         newProfileElement.setUseAge(useAge);

@@ -69,7 +69,7 @@ public class ProfileElementTags extends MatchingDomainService<ProfileElementTag>
         final ProfileElementTag newProfileElement = newTransientInstance(ProfileElementTag.class);
         final UUID uuid=UUID.randomUUID();
         newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);

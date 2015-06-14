@@ -47,7 +47,7 @@ public class ProfileElementDropDownAndTexts extends MatchingDomainService<Profil
         final ProfileElementDropDownAndText newProfileElement = newTransientInstance(ProfileElementDropDownAndText.class);
         final UUID uuid=UUID.randomUUID();
         newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setOptionalDropDownValue(dropDown);
         newProfileElement.setDisplayValue(dropDown.getValue() + " - " + text);

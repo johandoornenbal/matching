@@ -19,13 +19,13 @@
 
 package info.matchingservice.dom.Profile;
 
-import info.matchingservice.dom.MatchingDomainService;
-
 import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
+
+import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(repositoryFor = ProfileElementText.class, nature=NatureOfService.DOMAIN)
 public class ProfileElements extends MatchingDomainService<ProfileElement> {
@@ -37,7 +37,7 @@ public class ProfileElements extends MatchingDomainService<ProfileElement> {
     @Programmatic
     public List<ProfileElement> findProfileElementByOwnerProfileAndDescription(final String profileElementDescription, final Profile profileElementOwner){
     	return allMatches("findProfileElementByOwnerProfileAndDescription",
-        		"profileElementDescription", profileElementDescription,
+        		"description", profileElementDescription,
         		"profileElementOwner", profileElementOwner);
     }
 

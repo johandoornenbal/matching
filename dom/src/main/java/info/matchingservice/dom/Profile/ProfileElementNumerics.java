@@ -60,7 +60,7 @@ public class ProfileElementNumerics extends MatchingDomainService<ProfileElement
         final ProfileElementNumeric newProfileElement = newTransientInstance(ProfileElementNumeric.class);
         final UUID uuid=UUID.randomUUID();
         newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setNumericValue(numericValue);
         newProfileElement.setDisplayValue(numericValue.toString());

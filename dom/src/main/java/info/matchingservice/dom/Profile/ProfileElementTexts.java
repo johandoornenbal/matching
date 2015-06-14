@@ -62,7 +62,7 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
         final UUID uuid=UUID.randomUUID();
         Integer textLength = 20;
         newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setTextValue(textValue);
         if (textValue.length() < textLength){
