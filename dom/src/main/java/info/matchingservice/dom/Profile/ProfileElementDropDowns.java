@@ -61,7 +61,7 @@ public class ProfileElementDropDowns extends MatchingDomainService<ProfileElemen
         final ProfileElementDropDown newProfileElement = newTransientInstance(ProfileElementDropDown.class);
         final UUID uuid=UUID.randomUUID();
         newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setDropDownValue(dropDown);
         newProfileElement.setDisplayValue(dropDown.getValue());

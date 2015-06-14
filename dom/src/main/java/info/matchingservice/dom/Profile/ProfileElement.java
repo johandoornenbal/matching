@@ -69,26 +69,26 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
             name = "findProfileElementByOwnerProfileAndDescription", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.ProfileElement "
-                    + "WHERE profileElementOwner == :profileElementOwner && profileElementDescription.indexOf(:profileElementDescription) >= 0")
+                    + "WHERE profileElementOwner == :profileElementOwner && description.indexOf(:description) >= 0")
 })
 @DomainObject(editing=Editing.DISABLED)
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
 	//** API: PROPERTIES **//
 	
-	//** profileElementDescription **//
+	//** description **//
 	@Persistent
-    private String profileElementDescription;
+    private String description;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getProfileElementDescription(){
-        return profileElementDescription;
+    public String getDescription(){
+        return description;
     }
     
-    public void setProfileElementDescription(final String description) {
-        this.profileElementDescription = description;
+    public void setDescription(final String description) {
+        this.description = description;
     }
-    //-- profileElementDescription --//
+    //-- description --//
     
     //** weight **//
     @Persistent
@@ -371,7 +371,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 	//** GENERIC OBJECT STUFF **//
 	//** constructor **//
     public ProfileElement() {
-        super("ownedBy, profileElementDescription, profileElementOwner, profileElementId, uniqueItemId");
+        super("ownedBy, description, profileElementOwner, profileElementId, uniqueItemId");
     }
 	//** ownedBy - Override for secure object **//
     private String ownedBy;
@@ -392,7 +392,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 	//** HELPERS **//
     //** HELPERS: generic object helpers **//
     public String toString(){
-        return this.profileElementDescription;
+        return this.description;
     }
 	//-- HELPERS: generic object helpers --//
 	//** HELPERS: programmatic actions **//

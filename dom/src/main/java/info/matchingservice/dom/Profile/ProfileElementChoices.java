@@ -56,7 +56,7 @@ public class ProfileElementChoices extends MatchingDomainService<ProfileElementC
 
         newElement.setDemandOrSupply(demandOrSupply);
         newElement.setWidgetType(widgetType);
-        newElement.setElementDescription(elementDescription);
+        newElement.setDescription(elementDescription);
         newElement.setAction(action);
 
         persistIfNotAlready(newElement);

@@ -64,7 +64,7 @@ public class ProfileElementLocations extends MatchingDomainService<ProfileElemen
         PostcodeNuService service = new PostcodeNuService();
         Location location = service.locationFromPostalCode(null, postcode);
         newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setPostcode(postcode);
         newProfileElement.setLongitude(location.getLongitude());

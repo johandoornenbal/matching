@@ -18,17 +18,18 @@
  */
 package info.matchingservice.dom.Profile;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import info.matchingservice.dom.FinderInteraction;
-import info.matchingservice.dom.FinderInteraction.FinderMethod;
-
 import java.util.List;
 
-import org.apache.isis.applib.query.Query;
 import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.apache.isis.applib.query.Query;
+
+import info.matchingservice.dom.FinderInteraction;
+import info.matchingservice.dom.FinderInteraction.FinderMethod;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ProfileElementsTest {
 
@@ -75,7 +76,7 @@ public class ProfileElementsTest {
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
 //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(ProfileElement.class));
             assertThat(finderInteraction.getQueryName(), is("findProfileElementByOwnerProfileAndDescription"));
-            assertThat(finderInteraction.getArgumentsByParameterName().get("profileElementDescription"), is((Object) "some description"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("description"), is((Object) "some description"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("profileElementOwner"), is((Object) profileElementOwner));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(2));
         }

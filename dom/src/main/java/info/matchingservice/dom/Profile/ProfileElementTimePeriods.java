@@ -72,7 +72,7 @@ public class ProfileElementTimePeriods extends MatchingDomainService<ProfileElem
         final ProfileElementTimePeriod newProfileElement = newTransientInstance(ProfileElementTimePeriod.class);
         final UUID uuid=UUID.randomUUID();
         newProfileElement.setUniqueItemId(uuid);
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setWeight(weight);
         newProfileElement.setStartDate(startDate);
         newProfileElement.setEndDate(endDate);

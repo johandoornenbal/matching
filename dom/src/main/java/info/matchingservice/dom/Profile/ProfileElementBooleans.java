@@ -43,7 +43,7 @@ public class ProfileElementBooleans extends MatchingDomainService<ProfileElement
         final UUID uuid=UUID.randomUUID();
 
 
-        newProfileElement.setProfileElementDescription(description);
+        newProfileElement.setDescription(description);
         newProfileElement.setUniqueItemId(uuid);
         newProfileElement.setWeight(weight);
         newProfileElement.setProfileElementType(profileElementType);
