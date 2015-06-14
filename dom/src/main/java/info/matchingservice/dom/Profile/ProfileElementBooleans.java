@@ -1,12 +1,12 @@
 package info.matchingservice.dom.Profile;
 
-import info.matchingservice.dom.MatchingDomainService;
+import java.util.UUID;
+
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.Programmatic;
 
-import java.util.UUID;
+import info.matchingservice.dom.MatchingDomainService;
 
 /**
  * Created by jonathan on 22-4-15.
@@ -48,6 +48,7 @@ public class ProfileElementBooleans extends MatchingDomainService<ProfileElement
         newProfileElement.setWeight(weight);
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
+        newProfileElement.setIsActive(true);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
 

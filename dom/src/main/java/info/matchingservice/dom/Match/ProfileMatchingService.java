@@ -995,34 +995,40 @@ public class ProfileMatchingService extends AbstractService {
 			
 			// loop through profile elements on the demand profile
 			for (ProfileElement demandProfileElement: demandProfile.getCollectProfileElements()){
-				
-				// loop through profile elements on the 'matching' supply profile
-				for (ProfileElement supplyProfileElement: supplyProfile.getCollectProfileElements()){
-					
-					// get the element comparison
-					ProfileElementComparison profileElementComparison = this.getProfileElementComparison(demandProfile, demandProfileElement, supplyProfile, supplyProfileElement);
-					
-					// catch the null returns and filter out element comparisons without a value - if any 
-					// TODO: maak efficienter (Het afvangen van nulls zouden we voorkomen door te zorgen dat ook hier de 'rules' geimplementeerd worden
-					try
-					{
-						if (profileElementComparison.getCalculatedMatchingValue() > 0){
-							
-							// voeg de comparison toe aan het lijstje relevante comparisons
-							profileElementComparisons.add(profileElementComparison);
-							
-							// debug
-							System.out.println("match from getProfileComparison() in ProfileMatchingService.class:");
-							System.out.println("matchingValue: " + profileElementComparison.getCalculatedMatchingValue() + " - " + profileElementComparison.getMatchingProfileElementActorOwner().title());
+
+				//test if demandProfileElement is active
+				if (demandProfileElement.getIsActive()) {
+
+					// loop through profile elements on the 'matching' supply profile
+					for (ProfileElement supplyProfileElement: supplyProfile.getCollectProfileElements()){
+
+						//test if supplyProfileElement is active
+						if (supplyProfileElement.getIsActive()) {
+
+							// get the element comparison
+							ProfileElementComparison profileElementComparison = this.getProfileElementComparison(demandProfile, demandProfileElement, supplyProfile, supplyProfileElement);
+
+							// catch the null returns and filter out element comparisons without a value - if any
+							// TODO: maak efficienter (Het afvangen van nulls zouden we voorkomen door te zorgen dat ook hier de 'rules' geimplementeerd worden
+							try {
+								if (profileElementComparison.getCalculatedMatchingValue() > 0) {
+
+									// voeg de comparison toe aan het lijstje relevante comparisons
+									profileElementComparisons.add(profileElementComparison);
+
+									// debug
+									System.out.println("match from getProfileComparison() in ProfileMatchingService.class:");
+									System.out.println("matchingValue: " + profileElementComparison.getCalculatedMatchingValue() + " - " + profileElementComparison.getMatchingProfileElementActorOwner().title());
+
+								}
+							} catch (NullPointerException e) {
+								System.out.println("no valid element comparison");
+							}
 							
 						}
 					}
-					catch(NullPointerException e) 
-					{
-						System.out.println("no valid element comparison");
-					}
+
 				}
-				
 			}
 			
 			

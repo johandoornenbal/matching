@@ -21,12 +21,12 @@ package info.matchingservice.dom.Profile;
 
 import java.util.UUID;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
+
+import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
+import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(repositoryFor = ProfileElementDropDownAndText.class)
 public class ProfileElementDropDownAndTexts extends MatchingDomainService<ProfileElementDropDownAndText> {
@@ -54,6 +54,7 @@ public class ProfileElementDropDownAndTexts extends MatchingDomainService<Profil
         newProfileElement.setText(text);
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
+        newProfileElement.setIsActive(true);
         newProfileElement.setOwnedBy(currentUserName());
         persist(newProfileElement);
         return newProfileElement;

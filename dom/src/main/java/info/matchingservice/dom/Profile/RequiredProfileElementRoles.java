@@ -74,6 +74,7 @@ public class RequiredProfileElementRoles extends MatchingDomainService<RequiredP
         newProfileElement.setStudent(student);
         newProfileElement.setProfessional(professional);
         newProfileElement.setPrincipal(principal);
+        newProfileElement.setIsActive(true);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
 

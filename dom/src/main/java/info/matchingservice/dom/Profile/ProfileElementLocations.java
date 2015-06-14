@@ -19,15 +19,16 @@
 
 package info.matchingservice.dom.Profile;
 
-import info.matchingservice.dom.MatchingDomainService;
-
 import java.util.UUID;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
+
 import org.isisaddons.services.postalcode.Location;
 import org.isisaddons.services.postalcode.postcodenunl.PostcodeNuService;
+
+import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(repositoryFor = ProfileElementLocation.class)
 public class ProfileElementLocations extends MatchingDomainService<ProfileElementLocation> {
@@ -72,6 +73,7 @@ public class ProfileElementLocations extends MatchingDomainService<ProfileElemen
         newProfileElement.setDisplayValue(postcode);
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
+        newProfileElement.setIsActive(true);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;

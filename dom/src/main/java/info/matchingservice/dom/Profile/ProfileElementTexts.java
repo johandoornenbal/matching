@@ -21,12 +21,12 @@ package info.matchingservice.dom.Profile;
 
 import java.util.UUID;
 
-import info.matchingservice.dom.MatchingDomainService;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.Programmatic;
+
+import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(repositoryFor = ProfileElementText.class)
 public class ProfileElementTexts extends MatchingDomainService<ProfileElementText> {
@@ -71,6 +71,7 @@ public class ProfileElementTexts extends MatchingDomainService<ProfileElementTex
         newProfileElement.setDisplayValue(textValue.substring(0, textLength-1));
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
+        newProfileElement.setIsActive(true);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;

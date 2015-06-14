@@ -165,6 +165,19 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.displayValue = displayValue;
     }
     //-- displayValue --//
+
+    //region > isActive (property)
+    private boolean isActive;
+
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(final boolean isActive) {
+        this.isActive = isActive;
+    }
+    //endregion
     
 	//-- API: PROPERTIES --//
 	
@@ -187,6 +200,28 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
     }
     
     //-- updateWeight --//
+
+    //** activate **//
+
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElement activate() {
+        setIsActive(true);
+        return this;
+    }
+
+    //-- activate --//
+
+    //** deactivate **//
+
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElement deactivate() {
+        setIsActive(false);
+        return this;
+    }
+
+    //-- deactivate --//
 	
     //** deleteProfileElement **//
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)

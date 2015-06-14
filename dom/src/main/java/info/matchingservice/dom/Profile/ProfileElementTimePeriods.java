@@ -19,14 +19,15 @@
 
 package info.matchingservice.dom.Profile;
 
-import info.matchingservice.dom.MatchingDomainService;
-
 import java.util.UUID;
+
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.joda.time.LocalDate;
+
+import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(repositoryFor = ProfileElementTimePeriod.class)
 public class ProfileElementTimePeriods extends MatchingDomainService<ProfileElementTimePeriod> {
@@ -77,6 +78,7 @@ public class ProfileElementTimePeriods extends MatchingDomainService<ProfileElem
         newProfileElement.setEndDate(endDate);
         newProfileElement.setProfileElementType(profileElementType);
         newProfileElement.setProfileElementOwner(profileOwner);
+        newProfileElement.setIsActive(true);
         newProfileElement.setOwnedBy(ownedBy);
         persist(newProfileElement);
         return newProfileElement;
