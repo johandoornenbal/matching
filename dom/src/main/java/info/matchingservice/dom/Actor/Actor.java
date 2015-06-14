@@ -221,7 +221,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     @Override
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @PropertyLayout(hidden=Where.EVERYWHERE)
+    @PropertyLayout(hidden=Where.ALL_TABLES)
     @Property(editing=Editing.DISABLED)
     public String getOwnedBy() {
         return ownedBy;
