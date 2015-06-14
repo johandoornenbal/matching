@@ -7,6 +7,8 @@ import info.matchingservice.fixture.Dropdowns.DropDownMbo;
 import info.matchingservice.fixture.Dropdowns.DropDownWo;
 import info.matchingservice.fixture.ProfileElementConfig.ProfileElementChoicesForDemand;
 import info.matchingservice.fixture.ProfileElementConfig.ProfileElementChoicesForSupply;
+import info.matchingservice.fixture.ProvidedServices.ServicesForTesting;
+import info.matchingservice.fixture.ProvidedServices.ServicesOccurrencesForTesting;
 import info.matchingservice.fixture.actor.TestOrganisations;
 import info.matchingservice.fixture.actor.TestPersonalContacts;
 import info.matchingservice.fixture.actor.TestPersons;
@@ -108,7 +110,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new DropDownWo(), executionContext);
         executeChild(new ProfileElementChoicesForDemand(), executionContext);
         executeChild(new ProfileElementChoicesForSupply(), executionContext);
-
+        executeChild(new ServicesForTesting(), executionContext);
+        executeChild(new ServicesOccurrencesForTesting(), executionContext);
 
     }
 

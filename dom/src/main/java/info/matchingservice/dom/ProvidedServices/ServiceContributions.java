@@ -22,27 +22,22 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.joda.time.LocalDate;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.RestrictTo;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
-import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.MatchingDomainService;
 
-@DomainService(nature= NatureOfService.VIEW)
+@DomainService(nature= NatureOfService.VIEW_MENU_ONLY)
+@DomainServiceLayout(named = "Services")
 public class ServiceContributions extends MatchingDomainService<Service> {
 
 
@@ -89,51 +84,6 @@ public class ServiceContributions extends MatchingDomainService<Service> {
                 );
     }
 
-
-
-
-//    @Action(semantics = SemanticsOf.SAFE)
-//    @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
-//    @CollectionLayout(render = RenderType.EAGERLY)
-//    public List<ServiceOccurrence> collectOccurrences(Service service){
-//
-//        return serviceOccurrences.findServiceOccurrencesByService(service);
-//
-//    }
-
-
-    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    public Service createServiceOccurence(final Service service,
-            final @ParameterLayout(named = "Date")LocalDate localDate){
-
-//        serviceOccurrences.createServiceOccurence(service, localDate);
-        return service;
-    }
-
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
-    @CollectionLayout(render = RenderType.EAGERLY)
-    public List<Person> collectSuppliers(final Service service){
-
-        return services.findSuppliersByService(service);
-
-
-
-    }
-
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
-    @CollectionLayout(render = RenderType.EAGERLY)
-    public List<Person> collectPublic(final Service service){
-
-        return services.findPublicByService(service);
-
-
-
-    }
-
-
-
     //** INJECT ** //
 
     @Inject
@@ -144,10 +94,6 @@ public class ServiceContributions extends MatchingDomainService<Service> {
 
     @Inject
     DomainObjectContainer container;
-
-
-//    @Inject
-//    ServiceOccurrences serviceOccurrences;
 
 
     //-- INJECT -- //

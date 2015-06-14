@@ -18,7 +18,6 @@
 package info.matchingservice.dom.ProvidedServices;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +25,7 @@ import javax.inject.Inject;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
@@ -35,7 +35,7 @@ import org.apache.isis.applib.query.QueryDefault;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainService;
 
-@DomainService(repositoryFor = Service.class)
+@DomainService(repositoryFor = Service.class, nature = NatureOfService.DOMAIN)
 public class Services extends MatchingDomainService<Service> implements ServicesRepository {
 
     public Services() {
@@ -102,6 +102,7 @@ public class Services extends MatchingDomainService<Service> implements Services
         service.setPriceCredits(priceCredits);
         service.setPriceStreet(priceStreet);
         service.setPostalCode(postalCode);
+        service.setServiceStatus(ServiceStatus.OPEN); //default
         service.setUniqueItemId(UUID.randomUUID());
 
         service.setOwnedBy(ownedBy);
@@ -128,57 +129,13 @@ public class Services extends MatchingDomainService<Service> implements Services
 
     }
 
-
-    //helper
-    @Override
-    @Programmatic
-    public List<Service> findServicesByStakeholder(Person person, StakeholderType type) {
-
-
-        List<Service> services = new ArrayList<>();
-
-
-//        for(ServiceStakeholder s: serviceStakeholders.findServiceStakeholderByPersonAndType(person, type)){
-//
-//            services.add(s.getService());
-//
-//        }
-
-        return services;
-
-
-    }
-
-    @Override
-    @Programmatic
-    public List<Service> findServicesByPublic(Person stakeholder) {
-
-
-        return findServicesByStakeholder(stakeholder, StakeholderType.PUBLIC);
-
-
-
-    }
-
-    @Override
-    @Programmatic
-    public List<Service> findServicesBySupplier(Person supplier) {
-        return findServicesByStakeholder(supplier, StakeholderType.SUPPLIER);
-    }
-
-    @Override
-    @Programmatic
-    public List<Service> findServicesByUser(String username) {
-
-
+    @Override public List<Service> findServicesByUser(final String username) {
         QueryDefault<Service> query =
                 QueryDefault.create(
                         Service.class,
                         "findServiceByOwnedBy",
                         "ownedBy", username);
         return allMatches(query);
-
-
 
     }
 
@@ -195,34 +152,6 @@ public class Services extends MatchingDomainService<Service> implements Services
 
     }
 
-    @Override
-    public List<Person> findSuppliersByService(Service service) {
-
-        List<Person> persons = new ArrayList<>();
-
-
-//        for(ServiceStakeholder s: serviceStakeholders.findServiceStakeholderByServiceAndType(service, StakeholderType.SUPPLIER)){
-//
-//            persons.add(s.getPerson());
-//
-//        }
-
-        return persons;
-    }
-
-    @Override
-    public List<Person> findPublicByService(Service service) {
-        List<Person> persons = new ArrayList<>();
-
-
-//        for(ServiceStakeholder s: serviceStakeholders.findServiceStakeholderByServiceAndType(service, StakeholderType.SUPPLIER)){
-//
-//            persons.add(s.getPerson());
-//
-//        }
-
-        return persons;
-    }
 
 
     @Override
@@ -298,8 +227,5 @@ public class Services extends MatchingDomainService<Service> implements Services
     DomainObjectContainer container;
 
 
-
-//    @Inject
-//    ServiceStakeholders serviceStakeholders;
 
 }

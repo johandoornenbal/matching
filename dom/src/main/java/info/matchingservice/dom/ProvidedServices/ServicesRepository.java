@@ -20,8 +20,6 @@ package info.matchingservice.dom.ProvidedServices;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.isis.applib.annotation.Programmatic;
-
 import info.matchingservice.dom.Actor.Person;
 
 /**
@@ -44,32 +42,10 @@ public interface ServicesRepository {
     public List<Service> findServicesByOwner(Person owner);
 
 
-    public List<Service> findServicesByStakeholder(Person person, StakeholderType type);
-
-    /**just find service by stakholder with thype PUBLIC
-     *
-     * @param stakeholder
-     * @return
-     */
-    public List<Service> findServicesByPublic(Person stakeholder);
-
-    /**just find service by stakholder with thype SUPPLIEr
-     *
-     * @param supplier
-     * @return
-     */
-    public List<Service> findServicesBySupplier(Person supplier);
-
-
     public List<Service> findServicesByUser(String username);
 
     public List<Service> findServicesByUUID (UUID uniqueItemId);
 
-    @Programmatic
-    public List<Person> findSuppliersByService(Service service);
-
-    @Programmatic
-    public List<Person> findPublicByService(Service service);
 
 
     //TODO

@@ -37,6 +37,8 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.ProvidedServices.Service;
+import info.matchingservice.dom.ProvidedServices.Services;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.Tags;
 import info.matchingservice.dom.TrustLevel;
@@ -468,6 +470,15 @@ public class Api extends AbstractFactoryAndRepository {
 
 
 	//----------------------------------------- END deletePersonOwnedBy -------------------//
+
+	//***************************************** allProvidedServices ***********************//
+
+	@Action(semantics = SemanticsOf.SAFE)
+	public List<Service> allProvidedServices() {
+		return services.allServices();
+	}
+
+	//----------------------------------------- END allProvidedServices -------------------//
     
     //Helpers
     private String currentUserName() {
@@ -476,24 +487,28 @@ public class Api extends AbstractFactoryAndRepository {
 	
     //Injections
 	@Inject
-	Persons persons;
+	private Persons persons;
 	
 	@Inject
-	Demands demands;
+	private Demands demands;
 	
 	@Inject
-	Supplies supplies;
+	private Supplies supplies;
 	
 	@Inject
-	Profiles profiles;
+	private Profiles profiles;
 	
 	@Inject
-	Tags tags;
+	private Tags tags;
 	
 	@Inject
 	private DomainObjectContainer container;
 	
 	@Inject
-	PersonalContacts personalcontacts;
+	private PersonalContacts personalcontacts;
+
+	@Inject
+	private Services services;
+
 	
 }

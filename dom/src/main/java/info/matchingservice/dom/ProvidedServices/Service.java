@@ -1,7 +1,6 @@
 package info.matchingservice.dom.ProvidedServices;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -22,11 +21,11 @@ import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.annotation.Where;
 
 import info.matchingservice.dom.Actor.Person;
@@ -45,37 +44,37 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
         @Query(
                 name = "findServiceByOwnedBy", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM info.matchingservice.dom.Services.Service "
+                        + "FROM info.matchingservice.dom.ProvidedServices.Service "
                         + "WHERE ownedBy == :ownedBy"),
         @Query(
                 name = "findServiceByType", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM info.matchingservice.dom.Services.Service "
+                        + "FROM info.matchingservice.dom.ProvidedServices.Service "
                         + "WHERE serviceType == :serviceType"),
         @Query(
                 name = "findServiceByOwner", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM info.matchingservice.dom.Services.Service "
+                        + "FROM info.matchingservice.dom.ProvidedServices.Service "
                         + "WHERE serviceOwner == :serviceOwner"),
         @Query(
                 name = "findServiceByUniqueItemId", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM info.matchingservice.dom.Services.Service "
+                        + "FROM info.matchingservice.dom.ProvidedServices.Service "
                         + "WHERE uniqueItemId.matches(:uniqueItemId)"),
         @Query(
                 name = "findServiceByDescriptionContains", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM info.matchingservice.dom.Services.Service "
+                        + "FROM info.matchingservice.dom.ProvidedServices.Service "
                         + "WHERE serviceDescription.toLowerCase().indexOf(:serviceDescription) >= 0"),
         @Query(
                 name = "findServiceByStatus", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM info.matchingservice.dom.Services.Service "
+                        + "FROM info.matchingservice.dom.ProvidedServices.Service "
                         + "WHERE serviceStatus == :serviceStatus"),
         @Query(
                 name = "findServiceByDescription", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM info.matchingservice.dom.Services.Service "
+                        + "FROM info.matchingservice.dom.ProvidedServices.Service "
                         + "WHERE serviceDescription == :serviceDescription"),
 })
 @DomainObject(editing= Editing.DISABLED)
@@ -93,6 +92,7 @@ public class Service extends MatchingSecureMutableObject<Service> {
     private String serviceDescription;
 
     @Column(allowsNull = "false")
+    @Title
     public String getServiceDescription() {
         return serviceDescription;
     }
@@ -116,8 +116,6 @@ public class Service extends MatchingSecureMutableObject<Service> {
     public void setServiceOwner(final Person serviceTemplateOwner) {
         this.serviceOwner = serviceTemplateOwner;
     }
-
-
     //endregion
 
 
@@ -135,7 +133,7 @@ public class Service extends MatchingSecureMutableObject<Service> {
     //endregion
 
 
-    //region > serviceTemplateType (property)
+    //region > serviceType (property)
     private ServiceType serviceType;
 
     @Column(allowsNull = "false")
@@ -179,20 +177,6 @@ public class Service extends MatchingSecureMutableObject<Service> {
     }
     //endregion
 
-//
-//    //region > town (property)
-//    private String town;
-//
-//    @Column(allowsNull = "true")
-//    public String getTown() {
-//        return town;
-//    }
-//
-//    public void setTown(final String town) {
-//        this.town = town;
-//    }
-//    //endregion
-//
 
 
     //region > priceCredits (property)
@@ -276,59 +260,6 @@ public class Service extends MatchingSecureMutableObject<Service> {
 
 
     //----PROPERTIES---//
-
-
-    //*** ADD SUPPLIER ***//
-
-
-
-    //region > addSupplier (action)
-    @Action(semantics = SemanticsOf.SAFE)
-    @MemberOrder(sequence = "1")
-    public Service addSupplier(final Person supplier) {
-
-
-//        stakeholders.createServiceStakeholder(supplier, this, StakeholderType.SUPPLIER, StakeholderStatus.STAKEHOLDER_POSSIBLE_CANDIDATE);
-        return this;
-
-    }
-    //endregion
-
-
-    public boolean hideAddSupplier() {
-        return notOwner();
-    }
-
-
-
-
-    //--- ADD SUPPLIER ---//
-
-
-    //*** ADD PUBLIC r****//
-
-    //region > addPublic (action)
-    @Action(semantics = SemanticsOf.SAFE)
-    @MemberOrder(sequence = "1")
-    public Service addPublic(final Person publicPerson) {
-
-//        stakeholders.createServiceStakeholder(publicPerson, this, StakeholderType.PUBLIC, StakeholderStatus.STAKEHOLDER_POSSIBLE_CANDIDATE);
-        return this;
-
-    }
-    //endregion
-
-    public List<Person> autoComplete0AddPublic(final String search) {
-
-        if(notOwner()){
-            return persons.activePerson();
-        }
-        return persons.findPersons(search);
-    }
-
-
-    //--- ADD PUBLIC --//
-
 
 
 
