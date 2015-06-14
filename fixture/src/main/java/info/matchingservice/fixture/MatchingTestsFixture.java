@@ -1,19 +1,20 @@
 package info.matchingservice.fixture;
 
-import info.matchingservice.fixture.assessment.AssessmentsForFransFixture;
-import info.matchingservice.fixture.assessment.AssessmentsForRembrandtFixture;
-import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.fixture.actor.TestOrganisations;
 import info.matchingservice.fixture.actor.TestPersonalContacts;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.actor.TestRoles;
+import info.matchingservice.fixture.assessment.AssessmentsForFransFixture;
+import info.matchingservice.fixture.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
 import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
 import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.demand.TestDemands;
-import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplies;
+import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
 import info.matchingservice.fixture.tag.TagCategoriesFixture;
 import info.matchingservice.fixture.tag.TagsFixture;
@@ -22,8 +23,6 @@ import info.matchingservice.fixture.tag.TagsForFrans;
 import info.matchingservice.fixture.tag.TagsForGerard;
 import info.matchingservice.fixture.tag.TagsForMichiel;
 import info.matchingservice.fixture.tag.TagsForRembrandt;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 public class MatchingTestsFixture extends FixtureScript {
     
@@ -39,7 +38,6 @@ public class MatchingTestsFixture extends FixtureScript {
         // create
         executeChild(new TestMatchingProfileTypeRules(), executionContext);
     	executeChild(new TestConfig(), executionContext);
-        executeChild(new ProfileElementDropDownsFixture(), executionContext);
         executeChild(new TestPersons(), executionContext);
         executeChild(new TestRoles(), executionContext);
         executeChild(new TestDemands(), executionContext);

@@ -1,7 +1,12 @@
 package info.matchingservice.integtest.dom;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import javax.inject.Inject;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Profile.Profile;
@@ -10,22 +15,15 @@ import info.matchingservice.dom.Profile.ProfileElementTags;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Tags.TagHolder;
 import info.matchingservice.dom.Tags.TagHolders;
-import info.matchingservice.fixture.MatchingTestsFixture;
+import info.matchingservice.fixture.Dropdowns.DropDownHbo;
 import info.matchingservice.fixture.TeardownFixture;
-import info.matchingservice.fixture.actor.TestPersons;
-import info.matchingservice.fixture.supply.TestSupplies;
 import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
+import info.matchingservice.fixture.tag.TagsFixture;
 import info.matchingservice.fixture.tag.TagsForFrans;
 import info.matchingservice.integtest.MatchingIntegrationTest;
-
-import javax.inject.Inject;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.apache.isis.applib.fixturescripts.FixtureScript.ExecutionContext;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ProfileElementTagTest extends MatchingIntegrationTest {
 	
@@ -51,8 +49,10 @@ public class ProfileElementTagTest extends MatchingIntegrationTest {
             @Override
             protected void execute(ExecutionContext executionContext) {
             	executionContext.executeChild(this, new TeardownFixture());
+				executionContext.executeChild(this, new DropDownHbo());
             	executionContext.executeChild(this, new TestSupplyProfiles());
             	executionContext.executeChild(this, new TestSupplyProfileElementsPersonProfiles());
+				executionContext.executeChild(this, new TagsFixture());
             	executionContext.executeChild(this, new TagsForFrans());
             }
         });
@@ -78,22 +78,22 @@ public class ProfileElementTagTest extends MatchingIntegrationTest {
     		//then
     		// should not be hidden because a TagElement type WEEK_DAY is not already created
     		assertThat(pf1.hideCreateWeekDayTagElement(10), is(false));
-    		
+
     		//when
     		// create a TagElement type WEEK_DAY
     		pet = profileElementTags.createProfileElementTag("WEEKDAY_TAGS_ELEMENT", 10, ProfileElementType.WEEKDAY_TAGS, pf1, "frans");
-    		
+
     		//then
     		// should be hidden because a TagElement type WEEK_DAY is created already
     		assertThat(pf1.hideCreateWeekDayTagElement(10), is(true));
     		assertThat(pf1.validateCreateWeekDayTagElement(10), is("ONE_INSTANCE_AT_MOST"));
-    		
+
     		// should be hidden because a TagElement type WEEK_DAY is created already by fixtures for frans
     		assertThat(pf2.hideCreateWeekDayTagElement(10), is(true));
-    		
+
     		//when
     		pet = (ProfileElementTag) pf2.findProfileElementByOwnerProfileAndDescription("WEEKDAY").get(0);
-    		
+
     		//then
     		assertThat(pet.getCollectTagHolders().size(), is(1));
     		assertThat(pet.getCollectTagHolders().first().getTag().getTagDescription(), is("maandag"));

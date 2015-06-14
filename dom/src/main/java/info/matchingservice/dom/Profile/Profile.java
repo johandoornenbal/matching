@@ -291,6 +291,52 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 	//-- API: PROPERTIES --//
     
 	//** API: COLLECTIONS **//
+
+    //** collectSupplyProfileComparisons **//
+    @CollectionLayout(render = RenderType.EAGERLY)
+    @Action(semantics = SemanticsOf.SAFE)
+    public List<ProfileElementChoice> getCollectProfileElementChoices(){
+        return profileElementChoices.profileElementChoices(this.demandOrSupply);
+    }
+    //-- collectSupplyProfileComparisons --//
+
+    //** collectSupplyProfileComparisons **//
+    private SortedSet<ProfileComparison> collectSupplyProfileComparisons = new TreeSet<ProfileComparison>();
+
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "demandProfile", dependentElement = "true")
+    public SortedSet<ProfileComparison> getCollectSupplyProfileComparisons() {
+        return collectSupplyProfileComparisons;
+    }
+
+    public void setCollectSupplyProfileComparisons(final SortedSet<ProfileComparison> profileComparisons) {
+        this.collectSupplyProfileComparisons = profileComparisons;
+    }
+
+    // hidden on supply profile
+    public boolean hideCollectSupplyProfileComparisons() {
+        return this.getDemandOrSupply()==DemandOrSupply.SUPPLY;
+    }
+    //-- collectSupplyProfileComparisons --//
+
+    //** collectDemandProfileComparisons **//
+    private SortedSet<ProfileComparison> collectDemandProfileComparisons = new TreeSet<ProfileComparison>();
+
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "matchingSupplyProfile", dependentElement = "true")
+    public SortedSet<ProfileComparison> getCollectDemandProfileComparisons() {
+        return collectDemandProfileComparisons;
+    }
+
+    public void setCollectDemandProfileComparisons(final SortedSet<ProfileComparison> profileComparisons) {
+        this.collectDemandProfileComparisons = profileComparisons;
+    }
+
+    // hidden on demand profile
+    public boolean hideCollectDemandProfileComparisons() {
+        return this.getDemandOrSupply()==DemandOrSupply.DEMAND;
+    }
+    //-- collectDemandProfileComparisons --//
     
     //** collectProfileElements **//
     private SortedSet<ProfileElement> collectProfileElements = new TreeSet<ProfileElement>();
@@ -352,7 +398,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     ProfileMatchingService profileMatchingService;
     
     @Action(semantics=SemanticsOf.SAFE)
-    public List<ProfileComparison> actionCollectProfileComparisons(){
+    public List<ProfileComparison> updateSupplyProfileComparisons(){
     	for(ProfileComparison profileComparison : profileComparisons.collectProfileComparisons(this)) {
             profileComparison.delete();
         }
@@ -360,7 +406,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         return profileMatchingService.collectProfileComparisons(this);
     }
     
-    public boolean hideActionCollectProfileComparisons(){
+    public boolean hideUpdateSupplyProfileComparisons(){
     	return this.getDemandOrSupply() != DemandOrSupply.DEMAND;
     }
     
@@ -369,14 +415,14 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //** collectDemandProfileComparisons**//
 
     @Action(semantics=SemanticsOf.SAFE)
-    public List<ProfileComparison> actionCollectDemandProfileComparisons(){
+    public List<ProfileComparison> updateDemandProfileComparisons(){
         for(ProfileComparison profileComparison : profileComparisons.collectDemandProfileComparisons(this)) {
             profileComparison.delete();
         }
         return profileMatchingService.collectDemandProfileComparisons(this);
     }
 
-    public boolean hideActionCollectDemandProfileComparisons(){
+    public boolean hideUpdateDemandProfileComparisons(){
         return this.getDemandOrSupply() != DemandOrSupply.SUPPLY;
     }
 
@@ -385,7 +431,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     //** createRequiredProfileElementRole **//
     // Business rule:
     // alleen op profile van type PERSON of ORGANISATION
-    // alleen op aanbod profiel
+    // alleen op demand profiel
     // slechts 1 per profile
 
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
@@ -1253,7 +1299,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     // er mag er hooguit een van zijn
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile createEducationLevelElement(
+            @ParameterLayout(named = "weight")
             final Integer weight,
+            @ParameterLayout(named = "dropDownValue")
             final DropDownForProfileElement dropDown
     ){
         profileElementDropDowns.createProfileElementDropDown(
@@ -1565,6 +1613,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
 
     @Inject
     ProfileComparisons profileComparisons;
+
+    @Inject
+    ProfileElementChoices profileElementChoices;
     
 	//-- INJECTIONS --//
     

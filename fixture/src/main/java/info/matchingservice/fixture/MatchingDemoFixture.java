@@ -2,10 +2,11 @@ package info.matchingservice.fixture;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
-import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
 import info.matchingservice.fixture.Dropdowns.DropDownHbo;
 import info.matchingservice.fixture.Dropdowns.DropDownMbo;
 import info.matchingservice.fixture.Dropdowns.DropDownWo;
+import info.matchingservice.fixture.ProfileElementConfig.ProfileElementChoicesForDemand;
+import info.matchingservice.fixture.ProfileElementConfig.ProfileElementChoicesForSupply;
 import info.matchingservice.fixture.actor.TestOrganisations;
 import info.matchingservice.fixture.actor.TestPersonalContacts;
 import info.matchingservice.fixture.actor.TestPersons;
@@ -78,7 +79,6 @@ public class MatchingDemoFixture extends FixtureScript {
 
     	executeChild(new TestMatchingProfileTypeRules(), executionContext);
     	executeChild(new TestConfig(), executionContext);
-        executeChild(new ProfileElementDropDownsFixture(), executionContext);
         executeChild(new TestPersons(), executionContext);
         executeChild(new TestRoles(), executionContext);
         executeChild(new TestDemands(), executionContext);
@@ -106,6 +106,9 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new DropDownHbo(), executionContext);
         executeChild(new DropDownMbo(), executionContext);
         executeChild(new DropDownWo(), executionContext);
+        executeChild(new ProfileElementChoicesForDemand(), executionContext);
+        executeChild(new ProfileElementChoicesForSupply(), executionContext);
+
 
     }
 

@@ -26,7 +26,6 @@ import info.matchingservice.dom.Profile.ProfileElementText;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
-import info.matchingservice.dropdown.ProfileElementDropDownsFixture;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
@@ -62,7 +61,6 @@ public class ProfileTest extends MatchingIntegrationTest {
             	executionContext.executeChild(this, new TeardownFixture());
             	executionContext.executeChild(this, new TestSupplyProfiles());
             	executionContext.executeChild(this, new TestDemandProfiles());
-            	executionContext.executeChild(this, new ProfileElementDropDownsFixture());
             }
         });
     }
@@ -149,7 +147,7 @@ public class ProfileTest extends MatchingIntegrationTest {
 //            assertThat(dropdown.getDisplayValue(), is("ijverig"));
             assertThat(numeric.getDisplayValue(), is("5"));
             assertThat(text.getDisplayValue(), is("Tekst op elemen"));
-            assertThat(dropdownAndText.getDisplayValue(), is("ijverig - " + ELEMENT_TEXTVALUE));
+            assertThat(dropdownAndText.getDisplayValue(), is("hbo - " + ELEMENT_TEXTVALUE));
             // P Elements Types test TODO: this will change..
 //            assertThat(dropdown.getProfileElementType(), is(ProfileElementType.QUALITY));
             assertThat(numeric.getProfileElementType(), is(ProfileElementType.NUMERIC));

@@ -31,7 +31,11 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.Profile.DemandOrSupply;
+import info.matchingservice.dom.Profile.ProfileElementChoice;
+import info.matchingservice.dom.Profile.ProfileElementChoices;
 import info.matchingservice.dom.Profile.ProfileElementType;
+import info.matchingservice.dom.Profile.ProfileElementWidgetType;
 
 /**
  * Created by jodo on 13/06/15.
@@ -76,6 +80,25 @@ public class AdminApi {
         return dropDownForProfileElements.createDropDownForProfileELements(ProfileElementType.EDUCATION_LEVEL, level);
     }
 
+    public ProfileElementChoice createProfileElementChoice(
+            final @ParameterLayout(named = "demandOrSupply") DemandOrSupply demandOrSupply,
+            final @ParameterLayout(named = "widgetType") ProfileElementWidgetType widgetType,
+            final @ParameterLayout(named = "elementDescription") String elementDescription,
+            final @ParameterLayout(named = "action") String action
+
+    ) {
+        return profileElementChoices.createProfileElementChoice(
+                demandOrSupply,
+                widgetType,
+                elementDescription,
+                action
+        );
+    }
+
+    public List<ProfileElementChoice> allProfileElementChoices() {
+        return profileElementChoices.allProfileElementChoices();
+    }
+
 
     @Inject
     private Persons persons;
@@ -86,4 +109,6 @@ public class AdminApi {
     @Inject
     DropDownForProfileElements dropDownForProfileElements;
 
+    @Inject
+    ProfileElementChoices profileElementChoices;
 }
