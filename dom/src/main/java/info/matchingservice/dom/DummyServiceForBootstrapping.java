@@ -14,6 +14,7 @@ import info.matchingservice.dom.Profile.ProfileElementLocation;
 import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
 import info.matchingservice.dom.Profile.RequiredProfileElementRole;
+import info.matchingservice.dom.ProvidedServices.Service;
 
 @DomainService
 public class DummyServiceForBootstrapping {
@@ -38,5 +39,7 @@ public class DummyServiceForBootstrapping {
     public void ensureKnownEagerly(Phone x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(ProfileComparison x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(Service x) { }
 
 }
