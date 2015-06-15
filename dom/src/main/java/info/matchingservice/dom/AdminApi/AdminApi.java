@@ -23,11 +23,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonRoleType;
+import info.matchingservice.dom.Actor.PersonRoles;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
@@ -99,6 +104,47 @@ public class AdminApi {
         return profileElementChoices.allProfileElementChoices();
     }
 
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(named = "Maak student")
+    public Person addRoleStudent(Person person) {
+        personRoles.createRole(PersonRoleType.STUDENT, person.getOwnedBy());
+        return person;
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(named = "Maak professional")
+    public Person addRoleProfessional(Person person) {
+        personRoles.createRole(PersonRoleType.PROFESSIONAL, person.getOwnedBy());
+        return person;
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(named = "Maak opdrachtgever")
+    public Person addRolePrincipal(Person person) {
+        personRoles.createRole(PersonRoleType.PRINCIPAL, person.getOwnedBy());
+        return person;
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(named = "Geen student meer")
+    public Person deleteRoleStudent(Person person) {
+        person.deleteRoleStudent(person.getOwnedBy());
+        return person;
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(named = "Geen professional meer")
+    public Person deleteRoleProfessional(Person person) {
+        person.deleteRoleProfessional(person.getOwnedBy());
+        return person;
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout(named = "Geen opdrachtgever meer")
+    public Person deleteRolePrincipal(Person person) {
+        person.deleteRolePrincipal(person.getOwnedBy());
+        return person;
+    }
 
     @Inject
     private Persons persons;
@@ -111,4 +157,7 @@ public class AdminApi {
 
     @Inject
     ProfileElementChoices profileElementChoices;
+
+    @Inject
+    private PersonRoles personRoles;
 }

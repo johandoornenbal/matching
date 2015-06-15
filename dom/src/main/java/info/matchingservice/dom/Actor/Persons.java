@@ -338,6 +338,10 @@ public class Persons extends MatchingDomainService<Person> {
 
     }
 
+    public List<Person> autoComplete(String search) {
+        return findPersons(search);
+    }
+
     
     // Region>injections ////////////////////////////
     @javax.inject.Inject
