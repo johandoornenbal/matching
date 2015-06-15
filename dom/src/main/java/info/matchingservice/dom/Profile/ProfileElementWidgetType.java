@@ -30,5 +30,6 @@ public enum ProfileElementWidgetType {
     MULTICHECKBOX,
     SELECT,
     TAGS,
-    PREDICATE
+    PREDICATE,
+    DATERANGE
 }

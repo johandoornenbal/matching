@@ -21,6 +21,7 @@ package info.matchingservice.dom.Match;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -118,6 +119,23 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
         newMatch.setCandidateStatus(candidateStatus);
         persist(newMatch);
         return newMatch;
+    }
+
+    // Api v1
+    @Programmatic
+    public ProfileMatch matchProfileApiId(final String id) {
+
+        for (ProfileMatch p : allInstances(ProfileMatch.class)) {
+            String[] parts = p.getOID().split(Pattern.quote("[OID]"));
+            String part1 = parts[0];
+            String ApiId = "L_".concat(part1);
+            if (id.equals(ApiId)) {
+                return p;
+            }
+        }
+
+        return null;
+
     }
     
     

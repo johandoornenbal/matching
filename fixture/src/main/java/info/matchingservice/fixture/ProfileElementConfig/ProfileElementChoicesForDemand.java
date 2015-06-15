@@ -86,7 +86,7 @@ public class ProfileElementChoicesForDemand extends ProfileElementChoiceAbstract
 
         createElement(
                 DemandOrSupply.DEMAND,
-                ProfileElementWidgetType.DATE,
+                ProfileElementWidgetType.DATERANGE,
                 "TIME_PERIOD_ELEMENT",
                 "createTimePeriodElement",
                 executionContext);

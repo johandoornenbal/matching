@@ -20,6 +20,7 @@ package info.matchingservice.dom.Actor;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -318,6 +319,23 @@ public class Persons extends MatchingDomainService<Person> {
 
         }
         return "NOT_DEACTIVATED";
+    }
+
+    // Api v1
+    @Programmatic
+    public Person matchPersonApiId(final String id) {
+
+        for (Person p : container.allInstances(Person.class)) {
+            String[] parts = p.getOID().split(Pattern.quote("[OID]"));
+            String part1 = parts[0];
+            String ApiId = "L_".concat(part1);
+            if (id.equals(ApiId)) {
+                return p;
+            }
+        }
+
+        return null;
+
     }
 
     

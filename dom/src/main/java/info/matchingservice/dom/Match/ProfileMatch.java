@@ -22,6 +22,7 @@ package info.matchingservice.dom.Match;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.jdo.JDOHelper;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 
@@ -84,6 +85,11 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     
     public String title(){
         return "SAVED_MATCHING_PROFILE_OF " + this.getSupplyCandidate().title();
+    }
+
+    @Action(semantics = SemanticsOf.SAFE)
+    public String getOID() {
+        return JDOHelper.getObjectId(this).toString();
     }
     
     private UUID uniqueItemId;

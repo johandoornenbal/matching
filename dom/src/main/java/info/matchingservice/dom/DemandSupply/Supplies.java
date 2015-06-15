@@ -19,17 +19,19 @@
 
 package info.matchingservice.dom.DemandSupply;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Actor.Actor;
-
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
+
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.joda.time.LocalDate;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.MatchingDomainService;
 
 @DomainService(repositoryFor = Supply.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -51,7 +53,7 @@ public class Supplies extends MatchingDomainService<Supply> {
     // for Api
     public List<Supply> findSupplyByUniqueItemId(UUID uniqueItemId) {
         return allMatches("findSupplyByUniqueItemId",
-        		"uniqueItemId", uniqueItemId);
+                "uniqueItemId", uniqueItemId);
     }
     
     @Programmatic
@@ -83,6 +85,23 @@ public class Supplies extends MatchingDomainService<Supply> {
         newSupply.setOwnedBy(ownedBy);
         persist(newSupply);
         return newSupply;
+    }
+
+    // Api v1
+    @Programmatic
+    public Supply matchSupplyApiId(final String id) {
+
+        for (Supply s : allInstances(Supply.class)) {
+            String[] parts = s.getOID().split(Pattern.quote("[OID]"));
+            String part1 = parts[0];
+            String ApiId = "L_".concat(part1);
+            if (id.equals(ApiId)) {
+                return s;
+            }
+        }
+
+        return null;
+
     }
 
 }

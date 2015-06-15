@@ -21,6 +21,7 @@ package info.matchingservice.dom.Profile;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.joda.time.LocalDate;
 
@@ -152,5 +153,22 @@ public class Profiles extends MatchingDomainService<Profile> {
         newSupplyProfile.setOwnedBy(ownedBy);
         persist(newSupplyProfile);
         return newSupplyProfile;
+    }
+
+    // Api v1
+    @Programmatic
+    public Profile matchProfileApiId(final String id) {
+
+        for (Profile p : allInstances(Profile.class)) {
+            String[] parts = p.getOID().split(Pattern.quote("[OID]"));
+            String part1 = parts[0];
+            String ApiId = "L_".concat(part1);
+            if (id.equals(ApiId)) {
+                return p;
+            }
+        }
+
+        return null;
+
     }
 }

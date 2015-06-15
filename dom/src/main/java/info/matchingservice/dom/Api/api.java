@@ -2,6 +2,7 @@ package info.matchingservice.dom.Api;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -279,7 +280,7 @@ public class Api extends AbstractFactoryAndRepository {
 	//***************************************** createStudent ***********************//
 
 	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-	public Person createStudent(
+	public String createStudent(
 			@ParameterLayout(named="firstName")
 			final String firstName,
 			@ParameterLayout(named="middleName")
@@ -293,7 +294,8 @@ public class Api extends AbstractFactoryAndRepository {
 			@Parameter(optionality=Optionality.OPTIONAL)
 			final Blob picture
 	){
-		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.STUDENT);
+		Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.STUDENT);
+		return toApiID(newPerson.getOID());
 	}
 
 	@Programmatic //userName can now also be set by fixtures
@@ -315,12 +317,8 @@ public class Api extends AbstractFactoryAndRepository {
 
 	}
 
-	//------------------------------------ END createStudent ---------------------------//
-
-	//***************************************** createProfessional ***********************//
-
-	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-	public Person createProfessional(
+	@Programmatic
+	public Person createStudentApi(
 			@ParameterLayout(named="firstName")
 			final String firstName,
 			@ParameterLayout(named="middleName")
@@ -334,7 +332,30 @@ public class Api extends AbstractFactoryAndRepository {
 			@Parameter(optionality=Optionality.OPTIONAL)
 			final Blob picture
 	){
-		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PROFESSIONAL);
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.STUDENT);
+	}
+
+	//------------------------------------ END createStudent ---------------------------//
+
+	//***************************************** createProfessional ***********************//
+
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	public String createProfessional(
+			@ParameterLayout(named="firstName")
+			final String firstName,
+			@ParameterLayout(named="middleName")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String middleName,
+			@ParameterLayout(named="lastName")
+			final String lastName,
+			@ParameterLayout(named="dateOfBirth")
+			final LocalDate dateOfBirth,
+			@ParameterLayout(named="picture")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final Blob picture
+	){
+		Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PROFESSIONAL);
+		return toApiID(newPerson.getOID());
 	}
 
 	@Programmatic //userName can now also be set by fixtures
@@ -356,12 +377,8 @@ public class Api extends AbstractFactoryAndRepository {
 
 	}
 
-	//------------------------------------ END createProfessional ---------------------------//
-
-	//***************************************** createPrincipal ***********************//
-
-	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-	public Person createPrincipal(
+	@Programmatic
+	public Person createProfessionalApi(
 			@ParameterLayout(named="firstName")
 			final String firstName,
 			@ParameterLayout(named="middleName")
@@ -375,7 +392,30 @@ public class Api extends AbstractFactoryAndRepository {
 			@Parameter(optionality=Optionality.OPTIONAL)
 			final Blob picture
 	){
-		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PRINCIPAL);
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PROFESSIONAL);
+	}
+
+	//------------------------------------ END createProfessional ---------------------------//
+
+	//***************************************** createPrincipal ***********************//
+
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	public String createPrincipal(
+			@ParameterLayout(named="firstName")
+			final String firstName,
+			@ParameterLayout(named="middleName")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String middleName,
+			@ParameterLayout(named="lastName")
+			final String lastName,
+			@ParameterLayout(named="dateOfBirth")
+			final LocalDate dateOfBirth,
+			@ParameterLayout(named="picture")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final Blob picture
+	){
+		Person newPerson =  persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PRINCIPAL);
+		return toApiID(newPerson.getOID());
 	}
 
 	@Programmatic //userName can now also be set by fixtures
@@ -397,7 +437,24 @@ public class Api extends AbstractFactoryAndRepository {
 
 	}
 
-	//------------------------------------ END createStudent ---------------------------//
+	public Person createPrincipalApi(
+			@ParameterLayout(named="firstName")
+			final String firstName,
+			@ParameterLayout(named="middleName")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String middleName,
+			@ParameterLayout(named="lastName")
+			final String lastName,
+			@ParameterLayout(named="dateOfBirth")
+			final LocalDate dateOfBirth,
+			@ParameterLayout(named="picture")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final Blob picture
+	){
+		return  persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PRINCIPAL);
+	}
+
+	//------------------------------------ END createPrincipal ---------------------------//
     
     //***************************************** findPersons **************************************//
     
@@ -532,6 +589,13 @@ public class Api extends AbstractFactoryAndRepository {
     private String currentUserName() {
         return container.getUser().getName();
     }
+
+	private String toApiID(final String OID){
+		String[] parts = OID.split(Pattern.quote("[OID]"));
+		String part1 = parts[0];
+		String ApiID = "L_".concat(part1);
+		return ApiID;
+	}
 	
     //Injections
 	@Inject

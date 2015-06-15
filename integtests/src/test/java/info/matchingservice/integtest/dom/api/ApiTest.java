@@ -75,7 +75,7 @@ public class ApiTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=api.createStudent(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
+            p1=api.createStudentApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
         }
         
         @Test
@@ -109,7 +109,7 @@ public class ApiTest extends MatchingIntegrationTest {
 
         @Before
         public void setUp() throws Exception {
-            p1=api.createProfessional(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
+            p1=api.createProfessionalApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
         }
 
         @Test
@@ -142,7 +142,7 @@ public class ApiTest extends MatchingIntegrationTest {
 
         @Before
         public void setUp() throws Exception {
-            p1 = api.createPrincipal(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
+            p1 = api.createPrincipalApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
         }
 
         @Test
