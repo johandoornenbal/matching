@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.jdo.JDOHelper;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -79,6 +80,10 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 @DomainObject(editing=Editing.DISABLED)
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
 
+    @Action(semantics = SemanticsOf.SAFE)
+    public String getOID() {
+        return JDOHelper.getObjectId(this).toString();
+    }
 	//** API: PROPERTIES **//
 	
 	//** description **//

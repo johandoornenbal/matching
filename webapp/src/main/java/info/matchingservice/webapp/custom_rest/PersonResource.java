@@ -17,6 +17,8 @@
 
 package info.matchingservice.webapp.custom_rest;
 
+import java.util.regex.Pattern;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -85,18 +87,19 @@ public class PersonResource extends ResourceAbstract {
         JsonRepresentation demandsAndProfiles = JsonRepresentation.newArray();
         JsonRepresentation demandsAndProfilesAndElements = JsonRepresentation.newArray();
 
-        JsonRepresentation name = JsonRepresentation.newMap();
-        name.mapPut("firstName", activePerson.getFirstName());
-        name.mapPut("lastName", activePerson.getLastName());
-        name.mapPut("middleName", activePerson.getMiddleName());
-        all.mapPut("value",name);
-        for (Demand demand : activePerson.getCollectDemands()) {
-            JsonRepresentation demandMap = JsonRepresentation.newMap();
-            JsonRepresentation demandAndProfilesMap = JsonRepresentation.newMap();
-            JsonRepresentation demandAndProfilesAndElementsMap = JsonRepresentation.newMap();
+        JsonRepresentation activeperson = JsonRepresentation.newMap();
+        activeperson.mapPut("id", activePerson.getUniqueItemId().toString());
+        activeperson.mapPut("URI", toObjectURI(activePerson.getOID()));
+        activeperson.mapPut("firstName", activePerson.getFirstName());
+        activeperson.mapPut("lastName", activePerson.getLastName());
+        activeperson.mapPut("middleName", activePerson.getMiddleName());
+        all.mapPut("activePerson",activeperson);
 
-            JsonRepresentation profiles = JsonRepresentation.newArray();
+        for (Demand demand : activePerson.getCollectDemands()) {
+
+            JsonRepresentation demandAndProfilesAndElementsMap = JsonRepresentation.newMap();
             JsonRepresentation profileAndElements = JsonRepresentation.newArray();
+
             for (Profile profile : demand.getCollectDemandProfiles()) {
 
                 JsonRepresentation profileElements = JsonRepresentation.newArray();
@@ -105,45 +108,39 @@ public class PersonResource extends ResourceAbstract {
                 for (ProfileElement element : profile.getCollectProfileElements()) {
                     JsonRepresentation profileElementMap = JsonRepresentation.newMap();
                     profileElementMap.mapPut("id", element.getUniqueItemId().toString());
+                    profileElementMap.mapPut("URI", toObjectURI(element.getOID()));
                     profileElementMap.mapPut("description", element.getDescription());
                     profileElements.arrayAdd(profileElementMap);
                 }
 
-                JsonRepresentation profileMap = JsonRepresentation.newMap();
-                profileMap.mapPut("id", profile.getUniqueItemId().toString());
-                profileMap.mapPut("description", profile.getProfileName());
-                profiles.arrayAdd(profileMap);
-
                 JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
                 profileAndElementMap.mapPut("id", profile.getUniqueItemId().toString());
+                profileAndElementMap.mapPut("URI", toObjectURI(profile.getOID()));
                 profileAndElementMap.mapPut("description", profile.getProfileName());
-                profileAndElementMap.mapPut("elements", profileElements);
+                profileAndElementMap.mapPut("profileElements", profileElements);
                 profileAndElements.arrayAdd(profileAndElementMap);
 
             }
-            demandMap.mapPut("id", demand.getUniqueItemId().toString());
-            demandMap.mapPut("description", demand.getDemandDescription());
-            demands.arrayAdd(demandMap);
-
-            demandAndProfilesMap.mapPut("id", demand.getUniqueItemId().toString());
-            demandAndProfilesMap.mapPut("description", demand.getDemandDescription());
-            demandAndProfilesMap.mapPut("profiles", profiles);
-            demandsAndProfiles.arrayAdd(demandAndProfilesMap);
 
             demandAndProfilesAndElementsMap.mapPut("id", demand.getUniqueItemId().toString());
+            demandAndProfilesAndElementsMap.mapPut("URI", toObjectURI(demand.getOID()));
             demandAndProfilesAndElementsMap.mapPut("description", demand.getDemandDescription());
-            demandAndProfilesAndElementsMap.mapPut("profiles", profiles);
-            demandAndProfilesAndElementsMap.mapPut("profilesAndElements", profileAndElements);
+            demandAndProfilesAndElementsMap.mapPut("profiles", profileAndElements);
             demandsAndProfilesAndElements.arrayAdd(demandAndProfilesAndElementsMap);
         }
-        all.mapPut("demands", demands);
-        all.mapPut("demandsAndProfiles", demandsAndProfiles);
-        all.mapPut("demandsAndProfilesAndElements", demandsAndProfilesAndElements);
+        all.mapPut("demands", demandsAndProfilesAndElements);
 
         return Response.status(200).entity(all.toString()).build();
     }
 
 
 
+    private String toObjectURI(final String OID){
+        String[] parts = OID.split(Pattern.quote("[OID]"));
+        String part1 = parts[0];
+        String part2 = parts[1];
+        String URI = "objects/".concat(part2).concat("/L_").concat(part1);
+        return URI;
+    }
 
 }

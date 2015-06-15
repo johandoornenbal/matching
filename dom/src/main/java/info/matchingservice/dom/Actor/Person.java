@@ -22,6 +22,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
+import javax.jdo.JDOHelper;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
@@ -83,6 +84,12 @@ import info.matchingservice.dom.TrustLevel;
 })
 @DomainObject(editing=Editing.DISABLED, autoCompleteRepository=Persons.class, autoCompleteAction = "autoComplete")
 public class Person extends Actor {
+
+
+    @Action(semantics = SemanticsOf.SAFE)
+    public String getOID() {
+        return JDOHelper.getObjectId(this).toString();
+    }
     
 	//** API: PROPERTIES **//
     //Region> firstName /////////////////////////////////////////////////

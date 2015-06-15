@@ -19,25 +19,19 @@
 
 package info.matchingservice.dom.DemandSupply;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.TrustLevel;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Assessment.SupplyAssessment;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.dom.Profile.Profiles;
-
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.jdo.JDOHelper;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
+
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -55,7 +49,15 @@ import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
-import org.joda.time.LocalDate;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Assessment.SupplyAssessment;
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.TrustLevel;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -91,6 +93,10 @@ import org.joda.time.LocalDate;
 @DomainObject(editing=Editing.DISABLED)
 public class Supply extends MatchingSecureMutableObject<Supply> {
 
+    @Action(semantics = SemanticsOf.SAFE)
+    public String getOID() {
+        return JDOHelper.getObjectId(this).toString();
+    }
 	//** API: PROPERTIES **//
 	
 	//** uniqueItemId **//
