@@ -15,20 +15,18 @@
  * under the License.
  */
 
-package info.matchingservice.webapp.custom_rest;
+package info.matchingservice.dom.ViewModels;
 
-import org.apache.isis.viewer.restfulobjects.server.RestfulObjectsApplication;
+import org.apache.isis.applib.annotation.ViewModel;
 
 /**
- * Created by jodo on 15/05/15.
+ * Created by jodo on 15/06/15.
  */
-public class CustomRestfulObjectsApplication extends RestfulObjectsApplication {
+@ViewModel
+public class PersonViewModel {
 
-    public CustomRestfulObjectsApplication() {
-
-        addClass(UserRegistrationResource.class);
-        addClass(PersonResource.class);
-
+    public PersonViewModel() {
     }
+
 
 }

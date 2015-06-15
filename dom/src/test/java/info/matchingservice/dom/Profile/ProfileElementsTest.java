@@ -19,6 +19,7 @@
 package info.matchingservice.dom.Profile;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.jmock.auto.Mock;
 import org.junit.Before;
@@ -79,6 +80,25 @@ public class ProfileElementsTest {
             assertThat(finderInteraction.getArgumentsByParameterName().get("description"), is((Object) "some description"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("profileElementOwner"), is((Object) profileElementOwner));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(2));
+        }
+
+    }
+
+    public static class FindProfileElementByUniqueId extends ProfileElementsTest {
+
+        @Mock
+        UUID uuid;
+
+        @Test
+        public void happyCase() {
+
+            profileElements.findProfileElementByUniqueId(uuid);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(ProfileElement.class));
+            assertThat(finderInteraction.getQueryName(), is("findProfileElementByUniqueId"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("uniqueItemId"), is((Object) uuid));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
         }
 
     }

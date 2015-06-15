@@ -69,7 +69,12 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
             name = "findProfileElementByOwnerProfileAndDescription", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.ProfileElement "
-                    + "WHERE profileElementOwner == :profileElementOwner && description.indexOf(:description) >= 0")
+                    + "WHERE profileElementOwner == :profileElementOwner && description.indexOf(:description) >= 0"),
+    @javax.jdo.annotations.Query(
+            name = "findProfileElementByUniqueId", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Profile.ProfileElement "
+                    + "WHERE uniqueItemId.matches(:uniqueItemId)")
 })
 @DomainObject(editing=Editing.DISABLED)
 public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> {
@@ -103,7 +108,7 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
         this.weight=weight;
     }
     //-- weight --//
-	
+
 	//** uniqueItemId **//
     @Persistent
     private UUID uniqueItemId;

@@ -36,6 +36,8 @@ import info.matchingservice.dom.DemandSupply.Supplies;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElements;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.ProvidedServices.Service;
 import info.matchingservice.dom.ProvidedServices.Services;
@@ -182,6 +184,52 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 	
 	
+	//------------------------------------ END getProfileByUniqueId ---------------------------//
+
+	//***************************************** getProfileElementByUniqueId ***********************//
+
+	@Action(semantics=SemanticsOf.SAFE)
+	public List<ProfileElement> findProfileElementByUniqueId(final UUID uniqueItemId){
+		try
+		{
+			return profileElements.findProfileElementByUniqueId(uniqueItemId);
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
+
+	}
+
+	public String validateFindProfileElementByUniqueId(final UUID uniqueItemId){
+		// implementation of Trusted Circles Business Rule: demands are accessible only for INNER_CIRCLE
+
+		try
+		{
+			if (
+				// Not the owner
+					!profileElements.findProfileElementByUniqueId(uniqueItemId).get(0).getOwnedBy().equals(currentUserName())
+
+							&&
+
+							// At least Inner Circle
+							profileElements.findProfileElementByUniqueId(uniqueItemId).get(0).allowedTrustLevel(TrustLevel.INNER_CIRCLE)
+
+
+					)
+			{
+				return "NO_ACCESS";
+			}
+		}
+		catch (Exception e)
+		{
+			return "VALIDATION_FAILURE";
+		}
+
+		return null;
+	}
+
+
 	//------------------------------------ END getProfileByUniqueId ---------------------------//
 	
 	//***************************************** createPerson ***********************//
@@ -509,6 +557,9 @@ public class Api extends AbstractFactoryAndRepository {
 
 	@Inject
 	private Services services;
+
+	@Inject
+	private ProfileElements profileElements;
 
 	
 }

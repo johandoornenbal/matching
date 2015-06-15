@@ -20,6 +20,7 @@
 package info.matchingservice.dom.Profile;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
@@ -39,6 +40,12 @@ public class ProfileElements extends MatchingDomainService<ProfileElement> {
     	return allMatches("findProfileElementByOwnerProfileAndDescription",
         		"description", profileElementDescription,
         		"profileElementOwner", profileElementOwner);
+    }
+
+    @Programmatic
+    public List<ProfileElement> findProfileElementByUniqueId(final UUID uniqueItemId){
+        return allMatches("findProfileElementByUniqueId",
+                "uniqueItemId", uniqueItemId);
     }
 
 }
