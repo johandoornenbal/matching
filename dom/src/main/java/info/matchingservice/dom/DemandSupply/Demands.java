@@ -57,6 +57,13 @@ public class Demands extends MatchingDomainService<Demand> {
                 "demandDescription", demandDescription,
                 "ownedBy", ownedBy);
     }
+
+    @Programmatic
+    // for Api
+    public List<Demand> findDemandByDescription(String demandDescription) {
+        return allMatches("findDemandByDescriptionOnly",
+                "demandDescription", demandDescription.toLowerCase());
+    }
     
     @Programmatic
     // for Api

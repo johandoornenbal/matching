@@ -77,6 +77,11 @@ import info.matchingservice.dom.TrustLevel;
                     + "FROM info.matchingservice.dom.Actor.Person "
                     + "WHERE lastName.toLowerCase().indexOf(:lastName) >= 0"),
     @javax.jdo.annotations.Query(
+            name = "matchPersonByNameContains", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Actor.Person "
+                    + "WHERE lastName.toLowerCase().indexOf(:search) >= 0 || firstName.toLowerCase().indexOf(:search) >= 0"),
+    @javax.jdo.annotations.Query(
             name = "findPersonByUniqueItemId", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.Person "

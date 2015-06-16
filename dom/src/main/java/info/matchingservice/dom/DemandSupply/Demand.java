@@ -81,6 +81,11 @@ import info.matchingservice.dom.TrustLevel;
                     + "FROM info.matchingservice.dom.DemandSupply.Demand "
                     + "WHERE ownedBy == :ownedBy && demandDescription.indexOf(:demandDescription) >= 0"),
     @javax.jdo.annotations.Query(
+            name = "findDemandByDescriptionOnly", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.DemandSupply.Demand "
+                    + "WHERE demandDescription.toLowerCase().indexOf(:demandDescription) >= 0"),
+    @javax.jdo.annotations.Query(
             name = "findDemandByUniqueItemId", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Demand "

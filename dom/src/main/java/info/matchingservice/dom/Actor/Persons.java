@@ -143,6 +143,14 @@ public class Persons extends MatchingDomainService<Person> {
         return allMatches("matchPersonByLastNameContains", "lastName", lastName.toLowerCase());
     }
 
+    @Programmatic
+    public List<Person> findPersonsByName(
+            final String search
+    ) {
+
+        return allMatches("matchPersonByNameContains", "search", search.toLowerCase());
+    }
+
     // Region>helpers ////////////////////////////
     
     private String currentUserName() {
