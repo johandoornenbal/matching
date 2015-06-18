@@ -17,8 +17,6 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import java.util.regex.Pattern;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -119,31 +117,14 @@ public class ProfileResource extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the supplyprofiles resource is not allowed.", new Object[0]);
     }
 
-
-
-    private String toObjectURI(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String part2 = parts[1];
-        String URI = "objects/".concat(part2).concat("/L_").concat(part1);
-        return URI;
-    }
-
-    private String toApiID(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String ApiID = "L_".concat(part1);
-        return ApiID;
-    }
-
     private JsonRepresentation profileRepresentation(Profile activeProfile){
 
         JsonRepresentation all = JsonRepresentation.newMap();
 
         // activeprofile
         JsonRepresentation activeprofile = JsonRepresentation.newMap();
-        activeprofile.mapPut("id", toApiID(activeProfile.getOID()));
-        activeprofile.mapPut("URI", toObjectURI(activeProfile.getOID()));
+        activeprofile.mapPut("id", Utils.toApiID(activeProfile.getOID()));
+        activeprofile.mapPut("URI", Utils.toObjectURI(activeProfile.getOID()));
         activeprofile.mapPut("description", activeProfile.getProfileName());
         if (activeProfile.getProfileStartDate()==null){
             activeprofile.mapPut("startDate", "");
@@ -159,8 +140,8 @@ public class ProfileResource extends ResourceAbstract {
             activeprofile.mapPut("chosenProfileMatchId", "");
             activeprofile.mapPut("chosenProfileMatchURI", "");
         } else {
-            activeprofile.mapPut("chosenProfileMatchId", toApiID(activeProfile.getChosenProfileMatch().getOID()));
-            activeprofile.mapPut("chosenProfileMatchURI", toObjectURI(activeProfile.getChosenProfileMatch().getOID()));
+            activeprofile.mapPut("chosenProfileMatchId", Utils.toApiID(activeProfile.getChosenProfileMatch().getOID()));
+            activeprofile.mapPut("chosenProfileMatchURI", Utils.toObjectURI(activeProfile.getChosenProfileMatch().getOID()));
         }
 
         // profilesElements
@@ -168,8 +149,8 @@ public class ProfileResource extends ResourceAbstract {
 
         for (ProfileElement element : activeProfile.getCollectProfileElements()) {
             JsonRepresentation profileElementMap = JsonRepresentation.newMap();
-            profileElementMap.mapPut("id", toApiID(element.getOID()));
-            profileElementMap.mapPut("URI", toObjectURI(element.getOID()));
+            profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
+            profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
             profileElementMap.mapPut("description", element.getDescription());
             profileElementMap.mapPut("displayValue", element.getDisplayValue());
             profileElementMap.mapPut("isActive", element.getIsActive());
@@ -187,12 +168,12 @@ public class ProfileResource extends ResourceAbstract {
         for (ProfileComparison comp : profileComparisonsRepo.collectDemandProfileComparisons(activeProfile)) {
             JsonRepresentation profileComparisonMap = JsonRepresentation.newMap();
             profileComparisonMap.mapPut("calculatedMatchingValue", comp.getCalculatedMatchingValue());
-            profileComparisonMap.mapPut("demandProfileId", toApiID(comp.getDemandProfile().getOID()));
-            profileComparisonMap.mapPut("demandProfileURI", toObjectURI(comp.getDemandProfile().getOID()));
+            profileComparisonMap.mapPut("demandProfileId", Utils.toApiID(comp.getDemandProfile().getOID()));
+            profileComparisonMap.mapPut("demandProfileURI", Utils.toObjectURI(comp.getDemandProfile().getOID()));
             profileComparisonMap.mapPut("demandProfileDescription", comp.getDemandProfile().getProfileName());
             Person demandingPerson = (Person) comp.getDemandingPerson();
-            profileComparisonMap.mapPut("demandingPersonId", toApiID(demandingPerson.getOID()));
-            profileComparisonMap.mapPut("demandingPersonURI", toObjectURI(demandingPerson.getOID()));
+            profileComparisonMap.mapPut("demandingPersonId", Utils.toApiID(demandingPerson.getOID()));
+            profileComparisonMap.mapPut("demandingPersonURI", Utils.toObjectURI(demandingPerson.getOID()));
             profileComparisonMap.mapPut("demandingPersonName", demandingPerson.title());
             profileComparisonsArray.arrayAdd(profileComparisonMap);
         }
@@ -202,11 +183,11 @@ public class ProfileResource extends ResourceAbstract {
         JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
         for (ProfileMatch match : activeProfile.getCollectPersistedProfileMatches()) {
             JsonRepresentation profileMatchMap = JsonRepresentation.newMap();
-            profileMatchMap.mapPut("id", toApiID(match.getOID()));
-            profileMatchMap.mapPut("URI", toObjectURI(match.getOID()));
+            profileMatchMap.mapPut("id", Utils.toApiID(match.getOID()));
+            profileMatchMap.mapPut("URI", Utils.toObjectURI(match.getOID()));
             profileMatchMap.mapPut("title", match.title());
-            profileMatchMap.mapPut("demandProfileId", toApiID(match.getDemandProfile().getOID()));
-            profileMatchMap.mapPut("demandProfileURI", toObjectURI(match.getDemandProfile().getOID()));
+            profileMatchMap.mapPut("demandProfileId", Utils.toApiID(match.getDemandProfile().getOID()));
+            profileMatchMap.mapPut("demandProfileURI", Utils.toObjectURI(match.getDemandProfile().getOID()));
             profileMatchMap.mapPut("candidateStatus", match.getCandidateStatus().toString());
             profileMatchesArray.arrayAdd(profileMatchMap);
         }

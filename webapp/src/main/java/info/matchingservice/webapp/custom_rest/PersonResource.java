@@ -17,8 +17,6 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import java.util.regex.Pattern;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -123,30 +121,14 @@ public class PersonResource extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the people resource is not allowed.", new Object[0]);
     }
 
-
-    private String toObjectURI(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String part2 = parts[1];
-        String URI = "objects/".concat(part2).concat("/L_").concat(part1);
-        return URI;
-    }
-
-    private String toApiID(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String ApiID = "L_".concat(part1);
-        return ApiID;
-    }
-
     private JsonRepresentation personRepresentation(Person activePerson){
 
         JsonRepresentation all = JsonRepresentation.newMap();
 
         // activeperson
         JsonRepresentation activeperson = JsonRepresentation.newMap();
-        activeperson.mapPut("id", toApiID(activePerson.getOID()));
-        activeperson.mapPut("URI", toObjectURI(activePerson.getOID()));
+        activeperson.mapPut("id", Utils.toApiID(activePerson.getOID()));
+        activeperson.mapPut("URI", Utils.toObjectURI(activePerson.getOID()));
         activeperson.mapPut("firstName", activePerson.getFirstName());
         activeperson.mapPut("lastName", activePerson.getLastName());
         activeperson.mapPut("middleName", activePerson.getMiddleName());
@@ -192,16 +174,16 @@ public class PersonResource extends ResourceAbstract {
                 for (ProfileElement element : profile.getCollectProfileElements()) {
                     JsonRepresentation profileElementMap = JsonRepresentation.newMap();
                     //profileElementMap.mapPut("id", element.getUniqueItemId().toString());
-                    profileElementMap.mapPut("id", toApiID(element.getOID()));
-                    profileElementMap.mapPut("URI", toObjectURI(element.getOID()));
+                    profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
+                    profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
                     profileElementMap.mapPut("description", element.getDescription());
                     profileElements.arrayAdd(profileElementMap);
                 }
 
                 JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
                 //profileAndElementMap.mapPut("id", profile.getUniqueItemId().toString());
-                profileAndElementMap.mapPut("id", toApiID(profile.getOID()));
-                profileAndElementMap.mapPut("URI", toObjectURI(profile.getOID()));
+                profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
+                profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
                 profileAndElementMap.mapPut("description", profile.getProfileName());
                 profileAndElementMap.mapPut("profileElements", profileElements);
                 profileAndElements.arrayAdd(profileAndElementMap);
@@ -209,8 +191,8 @@ public class PersonResource extends ResourceAbstract {
             }
 
             //demandAndProfilesAndElementsMap.mapPut("id", demand.getUniqueItemId().toString());
-            demandAndProfilesAndElementsMap.mapPut("id", toApiID(demand.getOID()));
-            demandAndProfilesAndElementsMap.mapPut("URI", toObjectURI(demand.getOID()));
+            demandAndProfilesAndElementsMap.mapPut("id", Utils.toApiID(demand.getOID()));
+            demandAndProfilesAndElementsMap.mapPut("URI", Utils.toObjectURI(demand.getOID()));
             demandAndProfilesAndElementsMap.mapPut("description", demand.getDemandDescription());
             demandAndProfilesAndElementsMap.mapPut("profiles", profileAndElements);
             demandsAndProfilesAndElements.arrayAdd(demandAndProfilesAndElementsMap);
@@ -232,8 +214,8 @@ public class PersonResource extends ResourceAbstract {
                 for (ProfileElement element : profile.getCollectProfileElements()) {
                     JsonRepresentation profileElementMap = JsonRepresentation.newMap();
                     //profileElementMap.mapPut("id", element.getUniqueItemId().toString());
-                    profileElementMap.mapPut("id", toApiID(element.getOID()));
-                    profileElementMap.mapPut("URI", toObjectURI(element.getOID()));
+                    profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
+                    profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
                     profileElementMap.mapPut("description", element.getDescription());
                     if (element.getProfileElementType().equals(ProfileElementType.PASSION)) {
                         ProfileElementText passionTag = (ProfileElementText) profileElementsRepo.findProfileElementByUniqueId(element.getUniqueItemId()).get(0);
@@ -244,8 +226,8 @@ public class PersonResource extends ResourceAbstract {
 
                 JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
                 // profileAndElementMap.mapPut("id", profile.getUniqueItemId().toString());
-                profileAndElementMap.mapPut("id", toApiID(profile.getOID()));
-                profileAndElementMap.mapPut("URI", toObjectURI(profile.getOID()));
+                profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
+                profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
                 profileAndElementMap.mapPut("description", profile.getProfileName());
                 if (profile.getProfileStartDate()==null){
                     profileAndElementMap.mapPut("startDate", "");
@@ -263,8 +245,8 @@ public class PersonResource extends ResourceAbstract {
             }
 
             // supplyAndProfilesAndElementsMap.mapPut("id", supply.getUniqueItemId().toString());
-            supplyAndProfilesAndElementsMap.mapPut("id", toApiID(supply.getOID()));
-            supplyAndProfilesAndElementsMap.mapPut("URI", toObjectURI(supply.getOID()));
+            supplyAndProfilesAndElementsMap.mapPut("id", Utils.toApiID(supply.getOID()));
+            supplyAndProfilesAndElementsMap.mapPut("URI", Utils.toObjectURI(supply.getOID()));
             supplyAndProfilesAndElementsMap.mapPut("description", supply.getSupplyDescription());
             supplyAndProfilesAndElementsMap.mapPut("profiles", profileAndElements);
             suppliesAndProfilesAndElements.arrayAdd(supplyAndProfilesAndElementsMap);
@@ -276,10 +258,10 @@ public class PersonResource extends ResourceAbstract {
         for (PersonalContact contact : activePerson.getCollectPersonalContacts()) {
 
             JsonRepresentation personalContactMap = JsonRepresentation.newMap();
-            personalContactMap.mapPut("id",toApiID(contact.getOID()));
-            personalContactMap.mapPut("URI",toObjectURI(contact.getOID()));
-            personalContactMap.mapPut("contactId", toApiID(contact.getContactPerson().getOID()));
-            personalContactMap.mapPut("contactURI", toObjectURI(contact.getContactPerson().getOID()));
+            personalContactMap.mapPut("id", Utils.toApiID(contact.getOID()));
+            personalContactMap.mapPut("URI", Utils.toObjectURI(contact.getOID()));
+            personalContactMap.mapPut("contactId", Utils.toApiID(contact.getContactPerson().getOID()));
+            personalContactMap.mapPut("contactURI", Utils.toObjectURI(contact.getContactPerson().getOID()));
             personalContactMap.mapPut("contactName", contact.getContactPerson().title());
             personalContactMap.mapPut("contactRoles", contact.getContactPerson().getRoles());
             personalContactMap.mapPut("trustlevel",contact.getTrustLevel().toString());
@@ -300,8 +282,8 @@ public class PersonResource extends ResourceAbstract {
                 assessmentMap.mapPut("feedback" , "");
             }
             Person assessmentOwner = (Person) assessment.getAssessmentOwnerActor();
-            assessmentMap.mapPut("assessmentOwnerId", toApiID(assessmentOwner.getOID()));
-            assessmentMap.mapPut("assessmentOwnerURI", toObjectURI(assessmentOwner.getOID()));
+            assessmentMap.mapPut("assessmentOwnerId", Utils.toApiID(assessmentOwner.getOID()));
+            assessmentMap.mapPut("assessmentOwnerURI", Utils.toObjectURI(assessmentOwner.getOID()));
             assessmentMap.mapPut("assessmentOwnerFullName", assessmentOwner.title());
             assessmentMap.mapPut("assessmentOwnerRoles", assessmentOwner.getRoles());
             assessmentsArray.arrayAdd(assessmentMap);
@@ -312,11 +294,11 @@ public class PersonResource extends ResourceAbstract {
         JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
         for (ProfileMatch match : profileMatches.collectProfileMatches(activePerson)) {
             JsonRepresentation profileMatch = JsonRepresentation.newMap();
-            profileMatch.mapPut("id", toApiID(match.getOID()));
-            profileMatch.mapPut("URI", toObjectURI(match.getOID()));
+            profileMatch.mapPut("id", Utils.toApiID(match.getOID()));
+            profileMatch.mapPut("URI", Utils.toObjectURI(match.getOID()));
             profileMatch.mapPut("title", match.title());
-            profileMatch.mapPut("demandProfileId", toApiID(match.getDemandProfile().getOID()));
-            profileMatch.mapPut("demandProfileURI", toObjectURI(match.getDemandProfile().getOID()));
+            profileMatch.mapPut("demandProfileId", Utils.toApiID(match.getDemandProfile().getOID()));
+            profileMatch.mapPut("demandProfileURI", Utils.toObjectURI(match.getDemandProfile().getOID()));
             profileMatch.mapPut("candidateStatus", match.getCandidateStatus().toString());
             profileMatchesArray.arrayAdd(profileMatch);
         }

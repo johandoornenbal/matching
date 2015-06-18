@@ -17,8 +17,6 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import java.util.regex.Pattern;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -82,22 +80,6 @@ public class FindResource extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the supplies resource is not allowed.", new Object[0]);
     }
 
-
-    private String toObjectURI(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String part2 = parts[1];
-        String URI = "objects/".concat(part2).concat("/L_").concat(part1);
-        return URI;
-    }
-
-    private String toApiID(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String ApiID = "L_".concat(part1);
-        return ApiID;
-    }
-
     private JsonRepresentation findRepresentation(String search){
 
         JsonRepresentation all = JsonRepresentation.newMap();
@@ -110,8 +92,8 @@ public class FindResource extends ResourceAbstract {
 
             JsonRepresentation personMap = JsonRepresentation.newMap();
 
-            personMap.mapPut("id", toApiID(person.getOID()));
-            personMap.mapPut("URI", toObjectURI(person.getOID()));
+            personMap.mapPut("id", Utils.toApiID(person.getOID()));
+            personMap.mapPut("URI", Utils.toObjectURI(person.getOID()));
             personMap.mapPut("fullName", person.title());
             personArray.arrayAdd(personMap);
         }
@@ -125,8 +107,8 @@ public class FindResource extends ResourceAbstract {
 
             JsonRepresentation demandMap = JsonRepresentation.newMap();
 
-            demandMap.mapPut("id", toApiID(demand.getOID()));
-            demandMap.mapPut("URI", toObjectURI(demand.getOID()));
+            demandMap.mapPut("id", Utils.toApiID(demand.getOID()));
+            demandMap.mapPut("URI", Utils.toObjectURI(demand.getOID()));
             demandMap.mapPut("description", demand.getDemandDescription());
             demandArray.arrayAdd(demandMap);
         }

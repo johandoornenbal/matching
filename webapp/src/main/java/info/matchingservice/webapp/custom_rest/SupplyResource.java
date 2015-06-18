@@ -17,8 +17,6 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import java.util.regex.Pattern;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -78,30 +76,14 @@ public class SupplyResource extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the supplies resource is not allowed.", new Object[0]);
     }
 
-
-    private String toObjectURI(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String part2 = parts[1];
-        String URI = "objects/".concat(part2).concat("/L_").concat(part1);
-        return URI;
-    }
-
-    private String toApiID(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String ApiID = "L_".concat(part1);
-        return ApiID;
-    }
-
     private JsonRepresentation supplyRepresentation(Supply activeSupply){
 
         JsonRepresentation all = JsonRepresentation.newMap();
 
         // activeSupply
         JsonRepresentation activesupply = JsonRepresentation.newMap();
-        activesupply.mapPut("id", toApiID(activeSupply.getOID()));
-        activesupply.mapPut("URI", toObjectURI(activeSupply.getOID()));
+        activesupply.mapPut("id", Utils.toApiID(activeSupply.getOID()));
+        activesupply.mapPut("URI", Utils.toObjectURI(activeSupply.getOID()));
         activesupply.mapPut("description", activeSupply.getSupplyDescription());
         activesupply.mapPut("startDate", activeSupply.getDemandOrSupplyProfileStartDate().toString());
         activesupply.mapPut("endDate", activeSupply.getDemandOrSupplyProfileEndDate().toString());
@@ -118,15 +100,15 @@ public class SupplyResource extends ResourceAbstract {
 
             for (ProfileElement element : profile.getCollectProfileElements()) {
                 JsonRepresentation profileElementMap = JsonRepresentation.newMap();
-                profileElementMap.mapPut("id", toApiID(element.getOID()));
-                profileElementMap.mapPut("URI", toObjectURI(element.getOID()));
+                profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
+                profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
                 profileElementMap.mapPut("description", element.getDescription());
                 profileElements.arrayAdd(profileElementMap);
             }
 
             JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
-            profileAndElementMap.mapPut("id", toApiID(profile.getOID()));
-            profileAndElementMap.mapPut("URI", toObjectURI(profile.getOID()));
+            profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
+            profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
             profileAndElementMap.mapPut("description", profile.getProfileName());
             profileAndElementMap.mapPut("profileElements", profileElements);
             profiles.arrayAdd(profileAndElementMap);

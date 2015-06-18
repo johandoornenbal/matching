@@ -17,8 +17,6 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import java.util.regex.Pattern;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -79,30 +77,14 @@ public class DemandResource extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the demands resource is not allowed.", new Object[0]);
     }
 
-
-    private String toObjectURI(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String part2 = parts[1];
-        String URI = "objects/".concat(part2).concat("/L_").concat(part1);
-        return URI;
-    }
-
-    private String toApiID(final String OID){
-        String[] parts = OID.split(Pattern.quote("[OID]"));
-        String part1 = parts[0];
-        String ApiID = "L_".concat(part1);
-        return ApiID;
-    }
-
     private JsonRepresentation demandRepresentation(Demand activeDemand){
 
         JsonRepresentation all = JsonRepresentation.newMap();
 
         // activedemand
         JsonRepresentation activedemand = JsonRepresentation.newMap();
-        activedemand.mapPut("id", toApiID(activeDemand.getOID()));
-        activedemand.mapPut("URI", toObjectURI(activeDemand.getOID()));
+        activedemand.mapPut("id", Utils.toApiID(activeDemand.getOID()));
+        activedemand.mapPut("URI", Utils.toObjectURI(activeDemand.getOID()));
         activedemand.mapPut("description", activeDemand.getDemandDescription());
         activedemand.mapPut("summary", activeDemand.getDemandSummary());
         activedemand.mapPut("story", activeDemand.getDemandStory());
@@ -129,26 +111,26 @@ public class DemandResource extends ResourceAbstract {
 
                 for (ProfileElement element : profile.getCollectProfileElements()) {
                     JsonRepresentation profileElementMap = JsonRepresentation.newMap();
-                    profileElementMap.mapPut("id", toApiID(element.getOID()));
-                    profileElementMap.mapPut("URI", toObjectURI(element.getOID()));
+                    profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
+                    profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
                     profileElementMap.mapPut("description", element.getDescription());
                     profileElements.arrayAdd(profileElementMap);
                 }
 
                 JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
-                profileAndElementMap.mapPut("id", toApiID(profile.getOID()));
-                profileAndElementMap.mapPut("URI", toObjectURI(profile.getOID()));
+                profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
+                profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
                 profileAndElementMap.mapPut("description", profile.getProfileName());
 
                 //ProfileMatches
                 JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
                 for (ProfileMatch match : profile.getCollectPersistedProfileMatches()) {
                     JsonRepresentation profileMatchMap = JsonRepresentation.newMap();
-                    profileMatchMap.mapPut("id", toApiID(match.getOID()));
-                    profileMatchMap.mapPut("URI", toObjectURI(match.getOID()));
+                    profileMatchMap.mapPut("id", Utils.toApiID(match.getOID()));
+                    profileMatchMap.mapPut("URI", Utils.toObjectURI(match.getOID()));
                     profileMatchMap.mapPut("title", match.title());
-                    profileMatchMap.mapPut("demandProfileId", toApiID(match.getDemandProfile().getOID()));
-                    profileMatchMap.mapPut("demandProfileURI", toObjectURI(match.getDemandProfile().getOID()));
+                    profileMatchMap.mapPut("demandProfileId", Utils.toApiID(match.getDemandProfile().getOID()));
+                    profileMatchMap.mapPut("demandProfileURI", Utils.toObjectURI(match.getDemandProfile().getOID()));
                     profileMatchMap.mapPut("candidateStatus", match.getCandidateStatus().toString());
                     profileMatchesArray.arrayAdd(profileMatchMap);
                 }
