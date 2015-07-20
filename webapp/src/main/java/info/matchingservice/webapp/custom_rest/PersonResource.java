@@ -50,9 +50,6 @@ import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Match.ProfileMatches;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElementText;
-import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.dom.Profile.ProfileElements;
 
 /**
  * Created by jodo on 15/05/15.
@@ -170,18 +167,12 @@ public class PersonResource extends ResourceAbstract {
 
                 JsonRepresentation profileElements = JsonRepresentation.newArray();
 
-
                 for (ProfileElement element : profile.getCollectProfileElements()) {
-                    JsonRepresentation profileElementMap = JsonRepresentation.newMap();
-                    //profileElementMap.mapPut("id", element.getUniqueItemId().toString());
-                    profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
-                    profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
-                    profileElementMap.mapPut("description", element.getDescription());
-                    profileElements.arrayAdd(profileElementMap);
+                    ProfileElementRepresentation rep = new ProfileElementRepresentation();
+                    profileElements.arrayAdd(rep.ObjectRepresentation(element));
                 }
 
                 JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
-                //profileAndElementMap.mapPut("id", profile.getUniqueItemId().toString());
                 profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
                 profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
                 profileAndElementMap.mapPut("description", profile.getProfileName());
@@ -190,7 +181,6 @@ public class PersonResource extends ResourceAbstract {
 
             }
 
-            //demandAndProfilesAndElementsMap.mapPut("id", demand.getUniqueItemId().toString());
             demandAndProfilesAndElementsMap.mapPut("id", Utils.toApiID(demand.getOID()));
             demandAndProfilesAndElementsMap.mapPut("URI", Utils.toObjectURI(demand.getOID()));
             demandAndProfilesAndElementsMap.mapPut("description", demand.getDemandDescription());
@@ -212,20 +202,11 @@ public class PersonResource extends ResourceAbstract {
 
 
                 for (ProfileElement element : profile.getCollectProfileElements()) {
-                    JsonRepresentation profileElementMap = JsonRepresentation.newMap();
-                    //profileElementMap.mapPut("id", element.getUniqueItemId().toString());
-                    profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
-                    profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
-                    profileElementMap.mapPut("description", element.getDescription());
-                    if (element.getProfileElementType().equals(ProfileElementType.PASSION)) {
-                        ProfileElementText passionTag = (ProfileElementText) profileElementsRepo.findProfileElementByUniqueId(element.getUniqueItemId()).get(0);
-                        profileElementMap.mapPut("passion", passionTag.getTextValue());
-                    }
-                    profileElements.arrayAdd(profileElementMap);
+                    ProfileElementRepresentation rep = new ProfileElementRepresentation();
+                    profileElements.arrayAdd(rep.ObjectRepresentation(element));
                 }
 
                 JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
-                // profileAndElementMap.mapPut("id", profile.getUniqueItemId().toString());
                 profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
                 profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
                 profileAndElementMap.mapPut("description", profile.getProfileName());
@@ -244,7 +225,6 @@ public class PersonResource extends ResourceAbstract {
 
             }
 
-            // supplyAndProfilesAndElementsMap.mapPut("id", supply.getUniqueItemId().toString());
             supplyAndProfilesAndElementsMap.mapPut("id", Utils.toApiID(supply.getOID()));
             supplyAndProfilesAndElementsMap.mapPut("URI", Utils.toObjectURI(supply.getOID()));
             supplyAndProfilesAndElementsMap.mapPut("description", supply.getSupplyDescription());
@@ -309,8 +289,6 @@ public class PersonResource extends ResourceAbstract {
         return all;
 
     }
-
-    private ProfileElements profileElementsRepo = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileElements.class);
     private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);
     private ProfileMatches profileMatches = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileMatches.class);
 }

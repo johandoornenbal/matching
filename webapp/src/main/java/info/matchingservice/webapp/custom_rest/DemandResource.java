@@ -106,21 +106,19 @@ public class DemandResource extends ResourceAbstract {
 
             for (Profile profile : activeDemand.getCollectDemandProfiles()) {
 
-                JsonRepresentation profileElements = JsonRepresentation.newArray();
-
-
-                for (ProfileElement element : profile.getCollectProfileElements()) {
-                    JsonRepresentation profileElementMap = JsonRepresentation.newMap();
-                    profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
-                    profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
-                    profileElementMap.mapPut("description", element.getDescription());
-                    profileElements.arrayAdd(profileElementMap);
-                }
-
                 JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
+
                 profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
                 profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
                 profileAndElementMap.mapPut("description", profile.getProfileName());
+
+
+                //Profile Elements
+                JsonRepresentation profileElements = JsonRepresentation.newArray();
+                for (ProfileElement element : profile.getCollectProfileElements()) {
+                    ProfileElementRepresentation rep = new ProfileElementRepresentation();
+                    profileElements.arrayAdd(rep.ObjectRepresentation(element));
+                }
 
                 //ProfileMatches
                 JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
@@ -145,7 +143,7 @@ public class DemandResource extends ResourceAbstract {
 
         activedemand.mapPut("profiles",profiles);
 
-        all.mapPut("demand",activedemand);
+        all.mapPut("demand", activedemand);
 
         return all;
 

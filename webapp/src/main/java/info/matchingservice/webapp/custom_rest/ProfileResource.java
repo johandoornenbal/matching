@@ -34,18 +34,8 @@ import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Match.ProfileComparison;
-import info.matchingservice.dom.Match.ProfileComparisons;
-import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElementChoice;
-import info.matchingservice.dom.Profile.ProfileElementChoices;
-import info.matchingservice.dom.Profile.ProfileElementText;
-import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.dom.Profile.ProfileElements;
 import info.matchingservice.dom.Profile.Profiles;
 
 /**
@@ -117,105 +107,21 @@ public class ProfileResource extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the supplyprofiles resource is not allowed.", new Object[0]);
     }
 
+
     private JsonRepresentation profileRepresentation(Profile activeProfile){
 
         JsonRepresentation all = JsonRepresentation.newMap();
 
-        // activeprofile
-        JsonRepresentation activeprofile = JsonRepresentation.newMap();
-        activeprofile.mapPut("id", Utils.toApiID(activeProfile.getOID()));
-        activeprofile.mapPut("URI", Utils.toObjectURI(activeProfile.getOID()));
-        activeprofile.mapPut("description", activeProfile.getProfileName());
-        if (activeProfile.getProfileStartDate()==null){
-            activeprofile.mapPut("startDate", "");
-        } else {
-            activeprofile.mapPut("startDate", activeProfile.getProfileStartDate().toString());
-        }
-        if (activeProfile.getProfileEndDate()==null){
-            activeprofile.mapPut("endDate", "");
-        } else {
-            activeprofile.mapPut("endDate", activeProfile.getProfileEndDate().toString());
-        }
-        if (activeProfile.getChosenProfileMatch() == null) {
-            activeprofile.mapPut("chosenProfileMatchId", "");
-            activeprofile.mapPut("chosenProfileMatchURI", "");
-        } else {
-            activeprofile.mapPut("chosenProfileMatchId", Utils.toApiID(activeProfile.getChosenProfileMatch().getOID()));
-            activeprofile.mapPut("chosenProfileMatchURI", Utils.toObjectURI(activeProfile.getChosenProfileMatch().getOID()));
-        }
-
-        // profilesElements
-        JsonRepresentation profileElements = JsonRepresentation.newArray();
-
-        for (ProfileElement element : activeProfile.getCollectProfileElements()) {
-            JsonRepresentation profileElementMap = JsonRepresentation.newMap();
-            profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
-            profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
-            profileElementMap.mapPut("description", element.getDescription());
-            profileElementMap.mapPut("displayValue", element.getDisplayValue());
-            profileElementMap.mapPut("isActive", element.getIsActive());
-            if (element.getProfileElementType().equals(ProfileElementType.PASSION)) {
-                ProfileElementText passionTag = (ProfileElementText) profileElementsRepo.findProfileElementByUniqueId(element.getUniqueItemId()).get(0);
-                        profileElementMap.mapPut("passion", passionTag.getTextValue());
-            }
-            profileElements.arrayAdd(profileElementMap);
-        }
-
-        activeprofile.mapPut("profileElements", profileElements);
-
-        //ProfileComparisons
-        JsonRepresentation profileComparisonsArray = JsonRepresentation.newArray();
-        for (ProfileComparison comp : profileComparisonsRepo.collectDemandProfileComparisons(activeProfile)) {
-            JsonRepresentation profileComparisonMap = JsonRepresentation.newMap();
-            profileComparisonMap.mapPut("calculatedMatchingValue", comp.getCalculatedMatchingValue());
-            profileComparisonMap.mapPut("demandProfileId", Utils.toApiID(comp.getDemandProfile().getOID()));
-            profileComparisonMap.mapPut("demandProfileURI", Utils.toObjectURI(comp.getDemandProfile().getOID()));
-            profileComparisonMap.mapPut("demandProfileDescription", comp.getDemandProfile().getProfileName());
-            Person demandingPerson = (Person) comp.getDemandingPerson();
-            profileComparisonMap.mapPut("demandingPersonId", Utils.toApiID(demandingPerson.getOID()));
-            profileComparisonMap.mapPut("demandingPersonURI", Utils.toObjectURI(demandingPerson.getOID()));
-            profileComparisonMap.mapPut("demandingPersonName", demandingPerson.title());
-            profileComparisonsArray.arrayAdd(profileComparisonMap);
-        }
-        activeprofile.mapPut("profileComparisons", profileComparisonsArray);
-
-        //ProfileMatches
-        JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
-        for (ProfileMatch match : activeProfile.getCollectPersistedProfileMatches()) {
-            JsonRepresentation profileMatchMap = JsonRepresentation.newMap();
-            profileMatchMap.mapPut("id", Utils.toApiID(match.getOID()));
-            profileMatchMap.mapPut("URI", Utils.toObjectURI(match.getOID()));
-            profileMatchMap.mapPut("title", match.title());
-            profileMatchMap.mapPut("demandProfileId", Utils.toApiID(match.getDemandProfile().getOID()));
-            profileMatchMap.mapPut("demandProfileURI", Utils.toObjectURI(match.getDemandProfile().getOID()));
-            profileMatchMap.mapPut("candidateStatus", match.getCandidateStatus().toString());
-            profileMatchesArray.arrayAdd(profileMatchMap);
-        }
-        activeprofile.mapPut("profileMatches", profileMatchesArray);
-
-
-        //Choices
-        JsonRepresentation profileElementChoicesArray = JsonRepresentation.newArray();
-        for (ProfileElementChoice choice : profileElementChoices.profileElementChoices(activeProfile.getDemandOrSupply())){
-            JsonRepresentation profileElementChoiceMap = JsonRepresentation.newMap();
-            profileElementChoiceMap.mapPut("widgetType", choice.getWidgetType().toString());
-            profileElementChoiceMap.mapPut("description", choice.getDescription());
-            profileElementChoiceMap.mapPut("action", choice.getAction());
-            profileElementChoicesArray.arrayAdd(profileElementChoiceMap);
-        }
-        activeprofile.mapPut("profileElementChoices", profileElementChoicesArray);
+        ProfileRepresentation rep = new ProfileRepresentation();
 
         if (activeProfile.getDemandOrSupply() == DemandOrSupply.DEMAND) {
-            all.mapPut("demandprofile", activeprofile);
+            all.mapPut("demandprofile", rep.ObjectRepresentation(activeProfile));
         } else {
-            all.mapPut("supplyprofile", activeprofile);
+            all.mapPut("supplyprofile", rep.ObjectRepresentation(activeProfile));
         }
 
         return all;
 
     }
 
-    private ProfileElementChoices profileElementChoices = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileElementChoices.class);
-    private ProfileElements profileElementsRepo = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileElements.class);
-    private ProfileComparisons profileComparisonsRepo = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileComparisons.class);
 }
