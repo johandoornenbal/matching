@@ -23,7 +23,7 @@ public abstract class PersonAbstract extends FixtureScript {
             boolean activated,
             ExecutionContext executionContext
             ) {
-        Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, null, user);
+        Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, "link", null, user);
         newPerson.setActivated(activated);
                        
         return executionContext.add(this, newPerson);

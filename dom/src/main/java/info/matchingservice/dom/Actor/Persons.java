@@ -79,9 +79,12 @@ public class Persons extends MatchingDomainService<Person> {
             @ParameterLayout(named="picture")
             @Parameter(optionality=Optionality.OPTIONAL)
             final Blob picture,
+            @ParameterLayout(named="pictureLink")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final String pictureLink,
             final PersonRoleType personRoleType
             ) {
-        return createPerson(firstName, middleName, lastName, dateOfBirth, picture, personRoleType, currentUserName()); // see region>helpers
+        return createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, personRoleType, currentUserName()); // see region>helpers
     }
     
     public boolean hideCreatePerson() {
@@ -98,8 +101,9 @@ public class Persons extends MatchingDomainService<Person> {
             final String lastName,
             final LocalDate dateOfBirth,
             final Blob picture,
+            final String pictureLink,
             final PersonRoleType personRoleType) {
-        return validateCreatePerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture);
+        return validateCreatePerson(firstName, middleName, lastName, dateOfBirth, currentUserName(), picture, pictureLink);
     }
     
     @MemberOrder(sequence="5")
@@ -164,6 +168,7 @@ public class Persons extends MatchingDomainService<Person> {
             final String lastName,
             final LocalDate dateOfBirth,
             final Blob picture,
+            final String pictureLink,
             final PersonRoleType personRoleType,
             final String userName) {
         final Person person = newTransientInstance(Person.class);
@@ -176,6 +181,7 @@ public class Persons extends MatchingDomainService<Person> {
         person.setDateCreated(clockService.now());
         person.setOwnedBy(userName);
         person.setPicture(picture);
+        person.setPictureLink(pictureLink);
         if (personRoleType!=null) {
             if (personRoleType.equals(PersonRoleType.STUDENT)) {
                 person.addRoleStudent();
@@ -216,7 +222,8 @@ public class Persons extends MatchingDomainService<Person> {
             final String lastName,
             final LocalDate dateOfBirth,
             final String userName,
-            final Blob picture) {
+            final Blob picture,
+            final String pictureLink) {
         
         QueryDefault<Person> query = 
                 QueryDefault.create(
@@ -236,7 +243,8 @@ public class Persons extends MatchingDomainService<Person> {
     		final String middleName,
     		final String lastName,
     		final LocalDate dateOfBirth,
-    		final Blob picture
+    		final Blob picture,
+            final String pictureLink
     		){
     	person.setFirstName(firstName);   	
     	person.setMiddleName(middleName);
@@ -245,6 +253,7 @@ public class Persons extends MatchingDomainService<Person> {
 //    	if (picture != null){
     		person.setPicture(picture);
 //    	}
+        person.setPictureLink(pictureLink);
     	persistIfNotAlready(person);
     	return person;
     }

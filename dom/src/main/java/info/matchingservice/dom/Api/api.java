@@ -249,10 +249,13 @@ public class Api extends AbstractFactoryAndRepository {
             @ParameterLayout(named="picture")
             @Parameter(optionality=Optionality.OPTIONAL)
             final Blob picture,
+			@ParameterLayout(named="pictureLink")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String pictureLink,
 			@ParameterLayout(named="personRole")
 			final PersonRoleType personRoleType
 			){
-		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, personRoleType);
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, personRoleType);
 	}
 	
     @Programmatic //userName can now also be set by fixtures
@@ -262,6 +265,7 @@ public class Api extends AbstractFactoryAndRepository {
             final String lastName,
             final LocalDate dateOfBirth,
             final Blob picture,
+			final String pictureLink,
 			final PersonRoleType personRoleType) {
         
         QueryDefault<Person> query = 
@@ -292,9 +296,12 @@ public class Api extends AbstractFactoryAndRepository {
 			final LocalDate dateOfBirth,
 			@ParameterLayout(named="picture")
 			@Parameter(optionality=Optionality.OPTIONAL)
-			final Blob picture
+			final Blob picture,
+			@ParameterLayout(named="pictureLink")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String pictureLink
 	){
-		Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.STUDENT);
+		Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.STUDENT);
 		return toApiID(newPerson.getOID());
 	}
 
@@ -304,7 +311,8 @@ public class Api extends AbstractFactoryAndRepository {
 			final String middleName,
 			final String lastName,
 			final LocalDate dateOfBirth,
-			final Blob picture) {
+			final Blob picture,
+			final String pictureLink) {
 
 		QueryDefault<Person> query =
 				QueryDefault.create(
@@ -330,9 +338,12 @@ public class Api extends AbstractFactoryAndRepository {
 			final LocalDate dateOfBirth,
 			@ParameterLayout(named="picture")
 			@Parameter(optionality=Optionality.OPTIONAL)
-			final Blob picture
+			final Blob picture,
+			@ParameterLayout(named="pictureLink")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String pictureLink
 	){
-		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.STUDENT);
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.STUDENT);
 	}
 
 	//------------------------------------ END createStudent ---------------------------//
@@ -352,9 +363,12 @@ public class Api extends AbstractFactoryAndRepository {
 			final LocalDate dateOfBirth,
 			@ParameterLayout(named="picture")
 			@Parameter(optionality=Optionality.OPTIONAL)
-			final Blob picture
+			final Blob picture,
+			@ParameterLayout(named="pictureLink")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String pictureLink
 	){
-		Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PROFESSIONAL);
+		Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.PROFESSIONAL);
 		return toApiID(newPerson.getOID());
 	}
 
@@ -364,7 +378,8 @@ public class Api extends AbstractFactoryAndRepository {
 			final String middleName,
 			final String lastName,
 			final LocalDate dateOfBirth,
-			final Blob picture) {
+			final Blob picture,
+			final String pictureLink) {
 
 		QueryDefault<Person> query =
 				QueryDefault.create(
@@ -390,9 +405,12 @@ public class Api extends AbstractFactoryAndRepository {
 			final LocalDate dateOfBirth,
 			@ParameterLayout(named="picture")
 			@Parameter(optionality=Optionality.OPTIONAL)
-			final Blob picture
+			final Blob picture,
+			@ParameterLayout(named="pictureLink")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String pictureLink
 	){
-		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PROFESSIONAL);
+		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.PROFESSIONAL);
 	}
 
 	//------------------------------------ END createProfessional ---------------------------//
@@ -412,9 +430,12 @@ public class Api extends AbstractFactoryAndRepository {
 			final LocalDate dateOfBirth,
 			@ParameterLayout(named="picture")
 			@Parameter(optionality=Optionality.OPTIONAL)
-			final Blob picture
+			final Blob picture,
+			@ParameterLayout(named="pictureLink")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String pictureLink
 	){
-		Person newPerson =  persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PRINCIPAL);
+		Person newPerson =  persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.PRINCIPAL);
 		return toApiID(newPerson.getOID());
 	}
 
@@ -424,7 +445,8 @@ public class Api extends AbstractFactoryAndRepository {
 			final String middleName,
 			final String lastName,
 			final LocalDate dateOfBirth,
-			final Blob picture) {
+			final Blob picture,
+			final String pictureLink) {
 
 		QueryDefault<Person> query =
 				QueryDefault.create(
@@ -449,9 +471,12 @@ public class Api extends AbstractFactoryAndRepository {
 			final LocalDate dateOfBirth,
 			@ParameterLayout(named="picture")
 			@Parameter(optionality=Optionality.OPTIONAL)
-			final Blob picture
+			final Blob picture,
+			@ParameterLayout(named="pictureLink")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String pictureLink
 	){
-		return  persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, PersonRoleType.PRINCIPAL);
+		return  persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.PRINCIPAL);
 	}
 
 	//------------------------------------ END createPrincipal ---------------------------//

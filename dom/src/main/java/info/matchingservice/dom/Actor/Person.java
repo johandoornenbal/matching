@@ -152,6 +152,21 @@ public class Person extends Actor {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
+    //region > PictureLink (property)
+    private String PictureLink;
+
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @MemberOrder(sequence = "70")
+    @PropertyLayout()
+    public String getPictureLink() {
+        return PictureLink;
+    }
+
+    public void setPictureLink(final String PictureLink) {
+        this.PictureLink = PictureLink;
+    }
+    //endregion
     
     //Region> picture /////////////////////////////////////////////////
     private Blob picture;
@@ -275,9 +290,12 @@ public class Person extends Actor {
     		final LocalDate dateOfBirth,
     		@ParameterLayout(named="picture")
     		@Parameter(optionality=Optionality.OPTIONAL)
-    		final Blob picture
+    		final Blob picture,
+            @ParameterLayout(named="pictureLink")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final String pictureLink
     		){
-    	persons.updatePerson(this, firstName, middleName, lastName, dateOfBirth, picture);
+    	persons.updatePerson(this, firstName, middleName, lastName, dateOfBirth, picture, pictureLink);
     	return this;
     }
     

@@ -97,10 +97,12 @@ public class ProfileRepresentation {
             profileComparisonMap.mapPut("demandingPersonId", Utils.toApiID(demandingPerson.getOID()));
             profileComparisonMap.mapPut("demandingPersonURI", Utils.toObjectURI(demandingPerson.getOID()));
             profileComparisonMap.mapPut("demandingPersonName", demandingPerson.title());
+            profileComparisonMap.mapPut("demandingPersonPictureLink", demandingPerson.getPictureLink());
             Person supplyingPerson = (Person) comp.getProposedPerson();
             profileComparisonMap.mapPut("proposedPersonId", Utils.toApiID(supplyingPerson.getOID()));
             profileComparisonMap.mapPut("proposedPersonURI", Utils.toObjectURI(supplyingPerson.getOID()));
             profileComparisonMap.mapPut("proposedPersonName", supplyingPerson.title());
+            profileComparisonMap.mapPut("proposedPersonPictureLink", supplyingPerson.getPictureLink());
             profileComparisonsArray.arrayAdd(profileComparisonMap);
         }
         //for supply profile
@@ -114,10 +116,12 @@ public class ProfileRepresentation {
             profileComparisonMap.mapPut("demandingPersonId", Utils.toApiID(demandingPerson.getOID()));
             profileComparisonMap.mapPut("demandingPersonURI", Utils.toObjectURI(demandingPerson.getOID()));
             profileComparisonMap.mapPut("demandingPersonName", demandingPerson.title());
+            profileComparisonMap.mapPut("demandingPersonPictureLink", demandingPerson.getPictureLink());
             Person supplyingPerson = (Person) comp.getProposedPerson();
             profileComparisonMap.mapPut("proposedPersonId", Utils.toApiID(supplyingPerson.getOID()));
             profileComparisonMap.mapPut("proposedPersonURI", Utils.toObjectURI(supplyingPerson.getOID()));
             profileComparisonMap.mapPut("proposedPersonName", supplyingPerson.title());
+            profileComparisonMap.mapPut("proposedPersonPictureLink", supplyingPerson.getPictureLink());
             profileComparisonsArray.arrayAdd(profileComparisonMap);
         }
         profileAndElementMap.mapPut("profileComparisons", profileComparisonsArray);

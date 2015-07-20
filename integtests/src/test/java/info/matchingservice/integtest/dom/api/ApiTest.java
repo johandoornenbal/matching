@@ -68,6 +68,7 @@ public class ApiTest extends MatchingIntegrationTest {
         private static final String MIDDLE_NAME = "van der";
         private static final String FIRST_NAME = "T.";
         private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
+        private static final String PICTURE_LINK = "picturelink";
         
         Person p1;
         Person p2;
@@ -75,7 +76,7 @@ public class ApiTest extends MatchingIntegrationTest {
         
         @Before
         public void setUp() throws Exception {
-            p1=api.createStudentApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
+            p1=api.createStudentApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null,PICTURE_LINK);
         }
         
         @Test
@@ -102,6 +103,7 @@ public class ApiTest extends MatchingIntegrationTest {
         private static final String MIDDLE_NAME = "van der";
         private static final String FIRST_NAME = "T.";
         private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
+        private static final String PICTURE_LINK = "picturelink";
 
         Person p1;
         Person p2;
@@ -109,7 +111,7 @@ public class ApiTest extends MatchingIntegrationTest {
 
         @Before
         public void setUp() throws Exception {
-            p1=api.createProfessionalApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
+            p1=api.createProfessionalApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null,PICTURE_LINK);
         }
 
         @Test
@@ -136,13 +138,14 @@ public class ApiTest extends MatchingIntegrationTest {
         private static final String MIDDLE_NAME = "van der";
         private static final String FIRST_NAME = "T.";
         private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962, 7, 16);
+        private static final String PICTURE_LINK = "picturelink";
 
         Person p1;
         Person p2;
 
         @Before
         public void setUp() throws Exception {
-            p1 = api.createPrincipalApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null);
+            p1 = api.createPrincipalApi(FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, null,PICTURE_LINK);
         }
 
         @Test

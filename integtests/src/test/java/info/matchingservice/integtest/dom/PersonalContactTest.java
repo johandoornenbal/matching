@@ -43,7 +43,7 @@ public class PersonalContactTest extends MatchingIntegrationTest {
 			
 			Person p1;
 			Person frans;
-			p1 = persons.createPerson("Test", "van der", "Test", new LocalDate(1962,7,16), null, null, "tester");
+			p1 = persons.createPerson("Test", "van der", "Test", new LocalDate(1962,7,16), null, null, null, "tester");
 			assertThat(p1.getOwnedBy(),is("tester"));
 			// because p1 is owned by tester Action AddAsPersonalContact should be hidden
 			assertThat(personalcontacts.hideAddAsPersonalContact(p1), is(true));

@@ -130,7 +130,7 @@ public class PersonResource extends ResourceAbstract {
         activeperson.mapPut("lastName", activePerson.getLastName());
         activeperson.mapPut("middleName", activePerson.getMiddleName());
         activeperson.mapPut("birthDay", activePerson.getDateOfBirth().toString());
-        activeperson.mapPut("picture", "");
+        activeperson.mapPut("pictureLink", activePerson.getPictureLink());
         activeperson.mapPut("roles", activePerson.getRoles());
         try {
             Email email = (Email) communicationChannels.findCommunicationChannelByPersonAndType(activePerson, CommunicationChannelType.EMAIL_MAIN).get(0);

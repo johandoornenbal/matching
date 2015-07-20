@@ -80,7 +80,7 @@ public class ProfileTest extends MatchingIntegrationTest {
     	
     	@Before
     	public void setUp() throws Exception {
-    		p1=persons.createPerson("TESTvn", "", "TESTan", new LocalDate(1962,7,16), null, null);
+    		p1=persons.createPerson("TESTvn", "", "TESTan", new LocalDate(1962,7,16), null, null, null);
     		s1=supplies.createSupply("TESTSUP", 10, null, null, DemandSupplyType.PERSON_DEMANDSUPPLY, p1, container.getUser().getName());
     		pf1=s1.createPersonSupplyProfile();
     		pf1.createPassionElement(ELEMENT_PASSIONVALUE, ELEMENT_INTVALUE);
