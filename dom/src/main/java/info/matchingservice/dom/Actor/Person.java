@@ -318,6 +318,10 @@ public class Person extends Actor {
     public Blob default4UpdatePerson(){
     	return getPicture();
     }
+
+    public String default5UpdatePerson(){
+        return getPictureLink();
+    }
     //-- updatePerson --//
     
     //** newPersonsSupplyAndProfile **//
