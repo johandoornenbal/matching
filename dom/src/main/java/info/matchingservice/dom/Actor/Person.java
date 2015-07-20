@@ -154,17 +154,17 @@ public class Person extends Actor {
     }
 
     //region > PictureLink (property)
-    private String PictureLink;
+    private String pictureLink;
 
     @javax.jdo.annotations.Column(allowsNull = "true")
     @MemberOrder(sequence = "70")
     @PropertyLayout()
     public String getPictureLink() {
-        return PictureLink;
+        return pictureLink;
     }
 
     public void setPictureLink(final String PictureLink) {
-        this.PictureLink = PictureLink;
+        this.pictureLink = PictureLink;
     }
     //endregion
     
