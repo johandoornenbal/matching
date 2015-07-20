@@ -86,6 +86,7 @@ public class ProfileRepresentation {
 
         //ProfileComparisons
         JsonRepresentation profileComparisonsArray = JsonRepresentation.newArray();
+        //for demandprofile
         for (ProfileComparison comp : profileComparisonsRepo.collectProfileComparisons(profile)) {
             JsonRepresentation profileComparisonMap = JsonRepresentation.newMap();
             profileComparisonMap.mapPut("calculatedMatchingValue", comp.getCalculatedMatchingValue());
@@ -96,6 +97,27 @@ public class ProfileRepresentation {
             profileComparisonMap.mapPut("demandingPersonId", Utils.toApiID(demandingPerson.getOID()));
             profileComparisonMap.mapPut("demandingPersonURI", Utils.toObjectURI(demandingPerson.getOID()));
             profileComparisonMap.mapPut("demandingPersonName", demandingPerson.title());
+            Person supplyingPerson = (Person) comp.getProposedPerson();
+            profileComparisonMap.mapPut("proposedPersonId", Utils.toApiID(supplyingPerson.getOID()));
+            profileComparisonMap.mapPut("proposedPersonURI", Utils.toObjectURI(supplyingPerson.getOID()));
+            profileComparisonMap.mapPut("proposedPersonName", supplyingPerson.title());
+            profileComparisonsArray.arrayAdd(profileComparisonMap);
+        }
+        //for supply profile
+        for (ProfileComparison comp : profileComparisonsRepo.collectDemandProfileComparisons(profile)) {
+            JsonRepresentation profileComparisonMap = JsonRepresentation.newMap();
+            profileComparisonMap.mapPut("calculatedMatchingValue", comp.getCalculatedMatchingValue());
+            profileComparisonMap.mapPut("demandProfileId", Utils.toApiID(comp.getDemandProfile().getOID()));
+            profileComparisonMap.mapPut("demandProfileURI", Utils.toObjectURI(comp.getDemandProfile().getOID()));
+            profileComparisonMap.mapPut("demandProfileDescription", comp.getDemandProfile().getProfileName());
+            Person demandingPerson = (Person) comp.getDemandingPerson();
+            profileComparisonMap.mapPut("demandingPersonId", Utils.toApiID(demandingPerson.getOID()));
+            profileComparisonMap.mapPut("demandingPersonURI", Utils.toObjectURI(demandingPerson.getOID()));
+            profileComparisonMap.mapPut("demandingPersonName", demandingPerson.title());
+            Person supplyingPerson = (Person) comp.getProposedPerson();
+            profileComparisonMap.mapPut("proposedPersonId", Utils.toApiID(supplyingPerson.getOID()));
+            profileComparisonMap.mapPut("proposedPersonURI", Utils.toObjectURI(supplyingPerson.getOID()));
+            profileComparisonMap.mapPut("proposedPersonName", supplyingPerson.title());
             profileComparisonsArray.arrayAdd(profileComparisonMap);
         }
         profileAndElementMap.mapPut("profileComparisons", profileComparisonsArray);
