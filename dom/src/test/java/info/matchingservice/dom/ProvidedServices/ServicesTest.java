@@ -19,6 +19,7 @@ package info.matchingservice.dom.ProvidedServices;
 import java.util.List;
 import java.util.UUID;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -93,6 +94,7 @@ public class ServicesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
             //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.ProvidedServices.Service.class);
             assertThat(finderInteraction.getQueryName(), is("findServiceByOwnedBy"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("ownedBy"), is((Object) ownedBy));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -112,6 +114,7 @@ public class ServicesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
             //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.ProvidedServices.Service.class);
             assertThat(finderInteraction.getQueryName(), is("findServiceByUniqueItemId"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("uniqueItemId"), is((Object) uuid));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -131,6 +134,7 @@ public class ServicesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
             //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.ProvidedServices.Service.class);
             assertThat(finderInteraction.getQueryName(), is("findServiceByDescription"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("serviceDescription"), is((Object) description));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -149,6 +153,7 @@ public class ServicesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
             //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.ProvidedServices.Service.class);
             assertThat(finderInteraction.getQueryName(), is("findServiceByDescriptionContains"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("serviceDescription"), is((Object) description));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -167,6 +172,7 @@ public class ServicesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
             //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.ProvidedServices.Service.class);
             assertThat(finderInteraction.getQueryName(), is("findServiceByType"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("serviceType"), is((Object) serviceType));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -185,6 +191,7 @@ public class ServicesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
             //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.ProvidedServices.Service.class);
             assertThat(finderInteraction.getQueryName(), is("findServiceByStatus"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("serviceStatus"), is((Object) serviceStatus));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));

@@ -18,13 +18,9 @@
  */
 package info.matchingservice.dom.Tags;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +28,10 @@ import org.apache.isis.applib.query.Query;
 
 import info.matchingservice.dom.FinderInteraction;
 import info.matchingservice.dom.FinderInteraction.FinderMethod;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class TagsTest {
     
@@ -68,6 +68,7 @@ public class TagsTest {
             
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
 //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(TagCategory.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Tags.Tag.class);
             assertThat(finderInteraction.getQueryName(), is("tagMatches"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("tagDescription"), is((Object)"test123"));
             assertTrue(finderInteraction.getArgumentsByParameterName().get("tagDescription").equals((Object)"test123"));
@@ -85,6 +86,7 @@ public class TagsTest {
             
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
 //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(TagCategory.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Tags.Tag.class);
             assertThat(finderInteraction.getQueryName(), is("tagContains"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("tagDescription"), is((Object)"test123"));
             assertTrue(finderInteraction.getArgumentsByParameterName().get("tagDescription").equals((Object)"test123"));

@@ -3,6 +3,7 @@ package info.matchingservice.dom.DemandSupply;
 import java.util.List;
 import java.util.UUID;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,7 +55,7 @@ public class DemandsTest {
             demands.findDemandByDescription(demandDescription, ownedBy);
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
-            //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.DemandSupply.Demand.class);
             assertThat(finderInteraction.getQueryName(), is("findDemandByDescription"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("demandDescription"), is((Object) demandDescription));
             assertThat(finderInteraction.getArgumentsByParameterName().get("ownedBy"), is((Object) ownedBy));
@@ -64,7 +65,7 @@ public class DemandsTest {
             demands.findDemandByDescription(demandDescription);
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
-            //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.DemandSupply.Demand.class);
             assertThat(finderInteraction.getQueryName(), is("findDemandByDescriptionOnly"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("demandDescription"), is((Object) demandDescription));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -81,7 +82,7 @@ public class DemandsTest {
             demands.findDemandByUniqueItemId(uuid);
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
-            //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Demand.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.DemandSupply.Demand.class);
             assertThat(finderInteraction.getQueryName(), is("findDemandByUniqueItemId"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("uniqueItemId"), is((Object) uuid));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));

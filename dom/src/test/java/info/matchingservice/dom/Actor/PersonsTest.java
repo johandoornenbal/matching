@@ -27,6 +27,8 @@ import org.apache.isis.applib.query.Query;
 import info.matchingservice.dom.FinderInteraction;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Created by jodo on 16/06/15.
@@ -71,7 +73,7 @@ public class PersonsTest {
             persons.findPersonsByName(search);
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
-            //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Demand.class));
+            assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Actor.Person.class);
             assertThat(finderInteraction.getQueryName(), is("matchPersonByNameContains"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("search"), is((Object) search));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));

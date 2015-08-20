@@ -20,6 +20,7 @@ package info.matchingservice.dom.Match;
 
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,12 +82,13 @@ public class ProfileMatchesTest {
         	profileMatches.findProfileMatchesByDemandProfile(demandprofile);
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
-//            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(ProfileMatch.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Match.ProfileMatch.class);
             assertThat(finderInteraction.getQueryName(), is("findProfileMatchesByDemandProfile"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("demandprofile"), is((Object) demandprofile));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
 
             profileMatches.findProfileMatchesByDemandProfileAndStatus(demandprofile, candidateStatus);
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Match.ProfileMatch.class);
             assertThat(finderInteraction.getQueryName(), is("findProfileMatchesByDemandProfileAndStatus"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("demandprofile"), is((Object) demandprofile));
             assertThat(finderInteraction.getArgumentsByParameterName().get("candidateStatus"), is((Object) candidateStatus));
@@ -106,6 +108,7 @@ public class ProfileMatchesTest {
             profileMatches.collectProfileMatches(supplyCandidate);
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Match.ProfileMatch.class);
             assertThat(finderInteraction.getQueryName(), is("findProfileMatchesBySupplyCandidate"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("supplyCandidate"), is((Object) supplyCandidate));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));

@@ -21,6 +21,7 @@ package info.matchingservice.dom.Profile;
 import java.util.List;
 import java.util.UUID;
 
+import org.assertj.core.api.Assertions;
 import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,6 +77,7 @@ public class ProfilesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
 //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Profile.Profile.class);
             assertThat(finderInteraction.getQueryName(), is("findProfileByUniqueItemId"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("uniqueItemId"), is((Object) uuid));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -95,6 +97,7 @@ public class ProfilesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
 //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Profile.Profile.class);
             assertThat(finderInteraction.getQueryName(), is("findProfileByDemandProfileOwner"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("demandProfileOwner"), is((Object) demandProfileOwner));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -113,6 +116,7 @@ public class ProfilesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
 //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Profile.Profile.class);
             assertThat(finderInteraction.getQueryName(), is("allSupplyProfilesOfType"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("profileType"), is((Object) profileType));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -131,6 +135,7 @@ public class ProfilesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
 //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Profile.Profile.class);
             assertThat(finderInteraction.getQueryName(), is("allDemandProfilesOfType"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("profileType"), is((Object) profileType));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -152,6 +157,7 @@ public class ProfilesTest {
 
            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
 //           assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+           Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Profile.Profile.class);
            assertThat(finderInteraction.getQueryName(), is("searchNameOfProfilesOfTypeByOwner"));
            assertThat(finderInteraction.getArgumentsByParameterName().get("profileName"), is((Object) profileName));
            assertThat(finderInteraction.getArgumentsByParameterName().get("demandOrSupply"), is((Object) demandOrSupply));
@@ -173,6 +179,7 @@ public class ProfilesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
             //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Profile.Profile.class);
             assertThat(finderInteraction.getQueryName(), is("allSupplyProfilesOtherOwners"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("ownedBy"), is((Object) ownedBy));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
@@ -191,6 +198,7 @@ public class ProfilesTest {
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
             //            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Profile.Profile.class);
             assertThat(finderInteraction.getQueryName(), is("allDemandProfilesOtherOwners"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("ownedBy"), is((Object) ownedBy));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));

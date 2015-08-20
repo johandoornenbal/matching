@@ -14,18 +14,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package info.matchingservice.dom.Assessments;
+package info.matchingservice.dom.Assessment;
 
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
 
 import org.apache.isis.applib.query.Query;
 
-import info.matchingservice.dom.Assessment.ProfileMatchAssessment;
-import info.matchingservice.dom.Assessment.ProfileMatchAssessments;
 import info.matchingservice.dom.FinderInteraction;
 import info.matchingservice.dom.FinderInteraction.FinderMethod;
 import info.matchingservice.dom.Match.ProfileMatch;
@@ -74,6 +73,7 @@ public class AssessmentsTest {
         	assessments.findProfileMatchesAssessmentByProfileMatch(profileMatch);
 
             assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
+            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Assessment.ProfileMatchAssessment.class);
             assertThat(finderInteraction.getQueryName(), is("findProfileMatchesAssessmentByProfileMatch"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("profileMatch"), is((Object) profileMatch));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
