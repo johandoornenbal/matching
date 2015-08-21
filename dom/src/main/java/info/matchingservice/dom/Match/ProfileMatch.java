@@ -38,7 +38,7 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
-import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Assessment.ProfileMatchAssessment;
 import info.matchingservice.dom.Assessment.ProfileMatchAssessments;
 import info.matchingservice.dom.MatchingSecureMutableObject;
@@ -118,28 +118,28 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
         this.ownedBy = owner;
     }
     
-    private Actor ownerActor;
+    private Person ownerActor;
     
     @PropertyLayout()
     @Property(editing=Editing.DISABLED)
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public Actor getOwnerActor() {
+    public Person getOwnerActor() {
         return ownerActor;
     }
     
-    public void setOwnerActor(final Actor ownerActor) {
+    public void setOwnerActor(final Person ownerActor) {
         this.ownerActor = ownerActor;
     }
     
-    private Actor supplyCandidate;
+    private Person supplyCandidate;
     
     @Property(editing=Editing.DISABLED)
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public Actor getSupplyCandidate() {
+    public Person getSupplyCandidate() {
         return supplyCandidate;
     }
     
-    public void setSupplyCandidate(final Actor candidate) {
+    public void setSupplyCandidate(final Person candidate) {
         this.supplyCandidate = candidate;
     }
     

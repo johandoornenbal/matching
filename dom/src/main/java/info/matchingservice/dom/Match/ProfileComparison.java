@@ -29,6 +29,7 @@ import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Property;
 
 import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainObject;
 import info.matchingservice.dom.Profile.Profile;
 
@@ -95,7 +96,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     //Region>Actions ////////////////////////////////////////////////////////
     
     public ProfileMatch SaveMatch(){
-        return profileMatches.newProfileMatch(getDemandProfile().getDemandProfileOwner().getDemandOwner(), getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner(), getDemandProfile(), getMatchingSupplyProfile());
+        return profileMatches.newProfileMatch((Person) getDemandProfile().getDemandProfileOwner().getDemandOwner(), (Person) getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner(), getDemandProfile(), getMatchingSupplyProfile());
     }
 
     public String toString() {

@@ -123,14 +123,8 @@ public class DemandResource extends ResourceAbstract {
                 //ProfileMatches
                 JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
                 for (ProfileMatch match : profile.getCollectPersistedProfileMatches()) {
-                    JsonRepresentation profileMatchMap = JsonRepresentation.newMap();
-                    profileMatchMap.mapPut("id", Utils.toApiID(match.getOID()));
-                    profileMatchMap.mapPut("URI", Utils.toObjectURI(match.getOID()));
-                    profileMatchMap.mapPut("title", match.title());
-                    profileMatchMap.mapPut("demandProfileId", Utils.toApiID(match.getDemandProfile().getOID()));
-                    profileMatchMap.mapPut("demandProfileURI", Utils.toObjectURI(match.getDemandProfile().getOID()));
-                    profileMatchMap.mapPut("candidateStatus", match.getCandidateStatus().toString());
-                    profileMatchesArray.arrayAdd(profileMatchMap);
+                    ProfileMatchRepresentation rep = new ProfileMatchRepresentation();
+                    profileMatchesArray.arrayAdd(rep.ObjectRepresentation(match));
                 }
                 profileAndElementMap.mapPut("profileMatches", profileMatchesArray);
                 profileAndElementMap.mapPut("profileElements", profileElements);

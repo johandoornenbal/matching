@@ -244,6 +244,7 @@ public class PersonResource extends ResourceAbstract {
             personalContactMap.mapPut("contactURI", Utils.toObjectURI(contact.getContactPerson().getOID()));
             personalContactMap.mapPut("contactName", contact.getContactPerson().title());
             personalContactMap.mapPut("contactRoles", contact.getContactPerson().getRoles());
+            personalContactMap.mapPut("contactPictureLink", contact.getContactPerson().getPictureLink());
             personalContactMap.mapPut("trustlevel",contact.getTrustLevel().toString());
             personalContactsArray.arrayAdd(personalContactMap);
 
@@ -266,21 +267,16 @@ public class PersonResource extends ResourceAbstract {
             assessmentMap.mapPut("assessmentOwnerURI", Utils.toObjectURI(assessmentOwner.getOID()));
             assessmentMap.mapPut("assessmentOwnerFullName", assessmentOwner.title());
             assessmentMap.mapPut("assessmentOwnerRoles", assessmentOwner.getRoles());
+            assessmentMap.mapPut("assessmentOwnerPictureLink", assessmentOwner.getPictureLink());
             assessmentsArray.arrayAdd(assessmentMap);
         }
         activeperson.mapPut("assessments", assessmentsArray);
 
-        //profileMatches
+        //ProfileMatches
         JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
         for (ProfileMatch match : profileMatches.collectProfileMatches(activePerson)) {
-            JsonRepresentation profileMatch = JsonRepresentation.newMap();
-            profileMatch.mapPut("id", Utils.toApiID(match.getOID()));
-            profileMatch.mapPut("URI", Utils.toObjectURI(match.getOID()));
-            profileMatch.mapPut("title", match.title());
-            profileMatch.mapPut("demandProfileId", Utils.toApiID(match.getDemandProfile().getOID()));
-            profileMatch.mapPut("demandProfileURI", Utils.toObjectURI(match.getDemandProfile().getOID()));
-            profileMatch.mapPut("candidateStatus", match.getCandidateStatus().toString());
-            profileMatchesArray.arrayAdd(profileMatch);
+            ProfileMatchRepresentation rep = new ProfileMatchRepresentation();
+            profileMatchesArray.arrayAdd(rep.ObjectRepresentation(match));
         }
         activeperson.mapPut("profileMatches", profileMatchesArray);
 

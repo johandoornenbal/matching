@@ -95,6 +95,7 @@ public class FindResource extends ResourceAbstract {
             personMap.mapPut("id", Utils.toApiID(person.getOID()));
             personMap.mapPut("URI", Utils.toObjectURI(person.getOID()));
             personMap.mapPut("fullName", person.title());
+            personMap.mapPut("pictureLink", person.getPictureLink());
             personArray.arrayAdd(personMap);
         }
 

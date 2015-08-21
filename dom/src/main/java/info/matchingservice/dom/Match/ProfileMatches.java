@@ -38,6 +38,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
 import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.TrustLevel;
@@ -70,9 +71,9 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
     @ActionLayout(hidden=Where.EVERYWHERE)
     public ProfileMatch newProfileMatch(
             @ParameterLayout(named="ownerActor")
-            Actor ownerActor,
+            Person ownerActor,
             @ParameterLayout(named="supplyCandidate")
-            Actor vacancyCandidate,
+            Person vacancyCandidate,
             @ParameterLayout(named="demandProfile")
             Profile vacancyProfile,
             @ParameterLayout(named="matchingSupplyProfile")
@@ -101,8 +102,8 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
     
     @Programmatic
     public ProfileMatch newProfileMatch(
-            Actor ownerActor,
-            Actor supplyCandidate,
+            Person ownerActor,
+            Person supplyCandidate,
             Profile demandProfile,
             Profile matchingSupplyProfile,
             String owner,

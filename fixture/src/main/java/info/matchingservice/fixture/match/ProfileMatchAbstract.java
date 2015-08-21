@@ -19,7 +19,7 @@ package info.matchingservice.fixture.match;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
-import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Match.CandidateStatus;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Match.ProfileMatches;
@@ -31,8 +31,8 @@ public abstract class ProfileMatchAbstract extends FixtureScript {
     protected abstract void execute(ExecutionContext executionContext);
     
     protected ProfileMatch createProfileMatch(
-            Actor profileMatchOwner,
-            Actor supplyCandidate,
+            Person profileMatchOwner,
+            Person supplyCandidate,
             Profile demandProfile,
             Profile matchingSupplyProfile,
             String ownedBy,
