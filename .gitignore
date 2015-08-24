@@ -26,3 +26,4 @@ isis.properties
 *.log
 
 isis.properties
+persistor.properties
