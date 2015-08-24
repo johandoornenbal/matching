@@ -21,6 +21,7 @@ import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.Match.ProfileComparison;
 import info.matchingservice.dom.Match.ProfileComparisons;
 import info.matchingservice.dom.Match.ProfileMatch;
@@ -130,6 +131,14 @@ public class ProfileRepresentation {
             profileElementChoicesArray.arrayAdd(profileElementChoiceMap);
         }
         profileAndElementMap.mapPut("profileElementChoices", profileElementChoicesArray);
+
+        //Assessments
+        JsonRepresentation assessmentsArray = JsonRepresentation.newArray();
+        for (Assessment assessment : profile.getCollectAssessments()){
+            AssessmentRepresentation rep = new AssessmentRepresentation();
+            assessmentsArray.arrayAdd(rep.ObjectRepresentation(assessment));
+        }
+        profileAndElementMap.mapPut("assessments", assessmentsArray);
 
         return profileAndElementMap;
     }

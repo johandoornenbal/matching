@@ -36,8 +36,6 @@ import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
 import info.matchingservice.dom.DemandSupply.Supplies;
 import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
 
 /**
  * Created by jodo on 15/05/15.
@@ -79,45 +77,8 @@ public class SupplyResource extends ResourceAbstract {
     private JsonRepresentation supplyRepresentation(Supply activeSupply){
 
         JsonRepresentation all = JsonRepresentation.newMap();
-
-        // activeSupply
-        JsonRepresentation activesupply = JsonRepresentation.newMap();
-        activesupply.mapPut("id", Utils.toApiID(activeSupply.getOID()));
-        activesupply.mapPut("URI", Utils.toObjectURI(activeSupply.getOID()));
-        activesupply.mapPut("description", activeSupply.getSupplyDescription());
-        activesupply.mapPut("startDate", activeSupply.getDemandOrSupplyProfileStartDate().toString());
-        activesupply.mapPut("endDate", activeSupply.getDemandOrSupplyProfileEndDate().toString());
-
-        // profiles
-        JsonRepresentation demandsAndProfilesAndElements = JsonRepresentation.newArray();
-
-        JsonRepresentation profiles = JsonRepresentation.newArray();
-
-        for (Profile profile : activeSupply.getCollectSupplyProfiles()) {
-
-            JsonRepresentation profileElements = JsonRepresentation.newArray();
-
-
-            for (ProfileElement element : profile.getCollectProfileElements()) {
-                JsonRepresentation profileElementMap = JsonRepresentation.newMap();
-                profileElementMap.mapPut("id", Utils.toApiID(element.getOID()));
-                profileElementMap.mapPut("URI", Utils.toObjectURI(element.getOID()));
-                profileElementMap.mapPut("description", element.getDescription());
-                profileElements.arrayAdd(profileElementMap);
-            }
-
-            JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
-            profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
-            profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
-            profileAndElementMap.mapPut("description", profile.getProfileName());
-            profileAndElementMap.mapPut("profileElements", profileElements);
-            profiles.arrayAdd(profileAndElementMap);
-
-        }
-
-        activesupply.mapPut("profiles",profiles);
-
-        all.mapPut("supply",activesupply);
+        SupplyRepresentation rep = new SupplyRepresentation();
+        all.mapPut("supply",rep.ObjectRepresentation(activeSupply));
 
         return all;
 

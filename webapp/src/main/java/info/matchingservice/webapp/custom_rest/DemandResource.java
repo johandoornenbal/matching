@@ -36,9 +36,6 @@ import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Demands;
-import info.matchingservice.dom.Match.ProfileMatch;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
 
 /**
  * Created by jodo on 15/05/15.
@@ -80,65 +77,8 @@ public class DemandResource extends ResourceAbstract {
     private JsonRepresentation demandRepresentation(Demand activeDemand){
 
         JsonRepresentation all = JsonRepresentation.newMap();
-
-        // activedemand
-        JsonRepresentation activedemand = JsonRepresentation.newMap();
-        activedemand.mapPut("id", Utils.toApiID(activeDemand.getOID()));
-        activedemand.mapPut("URI", Utils.toObjectURI(activeDemand.getOID()));
-        activedemand.mapPut("description", activeDemand.getDemandDescription());
-        activedemand.mapPut("summary", activeDemand.getDemandSummary());
-        activedemand.mapPut("story", activeDemand.getDemandStory());
-        if (activeDemand.getDemandOrSupplyProfileStartDate() == null){
-            activedemand.mapPut("startDate", "");
-        } else {
-            activedemand.mapPut("startDate", activeDemand.getDemandOrSupplyProfileStartDate().toString());
-        }
-        if (activeDemand.getDemandOrSupplyProfileEndDate() == null){
-            activedemand.mapPut("endDate", "");
-        } else {
-            activedemand.mapPut("endDate", activeDemand.getDemandOrSupplyProfileEndDate().toString());
-        }
-
-        // profiles
-        JsonRepresentation demandsAndProfilesAndElements = JsonRepresentation.newArray();
-
-            JsonRepresentation profiles = JsonRepresentation.newArray();
-
-            for (Profile profile : activeDemand.getCollectDemandProfiles()) {
-
-                JsonRepresentation profileAndElementMap = JsonRepresentation.newMap();
-
-                profileAndElementMap.mapPut("id", Utils.toApiID(profile.getOID()));
-                profileAndElementMap.mapPut("URI", Utils.toObjectURI(profile.getOID()));
-                profileAndElementMap.mapPut("description", profile.getProfileName());
-
-
-                //Profile Elements
-                JsonRepresentation profileElements = JsonRepresentation.newArray();
-                for (ProfileElement element : profile.getCollectProfileElements()) {
-                    ProfileElementRepresentation rep = new ProfileElementRepresentation();
-                    profileElements.arrayAdd(rep.ObjectRepresentation(element));
-                }
-
-                //ProfileMatches
-                JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
-                for (ProfileMatch match : profile.getCollectPersistedProfileMatches()) {
-                    ProfileMatchRepresentation rep = new ProfileMatchRepresentation();
-                    profileMatchesArray.arrayAdd(rep.ObjectRepresentation(match));
-                }
-                profileAndElementMap.mapPut("profileMatches", profileMatchesArray);
-                profileAndElementMap.mapPut("profileElements", profileElements);
-
-
-
-                profiles.arrayAdd(profileAndElementMap);
-
-            }
-
-        activedemand.mapPut("profiles",profiles);
-
-        all.mapPut("demand", activedemand);
-
+        DemandRepresentation rep = new DemandRepresentation();
+        all.mapPut("demand", rep.ObjectRepresentation(activeDemand));
         return all;
 
     }
