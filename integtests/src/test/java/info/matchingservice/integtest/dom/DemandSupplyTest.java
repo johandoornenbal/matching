@@ -1,7 +1,15 @@
 package info.matchingservice.integtest.dom;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import java.util.UUID;
+
+import javax.inject.Inject;
+
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -14,15 +22,8 @@ import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.integtest.MatchingIntegrationTest;
-
-import java.util.UUID;
-
-import javax.inject.Inject;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class DemandSupplyTest extends MatchingIntegrationTest {
     
@@ -261,7 +262,9 @@ public static class UpdateDemand extends DemandSupplyTest{
         private static final LocalDate END_DATE = new LocalDate(2015, 01, 31);
         private static final Integer WEIGHT = 10;
         private static final DemandSupplyType DEMAND_SUPPLY_TYPE = DemandSupplyType.GENERIC_DEMANDSUPPLY;
+        private static final String IMAGE_URL = "http://some.img.url";
         private static final String OWNED_BY = "frans";
+
         
         @Before
         public void setUp() throws Exception {
@@ -270,7 +273,7 @@ public static class UpdateDemand extends DemandSupplyTest{
             assertThat(d1.getDemandDescription(), is(DEMAND_DESCRIPTION));
             assertThat(d1.getUniqueItemId(), is(unid));
             assertThat(d1.getOwnedBy(), is(OWNED_BY));
-            d1.updateDemand(DEMAND_DESCRIPTION + "test123", DEMAND_SUMMARY + "test456", DEMAND_STORY + "test789", null, START_DATE, new LocalDate(2015,12,31));
+            d1.updateDemand(DEMAND_DESCRIPTION + "test123", DEMAND_SUMMARY + "test456", DEMAND_STORY + "test789", null, START_DATE, new LocalDate(2015,12,31), IMAGE_URL);
             //unid should not change
             assertThat(d1.getUniqueItemId(), is(unid));
             //owner should not change
@@ -280,6 +283,7 @@ public static class UpdateDemand extends DemandSupplyTest{
             assertThat(d1.getDemandStory(), is("Dit is het hele verhaaltest789"));
             assertThat(d1.getDemandOrSupplyProfileStartDate(), is(START_DATE));
             assertThat(d1.getDemandOrSupplyProfileEndDate(), is(new LocalDate(2015,12,31)));
+            assertThat(d1.getImageUrl(), is(IMAGE_URL));
         }
         
         @Test

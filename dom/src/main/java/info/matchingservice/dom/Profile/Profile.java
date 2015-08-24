@@ -58,6 +58,7 @@ import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
+import info.matchingservice.dom.HasImageUrl;
 import info.matchingservice.dom.Match.CandidateStatus;
 import info.matchingservice.dom.Match.PersistedProfileElementComparison;
 import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
@@ -133,7 +134,7 @@ import info.matchingservice.dom.TrustLevel;
                     + "WHERE demandProfileOwner == :demandProfileOwner")                      
 })
 @DomainObject(editing = Editing.DISABLED)
-public class Profile extends MatchingSecureMutableObject<Profile> {
+public class Profile extends MatchingSecureMutableObject<Profile> implements HasImageUrl {
 
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
@@ -292,6 +293,19 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
         }
     }
     //-- actorOwner --//
+
+    //region > imageUrl (property)
+    private String imageUrl;
+
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(final String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    //endregion
     
 	//-- API: PROPERTIES --//
     
@@ -1440,14 +1454,20 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
             @ParameterLayout(named="weight")
             Integer newInteger,
             @ParameterLayout(named="profileStartDate")
+            @Parameter(optionality=Optionality.OPTIONAL)
             LocalDate profileStartDate,
             @ParameterLayout(named="profileEndDate")
-            LocalDate profileEndDate
+            @Parameter(optionality=Optionality.OPTIONAL)
+            LocalDate profileEndDate,
+            @ParameterLayout(named="imageUrl")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final String imageUrl
             ){
         this.setProfileName(newString);
         this.setWeight(newInteger);
         this.setProfileStartDate(profileStartDate);
         this.setProfileEndDate(profileEndDate);
+        this.setImageUrl(imageUrl);
         return this;
     }
     
@@ -1465,6 +1485,10 @@ public class Profile extends MatchingSecureMutableObject<Profile> {
     
     public LocalDate default3UpdateProfile() {
         return getProfileEndDate();
+    }
+
+    public String default4UpdateProfile() {
+        return getImageUrl();
     }
     //-- updateProfile --//
     

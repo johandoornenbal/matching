@@ -48,6 +48,11 @@ public class SupplyRepresentation {
         } else {
             supplymap.mapPut("endDate", supply.getDemandOrSupplyProfileEndDate().toString());
         }
+        if (supply.getImageUrl() == null) {
+            supplymap.mapPut("imageUrl", "");
+        } else {
+            supplymap.mapPut("imageUrl", supply.getImageUrl());
+        }
 
         // profiles
         JsonRepresentation profiles = JsonRepresentation.newArray();

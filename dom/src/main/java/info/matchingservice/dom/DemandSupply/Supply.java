@@ -53,6 +53,7 @@ import org.apache.isis.applib.query.QueryDefault;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Assessment.SupplyAssessment;
+import info.matchingservice.dom.HasImageUrl;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
@@ -91,7 +92,7 @@ import info.matchingservice.dom.TrustLevel;
                     + "WHERE uniqueItemId.matches(:uniqueItemId)")  
 })
 @DomainObject(editing=Editing.DISABLED)
-public class Supply extends MatchingSecureMutableObject<Supply> {
+public class Supply extends MatchingSecureMutableObject<Supply> implements HasImageUrl {
 
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
@@ -167,6 +168,19 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
 		this.demandOrSupplyProfileEndDate = demandOrSupplyProfileEndDate;
 	}	
 	//-- demandOrSupplyProfileStartDate --//
+
+    //region > imageUrl (property)
+    private String imageUrl;
+
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(final String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    //endregion
     
 	//-- API: PROPERTIES --//
 	//** API: COLLECTIONS **//
@@ -218,11 +232,15 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
             final LocalDate demandOrSupplyProfileStartDate,
             @ParameterLayout(named="demandOrSupplyProfileEndDate")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final LocalDate demandOrSupplyProfileEndDate
+            final LocalDate demandOrSupplyProfileEndDate,
+            @ParameterLayout(named="imageUrl")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final String imageUrl
             ){
         this.setSupplyDescription(supplyDescription);
         this.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
         this.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
+        this.setImageUrl(imageUrl);
         return this;
     }
     
@@ -237,11 +255,16 @@ public class Supply extends MatchingSecureMutableObject<Supply> {
     public LocalDate default2UpdateSupply(){
         return this.getDemandOrSupplyProfileEndDate();
     }
+
+    public String default3UpdateSupply(){
+        return this.getImageUrl();
+    }
     
     public String validateUpdateSupply(
             final String supplyDescription,
             final LocalDate demandOrSupplyProfileStartDate,
-            final LocalDate demandOrSupplyProfileEndDate
+            final LocalDate demandOrSupplyProfileEndDate,
+            final String imageUrl
             )
      {
     	final LocalDate today = LocalDate.now();

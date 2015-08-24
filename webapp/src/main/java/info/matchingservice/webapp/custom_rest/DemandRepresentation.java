@@ -50,6 +50,12 @@ public class DemandRepresentation {
         } else {
             demandmap.mapPut("endDate", demand.getDemandOrSupplyProfileEndDate().toString());
         }
+        if (demand.getImageUrl() == null) {
+            demandmap.mapPut("imageUrl", "");
+        } else {
+            demandmap.mapPut("imageUrl", demand.getImageUrl());
+        }
+
 
         // profiles
         JsonRepresentation profiles = JsonRepresentation.newArray();

@@ -62,6 +62,11 @@ public class ProfileRepresentation {
             profileAndElementMap.mapPut("chosenProfileMatchId", Utils.toApiID(profile.getChosenProfileMatch().getOID()));
             profileAndElementMap.mapPut("chosenProfileMatchURI", Utils.toObjectURI(profile.getChosenProfileMatch().getOID()));
         }
+        if (profile.getImageUrl() == null) {
+            profileAndElementMap.mapPut("imageUrl", "");
+        } else {
+            profileAndElementMap.mapPut("imageUrl", profile.getImageUrl());
+        }
 
         //Profile Elements
         JsonRepresentation profileElements = JsonRepresentation.newArray();

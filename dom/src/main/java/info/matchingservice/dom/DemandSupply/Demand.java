@@ -52,6 +52,7 @@ import org.apache.isis.applib.value.Blob;
 
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.DemandAssessment;
+import info.matchingservice.dom.HasImageUrl;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
@@ -92,7 +93,7 @@ import info.matchingservice.dom.TrustLevel;
                     + "WHERE uniqueItemId.matches(:uniqueItemId)")                    
 })
 @DomainObject(editing=Editing.DISABLED)
-public class Demand extends MatchingSecureMutableObject<Demand> {
+public class Demand extends MatchingSecureMutableObject<Demand> implements HasImageUrl {
 
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
@@ -218,6 +219,19 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
 		this.demandOrSupplyProfileEndDate = demandOrSupplyProfileEndDate;
 	}	
 	//-- demandOrSupplyProfileStartDate --//
+
+    //region > imageUrl (property)
+    private String imageUrl;
+
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(final String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    //endregion
     
 	//-- API: PROPERTIES --//
 	
@@ -280,7 +294,10 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             final LocalDate demandOrSupplyProfileStartDate,
             @ParameterLayout(named="demandOrSupplyProfileEndDate")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final LocalDate demandOrSupplyProfileEndDate
+            final LocalDate demandOrSupplyProfileEndDate,
+            @ParameterLayout(named="imageUrl")
+            @Parameter(optionality=Optionality.OPTIONAL)
+            final String imageUrl
             ){
         this.setDemandDescription(demandDescription);
         this.setDemandSummary(demandSummary);
@@ -288,6 +305,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
         this.setDemandAttachment(demandAttachment);
         this.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
         this.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
+        this.setImageUrl(imageUrl);
         return this;
     }
     
@@ -314,6 +332,10 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
     public LocalDate default5UpdateDemand(){
         return this.getDemandOrSupplyProfileEndDate();
     }
+
+    public String default6UpdateDemand(){
+        return this.getImageUrl();
+    }
     
     public String validateUpdateDemand(
     		final String demandDescription,
@@ -321,7 +343,8 @@ public class Demand extends MatchingSecureMutableObject<Demand> {
             final String demandStory,
             final Blob demandAttachment,
             final LocalDate demandOrSupplyProfileStartDate,
-            final LocalDate demandOrSupplyProfileEndDate
+            final LocalDate demandOrSupplyProfileEndDate,
+            final String imageUrl
             )
      {
     	final LocalDate today = LocalDate.now();
