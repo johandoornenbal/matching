@@ -399,6 +399,24 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>quartz</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.quartz-scheduler</groupId>
+                    <artifactId>quartz</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.quartz-scheduler</groupId>
+                    <artifactId>quartz-jobs</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+
     </profiles>
 
 

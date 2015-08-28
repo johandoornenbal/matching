@@ -108,6 +108,12 @@
             <version>1.8.1</version>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>org.isisaddons.module.command</groupId>-->
+            <!--<artifactId>isis-module-command-dom</artifactId>-->
+            <!--<version>1.8.1</version>-->
+        <!--</dependency>-->
+
         <!--
         uncomment to use the AppSettings or UserSettings services
         (also uncomment corresponding dependency in webapp module)

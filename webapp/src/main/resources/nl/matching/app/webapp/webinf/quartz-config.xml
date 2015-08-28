@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2015 Yodo Int. Projects and Consultancy
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<job-scheduling-data xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData
+http://www.quartz-scheduler.org/xml/job_scheduling_data_1_8.xsd" version="1.8">
+
+    <schedule>
+        <job>
+            <name>ProfileComparisonJob</name>
+            <group>MatchingApp</group>
+            <description>Updates all profilecomparisons</description>
+            <job-class>nl.matching.app.webapp.scheduler.ProfileComparisonJob</job-class>
+            <job-data-map>
+                <entry>
+                    <key>nl.matching.app.webapp.scheduler.user</key>
+                    <value>scheduler_user</value>
+                </entry>
+                <entry>
+                    <key>nl.matching.app.webapp.scheduler.roles</key>
+                    <value>admin_role</value>
+                </entry>
+            </job-data-map>
+        </job>
+
+        <!-- 
+        cron format: http://quartz-scheduler.org/documentation/quartz-2.x/tutorials/tutorial-lesson-06
+        -->
+
+        <trigger>
+            <cron>
+                <name>ProfileComparisonJobEvery30Minutes</name>
+                <job-name>ProfileComparisonJob</job-name>
+                <job-group>MatchingApp</job-group>
+                <cron-expression>0 0/30 * * * ?</cron-expression>
+            </cron>
+        </trigger>
+
+    </schedule>
+</job-scheduling-data>
