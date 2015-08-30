@@ -48,13 +48,17 @@ import info.matchingservice.dom.Profile.Profile;
                 value = "SELECT "
                         + "FROM info.matchingservice.dom.Match.ProfileComparison "
                         + "WHERE matchingSupplyProfile == :supplyProfile"),
-
+        @javax.jdo.annotations.Query(
+                name = "findProfileComparisonByDemandAndSupplyProfile", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM info.matchingservice.dom.Match.ProfileComparison "
+                        + "WHERE demandProfile == :demandProfile && matchingSupplyProfile == :supplyProfile")
 })
 @DomainObject()
 public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     
     public ProfileComparison() {
-        super("demandProfile, matchingSupplyProfile, calculatedMatchingValue");
+        super("demandProfile, matchingSupplyProfile");
     }
     
     private Profile demandProfile;
@@ -113,14 +117,6 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         container.removeIfNotAlready(this);
         container.informUser("profileComparison deleted");
     }
-    
-//    public int compareTo(ProfileComparison that) {
-//        return ComparisonChain.start()
-//            .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
-//            .compare(this.matchingSupplyProfile, that.matchingSupplyProfile)
-//            .compare(this.demandProfile, that.demandProfile)
-//            .result();
-//    }
 
     // Region>injections ////////////////////////////    
     @Inject

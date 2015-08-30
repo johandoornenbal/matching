@@ -19,17 +19,17 @@
 
 package info.matchingservice.dom.Match;
 
-import info.matchingservice.dom.MatchingDomainObject;
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
-
 import com.google.common.collect.ComparisonChain;
 
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.ViewModel;
 import org.apache.isis.applib.annotation.Where;
+
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.MatchingDomainObject;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElement;
 
 @ViewModel
 public class ProfileElementComparison extends MatchingDomainObject<ProfileElementComparison>{
@@ -142,8 +142,9 @@ public class ProfileElementComparison extends MatchingDomainObject<ProfileElemen
     public int compareTo(ProfileElementComparison that) {
         return ComparisonChain.start()
             .compare(this.calculatedMatchingValue, that.calculatedMatchingValue)
-            .compare(this.matchingProfileElementOwner, that.matchingProfileElementOwner)
-            .result();
+                .compare(this.demandProfileElement, that.demandProfileElement)
+                .compare(this.demandProfileElementOwner, that.demandProfileElementOwner)
+                .result();
     }
 
 }

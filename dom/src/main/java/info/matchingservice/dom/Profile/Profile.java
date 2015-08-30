@@ -418,11 +418,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
     @Action(semantics=SemanticsOf.SAFE)
     public List<ProfileComparison> updateSupplyProfileComparisons(){
-    	for(ProfileComparison profileComparison : profileComparisons.collectProfileComparisons(this)) {
-            profileComparison.delete();
-        }
 
         return profileMatchingService.collectProfileComparisons(this);
+
     }
     
     public boolean hideUpdateSupplyProfileComparisons(){
@@ -435,10 +433,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
 
     @Action(semantics=SemanticsOf.SAFE)
     public List<ProfileComparison> updateDemandProfileComparisons(){
-        for(ProfileComparison profileComparison : profileComparisons.collectDemandProfileComparisons(this)) {
-            profileComparison.delete();
-        }
+
         return profileMatchingService.collectDemandProfileComparisons(this);
+
     }
 
     public boolean hideUpdateDemandProfileComparisons(){

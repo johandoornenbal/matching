@@ -333,10 +333,10 @@ public class ProfileElement extends MatchingSecureMutableObject<ProfileElement> 
 	    			{
 	    				PersistedProfileElementComparison elementComparison = newTransientInstance(PersistedProfileElementComparison.class);
 	    					    				
-	    				if (!profileMatchingService.getProfileElementComparison(this.getProfileElementOwner(), this, supplyElement.getProfileElementOwner(), supplyElement).equals(null))
+	    				if (!profileMatchingService.getProfileElementComparison(this, supplyElement).equals(null))
 	    				{
 	    					
-	    					ProfileElementComparison tempComparison = profileMatchingService.getProfileElementComparison(this.getProfileElementOwner(), this, supplyElement.getProfileElementOwner(), supplyElement);
+	    					ProfileElementComparison tempComparison = profileMatchingService.getProfileElementComparison(this, supplyElement);
 	    					elementComparison.setCalculatedMatchingValue(tempComparison.getCalculatedMatchingValue());
 	    					elementComparison.setDemandProfileElement(tempComparison.getDemandProfileElement());
 	    					elementComparison.setDemandProfileElementOwner(tempComparison.getDemandProfileElementOwner());

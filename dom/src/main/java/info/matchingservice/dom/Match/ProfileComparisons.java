@@ -45,31 +45,20 @@ public class ProfileComparisons extends MatchingDomainService<ProfileComparison>
         return container.allInstances(ProfileComparison.class);
     }
 
-//    // Contributed collection
-//    @Action(semantics = SemanticsOf.SAFE)
-//    @CollectionLayout(render = RenderType.EAGERLY)
     @Programmatic
     public List<ProfileComparison> collectProfileComparisons(final Profile demandProfile) {
         return allMatches("findProfileComparisonByDemandProfile", "demandProfile", demandProfile);
     }
 
-//    public boolean hideCollectProfileComparisons(final Profile demandProfile) {
-//
-//        return demandProfile.getDemandOrSupply()== DemandOrSupply.SUPPLY;
-//    }
-
-//    // Contributed collection
-//    @Action(semantics = SemanticsOf.SAFE)
-//    @CollectionLayout(render = RenderType.EAGERLY)
     @Programmatic
     public List<ProfileComparison> collectDemandProfileComparisons(final Profile supplyProfile) {
         return allMatches("findProfileComparisonBySupplyProfile", "supplyProfile", supplyProfile);
     }
 
-//    public boolean hideCollectDemandProfileComparisons(final Profile supplyProfile) {
-//
-//        return supplyProfile.getDemandOrSupply()== DemandOrSupply.DEMAND;
-//    }
+    @Programmatic
+    public ProfileComparison findProfileComparisonByDemandAndSupplyProfile(final Profile demandProfile, final Profile supplyProfile) {
+        return firstMatch("findProfileComparisonByDemandAndSupplyProfile", "demandProfile", demandProfile, "supplyProfile", supplyProfile);
+    }
 
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     @Programmatic

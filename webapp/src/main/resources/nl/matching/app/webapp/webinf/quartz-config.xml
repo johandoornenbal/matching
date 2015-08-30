@@ -43,12 +43,46 @@ http://www.quartz-scheduler.org/xml/job_scheduling_data_1_8.xsd" version="1.8">
 
         <trigger>
             <cron>
-                <name>ProfileComparisonJobEvery30Minutes</name>
+                <name>ProfileComparisonJobEvery1Minutes</name>
                 <job-name>ProfileComparisonJob</job-name>
                 <job-group>MatchingApp</job-group>
-                <cron-expression>0 0/30 * * * ?</cron-expression>
+                <cron-expression>0 0/1 * * * ?</cron-expression>
             </cron>
         </trigger>
 
     </schedule>
+
+    <schedule>
+        <job>
+            <name>ProfileComparisonsDeletionJob</name>
+            <group>MatchingApp</group>
+            <description>Deletes all profilecomparisons that have no existing demand or supply profile or the matching value = 0</description>
+            <job-class>nl.matching.app.webapp.scheduler.ProfileComparisonsDeletionJob</job-class>
+            <job-data-map>
+                <entry>
+                    <key>nl.matching.app.webapp.scheduler.user</key>
+                    <value>scheduler_user</value>
+                </entry>
+                <entry>
+                    <key>nl.matching.app.webapp.scheduler.roles</key>
+                    <value>admin_role</value>
+                </entry>
+            </job-data-map>
+        </job>
+
+        <!--
+        cron format: http://quartz-scheduler.org/documentation/quartz-2.x/tutorials/tutorial-lesson-06
+        -->
+
+        <trigger>
+            <cron>
+                <name>ProfileComparisonJobEvery1Hour</name>
+                <job-name>ProfileComparisonsDeletionJob</job-name>
+                <job-group>MatchingApp</job-group>
+                <cron-expression>0 0 0/1 * * ?</cron-expression>
+            </cron>
+        </trigger>
+
+    </schedule>
+    
 </job-scheduling-data>
