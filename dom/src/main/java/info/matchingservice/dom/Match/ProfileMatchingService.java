@@ -42,7 +42,7 @@ import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 
 /**
  * 
- * TODO: how to test this object?
+ * TODO: how to JUNITtest this object?
  * 
  * Algorithm:
  * 
@@ -214,10 +214,6 @@ public class ProfileMatchingService extends AbstractService {
 				//there are elements on the supply profile
 				supplyProfile.getCollectProfileElements().size() > 0
 
-				&&
-
-				checkRequiredProfileElements(demandProfile, supplyProfile)
-				
 				)
 		{
 			
@@ -317,10 +313,10 @@ public class ProfileMatchingService extends AbstractService {
 			calculatedMatchingValue = calculatedMatchingValue / (demandProfile.getCollectProfileElements().size() * averageWeight);
 										
 			
-			// create or update the profileComparison
+			// create or update the profileComparison if value greater than threshold (0) and checkRequiredProfileElements == true
 			
 			if (
-					calculatedMatchingValue >=	1
+					calculatedMatchingValue >=	1 && checkRequiredProfileElements(demandProfile, supplyProfile)
 				) 
 			{
 				if (profileComparisons.findProfileComparisonByDemandAndSupplyProfile(demandProfile, supplyProfile) != null) {
@@ -329,9 +325,9 @@ public class ProfileMatchingService extends AbstractService {
 					profileComparisons.createProfileComparison(demandProfile, supplyProfile, calculatedMatchingValue.intValue());
 				}
 			}
-			// or delete profileComparison
+			// or delete profileComparison if value smaller then threshold or checkRequiredProfileElements == false
 			if (
-					calculatedMatchingValue <	1
+					calculatedMatchingValue <	1 || !checkRequiredProfileElements(demandProfile, supplyProfile)
 					)
 			{
 				if (profileComparisons.findProfileComparisonByDemandAndSupplyProfile(demandProfile, supplyProfile) != null) {
@@ -339,7 +335,6 @@ public class ProfileMatchingService extends AbstractService {
 				}
 			}
 
-			
 		}
 	}
 

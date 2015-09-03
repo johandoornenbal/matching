@@ -21,6 +21,10 @@ public class TeardownFixture extends FixtureScript {
 
 //        isisJdoSupport.executeUpdate("delete from \"DropDownForProfileElement\"");
 
+        isisJdoSupport.executeUpdate("delete from \"BasicCategoryRelationshipTuple\"");
+        isisJdoSupport.executeUpdate("delete from \"BasicCategory\"");
+        isisJdoSupport.executeUpdate("delete from \"BasicUser\"");
+
     	isisJdoSupport.executeUpdate("delete from \"TagHolder\"");
     	isisJdoSupport.executeUpdate("delete from \"Tag\"");
     	isisJdoSupport.executeUpdate("delete from \"TagCategory\"");

@@ -8,6 +8,9 @@ import info.matchingservice.dom.CommunicationChannels.Address;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.Email;
 import info.matchingservice.dom.CommunicationChannels.Phone;
+import info.matchingservice.dom.Howdoido.BasicCategory;
+import info.matchingservice.dom.Howdoido.BasicCategoryRelationshipTuple;
+import info.matchingservice.dom.Howdoido.BasicUser;
 import info.matchingservice.dom.Match.ProfileComparison;
 import info.matchingservice.dom.Profile.ProfileElementChoice;
 import info.matchingservice.dom.Profile.ProfileElementDropDown;
@@ -44,5 +47,11 @@ public class DummyServiceForBootstrapping {
     public void ensureKnownEagerly(ProfileElementChoice x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(ProfileElementTag x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(BasicCategory x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(BasicUser x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(BasicCategoryRelationshipTuple x) { }
 
 }
