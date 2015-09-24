@@ -1,0 +1,177 @@
+{
+    "columns": [
+        {
+            "span": 4,
+            "memberGroups": {
+                "General": {
+                    "members": {
+                        "email": {
+                            "disabled": {},
+                            "typicalLength": {
+                                "value": 25
+                            },
+                            "actions": {
+                                "updateEmail": {}
+                            }
+                        },
+                        "name": {
+                            "disabled": {},
+                            "typicalLength": {
+                                "value": 25
+                            },
+                            "actions": {
+                                "updateName": {}
+                            }
+                        },
+                        "id": {
+                            "disabled": {},
+                            "hidden": {
+                                "where": "EVERYWHERE"
+                            },
+                            "typicalLength": {
+                                "value": 25
+                            }
+                        },
+                        "ownedBy": {
+                            "disabled": {},
+                            "hidden": {
+                                "where": "ALL_TABLES"
+                            },
+                            "typicalLength": {
+                                "value": 25
+                            }
+                        },
+                        "versionSequence": {
+                            "disabled": {},
+                            "hidden": {
+                                "where": "EVERYWHERE"
+                            },
+                            "typicalLength": {
+                                "value": 18
+                            }
+                        },
+                        "viewerRights": {
+                            "disabled": {},
+                            "hidden": {
+                                "where": "EVERYWHERE"
+                            },
+                            "typicalLength": {
+                                "value": 12
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "span": 0,
+            "memberGroups": {}
+        },
+        {
+            "span": 0,
+            "memberGroups": {}
+        },
+        {
+            "span": 8,
+            "collections": {
+                "givenFeedback": {
+                    "disabled": {},
+                    "paged": {
+                        "value": 12
+                    },
+                    "render": {
+                        "value": "EAGERLY"
+                    }
+                },
+                "myGivenRatings": {
+                    "disabled": {},
+                    "paged": {
+                        "value": 12
+                    },
+                    "render": {
+                        "value": "EAGERLY"
+                    }
+                },
+                "myReceivedRatings": {
+                    "disabled": {},
+                    "paged": {
+                        "value": 12
+                    },
+                    "render": {
+                        "value": "EAGERLY"
+                    }
+                },
+                "myTemplates": {
+                    "disabled": {},
+                    "paged": {
+                        "value": 12
+                    },
+                    "render": {
+                        "value": "EAGERLY"
+                    },
+                    "actions" : {
+                        "createTemplate": {
+                            "named": {
+                                "value": "Create Template"
+                            }
+                        }
+                    }
+                },
+                "receivedFeedback": {
+                    "disabled": {},
+                    "paged": {
+                        "value": 12
+                    },
+                    "render": {
+                        "value": "EAGERLY"
+                    }
+                },
+                "receivedFeedbackRequests": {
+                    "disabled": {},
+                    "paged": {
+                        "value": 12
+                    },
+                    "render": {
+                        "value": "EAGERLY"
+                    }
+                },
+                "sentFeedbackRequests": {
+                    "disabled": {},
+                    "paged": {
+                        "value": 12
+                    },
+                    "render": {
+                        "value": "EAGERLY"
+                    }
+                }
+            }
+        }
+    ],
+    "actions": {
+        "downloadLayout": {
+            "named": {
+                "value": "Download Layout"
+            }
+        },
+        "allowedTrustLevel": {
+            "named": {
+                "value": "Allowed Trust Level"
+            }
+        },
+        "changeOwner": {
+            "named": {
+                "value": "Change Owner"
+            }
+        },
+        "createContact": {
+            "named": {
+                "value": "Create Contact"
+            }
+        },
+        "ensureKnownEagerly": {
+            "named": {
+                "value": "Ensure Known Eagerly"
+            }
+        }
+    }
+}

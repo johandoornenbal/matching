@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
@@ -36,6 +37,12 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 @DomainService(nature = NatureOfService.VIEW_MENU_ONLY)
 @DomainServiceLayout(named = "How Do I Do")
 public class Api {
+
+    @Action(semantics = SemanticsOf.SAFE)
+    public BasicUser activeUser() {
+        return basicUsers.findBasicUserByLogin(container.getUser().getName());
+    }
+
 
     //region > createBasicUser (method)
 
@@ -64,15 +71,15 @@ public class Api {
     }
     //endregion
 
-    //region > createBasicCategory (method)
+    //region > createTopCategory (method)
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    public BasicCategory createBasicCategory(
+    public BasicCategory createTopCategory(
             @ParameterLayout(named = "name")
             final String name) {
         return basicCategories.createBasicCategory(name, null);
     }
 
-    public String validateCreateBasicCategory(final String name) {
+    public String validateCreateTopCategory(final String name) {
 
         //check valid name
         for (BasicCategory bc : basicCategories.allBasicCategories()){
@@ -86,6 +93,32 @@ public class Api {
 
     //endregion
 
+    @Action(semantics = SemanticsOf.SAFE)
+    public List<BasicCategory> findCategory(
+            @ParameterLayout(named = "zoek...")
+            final String search) {
+        return basicCategories.findByNameContains(search);
+    }
+
+    public BasicTemplate createBasicTemplate(
+            @ParameterLayout(named = "name")
+            final String name,
+            @ParameterLayout(named = "category")
+            final BasicCategory category,
+            @ParameterLayout(named = "template owner")
+            final BasicUser templateOwner
+    ) {
+        return basicTemplates.createBasicTemplate(name, category, templateOwner);
+    }
+
+    public List<BasicCategory> autoComplete1CreateBasicTemplate(String search) {
+        return basicCategories.findByNameContains(search);
+    }
+
+    public List<BasicUser> autoComplete2CreateBasicTemplate(String search) {
+        return basicUsers.allBasicUsers();
+    }
+
     public List<BasicCategory> allBasicCategories() {
         return basicCategories.allBasicCategories();
     }
@@ -94,9 +127,17 @@ public class Api {
         return basicUsers.allBasicUsers();
     }
 
+    public List<BasicTemplate> allTemplates() {return basicTemplates.allBasicTemplates();}
+
     @Inject
     BasicUsers basicUsers;
 
     @Inject
     BasicCategories basicCategories;
+
+    @Inject
+    BasicTemplates basicTemplates;
+
+    @Inject
+    DomainObjectContainer container;
 }

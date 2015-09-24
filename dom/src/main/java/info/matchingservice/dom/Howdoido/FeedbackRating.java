@@ -17,16 +17,18 @@
 
 package info.matchingservice.dom.Howdoido;
 
+import info.matchingservice.dom.Howdoido.Interfaces.Rate;
+
 /**
  * Created by jodo on 30/08/15.
  */
-public enum FeedbackRating {
+public enum FeedbackRating implements Rate{
 
-    EXCELLENT(4),
-    GOOD(3),
-    AVERAGE(2),
-    POOR(1),
-    BAD(0);
+    EXCELLENT(10),
+    GOOD(7),
+    AVERAGE(5),
+    POOR(3),
+    BAD(1);
 
     private Integer ratingValue;
 

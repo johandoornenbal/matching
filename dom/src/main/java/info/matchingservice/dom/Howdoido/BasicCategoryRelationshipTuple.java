@@ -17,6 +17,7 @@
 
 package info.matchingservice.dom.Howdoido;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -24,12 +25,13 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.VersionStrategy;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Programmatic;
 
-import info.matchingservice.dom.Howdoido.Interfaces.FeedbackCategory;
-import info.matchingservice.dom.Howdoido.Interfaces.FeedbackCategoryRelationshipTuple;
+import info.matchingservice.dom.Howdoido.Interfaces.Category;
+import info.matchingservice.dom.Howdoido.Interfaces.CategoryRelationshipTuple;
 
 /**
  * Created by jodo on 02/09/15.
@@ -55,11 +57,16 @@ import info.matchingservice.dom.Howdoido.Interfaces.FeedbackCategoryRelationship
                 name = "findByChild", language = "JDOQL",
                 value = "SELECT "
                         + "FROM info.matchingservice.dom.Howdoido.BasicCategoryRelationshipTuple "
-                        + "WHERE child == :child")
+                        + "WHERE child == :child"),
+        @javax.jdo.annotations.Query(
+                name = "findByParentAndChild", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM info.matchingservice.dom.Howdoido.BasicCategoryRelationshipTuple "
+                        + "WHERE parent == :parent && child == :child")
 
 })
 @DomainObject(autoCompleteRepository = BasicCategoryRelationshipTuples.class)
-public class BasicCategoryRelationshipTuple implements FeedbackCategoryRelationshipTuple {
+public class BasicCategoryRelationshipTuple implements CategoryRelationshipTuple {
 
     //region > parent (property)
     private BasicCategory parent;
@@ -89,15 +96,22 @@ public class BasicCategoryRelationshipTuple implements FeedbackCategoryRelations
     }
     //endregion
 
+    public void delete() {
+        container.removeIfNotAlready(this);
+    }
+
     @Override
     @Programmatic
-    public FeedbackCategory getChildCategory() {
+    public Category getChildCategory() {
         return getChild();
     }
 
     @Override
     @Programmatic
-    public FeedbackCategory getParentCategory() {
+    public Category getParentCategory() {
         return getParent();
     }
+
+    @Inject
+    DomainObjectContainer container;
 }

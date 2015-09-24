@@ -56,6 +56,10 @@ public class BasicCategoryRelationshipTuples extends MatchingDomainService<Basic
         return allMatches("findByChild", "child", child);
     }
 
+    @Programmatic
+    public List<BasicCategoryRelationshipTuple> findByParentAndChild(final BasicCategory parent, final BasicCategory child) {
+        return allMatches("findByParentAndChild", "parent", parent, "child", child);
+    }
 
     @Programmatic
     public List<BasicCategoryRelationshipTuple> allTuplesOfFamily(final BasicCategory category) {

@@ -1,0 +1,80 @@
+{
+    "columns": [
+        {
+            "span": 4,
+            "memberGroups": {
+                "General": {
+                    "members": {
+                        "name": {
+                            "disabled": {},
+                            "typicalLength": {
+                                "value": 25
+                            },
+                            "actions": {
+                                "updateName": {
+                                    "named": {
+                                        "value": "Update Name"
+                                    }
+                                }
+                            }
+                        },
+                        "category": {
+                            "disabled": {},
+                            "actions": {
+                                "updateCategory": {
+                                    "named": {
+                                        "value": "Update Category"
+                                    }
+                                }
+                            }
+                        },
+                        "templateOwner": {
+                            "disabled": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "span": 0,
+            "memberGroups": {}
+        },
+        {
+            "span": 0,
+            "memberGroups": {}
+        },
+        {
+            "span": 8,
+            "collections": {
+                "basicQuestions": {
+                    "disabled": {},
+                    "paged": {
+                        "value": 12
+                    },
+                    "render": {
+                        "value": "EAGERLY"
+                    },
+                    "actions": {
+                        "createBasicQuestion": {
+                            "named": {
+                                "value": "Create Basic Question"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "actions": {
+        "downloadLayout": {
+            "named": {
+                "value": "Download Layout"
+            }
+        },
+        "createRequest": {
+            "named": {
+                "value": "Create Feedback Request"
+            }
+        }
+    }
+}

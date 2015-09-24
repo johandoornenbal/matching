@@ -1,0 +1,57 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "General": {
+          "members": {
+            "requestOwner": {
+              "disabled": {}
+            },
+            "requestReceiver": {
+              "disabled": {}
+            },
+            "basicTemplate": {
+              "disabled": {}
+            },
+            "provider": {
+              "disabled": {}
+            },
+            "receiver": {
+              "disabled": {}
+            }
+          }
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {}
+    }
+  ],
+  "actions": {
+    "downloadLayout": {
+      "named": {
+        "value": "Download Layout"
+      }
+    },
+    "createFeedback": {
+      "named": {
+        "value": "Create Feedback"
+      }
+    },
+    "deleteRequest": {
+      "named": {
+        "value": "Delete Request"
+      }
+    }
+  }
+}

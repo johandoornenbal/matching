@@ -39,61 +39,98 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
 
     private static Pattern USER_AND_PASSWORD_REGEX = Pattern.compile("^(.+):(.+)$");
 
-    public CustomAuthenticationSessionStrategyBasicAuth() {}
+    public CustomAuthenticationSessionStrategyBasicAuth() {
+    }
 
     public AuthenticationSession lookupValid(ServletRequest servletRequest, ServletResponse servletResponse) {
-        HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String authStr = httpServletRequest.getHeader("Authorization");
 
         //TODO: does not work because there is no session for this request. Caught in a loop ;-)
-//        final IsisPropertiesLookUpService isisPropertiesLookUpService =
-//                IsisContext.getPersistenceSession().getServicesInjector().lookupService(IsisPropertiesLookUpService.class);
-//        final String signUpUri = isisPropertiesLookUpService.SignUpUri();
+        //        final IsisPropertiesLookUpService isisPropertiesLookUpService =
+        //                IsisContext.getPersistenceSession().getServicesInjector().lookupService(IsisPropertiesLookUpService.class);
+        //        final String signUpUri = isisPropertiesLookUpService.SignUpUri();
 
         //extension by yodo for signup through REST api
         //TODO: parameterize '/simple/restful/register' (This is dependent on deploy!)
+        //TODO: parameterize '/simple/restful/authenticate' (This is dependent on deploy!)
 
         String uri = httpServletRequest.getRequestURI();
 
-        String compareUriTo = "/simple/restful/register";
-//        String compareUriTo = "/restful/register";
 
-//        System.out.println(compareUriTo.length());
+
+        /********** ADAPT THESE ACCORDING TO DEPLOY ****************************************/
+
+                String compareUriTo = "/simple/restful/register";
+                String compareUriTo2 = "/simple/restful/authenticate";
+
+//        String compareUriTo = "/restful/register";
+//        String compareUriTo2 = "/restful/authenticate";
+
+        /********** ADAPT THESE ACCORDING TO DEPLOY ****************************************/
+
+        RequestType requestType = RequestType.OTHER;
+
+        /********** REGISTER USER ****************************************/
         String uriSubstring = uri;
         if (uri.length() > compareUriTo.length()) {
             uriSubstring = uri.substring(0, compareUriTo.length());
         }
-//        System.out.println(uri);
-//        System.out.println("from isis properties: " + signUpUri);
-
         if (uriSubstring.equals(compareUriTo)) {
-
-            System.out.println("passes for uri starts with '" + compareUriTo + "' ");
-            AuthenticationRequestExploration request = new AuthenticationRequestExploration();
-            return IsisContext.getAuthenticationManager().authenticate(request);
-
-
-        } else {
-
-            // original code
-
-            if (authStr != null && authStr.startsWith("Basic ")) {
-                String digest = authStr.substring(6);
-                String userAndPassword = new String((new Base64()).decode(digest.getBytes()));
-                Matcher matcher = USER_AND_PASSWORD_REGEX.matcher(userAndPassword);
-                if (!matcher.matches()) {
-                    return null;
-                } else {
-                    String user = matcher.group(1);
-                    String password = matcher.group(2);
-                    AuthenticationSession authSession = this.getAuthenticationManager().authenticate(new AuthenticationRequestPassword(user, password));
-                    return authSession;
-                }
-            } else {
-
-                return null;
-
-            }
+            requestType = RequestType.REGISTER;
         }
+        /********** REGISTER USER ****************************************/
+
+        /********** AUTHENTICATE USER ****************************************/
+        String uriSubstring2 = uri;
+        if (uri.length() > compareUriTo2.length()) {
+            uriSubstring2 = uri.substring(0, compareUriTo2.length());
+        }
+        if (uriSubstring2.equals(compareUriTo2)) {
+            requestType = RequestType.AUTHENTICATE;
+        }
+        /********** AUTHENTICATE USER ****************************************/
+
+        AuthenticationRequestExploration request;
+        switch (requestType) {
+
+            case REGISTER:
+                request = new AuthenticationRequestExploration();
+                return IsisContext.getAuthenticationManager().authenticate(request);
+
+            case AUTHENTICATE:
+                request = new AuthenticationRequestExploration();
+                return IsisContext.getAuthenticationManager().authenticate(request);
+
+            case OTHER:
+                /* default original code */
+                if (authStr != null && authStr.startsWith("Basic ")) {
+                    String digest = authStr.substring(6);
+                    String userAndPassword = new String((new Base64()).decode(digest.getBytes()));
+                    Matcher matcher = USER_AND_PASSWORD_REGEX.matcher(userAndPassword);
+                    if (!matcher.matches()) {
+                        return null;
+                    } else {
+                        String user = matcher.group(1);
+                        String password = matcher.group(2);
+                        AuthenticationSession authSession = this.getAuthenticationManager().authenticate(new AuthenticationRequestPassword(user, password));
+                        return authSession;
+                    }
+
+                } else {
+                    return null;
+                }
+                /* default original code */
+
+            default:
+                return null;
+        }
+
+    }
+
+    private enum RequestType {
+        REGISTER,
+        AUTHENTICATE,
+        OTHER;
     }
 }

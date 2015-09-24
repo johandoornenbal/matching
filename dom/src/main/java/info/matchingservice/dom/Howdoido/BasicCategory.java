@@ -17,6 +17,7 @@
 
 package info.matchingservice.dom.Howdoido;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,8 @@ import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Title;
 
-import info.matchingservice.dom.Howdoido.Interfaces.FeedbackCategory;
+import info.matchingservice.dom.Howdoido.Interfaces.Category;
+import info.matchingservice.dom.Howdoido.Viewmodels.AverageRatingForCategory;
 import info.matchingservice.dom.MatchingDomainObject;
 
 /**
@@ -72,7 +74,7 @@ import info.matchingservice.dom.MatchingDomainObject;
 })
 @DomainObject(editing = Editing.DISABLED, autoCompleteRepository = BasicCategories.class)
 @DomainObjectLayout()
-public class BasicCategory extends MatchingDomainObject implements FeedbackCategory {
+public class BasicCategory extends MatchingDomainObject implements Category {
 
     //region > name (property)
     private String name;
@@ -220,7 +222,7 @@ public class BasicCategory extends MatchingDomainObject implements FeedbackCateg
 
     @Override
     @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
-    public FeedbackCategory createChildCategory(final String uniqueCategoryName) {
+    public Category createChildCategory(final String uniqueCategoryName) {
 
         basicCategories.createBasicCategory(uniqueCategoryName, this);
         return this;
@@ -240,17 +242,17 @@ public class BasicCategory extends MatchingDomainObject implements FeedbackCateg
 
 
     @Override
-    public FeedbackCategory makeCategoryAChild(
+    public Category makeCategoryAChild(
             @ParameterLayout(named = "Basic Category")
             @Parameter()
-            final FeedbackCategory candidateCategoryToBeAddedInTree
+            final Category candidateCategoryToBeAddedInTree
     ) {
         basicCategoryRelationshipTuples.createTuple(this, (BasicCategory) candidateCategoryToBeAddedInTree);
         return this;
     }
 
-    public List<FeedbackCategory> autoComplete0MakeCategoryAChild(String search) {
-        List<FeedbackCategory> list = new ArrayList<>();
+    public List<Category> autoComplete0MakeCategoryAChild(String search) {
+        List<Category> list = new ArrayList<>();
         for (BasicCategory cat : basicCategories.findByNameContains(search)) {
             if (!cat.getName().equals((this.getName()))) {
                 list.add(cat);
@@ -259,7 +261,7 @@ public class BasicCategory extends MatchingDomainObject implements FeedbackCateg
         return list;
     }
 
-    public String validateMakeCategoryAChild(final FeedbackCategory candidateCategoryToBeAddedInTree) {
+    public String validateMakeCategoryAChild(final Category candidateCategoryToBeAddedInTree) {
 
         if (!checkedNoCircularRelationships(candidateCategoryToBeAddedInTree)) {
             return "Not possible because a circular relationship is not allowed: this category is a child of the one you try to establish as a child.";
@@ -274,8 +276,30 @@ public class BasicCategory extends MatchingDomainObject implements FeedbackCateg
         return null;
     }
 
+    @Override
+    public Category disconnectFromParent(
+            @ParameterLayout(named = "Basic Category")
+            @Parameter()
+            final Category parentToDisconnectFrom
+    ){
+        for (BasicCategoryRelationshipTuple tuple : basicCategoryRelationshipTuples.findByParentAndChild((BasicCategory) parentToDisconnectFrom, this)) {
+            tuple.delete();
+        }
+        return this;
+    }
 
-    @Override public boolean checkedNoCircularRelationships(FeedbackCategory candidateCategoryToBeAddedInTree) {
+    public List<Category> autoComplete0DisconnectFromParent(String search) {
+        List<Category> list = new ArrayList<>();
+        for (BasicCategory cat : this.getDirectParentCategories()) {
+                list.add(cat);
+        }
+        return list;
+    }
+
+
+    @Override
+    @Programmatic
+    public boolean checkedNoCircularRelationships(Category candidateCategoryToBeAddedInTree) {
 
         BasicCategory candidate = (BasicCategory) candidateCategoryToBeAddedInTree;
         List<BasicCategory> categories = candidate.getAllDescendantCategories();
@@ -287,10 +311,55 @@ public class BasicCategory extends MatchingDomainObject implements FeedbackCateg
         return true;
     }
 
-    @Inject
-    BasicCategories basicCategories;
+    @Action(semantics = SemanticsOf.SAFE)
+    public boolean isTopcategory() {
+        if (getAllAscendantCategories().size() > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Action(semantics = SemanticsOf.SAFE)
+    public AverageRatingForCategory getAverageRatingForUser(
+            @ParameterLayout(named = "user")
+            final BasicUser basicUser) {
+
+        Integer sum = 0;
+        Integer numberOfRatings = basicRatings.findByReceiverAndCategory(basicUser, this).size();
+        BigDecimal average;
+
+        for (BasicRating r : basicRatings.findByReceiverAndCategory(basicUser, this)) {
+            sum = sum + r.getFeedbackRating().ratingValue();
+        }
+
+        if (numberOfRatings > 0) {
+            average = BigDecimal.valueOf(sum).divide(BigDecimal.valueOf(numberOfRatings));
+        } else {
+            average = BigDecimal.ZERO;
+        }
+
+        return new AverageRatingForCategory(basicUser, this,average,numberOfRatings);
+
+    }
+
+    public List<BasicUser> autoComplete0GetAverageRatingForUser(final String search) {
+        List<BasicUser> list = new ArrayList<>();
+        list.addAll(basicUsers.findBasicUserByNameContains(search));
+        list.addAll(basicUsers.findBasicUserByEmailContains(search));
+        return list;
+    }
 
     @Inject
-    BasicCategoryRelationshipTuples basicCategoryRelationshipTuples;
+    private BasicCategories basicCategories;
+
+    @Inject
+    private BasicCategoryRelationshipTuples basicCategoryRelationshipTuples;
+
+    @Inject
+    private BasicRatings basicRatings;
+
+    @Inject
+    BasicUsers basicUsers;
+
 
 }

@@ -21,7 +21,7 @@ package info.matchingservice.dom;
 
 // compare to kan gebruikt worden op enum: de eerst gedeclareerde waarde heeft de laagste ordening
 // dus compare(BANNED, OUTERCIRCLE) levert negatieve waarde
-public enum TrustLevel implements TitledEnum{
+public enum TrustLevel implements TitledEnum, info.matchingservice.dom.Howdoido.Interfaces.TrustLevel{
     BANNED("5_BANNED"),
     OUTER_CIRCLE("4_OUTER"),
     ENTRY_LEVEL("3_ENTRY"),

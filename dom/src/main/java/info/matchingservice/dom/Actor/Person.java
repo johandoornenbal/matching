@@ -236,7 +236,7 @@ public class Person extends Actor {
     //** personsReferringToActiveUser **//
 //    @CollectionLayout(render=RenderType.EAGERLY)
 //    public List<PersonalContact> getCollectPersonsReferringToActiveUser(){
-//    	return pcontacts.allPersonalContactsReferringToUser(currentUserName());
+//    	return pcontacts.allPersonalContactsReferringToBasicUser(currentUserName());
 //    }
 //    
 //    // business rule:

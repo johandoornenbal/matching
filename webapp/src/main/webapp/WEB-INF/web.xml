@@ -355,4 +355,21 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>test</servlet-name>
+        <servlet-class>org.mitre.dsmiley.httpproxy.ProxyServlet</servlet-class>
+        <init-param>
+            <param-name>targetUri</param-name>
+            <param-value>http://localhost:8080/restful</param-value>
+        </init-param>
+        <init-param>
+            <param-name>log</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>test</servlet-name>
+        <url-pattern>/test/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

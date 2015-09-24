@@ -50,8 +50,8 @@ public class BasicCategoryTest extends MatchingIntegrationTest {
         public void simpleTreeTest() throws Exception {
 
             //given
-            t1 = api.createBasicCategory("t1");
-            t2 = api.createBasicCategory("t2");
+            t1 = api.createTopCategory("t1");
+            t2 = api.createTopCategory("t2");
 
             //when
             /*
@@ -183,7 +183,7 @@ public class BasicCategoryTest extends MatchingIntegrationTest {
                         |
                         t1s1s1
              */
-            t1 = api.createBasicCategory("t1");
+            t1 = api.createTopCategory("t1");
             t1.createChildCategory("t1s1");
             t1.createChildCategory("t1s2");
             t1s1 = basicCategories.findByName("t1s1");
@@ -242,7 +242,7 @@ public class BasicCategoryTest extends MatchingIntegrationTest {
                         |             |
                         t1s1          t1s2
              */
-            t1 = api.createBasicCategory("t1");
+            t1 = api.createTopCategory("t1");
             t1.createChildCategory("t1s1");
             t1.createChildCategory("t1s2");
             t1s1 = basicCategories.findByName("t1s1");
@@ -279,7 +279,7 @@ public class BasicCategoryTest extends MatchingIntegrationTest {
                         |
                         t1s1s1
              */
-            t1 = api.createBasicCategory("t1");
+            t1 = api.createTopCategory("t1");
             t1.createChildCategory("t1s1");
             t1.createChildCategory("t1s2");
             t1s1 = basicCategories.findByName("t1s1");
@@ -333,8 +333,8 @@ public class BasicCategoryTest extends MatchingIntegrationTest {
         public void joiningTreeTest() throws Exception {
 
             //given
-            t1 = api.createBasicCategory("t1");
-            t2 = api.createBasicCategory("t2");
+            t1 = api.createTopCategory("t1");
+            t2 = api.createTopCategory("t2");
             /*
                         t1 ------------           t2 ----------
                         |             |           |           |
@@ -440,6 +440,99 @@ public class BasicCategoryTest extends MatchingIntegrationTest {
 
             // but the other way around is still possible (for t2s2 to have t2s1 as a (direct)child)
             assertThat(t2s2.checkedNoCircularRelationships(t2s1)).isEqualTo(true);
+
+        }
+
+    }
+
+    public static class SplitTreeTest extends BasicCategoryTest {
+
+        BasicCategory t1;
+        BasicCategory t2;
+        BasicCategory t1s1;
+        BasicCategory t1s2;
+        BasicCategory t2s1;
+        BasicCategory t2s2;
+        BasicCategory t2s1s1;
+
+        @Before
+        public void setup() {
+            scenarioExecution().install(new TeardownFixture());
+        }
+
+        @Test
+        public void splitTreeTest() throws Exception {
+
+            //given
+            t1 = api.createTopCategory("t1");
+            t2 = api.createTopCategory("t2");
+            //when
+            /*
+                        t1 ------------           t2 ----------
+                        |             |           |           |
+                        t1s1          t1s2        |           |
+                        |                         |           |
+                        |--------------------->  t2s1        t2s2
+                                                  |
+                                                  t2s1s1
+             */
+            t1.createChildCategory("t1s1");
+            t1.createChildCategory("t1s2");
+            t1s1 = basicCategories.findByName("t1s1");
+            t1s2 = basicCategories.findByName("t1s2");
+            t2.createChildCategory("t2s1");
+            t2.createChildCategory("t2s2");
+            t2s1 = basicCategories.findByName("t2s1");
+            t2s2 = basicCategories.findByName("t2s2");
+            t2s1.createChildCategory("t2s1s1");
+            t2s1s1 = basicCategories.findByName("t2s1s1");
+            t1s1.makeCategoryAChild(t2s1);
+
+            //when
+            /*
+                        t1 ------------           t2 ----------
+                        |             |           |           |
+                        t1s1          t1s2        |           |
+                        |                         |           |
+                        | SPLIT ------------>    t2s1        t2s2
+                                                  |
+                                                  t2s1s1
+             */
+            t2s1.disconnectFromParent(t1s1);
+
+            //then
+            assertThat(t1.getAllDescendantCategories().size()).isEqualTo(2);
+            assertThat(t1.getAllDescendantCategories().contains(t2s1)).isEqualTo(false);
+            assertThat(t1.getAllDescendantCategories().contains(t2s1s1)).isEqualTo(false);
+
+            assertThat(t2s1.getDirectParentCategories().size()).isEqualTo(1);
+            assertThat(t2s1.getDirectParentCategories().contains(t2)).isEqualTo(true);
+            assertThat(t2s1.getDirectParentCategories().contains(t1s1)).isEqualTo(false);
+
+            assertThat(t2s1.getAllAscendantCategories().size()).isEqualTo(1);
+            assertThat(t2s1.getAllAscendantCategories().contains(t2)).isEqualTo(true);
+            assertThat(t2s1.getAllAscendantCategories().contains(t1)).isEqualTo(false);
+            assertThat(t2s1.getAllAscendantCategories().contains(t1s1)).isEqualTo(false);
+
+            assertThat(t2s1.getTopCategories().size()).isEqualTo(1);
+            assertThat(t2s1.getTopCategories().contains(t2)).isEqualTo(true);
+            assertThat(t2s1.getTopCategories().contains(t1)).isEqualTo(false);
+
+            assertThat(t2s1s1.getTopCategories().size()).isEqualTo(1);
+            assertThat(t2s1s1.getTopCategories().contains(t2)).isEqualTo(true);
+            assertThat(t2s1s1.getTopCategories().contains(t1)).isEqualTo(false);
+
+            assertThat(t2s1.getAllFamilyCategories().size()).isEqualTo(4);
+            assertThat(t1.getAllFamilyCategories().size()).isEqualTo(3);
+            assertThat(t2.getAllFamilyCategories().size()).isEqualTo(4);
+            //etc
+            assertThat(t2s1s1.getAllFamilyCategories().contains(t1)).isEqualTo(false);
+            assertThat(t2s1s1.getAllFamilyCategories().contains(t2)).isEqualTo(true);
+            assertThat(t2s1s1.getAllFamilyCategories().contains(t1s1)).isEqualTo(false);
+            assertThat(t2s1s1.getAllFamilyCategories().contains(t1s2)).isEqualTo(false);
+            assertThat(t2s1s1.getAllFamilyCategories().contains(t2s1)).isEqualTo(true);
+            assertThat(t2s1s1.getAllFamilyCategories().contains(t2s2)).isEqualTo(true);
+            assertThat(t2s1s1.getAllFamilyCategories().contains(t2s1s1)).isEqualTo(true);
 
         }
 

@@ -24,9 +24,10 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.query.QueryDefault;
 
-@DomainService(repositoryFor = MatchingTrustedContact.class)
+@DomainService(repositoryFor = MatchingTrustedContact.class, nature = NatureOfService.DOMAIN)
 @DomainServiceLayout(menuOrder="40")
 public class MatchingTrustedContacts extends MatchingDomainService<MatchingTrustedContact> {
     
@@ -47,7 +48,7 @@ public class MatchingTrustedContacts extends MatchingDomainService<MatchingTrust
         return true;
     }
     
-    TrustLevel trustLevel(String ownedBy, String userName) {
+    public TrustLevel trustLevel(String ownedBy, String userName) {
         QueryDefault<MatchingTrustedContact> q =
                 QueryDefault.create(
                         MatchingTrustedContact.class, 

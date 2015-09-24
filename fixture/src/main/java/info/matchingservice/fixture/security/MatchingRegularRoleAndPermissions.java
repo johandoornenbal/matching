@@ -38,7 +38,8 @@ public class MatchingRegularRoleAndPermissions extends AbstractRoleAndPermission
                 ApplicationPermissionRule.ALLOW,
                 ApplicationPermissionMode.CHANGING,
                 MatchingService.class.getPackage().getName(),
-                MatchingDemoFixture.class.getPackage().getName()
+                MatchingDemoFixture.class.getPackage().getName(),
+                "org.isisaddons.module.devutils"
                 );
         newClassPermissions(
                 ApplicationPermissionRule.VETO,

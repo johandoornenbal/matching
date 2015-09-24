@@ -23,6 +23,14 @@ import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
 import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.demand.TestDemands;
+import info.matchingservice.fixture.howdoido.BasicQuestionFixtures;
+import info.matchingservice.fixture.howdoido.BasicRequestFixtures;
+import info.matchingservice.fixture.howdoido.BasicSubCategoryFixtures;
+import info.matchingservice.fixture.howdoido.BasicTemplateFixtures;
+import info.matchingservice.fixture.howdoido.BasicTopCategoryFixtures;
+import info.matchingservice.fixture.howdoido.BasicUserFixtures;
+import info.matchingservice.fixture.howdoido.EvenMoreBasicSubCategoryFixtures;
+import info.matchingservice.fixture.howdoido.MoreBasicSubCategoryFixtures;
 import info.matchingservice.fixture.match.ProfileMatchesForTesting;
 import info.matchingservice.fixture.security.MatchingAdminRoleAndPermissions;
 import info.matchingservice.fixture.security.MatchingRegularRoleAndPermissions;
@@ -32,6 +40,12 @@ import info.matchingservice.fixture.security.fransUser;
 import info.matchingservice.fixture.security.fransUser_Has_MatchingRegularRole;
 import info.matchingservice.fixture.security.gerardUser;
 import info.matchingservice.fixture.security.gerardUser_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.howdoidoUser1_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.howdoidoUser2_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.howdoidoUser3_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.howdoidoUser4_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.howdoidoUser5_Has_MatchingRegularRole;
+import info.matchingservice.fixture.security.howdoidoUsers;
 import info.matchingservice.fixture.security.jeanneUser;
 import info.matchingservice.fixture.security.jeanneUser_Has_MatchingRegularRole;
 import info.matchingservice.fixture.security.michielUser;
@@ -62,6 +76,15 @@ public class MatchingDemoFixture extends FixtureScript {
 //        executeChild(new TeardownFixture(), executionContext);
         
         // create
+        executionContext.executeChild(this, new BasicTopCategoryFixtures());
+        executionContext.executeChild(this, new BasicSubCategoryFixtures());
+        executionContext.executeChild(this, new MoreBasicSubCategoryFixtures());
+        executionContext.executeChild(this, new EvenMoreBasicSubCategoryFixtures());
+        executionContext.executeChild(this, new BasicUserFixtures());
+        executionContext.executeChild(this, new BasicTemplateFixtures());
+        executionContext.executeChild(this, new BasicQuestionFixtures());
+        executionContext.executeChild(this, new BasicRequestFixtures());
+
         executionContext.executeChild(this, new fransUser());
         executionContext.executeChild(this, new rembrandtUser());
         executionContext.executeChild(this, new gerardUser());
@@ -78,6 +101,13 @@ public class MatchingDemoFixture extends FixtureScript {
         executionContext.executeChild(this, new antoniUser_Has_MatchingRegularRole());
         executionContext.executeChild(this, new jeanneUser_Has_MatchingRegularRole());
         executionContext.executeChild(this, new xtalusAdminUser_Has_MatchingAdminRole());
+
+        executionContext.executeChild(this, new howdoidoUsers());
+        executionContext.executeChild(this, new howdoidoUser1_Has_MatchingRegularRole());
+        executionContext.executeChild(this, new howdoidoUser2_Has_MatchingRegularRole());
+        executionContext.executeChild(this, new howdoidoUser3_Has_MatchingRegularRole());
+        executionContext.executeChild(this, new howdoidoUser4_Has_MatchingRegularRole());
+        executionContext.executeChild(this, new howdoidoUser5_Has_MatchingRegularRole());
 
     	executeChild(new TestMatchingProfileTypeRules(), executionContext);
     	executeChild(new TestConfig(), executionContext);

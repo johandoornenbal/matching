@@ -433,7 +433,8 @@ public class ProfileMatchingService extends AbstractService {
 		RequiredProfileElementRole profileElement;
 
 		// business rule: when there is a element of ProfileElementType.ROLE_REQUIRED filter out the roles excluded by returning false; defaults to true
-		if (profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).size() > 0) {
+		if (profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).size() > 0
+				&& profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).get(0).getIsActive()) {
 			profileElement = (RequiredProfileElementRole) profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).get(0);
 
 			Person  supplyActorOwner;

@@ -1,0 +1,90 @@
+{
+    "columns": [
+        {
+            "span": 4,
+            "memberGroups": {
+                "General": {
+                    "members": {
+                        "basicForm": {
+                            "disabled": {},
+                            "hidden": {
+                                "where": "PARENTED_TABLES"
+                            }
+                        },
+                        "explanation": {
+                            "disabled": {},
+                            "multiLine": {
+                                "numberOfLines": 5
+                            },
+                            "typicalLength": {
+                                "value": 125
+                            },
+                            "actions": {
+                                "updateExplanation": {
+                                    "named": {
+                                        "value": "Update Rating"
+                                    }
+                                }
+                            }
+                        },
+                        "rating": {
+                            "disabled": {},
+                            "typicalLength": {
+                                "value": 9
+                            },
+                            "actions": {
+                                "updateRating": {
+                                    "named": {
+                                        "value": "Update Rating"
+                                    }
+                                }
+                            }
+                        },
+                        "questionToAnswer": {
+                            "disabled": {},
+                            "typicalLength": {
+                                "value": 25
+                            }
+                        },
+                        "matchingTrustlevel": {
+                            "disabled": {},
+                            "typicalLength": {
+                                "value": 12
+                            }
+                        },
+                        "representationType": {
+                            "disabled": {},
+                            "hidden": {
+                                "where": "EVERYWHERE"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "span": 0,
+            "memberGroups": {}
+        },
+        {
+            "span": 0,
+            "memberGroups": {}
+        },
+        {
+            "span": 8,
+            "collections": {}
+        }
+    ],
+    "actions": {
+        "downloadLayout": {
+            "named": {
+                "value": "Download Layout"
+            }
+        },
+        "ensureKnownEagerly": {
+            "named": {
+                "value": "Ensure Known Eagerly"
+            }
+        }
+    }
+}

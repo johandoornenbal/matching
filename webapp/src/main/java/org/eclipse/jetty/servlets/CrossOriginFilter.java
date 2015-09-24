@@ -140,7 +140,7 @@ public class CrossOriginFilter implements Filter
         }
 
         String allowedMethodsConfig = config.getInitParameter(ALLOWED_METHODS_PARAM);
-        if (allowedMethodsConfig == null) allowedMethodsConfig = "GET,POST";
+        if (allowedMethodsConfig == null) allowedMethodsConfig = "GET,POST,PUT";
         allowedMethods.addAll(Arrays.asList(allowedMethodsConfig.split(",")));
 
         String allowedHeadersConfig = config.getInitParameter(ALLOWED_HEADERS_PARAM);
