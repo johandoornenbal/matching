@@ -20,6 +20,8 @@ package info.matchingservice.dom.Assessment;
 
 import java.util.UUID;
 
+import javax.jdo.annotations.DiscriminatorStrategy;
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
@@ -39,8 +41,14 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@javax.jdo.annotations.Discriminator(
+        strategy = DiscriminatorStrategy.CLASS_NAME,
+        column = "discriminator")
+@javax.jdo.annotations.DatastoreIdentity(
+        strategy = IdGeneratorStrategy.NATIVE,
+        column = "id")
 @DomainObject(editing=Editing.DISABLED)
-public class Assessment extends MatchingSecureMutableObject<Assessment> {
+public abstract class Assessment extends MatchingSecureMutableObject<Assessment> {
 	
 	//** API: PROPERTIES **//
 	
@@ -58,23 +66,23 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
     }
     //-- uniqueItemId --//
     
-    //** target **//
-    /**
-     * Should be overridden for use on specific Object Type
-     */
-    private Object targetOfAssessment;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    @PropertyLayout()
-    public Object getTargetOfAssessment() {
-        return targetOfAssessment;
-    }
-    
-    public void setTargetOfAssessment(final Object object) {
-        this.targetOfAssessment = object;
-    }
-    //-- target --//
+//    //** target **//
+//    /**
+//     * Should be overridden for use on specific Object Type
+//     */
+//    private Object targetOfAssessment;
+//
+//    @javax.jdo.annotations.Column(allowsNull = "false", name = "target")
+//    @Property(editing=Editing.DISABLED)
+//    @PropertyLayout()
+//    public Object getTargetOfAssessment() {
+//        return targetOfAssessment;
+//    }
+//
+//    public void setTargetOfAssessment(final Object object) {
+//        this.targetOfAssessment = object;
+//    }
+//    //-- target --//
     
     //** targetOwnerActor **//
     private Actor targetOwnerActor;
@@ -165,7 +173,7 @@ public class Assessment extends MatchingSecureMutableObject<Assessment> {
 	//** HELPERS **//
     //** HELPERS: generic object helpers **//
     public String title() {
-        return getTargetOfAssessment().toString() + " - " + getAssessmentDescription();
+        return "Assessment " + " - " + getAssessmentDescription();
     }
 	//-- HELPERS: generic object helpers --//
 	//** HELPERS: programmatic actions **//

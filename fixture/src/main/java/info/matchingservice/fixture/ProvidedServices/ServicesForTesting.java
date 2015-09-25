@@ -32,7 +32,7 @@ import info.matchingservice.fixture.actor.TestPersons;
 /**
  * Created by jodo on 14/06/15.
  */
-public class ServicesForTesting extends ServiceAbstract {
+public class ServicesForTesting extends info.matchingservice.fixture.ProvidedServices.ServiceAbstract {
 
     @Override
     protected void execute(FixtureScript.ExecutionContext executionContext) {

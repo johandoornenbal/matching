@@ -49,6 +49,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.annotation.Where;
 
+import info.matchingservice.dom.Howdoido.Interfaces.Category;
 import info.matchingservice.dom.Howdoido.Interfaces.Provider;
 import info.matchingservice.dom.Howdoido.Interfaces.Question;
 import info.matchingservice.dom.Howdoido.Interfaces.Receiver;
@@ -75,7 +76,7 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 public class BasicTemplate extends MatchingSecureMutableObject implements Template {
 
     public BasicTemplate() {
-        super("name, category");
+        super("name");
     }
 
     @Action(semantics = SemanticsOf.SAFE)
@@ -109,27 +110,27 @@ public class BasicTemplate extends MatchingSecureMutableObject implements Templa
 
     //endregion
 
-    //region > category (property)
-    private BasicCategory category;
+    //region > basicCategory (property)
+    private BasicCategory basicCategory;
 
     @MemberOrder(sequence = "2")
     @Column(allowsNull = "false")
-    public BasicCategory getCategory() {
-        return category;
+    public BasicCategory getBasicCategory() {
+        return basicCategory;
     }
 
-    public void setCategory(final BasicCategory category) {
-        this.category = category;
+    public void setBasicCategory(final BasicCategory category) {
+        this.basicCategory = category;
     }
 
     @Action(semantics = SemanticsOf.IDEMPOTENT)
     public BasicTemplate updateCategory(final BasicCategory category) {
-        setCategory(category);
+        setBasicCategory(category);
         return this;
     }
 
     public BasicCategory default0UpdateCategory(final BasicCategory category) {
-        return getCategory();
+        return getBasicCategory();
     }
 
     public List<BasicCategory> autoComplete0UpdateCategory(final String search){
@@ -294,6 +295,10 @@ public class BasicTemplate extends MatchingSecureMutableObject implements Templa
         return getTemplateOwner();
     }
 
+
+    @Override public Category getCategory() {
+        return getBasicCategory();
+    }
 
     //** ownedBy - Override for secure object **//
     private String ownedBy;

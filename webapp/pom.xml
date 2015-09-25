@@ -134,7 +134,7 @@
     	<dependency>
         	<groupId>org.isisaddons.module.security</groupId>
         	<artifactId>isis-module-security-dom</artifactId>
-        	<version>1.8.0</version>
+        	<version>1.9.0</version>
    		</dependency>
    		<dependency>
         	<groupId>org.mindrot</groupId>
@@ -144,25 +144,8 @@
         <!-- other modules in this project -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>matchingservice-dom</artifactId>
-            <exclusions>
-                <exclusion>
-                    <!-- so don't pick up transitive dependency to asm 4.0.0 -->
-                    <groupId>org.datanucleus</groupId>
-                    <artifactId>datanucleus-enhancer</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>matchingservice-fixture</artifactId>
-            <exclusions>
-                <exclusion>
-                    <!-- so don't pick up transitive dependency to asm 4.0.0 -->
-                    <groupId>org.datanucleus</groupId>
-                    <artifactId>datanucleus-enhancer</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>matching-app</artifactId>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         
         <!-- other isis components -->
@@ -185,18 +168,12 @@
 
 
         <!-- isis core -->
-        <dependency>
-            <groupId>org.apache.isis.core</groupId>
-            <artifactId>isis-core-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.isis.core</groupId>
-            <artifactId>isis-core-wrapper</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.isis.core</groupId>
             <artifactId>isis-core-security</artifactId>
         </dependency>
+
 
 
         <!-- isis modules -->
@@ -259,12 +236,7 @@
 
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-servlet_2.5_spec</artifactId>
-            <!--
-            removed so can run o.a.i.WebServer from within IntelliJ;
-            can rely on servlet container to ignore this in war file
-            <scope>provided</scope>
-            -->
+            <artifactId>geronimo-servlet_3.0_spec</artifactId>
         </dependency>
 
         <!-- 
@@ -348,7 +320,25 @@
                 </plugins>
             </build>
         </profile>
-
+        <profile>
+            <id>intellij</id>
+            <activation>
+                <property>
+                    <name>idea.version</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-servlet_3.0_spec</artifactId>
+                    <!--
+                    Use 'compile' so can run o.a.i.WebServer from within IntelliJ;
+                    can rely on servlet container to ignore this in war file
+                    -->
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
         <profile>
             <id>jrebel</id>
             <properties>
@@ -424,7 +414,9 @@
             </dependencies>
         </profile>
 
+
     </profiles>
+
 
 
 

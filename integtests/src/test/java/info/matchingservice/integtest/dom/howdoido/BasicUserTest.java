@@ -327,7 +327,7 @@ public class BasicUserTest extends MatchingIntegrationTest {
 
             //then
             assertThat(basicTemplate.getName()).isEqualTo(TEMPLATE_NAME);
-            assertThat(basicTemplate.getCategory().getName()).isEqualTo(CATEGORY_NAME);
+            assertThat(basicTemplate.getBasicCategory().getName()).isEqualTo(CATEGORY_NAME);
             assertThat(basicTemplate.getTemplateOwner()).isEqualTo(basicUser);
 
         }

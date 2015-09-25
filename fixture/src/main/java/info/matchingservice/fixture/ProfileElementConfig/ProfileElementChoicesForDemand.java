@@ -17,16 +17,18 @@
 
 package info.matchingservice.fixture.ProfileElementConfig;
 
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementWidgetType;
 
 /**
  * Created by jodo on 14/06/15.
  */
-public class ProfileElementChoicesForDemand extends ProfileElementChoiceAbstract {
+public class ProfileElementChoicesForDemand extends info.matchingservice.fixture.ProfileElementConfig.ProfileElementChoiceAbstract {
 
     @Override
-    protected void execute(ExecutionContext executionContext) {
+    protected void execute(FixtureScript.ExecutionContext executionContext) {
 
         createElement(
                 DemandOrSupply.DEMAND,

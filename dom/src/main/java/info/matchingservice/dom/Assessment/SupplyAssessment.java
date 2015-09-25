@@ -19,8 +19,6 @@
 
 package info.matchingservice.dom.Assessment;
 
-import info.matchingservice.dom.DemandSupply.Supply;
-
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -30,28 +28,30 @@ import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 
+import info.matchingservice.dom.DemandSupply.Supply;
+
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
+@javax.jdo.annotations.DatastoreIdentity(
+        strategy = IdGeneratorStrategy.NATIVE,
+        column = "id")
 public class SupplyAssessment extends Assessment {
-    
-	//** API: PROPERTIES **//
+
     private Supply targetOfAssessment;
-    
+
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing= Editing.DISABLED)
     @PropertyLayout()
-    @Property(editing=Editing.DISABLED)
     public Supply getTargetOfAssessment() {
         return targetOfAssessment;
     }
-    
-    public void setTargetOfAssessment(final Supply object) {
-        this.targetOfAssessment = object;
-    }       
-  	//-- API: PROPERTIES --//
+
+    public void setTargetOfAssessment(final Supply targetOfAssessment) {
+        this.targetOfAssessment = targetOfAssessment;
+    }
+
+
 }

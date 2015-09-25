@@ -29,12 +29,12 @@ import info.matchingservice.dom.Match.ProfileMatch;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
+@javax.jdo.annotations.DatastoreIdentity(
+        strategy = IdGeneratorStrategy.NATIVE,
+        column = "id")
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
                 name = "findProfileMatchesAssessmentByProfileMatch", language = "JDOQL",
@@ -43,19 +43,19 @@ import info.matchingservice.dom.Match.ProfileMatch;
                         + "WHERE targetOfAssessment == :profileMatch")
 })
 public class ProfileMatchAssessment extends Assessment {
-    
-	//** API: PROPERTIES **//
+
+
     private ProfileMatch targetOfAssessment;
-    
+
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing= Editing.DISABLED)
     @PropertyLayout()
-    @Property(editing=Editing.DISABLED)
     public ProfileMatch getTargetOfAssessment() {
         return targetOfAssessment;
     }
-    
-    public void setTargetOfAssessment(final ProfileMatch object) {
-        this.targetOfAssessment = object;
-    }       
-	//-- API: PROPERTIES --//
+
+    public void setTargetOfAssessment(final ProfileMatch targetOfAssessment) {
+        this.targetOfAssessment = targetOfAssessment;
+    }
+
 }

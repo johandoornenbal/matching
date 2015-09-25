@@ -22,9 +22,6 @@ import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.Assessment.ProfileFeedback;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Profile.Profile;
 
 /**
  * Created by jodo on 18/06/15.
@@ -57,41 +54,38 @@ public class AssessmentRepresentation {
         assessmentMap.mapPut("assessmentTargetOwnerRoles", assessmentTargetOwner.getRoles());
         assessmentMap.mapPut("assessmentTargetOwnerPictureLink", assessmentTargetOwner.getPictureLink());
 
-        //try casting target to demand
-        try {
-
-            Demand targetDemand = (Demand) assessment.getTargetOfAssessment();
-            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetDemand.getOID()));
-            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetDemand.getOID()));
-//            assessmentMap.mapPut("targetType", targetDemand.getClass().toString());
-
-        } catch (Exception e) {
-
-        }
-
-        //try casting target to supply
-        try {
-
-            Supply targetSupply = (Supply) assessment.getTargetOfAssessment();
-            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetSupply.getOID()));
-            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetSupply.getOID()));
-//            assessmentMap.mapPut("targetType", targetSupply.getClass().toString());
-
-        } catch (Exception e) {
-
-        }
-
-        //try casting target to profile
-        try {
-
-            Profile targetProfile = (Profile) assessment.getTargetOfAssessment();
-            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetProfile.getOID()));
-            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetProfile.getOID()));
-//            assessmentMap.mapPut("targetType", targetProfile.getClass().toString());
-
-        } catch (Exception e) {
-
-        }
+//        //try casting target to demand
+//        try {
+//
+//            Demand targetDemand = (Demand) assessment.getTargetOfAssessment();
+//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetDemand.getOID()));
+//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetDemand.getOID()));
+//
+//        } catch (Exception e) {
+//
+//        }
+//
+//        //try casting target to supply
+//        try {
+//
+//            Supply targetSupply = (Supply) assessment.getTargetOfAssessment();
+//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetSupply.getOID()));
+//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetSupply.getOID()));
+//
+//        } catch (Exception e) {
+//
+//        }
+//
+//        //try casting target to profile
+//        try {
+//
+//            Profile targetProfile = (Profile) assessment.getTargetOfAssessment();
+//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetProfile.getOID()));
+//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetProfile.getOID()));
+//
+//        } catch (Exception e) {
+//
+//        }
 
         return assessmentMap;
     }

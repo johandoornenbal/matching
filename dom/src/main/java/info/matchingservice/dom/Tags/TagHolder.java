@@ -18,9 +18,6 @@
  */
 package info.matchingservice.dom.Tags;
 
-import info.matchingservice.dom.MatchingSecureMutableObject;
-import info.matchingservice.dom.Profile.ProfileElement;
-
 import java.util.UUID;
 
 import javax.jdo.annotations.IdentityType;
@@ -39,6 +36,9 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import info.matchingservice.dom.Profile.ProfileElement;
+
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @javax.jdo.annotations.Queries({
@@ -52,7 +52,7 @@ import org.apache.isis.applib.annotation.Where;
 public class TagHolder extends MatchingSecureMutableObject<TagHolder> {
     
     public TagHolder() {
-        super("ownerElement, tag, uniqueItemId");
+        super("uniqueItemId");
     }
     
     //** ownedBy - Override for secure object **//

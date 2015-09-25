@@ -4,6 +4,11 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Where;
 
+import org.isisaddons.module.security.dom.permission.ApplicationPermission;
+import org.isisaddons.module.security.dom.role.ApplicationRole;
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+import org.isisaddons.module.security.dom.user.ApplicationUser;
+
 import info.matchingservice.dom.CommunicationChannels.Address;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.Email;
@@ -23,7 +28,7 @@ import info.matchingservice.dom.Profile.ProfileElementTimePeriod;
 import info.matchingservice.dom.Profile.ProfileElementUsePredicate;
 import info.matchingservice.dom.Profile.RequiredProfileElementRole;
 
-@DomainService
+@DomainService()
 public class DummyServiceForBootstrapping {
 
     @ActionLayout(hidden=Where.EVERYWHERE)
@@ -62,4 +67,12 @@ public class DummyServiceForBootstrapping {
     public void ensureKnownEagerly(BasicAnswerRating x) { }
     @ActionLayout(hidden=Where.EVERYWHERE)
     public void ensureKnownEagerly(BasicAnswerRatingExplanation x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(ApplicationTenancy x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(ApplicationPermission x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(ApplicationRole x) { }
+    @ActionLayout(hidden=Where.EVERYWHERE)
+    public void ensureKnownEagerly(ApplicationUser x) { }
 }

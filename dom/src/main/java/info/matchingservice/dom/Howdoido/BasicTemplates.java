@@ -45,7 +45,7 @@ public class BasicTemplates extends MatchingDomainService<BasicTemplate> {
         BasicTemplate newTemplate = newTransientInstance(BasicTemplate.class);
 
         newTemplate.setName(name.toLowerCase());
-        newTemplate.setCategory(category);
+        newTemplate.setBasicCategory(category);
         newTemplate.setTemplateOwner(templateOwner);
         newTemplate.setOwnedBy(templateOwner.getOwnedBy());
 

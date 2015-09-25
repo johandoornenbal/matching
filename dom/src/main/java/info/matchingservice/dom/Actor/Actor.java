@@ -67,10 +67,6 @@ import info.matchingservice.dom.TrustLevel;
 @javax.jdo.annotations.Version(
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
-@javax.jdo.annotations.Uniques({
-    @javax.jdo.annotations.Unique(
-            name = "PERSON_ID_UNQ", members = "uniqueActorId")
-})
 public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
 	//** API: PROPERTIES **//

@@ -47,10 +47,12 @@
   	<dependencies>
 	
 		<!-- other modules in this project -->
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>matchingservice-fixture</artifactId>
-		</dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>matching-app</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.isis.core</groupId>
@@ -72,8 +74,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.isis.core</groupId>
-            <artifactId>isis-core-wrapper</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -85,7 +88,7 @@
         <dependency>
             <groupId>org.isisaddons.module.security</groupId>
             <artifactId>isis-module-security-dom</artifactId>
-            <version>1.8.0</version>
+            <version>${isis-module-security.version}</version>
         </dependency>
 
         <!-- 

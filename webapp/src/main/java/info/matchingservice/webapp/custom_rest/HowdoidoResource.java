@@ -148,7 +148,7 @@ public class HowdoidoResource extends ResourceAbstract {
         templatemap.mapPut("id", Utils.toApiID(template.getOID()));
         templatemap.mapPut("URI", Utils.toObjectURI(template.getOID()));
         templatemap.mapPut("name", template.getName());
-        templatemap.mapPut("category", template.getCategory().getName());
+        templatemap.mapPut("category", template.getBasicCategory().getName());
 
         JsonRepresentation questions = JsonRepresentation.newArray();
         for (BasicQuestion question : template.getBasicQuestions()) {
