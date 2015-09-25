@@ -16,16 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package info.matchingservice.integtest.dom;
-
-import javax.inject.Inject;
-
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
+package info.matchingservice.integtest.dom.actor;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
@@ -33,6 +24,12 @@ import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.actor.TestRoles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.inject.Inject;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -44,23 +41,14 @@ public class PersonTest extends MatchingIntegrationTest {
     @Inject
     Persons persons;
     
-    @BeforeClass
-    public static void setupTransactionalData() throws Exception {
-        scenarioExecution().install(new TeardownFixture());
-    }
-    
-    @Before
-    public void setupData() {
-        runScript(new FixtureScript() {
-            @Override
-            protected void execute(ExecutionContext executionContext) {  	
-                executionContext.executeChild(this, new TestPersons());
-                executionContext.executeChild(this, new TestRoles());
-            }
-        });
-    }
-    
     public static class TestPerson extends PersonTest {
+
+        @Before
+        public void setupData() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
+        }
         
         private static final String LAST_NAME = "Hals";
         private static final String MIDDLE_NAME = "";
@@ -85,16 +73,12 @@ public class PersonTest extends MatchingIntegrationTest {
     }
     
     public static class FindPersonTest extends PersonTest {
-    	
-    	@Before
+
+        @Before
         public void setupData() {
-            runScript(new FixtureScript() {
-                @Override
-                protected void execute(ExecutionContext executionContext) {
-                	executionContext.executeChild(this, new TeardownFixture());
-                    executionContext.executeChild(this, new TestPersons());
-                }
-            });
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
         }
         
         @Test
@@ -125,6 +109,13 @@ public class PersonTest extends MatchingIntegrationTest {
     
     
     public static class hideNewPersonMethod extends PersonTest {
+
+        @Before
+        public void setupData() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
+        }
         
         @Test
         public void shouldBeHidden() throws Exception {
@@ -138,6 +129,13 @@ public class PersonTest extends MatchingIntegrationTest {
     }
 
     public static class NewPerson extends PersonTest {
+
+        @Before
+        public void setupData() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
+        }
         
         private static final String LAST_NAME = "Test1";
         private static final String MIDDLE_NAME = "van der";
@@ -180,6 +178,13 @@ public class PersonTest extends MatchingIntegrationTest {
     }
     
     public static class validateNewPerson extends PersonTest {
+
+        @Before
+        public void setupData() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
+        }
         
         @Test
         public void shouldNotBeValidNewPerson() throws Exception {
@@ -194,16 +199,12 @@ public class PersonTest extends MatchingIntegrationTest {
     }
     
     public static class thisIsYouTest extends PersonTest {
-    	
-    	@Before
+
+        @Before
         public void setupData() {
-            runScript(new FixtureScript() {
-                @Override
-                protected void execute(ExecutionContext executionContext) {
-                	executionContext.executeChild(this, new TeardownFixture());
-                    executionContext.executeChild(this, new TestPersons());
-                }
-            });
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
         }
         
         @Test
@@ -221,13 +222,9 @@ public class PersonTest extends MatchingIntegrationTest {
         
     	@Before
         public void setupData() {
-            runScript(new FixtureScript() {
-                @Override
-                protected void execute(ExecutionContext executionContext) {
-                	executionContext.executeChild(this, new TeardownFixture());
-                    executionContext.executeChild(this, new TestPersons());
-                }
-            });
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
         }
     	
         @Test
@@ -243,6 +240,13 @@ public class PersonTest extends MatchingIntegrationTest {
     }
    
     public static class addRole extends PersonTest {
+
+        @Before
+        public void setupData() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
+        }
         
         private static final String LAST_NAME = "Test1";
         private static final String MIDDLE_NAME = "van der";
@@ -281,6 +285,13 @@ public class PersonTest extends MatchingIntegrationTest {
     }
     
     public static class deleteRole extends PersonTest {
+
+        @Before
+        public void setupData() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
+        }
         
         private static final String LAST_NAME = "Test1";
         private static final String MIDDLE_NAME = "van der";
@@ -315,6 +326,13 @@ public class PersonTest extends MatchingIntegrationTest {
     }
 
     public static class hideAddAndDeleteRole extends PersonTest {
+
+        @Before
+        public void setupData() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestRoles());
+        }
         
         private static final String LAST_NAME = "Test1";
         private static final String MIDDLE_NAME = "van der";

@@ -17,21 +17,9 @@
 
 package info.matchingservice.integtest.dom.assessments;
 
-import javax.inject.Inject;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.Assessment.Assessments;
-import info.matchingservice.dom.Assessment.DemandFeedback;
-import info.matchingservice.dom.Assessment.ProfileFeedback;
-import info.matchingservice.dom.Assessment.ProfileMatchAssessment;
-import info.matchingservice.dom.Assessment.SupplyFeedback;
+import info.matchingservice.dom.Assessment.*;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Match.ProfileMatch;
@@ -44,9 +32,15 @@ import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.match.ProfileMatchesForTesting;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import javax.inject.Inject;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertThat;
 
 /**
  * Created by jodo on 08/05/15.
@@ -204,18 +198,11 @@ public class AssessmentsTest extends MatchingIntegrationTest {
     public static class CreateProfileMatchAssessment extends AssessmentsTest {
 
         @Before
-        public void setupData() {
-            runScript(new FixtureScript() {
-                @Override
-                protected void execute(ExecutionContext executionContext) {
-                    scenarioExecution().install(new TeardownFixture());
-                    executionContext.executeChild(this, new TestPersons());
-                    executionContext.executeChild(this, new TestDemandProfiles());
-                    executionContext.executeChild(this, new TestSupplyProfiles());
-                    executionContext.executeChild(this, new ProfileMatchesForTesting());
-                }
-            });
+        public void setUp() throws Exception {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new ProfileMatchesForTesting());
         }
+
 
         Person assessmentOwner;
         Person assessmentTargetOwner;

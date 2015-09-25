@@ -16,23 +16,23 @@
  */
 package info.matchingservice.integtest.dom;
 
-import javax.inject.Inject;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import org.isisaddons.module.security.dom.user.ApplicationUser;
-
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelContributions;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.CommunicationChannels.Email;
+import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.communicationChannels.TestEmails;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.isisaddons.module.security.dom.user.ApplicationUser;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import javax.inject.Inject;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -48,6 +48,7 @@ public class EmailTest extends MatchingIntegrationTest {
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
 
+        scenarioExecution().install(new TeardownFixture());
         scenarioExecution().install(new TestPersons());
         scenarioExecution().install(new TestEmails());
     }
@@ -91,6 +92,9 @@ public class EmailTest extends MatchingIntegrationTest {
 
         @Before
         public void setUp() throws Exception {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new TestPersons());
+            scenarioExecution().install(new TestEmails());
             //given
             p1 = persons.findPersons("Hals").get(0);
             em = (Email) communicationChannels.findCommunicationChannelByPersonAndType(p1, CommunicationChannelType.EMAIL_MAIN).get(0);

@@ -360,6 +360,13 @@
                 <!--<artifactId>wicket-source</artifactId>-->
                 <!--<version>6.0.0.8</version>-->
             <!--</dependency>-->
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>matchingservice-app</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>matchingservice-dom</artifactId>
@@ -375,6 +382,9 @@
                 <artifactId>matchingservice-webapp</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+
+
+
             <dependency>
         		<groupId>org.isisaddons.module.devutils</groupId>
         		<artifactId>isis-module-devutils-dom</artifactId>
@@ -429,7 +439,7 @@
     <module>fixture</module>
     <module>integtests</module>
     <module>webapp</module>
-      <module>matching-app</module>
+    <module>app</module>
   </modules>
 
   <url>http://www.xtalus.nl</url>

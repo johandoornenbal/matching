@@ -17,23 +17,18 @@
 
 package info.matchingservice.integtest.dom.howdoido;
 
-import javax.inject.Inject;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import info.matchingservice.dom.Howdoido.BasicQuestion;
-import info.matchingservice.dom.Howdoido.BasicRequest;
-import info.matchingservice.dom.Howdoido.BasicTemplate;
-import info.matchingservice.dom.Howdoido.BasicTemplates;
-import info.matchingservice.dom.Howdoido.BasicUser;
-import info.matchingservice.dom.Howdoido.BasicUsers;
+import info.matchingservice.dom.Howdoido.*;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.howdoido.BasicQuestionFixtures;
 import info.matchingservice.fixture.howdoido.BasicTemplateFixtures;
 import info.matchingservice.fixture.howdoido.BasicUserFixtures;
 import info.matchingservice.fixture.security.MatchingRegularRoleAndPermissions;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.inject.Inject;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -45,7 +40,6 @@ public class BasicTemplateTest extends MatchingIntegrationTest {
 
         @Before
         public void setup() {
-            scenarioExecution().install(new TeardownFixture());
             scenarioExecution().install(new BasicUserFixtures());
             scenarioExecution().install(new BasicTemplateFixtures());
             scenarioExecution().install(new BasicQuestionFixtures());

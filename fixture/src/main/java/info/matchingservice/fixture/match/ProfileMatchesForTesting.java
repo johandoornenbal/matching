@@ -17,8 +17,6 @@
 
 package info.matchingservice.fixture.match;
 
-import javax.inject.Inject;
-
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -28,6 +26,9 @@ import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
+import info.matchingservice.fixture.supply.TestSupplyProfiles;
+
+import javax.inject.Inject;
 
 /**
  * Created by jodo on 06/05/15.
@@ -40,6 +41,7 @@ public class ProfileMatchesForTesting extends ProfileMatchAbstract {
         //preqs
         executionContext.executeChild(this, new TestPersons());
         executionContext.executeChild(this, new TestDemandProfiles());
+        executionContext.executeChild(this, new TestSupplyProfiles());
         executionContext.executeChild(this, new TestSupplyProfileElementsPersonProfiles());
 
         Person frans = persons.findPersons("Hals").get(0);

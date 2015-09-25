@@ -1,13 +1,16 @@
 package info.matchingservice.fixture.supply;
 
-import javax.inject.Inject;
-
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.Profile.DemandOrSupply;
 import info.matchingservice.dom.Profile.ProfileElementType;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.fixture.Dropdowns.DropDownHbo;
+import info.matchingservice.fixture.Dropdowns.DropDownMbo;
+import info.matchingservice.fixture.Dropdowns.DropDownWo;
 import info.matchingservice.fixture.actor.TestPersons;
+
+import javax.inject.Inject;
 
 public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElementsAbstract {
 
@@ -15,9 +18,13 @@ public class TestSupplyProfileElementsPersonProfiles extends SupplyProfileElemen
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-    	executeChild(new TestPersons(), executionContext);
-        executeChild(new TestSupplies(), executionContext);
-        executeChild(new TestSupplyProfiles(), executionContext);
+		executionContext.executeChild(this, new TestPersons());
+		executionContext.executeChild(this, new DropDownHbo());
+		executionContext.executeChild(this, new DropDownMbo());
+		executionContext.executeChild(this, new DropDownWo());
+		executionContext.executeChild(this, new TestSupplies());
+		executionContext.executeChild(this, new TestSupplyProfiles());
+
         
         //** frans **//
         

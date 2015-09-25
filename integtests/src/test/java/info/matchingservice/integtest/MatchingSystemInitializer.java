@@ -1,6 +1,6 @@
 package info.matchingservice.integtest;
 
-import domainapp.app.DomainAppAppManifest;
+import info.matchingservice.app.MatchingAppManifest;
 import org.apache.isis.core.commons.config.IsisConfiguration;
 import org.apache.isis.core.integtestsupport.IsisSystemForTest;
 import org.apache.isis.objectstore.jdo.datanucleus.IsisConfigurationForJdoIntegTests;
@@ -28,7 +28,7 @@ public class MatchingSystemInitializer {
     private static class MatchingSystemBuilder extends IsisSystemForTest.Builder {
         public MatchingSystemBuilder() {
             withLoggingAt(org.apache.log4j.Level.INFO);
-            with(new DomainAppAppManifest());
+            with(new MatchingAppManifest());
             with(testConfiguration());
 //            with(new DataNucleusPersistenceMechanismInstaller());
 

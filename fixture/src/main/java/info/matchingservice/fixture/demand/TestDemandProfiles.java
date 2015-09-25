@@ -1,6 +1,5 @@
 package info.matchingservice.fixture.demand;
 
-import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.fixture.actor.TestPersons;
@@ -13,8 +12,8 @@ public class TestDemandProfiles extends DemandProfileAbstract {
     protected void execute(ExecutionContext executionContext) {
         
         //preqs
-    	executeChild(new TestPersons(), executionContext);
-        executeChild(new TestDemands(), executionContext);
+        executionContext.executeChild(this, new TestPersons());
+            executionContext.executeChild(this, new TestDemands());
         
         //** frans **//
         

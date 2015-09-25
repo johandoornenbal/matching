@@ -18,42 +18,25 @@
  */
 package info.matchingservice.dom.Actor;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
-import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Where;
-import org.apache.isis.applib.query.QueryDefault;
-import org.apache.isis.applib.services.clock.ClockService;
-import org.apache.isis.applib.value.Blob;
-
-import org.isisaddons.module.security.dom.user.ApplicationUsers;
-
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.MatchingDomainService;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.services.clock.ClockService;
+import org.apache.isis.applib.value.Blob;
+import org.isisaddons.module.security.dom.user.ApplicationUsers;
+import org.joda.time.LocalDate;
+
+import javax.inject.Inject;
+import java.util.List;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 
 @DomainService(repositoryFor = Person.class, nature=NatureOfService.DOMAIN)
@@ -197,8 +180,10 @@ public class Persons extends MatchingDomainService<Person> {
         persist(person);
 
         // create first emailAddress contributed to Person copied from securityModule
-        final String emailAddress = applicationUsers.findUserByUsername(userName).getEmailAddress();
-        communicationChannels.createEmail(emailAddress, CommunicationChannelType.EMAIL_MAIN, person);
+        if (applicationUsers.findUserByUsername(userName) != null) {
+            final String emailAddress = applicationUsers.findUserByUsername(userName).getEmailAddress();
+            communicationChannels.createEmail(emailAddress, CommunicationChannelType.EMAIL_MAIN, person);
+        }
 
         return person;
     }

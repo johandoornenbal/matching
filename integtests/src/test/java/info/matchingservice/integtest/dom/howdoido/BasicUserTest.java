@@ -17,22 +17,17 @@
 
 package info.matchingservice.integtest.dom.howdoido;
 
-import javax.inject.Inject;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import org.isisaddons.module.security.dom.user.ApplicationUserStatus;
-import org.isisaddons.module.security.dom.user.ApplicationUsers;
-
-import info.matchingservice.dom.Howdoido.Api;
-import info.matchingservice.dom.Howdoido.BasicCategory;
-import info.matchingservice.dom.Howdoido.BasicTemplate;
-import info.matchingservice.dom.Howdoido.BasicUser;
-import info.matchingservice.dom.Howdoido.BasicUsers;
+import info.matchingservice.dom.Howdoido.*;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.security.MatchingRegularRoleAndPermissions;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.isisaddons.module.security.dom.user.ApplicationUserStatus;
+import org.isisaddons.module.security.dom.user.ApplicationUsers;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.inject.Inject;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
