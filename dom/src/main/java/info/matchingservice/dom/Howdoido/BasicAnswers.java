@@ -55,7 +55,7 @@ public class BasicAnswers extends MatchingDomainService<BasicAnswer> {
         BasicAnswerRating answer = newTransientInstance(BasicAnswerRating.class);
 
         answer.setBasicForm(form);
-        answer.setQuestionToAnswer(basicQuestion.getQuestion());
+        answer.setQuestionToAnswer(basicQuestion.getBasicQuestion());
         answer.setMatchingTrustlevel(trustLevel);
 
         persistIfNotAlready(answer);
@@ -72,7 +72,7 @@ public class BasicAnswers extends MatchingDomainService<BasicAnswer> {
         BasicAnswerRatingExplanation answer = newTransientInstance(BasicAnswerRatingExplanation.class);
 
         answer.setBasicForm(form);
-        answer.setQuestionToAnswer(basicQuestion.getQuestion());
+        answer.setQuestionToAnswer(basicQuestion.getBasicQuestion());
         answer.setMatchingTrustlevel(trustLevel);
 
         persistIfNotAlready(answer);

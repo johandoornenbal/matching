@@ -52,7 +52,7 @@ public class BasicQuestions extends MatchingDomainService<BasicQuestion> {
 
         BasicQuestion newQuestion = newTransientInstance(BasicQuestion.class);
 
-        newQuestion.setQuestion(question);
+        newQuestion.setBasicQuestion(question);
         newQuestion.setBasicTemplate(template);
         newQuestion.setBasicFormType(formType);
         newQuestion.setOwnedBy(template.getOwnedBy());

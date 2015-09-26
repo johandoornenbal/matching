@@ -67,7 +67,7 @@ public class BasicTemplateTest extends MatchingIntegrationTest {
 //            //then
 //            assertThat(basicTemplate.getBasicQuestions().size()).isEqualTo(2);
 //            basicQuestion = basicTemplate.getBasicQuestions().last();
-//            assertThat(basicQuestion.getQuestion()).isEqualTo(QUESTION);
+//            assertThat(basicQuestion.getBasicQuestion()).isEqualTo(QUESTION);
 //            assertThat(basicQuestion.getOwnedBy()).isEqualTo("user1");
 //            assertThat(basicQuestion.getBasicFormType()).isEqualTo(BasicRepresentationType.RATING);
 

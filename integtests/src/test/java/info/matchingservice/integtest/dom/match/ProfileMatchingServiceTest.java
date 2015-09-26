@@ -17,16 +17,6 @@
 
 package info.matchingservice.integtest.dom.match;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Match.ProfileComparison;
@@ -36,10 +26,14 @@ import info.matchingservice.dom.Profile.RequiredProfileElementRole;
 import info.matchingservice.fixture.MatchingDemoFixture;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.inject.Inject;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by jodo on 06/05/15.
@@ -53,19 +47,10 @@ public class ProfileMatchingServiceTest extends MatchingIntegrationTest {
     @Inject
     ProfileElements profileElements;
 
-    @BeforeClass
-    public static void setupTransactionalData() throws Exception {
-        scenarioExecution().install(new TeardownFixture());
-    }
-
     @Before
     public void setupData() {
-        runScript(new FixtureScript() {
-            @Override
-            protected void execute(ExecutionContext executionContext) {
-                executionContext.executeChild(this, new MatchingDemoFixture());
-            }
-        });
+        scenarioExecution().install(new TeardownFixture());
+        scenarioExecution().install(new MatchingDemoFixture());
     }
 
     public static class CheckRequiredProfileElements extends ProfileMatchingServiceTest {
