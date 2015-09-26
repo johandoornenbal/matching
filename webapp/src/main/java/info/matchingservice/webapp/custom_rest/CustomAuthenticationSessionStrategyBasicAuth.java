@@ -17,20 +17,18 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.codec.binary.Base64;
-
 import org.apache.isis.core.commons.authentication.AuthenticationSession;
+import org.apache.isis.core.runtime.authentication.AuthenticationManager;
 import org.apache.isis.core.runtime.authentication.AuthenticationRequestPassword;
 import org.apache.isis.core.runtime.authentication.exploration.AuthenticationRequestExploration;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.server.authentication.AuthenticationSessionStrategyBasicAuth;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by jodo on 17/05/15.
@@ -42,30 +40,19 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
     public CustomAuthenticationSessionStrategyBasicAuth() {
     }
 
-    public AuthenticationSession lookupValid(ServletRequest servletRequest, ServletResponse servletResponse) {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String authStr = httpServletRequest.getHeader("Authorization");
 
-        //TODO: does not work because there is no session for this request. Caught in a loop ;-)
-        //        final IsisPropertiesLookUpService isisPropertiesLookUpService =
-        //                IsisContext.getPersistenceSession().getServicesInjector().lookupService(IsisPropertiesLookUpService.class);
-        //        final String signUpUri = isisPropertiesLookUpService.SignUpUri();
-
-        //extension by yodo for signup through REST api
-        //TODO: parameterize '/simple/restful/register' (This is dependent on deploy!)
-        //TODO: parameterize '/simple/restful/authenticate' (This is dependent on deploy!)
-
+    public AuthenticationSession lookupValid(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        String digest = this.getBasicAuthDigest(httpServletRequest);
         String uri = httpServletRequest.getRequestURI();
-
 
 
         /********** ADAPT THESE ACCORDING TO DEPLOY ****************************************/
 
-                String compareUriTo = "/simple/restful/register";
-                String compareUriTo2 = "/simple/restful/authenticate";
+//                String compareUriTo = "/simple/restful/register";
+//                String compareUriTo2 = "/simple/restful/authenticate";
 
-//        String compareUriTo = "/restful/register";
-//        String compareUriTo2 = "/restful/authenticate";
+        String compareUriTo = "/restful/register";
+        String compareUriTo2 = "/restful/authenticate";
 
         /********** ADAPT THESE ACCORDING TO DEPLOY ****************************************/
 
@@ -91,34 +78,30 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
         }
         /********** AUTHENTICATE USER ****************************************/
 
-        AuthenticationRequestExploration request;
+        AuthenticationRequestExploration explorationRequest;
         switch (requestType) {
 
             case REGISTER:
-                request = new AuthenticationRequestExploration();
-                return IsisContext.getAuthenticationManager().authenticate(request);
+                explorationRequest = new AuthenticationRequestExploration();
+                return IsisContext.getAuthenticationManager().authenticate(explorationRequest);
 
             case AUTHENTICATE:
-                request = new AuthenticationRequestExploration();
-                return IsisContext.getAuthenticationManager().authenticate(request);
+                explorationRequest = new AuthenticationRequestExploration();
+                return IsisContext.getAuthenticationManager().authenticate(explorationRequest);
 
             case OTHER:
-                /* default original code */
-                if (authStr != null && authStr.startsWith("Basic ")) {
-                    String digest = authStr.substring(6);
-                    String userAndPassword = new String((new Base64()).decode(digest.getBytes()));
-                    Matcher matcher = USER_AND_PASSWORD_REGEX.matcher(userAndPassword);
-                    if (!matcher.matches()) {
-                        return null;
-                    } else {
-                        String user = matcher.group(1);
-                        String password = matcher.group(2);
-                        AuthenticationSession authSession = this.getAuthenticationManager().authenticate(new AuthenticationRequestPassword(user, password));
-                        return authSession;
-                    }
 
-                } else {
+                /* default original code */
+                String userAndPassword = this.unencoded(digest);
+                Matcher matcher = USER_AND_PASSWORD_REGEX.matcher(userAndPassword);
+                if(!matcher.matches()) {
                     return null;
+                } else {
+                    String user = matcher.group(1);
+                    String password = matcher.group(2);
+                    AuthenticationRequestPassword request = new AuthenticationRequestPassword(user, password);
+                    AuthenticationSession authSession = this.getAuthenticationManager().authenticate(request);
+                    return authSession;
                 }
                 /* default original code */
 
@@ -126,6 +109,19 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
                 return null;
         }
 
+    }
+
+    String getBasicAuthDigest(HttpServletRequest httpServletRequest) {
+        String authStr = httpServletRequest.getHeader("Authorization");
+        return authStr != null && authStr.startsWith("Basic ")?authStr.substring("Basic ".length()):null;
+    }
+
+    protected String unencoded(String encodedDigest) {
+        return new String((new Base64()).decode(encodedDigest.getBytes()));
+    }
+
+    protected AuthenticationManager getAuthenticationManager() {
+        return IsisContext.getAuthenticationManager();
     }
 
     private enum RequestType {

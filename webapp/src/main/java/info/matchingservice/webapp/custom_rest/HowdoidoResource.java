@@ -17,15 +17,9 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
+import info.matchingservice.dom.Howdoido.*;
+import info.matchingservice.dom.Match.ProfileMatches;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
@@ -33,13 +27,9 @@ import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
-import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
-import info.matchingservice.dom.Howdoido.Api;
-import info.matchingservice.dom.Howdoido.BasicQuestion;
-import info.matchingservice.dom.Howdoido.BasicRequest;
-import info.matchingservice.dom.Howdoido.BasicTemplate;
-import info.matchingservice.dom.Howdoido.BasicUser;
-import info.matchingservice.dom.Match.ProfileMatches;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Created by jodo on 15/05/15.
@@ -163,7 +153,7 @@ public class HowdoidoResource extends ResourceAbstract {
 
         JsonRepresentation questionmap = JsonRepresentation.newMap();
 
-        questionmap.mapPut("question", question.getQuestion());
+        questionmap.mapPut("question", question.getBasicQuestion());
         questionmap.mapPut("formType", question.getBasicFormType().toString());
 
         return questionmap;
