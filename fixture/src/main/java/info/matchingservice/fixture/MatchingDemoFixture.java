@@ -1,7 +1,5 @@
 package info.matchingservice.fixture;
 
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-
 import info.matchingservice.fixture.Dropdowns.DropDownHbo;
 import info.matchingservice.fixture.Dropdowns.DropDownMbo;
 import info.matchingservice.fixture.Dropdowns.DropDownWo;
@@ -18,51 +16,15 @@ import info.matchingservice.fixture.assessment.AssessmentsForRembrandtFixture;
 import info.matchingservice.fixture.communicationChannels.TestAddress;
 import info.matchingservice.fixture.communicationChannels.TestEmails;
 import info.matchingservice.fixture.communicationChannels.TestPhone;
-import info.matchingservice.fixture.demand.DemandProfileElementsForFrans;
-import info.matchingservice.fixture.demand.DemandProfileElementsForMichiel;
-import info.matchingservice.fixture.demand.DemandProfileElementsForRembrandt;
-import info.matchingservice.fixture.demand.TestDemandProfiles;
-import info.matchingservice.fixture.demand.TestDemands;
-import info.matchingservice.fixture.howdoido.BasicQuestionFixtures;
-import info.matchingservice.fixture.howdoido.BasicRequestFixtures;
-import info.matchingservice.fixture.howdoido.BasicSubCategoryFixtures;
-import info.matchingservice.fixture.howdoido.BasicTemplateFixtures;
-import info.matchingservice.fixture.howdoido.BasicTopCategoryFixtures;
-import info.matchingservice.fixture.howdoido.BasicUserFixtures;
-import info.matchingservice.fixture.howdoido.EvenMoreBasicSubCategoryFixtures;
-import info.matchingservice.fixture.howdoido.MoreBasicSubCategoryFixtures;
+import info.matchingservice.fixture.demand.*;
+import info.matchingservice.fixture.howdoido.*;
 import info.matchingservice.fixture.match.ProfileMatchesForTesting;
-import info.matchingservice.fixture.security.MatchingAdminRoleAndPermissions;
-import info.matchingservice.fixture.security.MatchingRegularRoleAndPermissions;
-import info.matchingservice.fixture.security.antoniUser;
-import info.matchingservice.fixture.security.antoniUser_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.fransUser;
-import info.matchingservice.fixture.security.fransUser_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.gerardUser;
-import info.matchingservice.fixture.security.gerardUser_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.howdoidoUser1_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.howdoidoUser2_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.howdoidoUser3_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.howdoidoUser4_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.howdoidoUser5_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.howdoidoUsers;
-import info.matchingservice.fixture.security.jeanneUser;
-import info.matchingservice.fixture.security.jeanneUser_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.michielUser;
-import info.matchingservice.fixture.security.michielUser_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.rembrandtUser;
-import info.matchingservice.fixture.security.rembrandtUser_Has_MatchingRegularRole;
-import info.matchingservice.fixture.security.xtalusAdminUser;
-import info.matchingservice.fixture.security.xtalusAdminUser_Has_MatchingAdminRole;
+import info.matchingservice.fixture.security.*;
 import info.matchingservice.fixture.supply.TestSupplies;
 import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
-import info.matchingservice.fixture.tag.TagCategoriesFixture;
-import info.matchingservice.fixture.tag.TagsFixture;
-import info.matchingservice.fixture.tag.TagsForFrans;
-import info.matchingservice.fixture.tag.TagsForGerard;
-import info.matchingservice.fixture.tag.TagsForMichiel;
-import info.matchingservice.fixture.tag.TagsForRembrandt;
+import info.matchingservice.fixture.tag.*;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 public class MatchingDemoFixture extends FixtureScript {
     
@@ -84,6 +46,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executionContext.executeChild(this, new BasicTemplateFixtures());
         executionContext.executeChild(this, new BasicQuestionFixtures());
         executionContext.executeChild(this, new BasicRequestFixtures());
+        executionContext.executeChild(this, new BasicFormFixtures());
+        executionContext.executeChild(this, new BasicRatingFixtures());
 
         executionContext.executeChild(this, new fransUser());
         executionContext.executeChild(this, new rembrandtUser());

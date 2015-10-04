@@ -17,31 +17,16 @@
 
 package info.matchingservice.dom.Howdoido;
 
+import info.matchingservice.dom.Howdoido.Interfaces.*;
+import info.matchingservice.dom.MatchingDomainObject;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.util.TitleBuffer;
+import org.joda.time.LocalDateTime;
+
 import javax.inject.Inject;
 import javax.jdo.JDOHelper;
-import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.VersionStrategy;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.util.TitleBuffer;
-
-import info.matchingservice.dom.Howdoido.Interfaces.Form;
-import info.matchingservice.dom.Howdoido.Interfaces.Provider;
-import info.matchingservice.dom.Howdoido.Interfaces.Receiver;
-import info.matchingservice.dom.Howdoido.Interfaces.Request;
-import info.matchingservice.dom.Howdoido.Interfaces.Template;
-import info.matchingservice.dom.MatchingDomainObject;
+import javax.jdo.annotations.*;
 
 /**
  * Created by jodo on 04/09/15.
@@ -160,6 +145,21 @@ public class BasicRequest extends MatchingDomainObject<BasicRequest> implements 
 
     public void setRequestDenied(final Boolean requestDenied) {
         this.requestDenied = requestDenied;
+    }
+    //endregion
+
+
+    //region > date (property)
+    private LocalDateTime dateTime;
+
+    @MemberOrder(sequence = "6")
+    @Column(allowsNull = "true")
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(final LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
     //endregion
 

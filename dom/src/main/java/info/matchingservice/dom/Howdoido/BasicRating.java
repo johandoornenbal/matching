@@ -17,28 +17,14 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.UUID;
-
-import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.VersionStrategy;
-
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.util.TitleBuffer;
-
-import info.matchingservice.dom.Howdoido.Interfaces.Category;
-import info.matchingservice.dom.Howdoido.Interfaces.Provider;
-import info.matchingservice.dom.Howdoido.Interfaces.Rate;
-import info.matchingservice.dom.Howdoido.Interfaces.Rating;
-import info.matchingservice.dom.Howdoido.Interfaces.Receiver;
+import info.matchingservice.dom.Howdoido.Interfaces.*;
 import info.matchingservice.dom.MatchingDomainObject;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.util.TitleBuffer;
+import org.joda.time.LocalDateTime;
+
+import javax.jdo.annotations.*;
+import java.util.UUID;
 
 /**
  * Created by jodo on 04/09/15.
@@ -160,6 +146,20 @@ public class BasicRating extends MatchingDomainObject<BasicRating> implements Ra
 
     public void setBasicCategory(final BasicCategory basicCategory) {
         this.basicCategory = basicCategory;
+    }
+    //endregion
+
+    //region > date (property)
+    private LocalDateTime dateTime;
+
+    @MemberOrder(sequence = "5")
+    @Column(allowsNull = "true")
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(final LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
     //endregion
 

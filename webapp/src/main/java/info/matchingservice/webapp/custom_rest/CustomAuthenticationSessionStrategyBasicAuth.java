@@ -48,11 +48,11 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
 
         /********** ADAPT THESE ACCORDING TO DEPLOY ****************************************/
 
-//                String compareUriTo = "/simple/restful/register";
-//                String compareUriTo2 = "/simple/restful/authenticate";
+                String compareUriTo = "/simple/restful/register";
+                String compareUriTo2 = "/simple/restful/authenticate";
 
-        String compareUriTo = "/restful/register";
-        String compareUriTo2 = "/restful/authenticate";
+//        String compareUriTo = "/restful/register";
+//        String compareUriTo2 = "/restful/authenticate";
 
         /********** ADAPT THESE ACCORDING TO DEPLOY ****************************************/
 

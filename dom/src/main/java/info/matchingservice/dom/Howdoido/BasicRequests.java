@@ -17,13 +17,13 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
-
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 
-import info.matchingservice.dom.MatchingDomainService;
+import org.joda.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by jodo on 31/08/15.
@@ -53,6 +53,7 @@ public class BasicRequests extends MatchingDomainService<BasicRequest> {
         newBasicRequest.setBasicTemplate(template);
         newBasicRequest.setRequestDenied(false);
         newBasicRequest.setRequestHonoured(false);
+        newBasicRequest.setDateTime(LocalDateTime.now());
 
         persistIfNotAlready(newBasicRequest);
         getContainer().flush(); /* Needed for getOID() on BasicRequest; nullpointer otherwise*/

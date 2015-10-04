@@ -124,6 +124,34 @@ public class HowdoidoResource extends ResourceAbstract {
         }
         activeUser.mapPut("receivedRequests", receivedRequests);
 
+        // given feedback
+        JsonRepresentation givenFeedback = JsonRepresentation.newArray();
+        for (BasicForm form : basicUser.getGivenFeedback()) {
+            givenFeedback.arrayAdd(basicFormRepresentation(form));
+        }
+        activeUser.mapPut("givenFeedback", givenFeedback);
+
+        // given ratings
+        JsonRepresentation givenRatings = JsonRepresentation.newArray();
+        for (BasicRating rating : basicUser.getMyGivenRatings()) {
+            givenRatings.arrayAdd(basicRatingRepresentation(rating));
+        }
+        activeUser.mapPut("givenRatings", givenRatings);
+
+        // received ratings
+        JsonRepresentation receivedRatings = JsonRepresentation.newArray();
+        for (BasicRating rating : basicUser.getMyReceivedRatings()) {
+            receivedRatings.arrayAdd(basicRatingRepresentation(rating));
+        }
+        activeUser.mapPut("receivedRatings", receivedRatings);
+
+        // received feedback
+        JsonRepresentation receivedFeedback = JsonRepresentation.newArray();
+        for (BasicForm form : basicUser.getReceivedFeedback()) {
+            receivedFeedback.arrayAdd(basicFormRepresentation(form));
+        }
+        activeUser.mapPut("receivedFeedback", receivedFeedback);
+
         // And finally: wrap it all up...
         all.mapPut("user",activeUser);
 
@@ -167,6 +195,7 @@ public class HowdoidoResource extends ResourceAbstract {
         requestmap.mapPut("URI", Utils.toObjectURI(request.getOID()));
         requestmap.mapPut("requestOwnerName", request.getRequestOwner().getName());
         requestmap.mapPut("requestOwnerEmail", request.getRequestOwner().getEmail());
+        requestmap.mapPut("dateTime", request.getDateTime().toString());
         requestmap.mapPut("requestTemplateURI", Utils.toObjectURI(request.getBasicTemplate().getOID()));
         JsonRepresentation questions = JsonRepresentation.newArray();
         for (BasicQuestion question : request.getBasicTemplate().getBasicQuestions()) {
@@ -175,6 +204,75 @@ public class HowdoidoResource extends ResourceAbstract {
         requestmap.mapPut("questions",questions);
 
         return requestmap;
+    }
+
+    private JsonRepresentation basicFormRepresentation(BasicForm form) {
+
+        JsonRepresentation formmap = JsonRepresentation.newMap();
+
+        formmap.mapPut("id", Utils.toApiID(form.getOID()));
+        formmap.mapPut("URI", Utils.toObjectURI(form.getOID()));
+        formmap.mapPut("formCreator", form.getFormCreator().title());
+        formmap.mapPut("formCreatorId", Utils.toApiID(form.getFormCreator().getOID()));
+        formmap.mapPut("formCreatorURI", Utils.toObjectURI(form.getFormCreator().getOID()));
+        formmap.mapPut("formReceiver", form.getFormReceiver().title());
+        formmap.mapPut("formReceiverId", Utils.toApiID(form.getFormReceiver().getOID()));
+        formmap.mapPut("formReceiverURI", Utils.toObjectURI(form.getFormReceiver().getOID()));
+        formmap.mapPut("basicTemplateId", Utils.toApiID(form.getBasicTemplate().getOID()));
+        formmap.mapPut("basicTemplateURI", Utils.toObjectURI(form.getBasicTemplate().getOID()));
+        formmap.mapPut("dateTime", form.getDateTime().toString());
+        formmap.mapPut("formRated", form.getFormRated());
+        formmap.mapPut("anonymous", form.isAnonymous());
+        formmap.mapPut("published", form.getPublished());
+        JsonRepresentation answers = JsonRepresentation.newArray();
+        for (BasicAnswer answer : form.getAnswers()) {
+            answers.arrayAdd(basicAnswerRepresentation(answer));
+        }
+        formmap.mapPut("answers", answers);
+
+        return formmap;
+    }
+
+    private JsonRepresentation basicAnswerRepresentation(BasicAnswer answer) {
+
+        JsonRepresentation answermap = JsonRepresentation.newMap();
+
+        answermap.mapPut("title", answer.title().toString());
+        answermap.mapPut("questionToAnswer", answer.getQuestionToAnswer().toString());
+        answermap.mapPut("matchingTrustlevel", answer.getMatchingTrustlevel().toString());
+        try {
+            BasicAnswerRating answerRating = (BasicAnswerRating) answer;
+            answermap.mapPut("rating", answerRating.getRating());
+
+        } catch (Exception e) {
+            // do nothing
+        }
+        try {
+            BasicAnswerRatingExplanation answerRatingExplanation = (BasicAnswerRatingExplanation) answer;
+            answermap.mapPut("rating", answerRatingExplanation.getRatingValue());
+            answermap.mapPut("explanation", answerRatingExplanation.getExplanation().toString());
+
+        } catch (Exception e) {
+            // do nothing
+        }
+        return answermap;
+    }
+
+    private JsonRepresentation basicRatingRepresentation(BasicRating rating) {
+
+        JsonRepresentation ratingmap = JsonRepresentation.newMap();
+
+        ratingmap.mapPut("dateTime", rating.getDateTime().toString());
+        ratingmap.mapPut("category", rating.getBasicCategory().getName());
+        ratingmap.mapPut("feedbackRating", rating.getFeedbackRating().toString());
+        ratingmap.mapPut("creator", rating.getCreator().title().toString());
+        ratingmap.mapPut("creatorId", Utils.toApiID(rating.getCreator().getOID()));
+        ratingmap.mapPut("creatorURI", Utils.toObjectURI(rating.getCreator().getOID()));
+        ratingmap.mapPut("receiver", rating.getReceiver().title().toString());
+        ratingmap.mapPut("receiverId", Utils.toApiID(rating.getReceiver().getOID()));
+        ratingmap.mapPut("receiverURI", Utils.toObjectURI(rating.getReceiver().getOID()));
+
+        return ratingmap;
     }
 
     private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);

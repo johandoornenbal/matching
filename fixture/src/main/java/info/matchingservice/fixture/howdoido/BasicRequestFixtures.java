@@ -17,9 +17,9 @@
 
 package info.matchingservice.fixture.howdoido;
 
-import javax.inject.Inject;
-
 import info.matchingservice.dom.Howdoido.BasicUsers;
+
+import javax.inject.Inject;
 
 /**
  * Created by jodo on 03/09/15.
@@ -39,6 +39,13 @@ public class BasicRequestFixtures extends BasicRequestAbstract {
                 basicUsers.findBasicUserByName("user1"),
                 basicUsers.findBasicUserByName("user2"),
                 basicUsers.findBasicUserByName("user1").getMyTemplates().first(),
+                executionContext
+        );
+
+        createBasicRequest(
+                basicUsers.findBasicUserByName("user2"),
+                basicUsers.findBasicUserByName("user1"),
+                basicUsers.findBasicUserByName("user2").getMyTemplates().first(),
                 executionContext
         );
 

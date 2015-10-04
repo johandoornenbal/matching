@@ -17,15 +17,15 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
-import java.util.UUID;
-
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDateTime;
 
-import info.matchingservice.dom.MatchingDomainService;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by jodo on 31/08/15.
@@ -94,6 +94,7 @@ public class BasicRatings extends MatchingDomainService<BasicRating> {
         newRating.setFeedbackRating(rating);
         newRating.setBasicCategory(category);
         newRating.setUniqueItemId(uuid);
+        newRating.setDateTime(LocalDateTime.now());
 
         persistIfNotAlready(newRating);
 

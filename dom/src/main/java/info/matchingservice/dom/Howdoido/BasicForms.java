@@ -17,17 +17,16 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.TrustLevel;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDateTime;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.TrustLevel;
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by jodo on 31/08/15.
@@ -81,6 +80,7 @@ public class BasicForms extends MatchingDomainService<BasicForm> {
         newBasicForm.setBasicTemplate(template);
         newBasicForm.setFormRated(false);
         newBasicForm.setPublished(false);
+        newBasicForm.setDateTime(LocalDateTime.now());
 
         persistIfNotAlready(newBasicForm);
 

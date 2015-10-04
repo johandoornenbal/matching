@@ -17,18 +17,12 @@
 
 package info.matchingservice.dom.Howdoido;
 
+import info.matchingservice.dom.Howdoido.Interfaces.RepresentationType;
+import org.apache.isis.applib.annotation.*;
+
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
-
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.Where;
-
-import info.matchingservice.dom.Howdoido.Interfaces.RepresentationType;
 
 /**
  * Created by jodo on 05/09/15.
@@ -49,6 +43,10 @@ public class BasicAnswerRating extends BasicAnswer {
 
     public void setRating(final Rating rating) {
         this.rating = rating;
+    }
+
+    public Integer getRatingValue() {
+        return (rating == null) ? null : rating.ratingValue();
     }
 
     public BasicAnswer updateRating(
@@ -91,6 +89,7 @@ public class BasicAnswerRating extends BasicAnswer {
         Integer ratingValue() {
             return this.ratingValue;
         }
+
     }
 
 

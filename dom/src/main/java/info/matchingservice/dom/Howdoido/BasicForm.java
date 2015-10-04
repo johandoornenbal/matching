@@ -17,36 +17,16 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
+import info.matchingservice.dom.Howdoido.Interfaces.*;
+import info.matchingservice.dom.MatchingDomainObject;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.util.TitleBuffer;
+import org.joda.time.LocalDateTime;
 
 import javax.inject.Inject;
-import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.VersionStrategy;
-
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.util.TitleBuffer;
-
-import info.matchingservice.dom.Howdoido.Interfaces.Answer;
-import info.matchingservice.dom.Howdoido.Interfaces.Form;
-import info.matchingservice.dom.Howdoido.Interfaces.Provider;
-import info.matchingservice.dom.Howdoido.Interfaces.Rate;
-import info.matchingservice.dom.Howdoido.Interfaces.Rating;
-import info.matchingservice.dom.Howdoido.Interfaces.Receiver;
-import info.matchingservice.dom.Howdoido.Interfaces.Template;
-import info.matchingservice.dom.MatchingDomainObject;
+import javax.jdo.JDOHelper;
+import javax.jdo.annotations.*;
+import java.util.List;
 
 /**
  * Created by jodo on 04/09/15.
@@ -89,6 +69,12 @@ public class BasicForm extends MatchingDomainObject<BasicForm> implements Form {
 
     public BasicForm() {
         super("requestOwner, requestReceiver, basicTemplate");
+    }
+
+
+    @Action(semantics = SemanticsOf.SAFE)
+    public String getOID() {
+        return JDOHelper.getObjectId(this).toString();
     }
 
     public String title() {
@@ -192,6 +178,20 @@ public class BasicForm extends MatchingDomainObject<BasicForm> implements Form {
             return getPublished() ? false : true;
         }
         return true;
+    }
+    //endregion
+
+    //region > date (property)
+    private LocalDateTime dateTime;
+
+    @MemberOrder(sequence = "6")
+    @Column(allowsNull = "true")
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(final LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
     //endregion
 
