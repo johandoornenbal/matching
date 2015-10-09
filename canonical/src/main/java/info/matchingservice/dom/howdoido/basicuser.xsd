@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Yodo Int. Projects and Consultancy
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<xs:schema targetNamespace="http://canonical.matchingservice.info/basicuser.xsd"
+            elementFormDefault="qualified"
+            xmlns="http://canonical.matchingservice.info/basicuser.xsd"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:common="http://isis.apache.org/schema/common"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://isis.apache.org/schema/common http://isis.apache.org/schema/common/common.xsd"
+        >
+
+    <xs:import namespace="http://isis.apache.org/schema/common" schemaLocation="../../../../org/apache/isis/schema/common/common-1.0.xsd"/>
+
+    <xs:element name="basicUserDto">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="oid" type="common:oidDto"/>
+                <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="email" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+</xs:schema>
