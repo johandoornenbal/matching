@@ -64,6 +64,11 @@
             <version>${isis-module-security.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.isisaddons.module.publishmq</groupId>
+            <artifactId>isis-module-publishmq-dom-servicespi</artifactId>
+        </dependency>
+
         <!-- Bytecode libraries (for mocking) -->
         <dependency>
             <groupId>org.objenesis</groupId>

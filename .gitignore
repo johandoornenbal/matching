@@ -27,3 +27,8 @@ isis.properties
 
 isis.properties
 persistor.properties
+integtests/activemq-data/broker/KahaDB/db.data
+integtests/activemq-data/broker/KahaDB/db.redo
+webapp/activemq-data/broker/KahaDB/db.data
+webapp/activemq-data/broker/KahaDB/db.redo
+webapp/activemq-data/broker/KahaDB/lock

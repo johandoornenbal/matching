@@ -23,6 +23,7 @@ import org.apache.isis.applib.AppManifest;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.isisaddons.module.security.SecurityModule;
 import org.isisaddons.services.AddonServicesDomainModule;
+import org.isisaddons.module.publishmq.PublishMqModule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +40,7 @@ public class MatchingAppManifest implements AppManifest {
                 MatchingFixtureModule.class,
                 MatchingAppModule.class,
                 AddonServicesDomainModule.class,
+                PublishMqModule.class,
                 SecurityModule.class);
     }
 
