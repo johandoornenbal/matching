@@ -17,29 +17,12 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import java.io.InputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.apache.oltu.oauth2.client.OAuthClient;
-import org.apache.oltu.oauth2.client.URLConnectionClient;
-import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
-import org.apache.oltu.oauth2.client.response.GitHubTokenResponse;
-import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
-import org.apache.oltu.oauth2.common.OAuthProviderType;
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.message.types.GrantType;
-
+import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.AppUserRegistrationService;
+import info.matchingservice.dom.Howdoido.Api;
+import info.matchingservice.dom.IsisPropertiesLookUpService;
+import info.matchingservice.dom.TestFacebookObjects.FbTokens;
+import info.matchingservice.dom.TestLinkedInObjects.LinkedInTokens;
 import org.apache.isis.applib.services.userreg.UserDetails;
 import org.apache.isis.applib.services.userreg.UserRegistrationService;
 import org.apache.isis.core.runtime.system.context.IsisContext;
@@ -49,15 +32,24 @@ import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
 import org.apache.isis.viewer.restfulobjects.rendering.util.Util;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
-
+import org.apache.oltu.oauth2.client.OAuthClient;
+import org.apache.oltu.oauth2.client.URLConnectionClient;
+import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.GitHubTokenResponse;
+import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
+import org.apache.oltu.oauth2.common.OAuthProviderType;
+import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
+import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.isisaddons.module.security.dom.user.ApplicationUserStatus;
 import org.isisaddons.module.security.dom.user.ApplicationUsers;
 
-import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.AppUserRegistrationService;
-import info.matchingservice.dom.IsisPropertiesLookUpService;
-import info.matchingservice.dom.TestFacebookObjects.FbTokens;
-import info.matchingservice.dom.TestLinkedInObjects.LinkedInTokens;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by jodo on 15/05/15.
@@ -223,6 +215,91 @@ public class UserRegistrationResource extends ResourceAbstract {
         }
     }
 
+    @POST
+    @Path("/hdid")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response objectHdid(InputStream object) {
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+        if(!argRepr.isMap()) {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
+        } else {
+
+            String id1 = "email";
+            JsonRepresentation propertyEmail = argRepr.getRepresentation(id1, new Object[0]);
+            String email = propertyEmail.getString("");
+
+            //input validation
+
+            boolean error = false;
+            String errorString = new String();
+            errorString = "";
+
+            //email should be conform REGEX
+            Matcher matcher = EMAIL_REGEX.matcher(email);
+            if (!matcher.matches()) {
+                if (error) {
+                    errorString = errorString.concat(", ");
+                }
+                errorString = errorString.concat("\"email\" : \"NO_VALID_EMAIL_ADDRESS\"");
+                error = true;
+            }
+
+            if (error) {
+                String responseMessage = new String();
+                responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
+                responseMessage = responseMessage.concat(errorString);
+                responseMessage = responseMessage.concat("}}");
+                return Response.status(200).entity(responseMessage).build();
+            }
+
+            //Check for existing username / email
+            final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
+
+            if (applicationUsers.findUserByEmail(email) != null) {
+                if (error) {
+                    errorString = errorString.concat(", ");
+                }
+                errorString = errorString.concat("\"email\" : \"ALREADY_REGISTERED_UNDER_OTHER_USERNAME\"");
+                error = true;
+            }
+
+            if (error) {
+                String responseMessage = new String();
+                responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
+                responseMessage = responseMessage.concat(errorString);
+                responseMessage = responseMessage.concat("}}");
+                return Response.status(200).entity(responseMessage).build();
+            }
+
+            //Register user
+
+            final Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
+
+            api.findOrRegisterBasicUser(email);
+
+            // Check if the user is registered correctly and enabled
+            if (applicationUsers.findUserByUsername(email) != null
+                    &&
+                    applicationUsers.findUserByUsername(email).getStatus().equals(ApplicationUserStatus.ENABLED)
+                    ) {
+
+                return Response.status(200).entity("{\"success\" : 1}").build();
+
+            } else {
+
+                errorString = errorString.concat("\"email\" : \"ALREADY_REGISTERED_UNDER_OTHER_USERNAME\"");
+                error = true;
+//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"unkown error: user with username '" + userName + "' NOT registered\"}").build();
+                String responseMessage = new String();
+                responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
+                responseMessage = responseMessage.concat(errorString);
+                responseMessage = responseMessage.concat("}}");
+                return Response.status(200).entity(responseMessage).build();
+            }
+
+        }
+    }
 
     @DELETE
     @Path("/")

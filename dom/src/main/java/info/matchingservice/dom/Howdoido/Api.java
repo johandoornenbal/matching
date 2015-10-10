@@ -17,19 +17,11 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
 
 import javax.inject.Inject;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.SemanticsOf;
+import java.util.List;
 
 /**
  * Created by jodo on 30/08/15.
@@ -69,6 +61,19 @@ public class Api {
 
         return null;
     }
+    //endregion
+
+    //region > findOrRegisterBasicUser (method)
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    public BasicUser findOrRegisterBasicUser(
+            @ParameterLayout(named = "email")
+            @Parameter(regexPattern ="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")
+            final String email) {
+
+        return basicUsers.findOrCreateNewBasicUserByEmail(email);
+    }
+
     //endregion
 
     //region > createTopCategory (method)

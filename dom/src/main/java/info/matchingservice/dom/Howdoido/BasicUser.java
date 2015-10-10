@@ -124,6 +124,8 @@ public class BasicUser extends MatchingSecureMutableObject implements Provider, 
         setEmail(email.toLowerCase());
         // set email also for user account
         applicationUsers.findUserByUsername(getOwnedBy()).setEmailAddress(email.toLowerCase());
+        // password will not be reset!
+        informUser("Your password remains the same - change it if you want to match your email");
         return this;
     }
 

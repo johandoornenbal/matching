@@ -45,6 +45,21 @@ public class MatchingRegularRoleAndPermissions extends AbstractRoleAndPermission
                 ApplicationPermissionRule.VETO,
                 ApplicationPermissionMode.VIEWING,
                 Configs.class);
+        newClassPermissions(ApplicationPermissionRule.ALLOW,
+                ApplicationPermissionMode.CHANGING,
+                org.isisaddons.module.security.app.user.MeService.class
+        );
+        newClassPermissions(ApplicationPermissionRule.ALLOW,
+                ApplicationPermissionMode.VIEWING,
+                org.isisaddons.module.security.dom.user.ApplicationUser.class
+        );
+        newMemberPermissions(
+                ApplicationPermissionRule.ALLOW,
+                ApplicationPermissionMode.CHANGING,
+                org.isisaddons.module.security.dom.user.ApplicationUser.class,
+                "updatePassword"
+        );
+
     }
 
 }
