@@ -17,51 +17,20 @@
 
 package info.matchingservice.dom.Howdoido;
 
+import com.google.common.base.Objects;
+import info.matchingservice.dom.Howdoido.Interfaces.*;
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.util.TitleBuffer;
+import org.isisaddons.module.security.dom.user.ApplicationUsers;
+
+import javax.inject.Inject;
+import javax.jdo.JDOHelper;
+import javax.jdo.annotations.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import javax.inject.Inject;
-import javax.jdo.JDOHelper;
-import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.VersionStrategy;
-
-import com.google.common.base.Objects;
-
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.DomainObjectLayout;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Where;
-import org.apache.isis.applib.util.TitleBuffer;
-
-import org.isisaddons.module.security.dom.user.ApplicationUsers;
-
-import info.matchingservice.dom.Howdoido.Interfaces.Category;
-import info.matchingservice.dom.Howdoido.Interfaces.Contact;
-import info.matchingservice.dom.Howdoido.Interfaces.Form;
-import info.matchingservice.dom.Howdoido.Interfaces.Party;
-import info.matchingservice.dom.Howdoido.Interfaces.Provider;
-import info.matchingservice.dom.Howdoido.Interfaces.Rating;
-import info.matchingservice.dom.Howdoido.Interfaces.Receiver;
-import info.matchingservice.dom.Howdoido.Interfaces.Request;
-import info.matchingservice.dom.Howdoido.Interfaces.Template;
-import info.matchingservice.dom.Howdoido.Interfaces.TrustLevel;
-import info.matchingservice.dom.MatchingSecureMutableObject;
 
 /**
  * Created by jodo on 30/08/15.
@@ -104,7 +73,7 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
                         + "FROM info.matchingservice.dom.Howdoido.BasicUser "
                         + "WHERE ownedBy == :ownedBy")
 })
-@DomainObject(autoCompleteRepository = BasicUsers.class, editing = Editing.DISABLED)
+@DomainObject(autoCompleteRepository = BasicUsers.class, editing = Editing.DISABLED, objectType = "BASIC_USER")
 @DomainObjectLayout()
 public class BasicUser extends MatchingSecureMutableObject implements Provider, Receiver {
 

@@ -31,9 +31,11 @@
     <build>
         <resources>
             <resource>
+                <filtering>false</filtering>
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
+                <filtering>false</filtering>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**</include>
@@ -46,6 +48,11 @@
     </build>
 
 	<dependencies>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>matchingservice-canonical</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.isis.core</groupId>
@@ -64,10 +71,10 @@
             <version>${isis-module-security.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.isisaddons.module.publishmq</groupId>
-            <artifactId>isis-module-publishmq-dom-servicespi</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.isisaddons.module.publishmq</groupId>-->
+            <!--<artifactId>isis-module-publishmq-dom-servicespi</artifactId>-->
+        <!--</dependency>-->
 
         <!-- Bytecode libraries (for mocking) -->
         <dependency>

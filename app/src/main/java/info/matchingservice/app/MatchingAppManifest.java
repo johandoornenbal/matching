@@ -17,12 +17,10 @@
 
 package info.matchingservice.app;
 
-import info.matchingservice.canonicalmappings.MatchingCanonicalMappingsModule;
 import info.matchingservice.dom.MatchingDomainModule;
 import info.matchingservice.fixture.MatchingFixtureModule;
 import org.apache.isis.applib.AppManifest;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.isisaddons.module.publishmq.PublishMqModule;
 import org.isisaddons.module.security.SecurityModule;
 import org.isisaddons.services.AddonServicesDomainModule;
 
@@ -40,9 +38,7 @@ public class MatchingAppManifest implements AppManifest {
                 MatchingDomainModule.class,
                 MatchingFixtureModule.class,
                 MatchingAppModule.class,
-                MatchingCanonicalMappingsModule.class,
                 AddonServicesDomainModule.class,
-                PublishMqModule.class,
                 SecurityModule.class);
     }
 

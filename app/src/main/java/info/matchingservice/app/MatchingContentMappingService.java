@@ -14,7 +14,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package info.matchingservice.canonicalmappings;
+package info.matchingservice.app;
 
 import info.matchingservice.dom.Howdoido.BasicUser;
 import info.matchingservice.dom.howdoido.BasicUserDto;
@@ -40,6 +40,7 @@ public class MatchingContentMappingService implements ContentMappingService {
 
     private MapperFactory mapperFactory;
 
+    @Programmatic
     @PostConstruct
     public void init() {
         mapperFactory = new DefaultMapperFactory.Builder().build();

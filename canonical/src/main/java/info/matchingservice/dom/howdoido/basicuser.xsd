@@ -37,5 +37,11 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:complexType name="oidDto">
+        <xs:sequence>
+            <xs:element name="objectType" type="xs:string"/>
+            <xs:element name="objectIdentifier" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
 
 </xs:schema>
