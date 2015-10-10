@@ -34,10 +34,15 @@
         <isis.version>1.9.0</isis.version>
 
         <isis-module-security.version>1.9.0</isis-module-security.version>
+        <orika-core.version>1.4.5</orika-core.version>
+        <jbcrypt.version>0.3m</jbcrypt.version>
+        <assertj-core.version>2.0.0</assertj-core.version>
+        <isis-metamodel-paraname8.version>1.9.0</isis-metamodel-paraname8.version>
+        <quartz-scheduler.version>2.2.1</quartz-scheduler.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <assertj-core.version>2.0.0</assertj-core.version>
+
     </properties>
 
     <repositories>
@@ -366,7 +371,6 @@
                 <artifactId>matchingservice-app</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
-
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>matchingservice-dom</artifactId>
@@ -382,14 +386,43 @@
                 <artifactId>matchingservice-webapp</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
-
-
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>matchingservice-canonical</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
 
             <dependency>
         		<groupId>org.isisaddons.module.devutils</groupId>
         		<artifactId>isis-module-devutils-dom</artifactId>
         	    <version>1.7.0</version>
     	    </dependency>
+
+            <!--<dependency>-->
+                <!--<groupId>org.isisaddons.module.publishmq</groupId>-->
+                <!--<artifactId>isis-module-publishmq-dom</artifactId>-->
+                <!--<version>1.9.0</version>-->
+                <!--<type>pom</type>-->
+                <!--<scope>import</scope>-->
+            <!--</dependency>-->
+
+            <dependency>
+                <groupId>org.mindrot</groupId>
+                <artifactId>jbcrypt</artifactId>
+                <version>${jbcrypt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ma.glasnost.orika</groupId>
+                <artifactId>orika-core</artifactId>
+                <version>${orika-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.isisaddons.metamodel.paraname8</groupId>
+                <artifactId>isis-metamodel-paraname8-dom</artifactId>
+                <version>${isis-metamodel-paraname8.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -431,7 +464,6 @@
                 </dependencies>
             </dependencyManagement>
         </profile>
-
     </profiles>
 
   <modules>
@@ -440,6 +472,7 @@
     <module>integtests</module>
     <module>webapp</module>
     <module>app</module>
+    <module>canonical</module>
   </modules>
 
   <url>http://www.xtalus.nl</url>

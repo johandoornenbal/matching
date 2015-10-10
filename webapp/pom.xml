@@ -178,6 +178,12 @@
             <artifactId>isis-core-security</artifactId>
         </dependency>
 
+        <!-- enable -parameters support -->
+        <dependency>
+            <groupId>org.isisaddons.metamodel.paraname8</groupId>
+            <artifactId>isis-metamodel-paraname8-dom</artifactId>
+        </dependency>
+
 
 
         <!-- isis modules -->
@@ -297,6 +303,11 @@
               <artifactId>slf4j-api</artifactId>
             </exclusion>
           </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.aries.application</groupId>
+            <artifactId>application-modeller-standalone</artifactId>
+            <version>0.3.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
