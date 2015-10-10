@@ -22,7 +22,6 @@ import info.matchingservice.fixture.MatchingFixtureModule;
 import org.apache.isis.applib.AppManifest;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.isisaddons.module.security.SecurityModule;
-import org.isisaddons.services.AddonServicesDomainModule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +37,6 @@ public class MatchingAppManifest implements AppManifest {
                 MatchingDomainModule.class,
                 MatchingFixtureModule.class,
                 MatchingAppModule.class,
-                AddonServicesDomainModule.class,
                 SecurityModule.class);
     }
 
