@@ -16,21 +16,17 @@
  */
 package info.matchingservice.dom.Howdoido;
 
-import java.util.ArrayList;
-import java.util.List;
+import info.matchingservice.dom.MatchingTrustedContact;
+import org.apache.isis.applib.annotation.*;
 
 import javax.inject.Inject;
+import javax.jdo.JDOHelper;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
-
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-
-import info.matchingservice.dom.MatchingTrustedContact;
+import java.util.ArrayList;
+import java.util.List;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -59,6 +55,11 @@ import info.matchingservice.dom.MatchingTrustedContact;
 })
 @DomainObject(editing=Editing.DISABLED, autoCompleteRepository = BasicContacts.class)
 public class BasicContact extends MatchingTrustedContact {
+
+    @Action(semantics = SemanticsOf.SAFE)
+    public String getOID() {
+        return JDOHelper.getObjectId(this).toString();
+    }
 
 	//** contactPerson **//
     private BasicUser contactPerson;

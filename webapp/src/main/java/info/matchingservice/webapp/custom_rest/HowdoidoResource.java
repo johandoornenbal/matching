@@ -17,9 +17,7 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.Howdoido.*;
-import info.matchingservice.dom.Match.ProfileMatches;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
@@ -117,13 +115,6 @@ public class HowdoidoResource extends ResourceAbstract {
         }
         activeUser.mapPut("templates", templates);
 
-        // feedback receivedRequests
-        JsonRepresentation receivedRequests = JsonRepresentation.newArray();
-        for (BasicRequest request : basicUser.getReceivedFeedbackRequests()) {
-            receivedRequests.arrayAdd(basicRequestRepresentation(request));
-        }
-        activeUser.mapPut("receivedRequests", receivedRequests);
-
         // given feedback
         JsonRepresentation givenFeedback = JsonRepresentation.newArray();
         for (BasicForm form : basicUser.getGivenFeedback()) {
@@ -151,6 +142,51 @@ public class HowdoidoResource extends ResourceAbstract {
             receivedFeedback.arrayAdd(basicFormRepresentation(form));
         }
         activeUser.mapPut("receivedFeedback", receivedFeedback);
+
+        // published received feedback
+        JsonRepresentation publishedFeedback = JsonRepresentation.newArray();
+        for (BasicForm form : basicUser.getPublishedFeedback()) {
+            publishedFeedback.arrayAdd(basicFormRepresentation(form));
+        }
+        activeUser.mapPut("publishedFeedback", publishedFeedback);
+
+        // unrated received feedback
+        JsonRepresentation unratedReceivedFeedback = JsonRepresentation.newArray();
+        for (BasicForm form : basicUser.getUnratedReceivedFeedback()) {
+            unratedReceivedFeedback.arrayAdd(basicFormRepresentation(form));
+        }
+        activeUser.mapPut("unratedReceivedFeedback", unratedReceivedFeedback);
+
+        // feedback receivedRequests
+        JsonRepresentation receivedRequests = JsonRepresentation.newArray();
+        for (BasicRequest request : basicUser.getReceivedFeedbackRequests()) {
+            receivedRequests.arrayAdd(basicRequestRepresentation(request));
+        }
+        activeUser.mapPut("receivedRequests", receivedRequests);
+
+        // feedback sentRequests
+        JsonRepresentation sentRequests = JsonRepresentation.newArray();
+        for (BasicRequest request : basicUser.getSentFeedbackRequests()) {
+            sentRequests.arrayAdd(basicRequestRepresentation(request));
+        }
+        activeUser.mapPut("sentRequests", sentRequests);
+
+        // contacts
+        JsonRepresentation contacts = JsonRepresentation.newArray();
+        for (BasicContact contact : contactsContribs.contacts(basicUser)) {
+            contacts.arrayAdd(basicContactRepresentation(contact));
+        }
+        activeUser.mapPut("contacts", contacts);
+
+        // contactsReferringToMe
+        JsonRepresentation contactsReferringToMe = JsonRepresentation.newArray();
+        for (BasicContact contact : contactsContribs.contactsReferingToMe(basicUser)) {
+            contactsReferringToMe.arrayAdd(basicContactRepresentation(contact));
+        }
+        activeUser.mapPut("contactsReferringToMe", contactsReferringToMe);
+
+        //contacts
+        //contact referring to me
 
         // And finally: wrap it all up...
         all.mapPut("user",activeUser);
@@ -275,6 +311,22 @@ public class HowdoidoResource extends ResourceAbstract {
         return ratingmap;
     }
 
-    private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);
-    private ProfileMatches profileMatches = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileMatches.class);
+    private JsonRepresentation basicContactRepresentation(BasicContact contact) {
+
+        JsonRepresentation contactmap = JsonRepresentation.newMap();
+
+        contactmap.mapPut("id", Utils.toApiID(contact.getOID()));
+        contactmap.mapPut("URI", Utils.toObjectURI(contact.getOID()));
+        contactmap.mapPut("ownerPerson", contact.getOwnerPerson().title().toString());
+        contactmap.mapPut("ownerPersonId", Utils.toApiID(contact.getOwnerPerson().getOID()));
+        contactmap.mapPut("ownerPersonURI", Utils.toObjectURI(contact.getOwnerPerson().getOID()));
+        contactmap.mapPut("contactPerson", contact.getContactPerson().title().toString());
+        contactmap.mapPut("contactPersonId", Utils.toApiID(contact.getContactPerson().getOID()));
+        contactmap.mapPut("contactPersonURI", Utils.toObjectURI(contact.getContactPerson().getOID()));
+        contactmap.mapPut("trustlevel", contact.getTrustLevel().toString());
+        return contactmap;
+    }
+
+    private BasicContactContributions contactsContribs = IsisContext.getPersistenceSession().getServicesInjector().lookupService(BasicContactContributions.class);
+
 }
