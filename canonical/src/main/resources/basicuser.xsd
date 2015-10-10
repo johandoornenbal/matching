@@ -16,28 +16,31 @@
   ~ under the License.
   -->
 
-<xs:schema targetNamespace="http://canonical.matchingservice.info/basicuser.xsd"
+<xs:schema targetNamespace="http://module.dto.matchingservice/basicuser.xsd"
             elementFormDefault="qualified"
-            xmlns="http://canonical.matchingservice.info/basicuser.xsd"
+            xmlns="http://module.dto.matchingservice/basicuser.xsd"
             xmlns:xs="http://www.w3.org/2001/XMLSchema"
-            xmlns:common="http://isis.apache.org/schema/common"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://isis.apache.org/schema/common http://isis.apache.org/schema/common/common.xsd"
         >
-
-    <xs:import namespace="http://isis.apache.org/schema/common" schemaLocation="../../../../org/apache/isis/schema/common/common-1.0.xsd"/>
 
     <xs:element name="basicUserDto">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="oid" type="common:oidDto"/>
+                <xs:element name="oid" type="oidDto"/>
                 <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
                 <xs:element name="email" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="myTemplates" type="myTemplate" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:complexType name="oidDto">
+        <xs:sequence>
+            <xs:element name="objectType" type="xs:string"/>
+            <xs:element name="objectIdentifier" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="myTemplate">
         <xs:sequence>
             <xs:element name="objectType" type="xs:string"/>
             <xs:element name="objectIdentifier" type="xs:string"/>

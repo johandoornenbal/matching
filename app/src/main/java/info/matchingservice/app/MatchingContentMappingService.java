@@ -17,21 +17,22 @@
 package info.matchingservice.app;
 
 import info.matchingservice.dom.Howdoido.BasicUser;
-import info.matchingservice.dom.howdoido.BasicUserDto;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
+import matchingservice.dto.module.basicuser.BasicUserDto;
+import matchingservice.dto.module.basicuser.OidDto;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.services.bookmark.Bookmark;
 import org.apache.isis.applib.services.bookmark.BookmarkService;
-import org.apache.isis.schema.common.v1.OidDto;
 import org.apache.isis.viewer.restfulobjects.applib.RepresentationType;
 import org.apache.isis.viewer.restfulobjects.rendering.service.conmap.ContentMappingService;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+
 
 @DomainService(
         nature = NatureOfService.DOMAIN
