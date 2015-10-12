@@ -96,6 +96,7 @@ public class BasicForms extends MatchingDomainService<BasicForm> {
 
         }
 
+        getContainer().flush();
 
         return newBasicForm;
 

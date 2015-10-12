@@ -17,10 +17,10 @@
 
 package info.matchingservice.fixture.howdoido;
 
-import javax.inject.Inject;
-
 import info.matchingservice.dom.Howdoido.BasicRepresentationType;
 import info.matchingservice.dom.Howdoido.BasicTemplates;
+
+import javax.inject.Inject;
 
 /**
  * Created by jodo on 03/09/15.
@@ -36,6 +36,7 @@ public class BasicQuestionFixtures extends BasicQuestionAbstract {
         createBasicQuestion("Vind je mij op academisch niveau functioneren?", basicTemplates.allBasicTemplates().get(0), BasicRepresentationType.RATING_WITH_EXPLANATION, executionContext);
         createBasicQuestion("Vind je mij goed in de groep functioneren?", basicTemplates.allBasicTemplates().get(1), BasicRepresentationType.RATING_WITH_EXPLANATION,executionContext);
         createBasicQuestion("Vind je mij goed fluit spelen?", basicTemplates.allBasicTemplates().get(2), BasicRepresentationType.RATING_WITH_EXPLANATION,executionContext);
+        createBasicQuestion("Vind je dat ik er goed uitzie vandaag?", basicTemplates.allBasicTemplates().get(2), BasicRepresentationType.RATING ,executionContext);
 
     }
 

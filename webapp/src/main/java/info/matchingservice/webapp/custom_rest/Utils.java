@@ -28,14 +28,14 @@ public class Utils {
         String[] parts = OID.split(Pattern.quote("[OID]"));
         String part1 = parts[0];
         String part2 = parts[1];
-        String URI = "objects/".concat(part2).concat("/L_").concat(part1);
+        String URI = "objects/".concat(part2).concat("/").concat(part1);
         return URI;
     }
 
     public static String toApiID(final String OID){
         String[] parts = OID.split(Pattern.quote("[OID]"));
         String part1 = parts[0];
-        String ApiID = "L_".concat(part1);
+        String ApiID = part1;
         return ApiID;
     }
 }

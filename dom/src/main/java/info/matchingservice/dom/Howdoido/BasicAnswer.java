@@ -17,25 +17,14 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.VersionStrategy;
-
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.Where;
-import org.apache.isis.applib.util.TitleBuffer;
-
 import info.matchingservice.dom.Howdoido.Interfaces.Answer;
 import info.matchingservice.dom.Howdoido.Interfaces.Form;
 import info.matchingservice.dom.Howdoido.Interfaces.TrustLevel;
 import info.matchingservice.dom.MatchingDomainObject;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.util.TitleBuffer;
+
+import javax.jdo.annotations.*;
 
 /**
  * Created by jodo on 04/09/15.
@@ -67,12 +56,7 @@ public abstract class BasicAnswer extends MatchingDomainObject<BasicAnswer> impl
 
     public String title() {
         final TitleBuffer buf = new TitleBuffer();
-        buf.append("Answer to question ");
-        if (getQuestionToAnswer().length() >= 30) {
-            buf.append(getQuestionToAnswer().substring(0, 30));
-        } else {
-            buf.append(getQuestionToAnswer());
-        }
+        buf.append(getQuestionId());
         return buf.toString();
     }
 
@@ -116,6 +100,20 @@ public abstract class BasicAnswer extends MatchingDomainObject<BasicAnswer> impl
 
     public void setMatchingTrustlevel(final info.matchingservice.dom.TrustLevel matchingTrustlevel) {
         this.matchingTrustlevel = matchingTrustlevel;
+    }
+    //endregion
+
+    //region > questionId (property)
+    private String questionId;
+
+    @MemberOrder(sequence = "4")
+    @Column(allowsNull = "false")
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(final String questionId) {
+        this.questionId = questionId;
     }
     //endregion
 

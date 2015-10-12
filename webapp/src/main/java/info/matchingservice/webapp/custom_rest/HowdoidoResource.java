@@ -48,18 +48,6 @@ public class HowdoidoResource extends ResourceAbstract {
         return Response.status(200).entity(basicUserRepresentation(activeUser).toString()).build();
     }
 
-//    @GET
-//    @Path("/people/{instanceId}")
-//    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-//    public Response getPeopleServices(@PathParam("instanceId") String instanceId)  {
-//
-//        final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
-//
-//        Person activePerson = persons.matchPersonApiId(instanceId);
-//
-//        return Response.status(200).entity(personRepresentation(activePerson).toString()).build();
-//    }
-
     @DELETE
     @Path("/")
     public Response deleteServicesNotAllowed() {
@@ -76,6 +64,18 @@ public class HowdoidoResource extends ResourceAbstract {
     @Path("/")
     public Response putServicesNotAllowed() {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the v1 resource is not allowed.", new Object[0]);
+    }
+
+    @GET
+    @Path("/basicRequest/{instanceId}")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response getRequestServices(@PathParam("instanceId") String instanceId)  {
+
+        final BasicRequests basicRequests = IsisContext.getPersistenceSession().getServicesInjector().lookupService(BasicRequests.class);
+
+        BasicRequest request = basicRequests.matchRequestApiId(instanceId);
+
+        return Response.status(200).entity(basicRequestRepresentation(request).toString()).build();
     }
 
     @DELETE
@@ -278,14 +278,14 @@ public class HowdoidoResource extends ResourceAbstract {
         answermap.mapPut("matchingTrustlevel", answer.getMatchingTrustlevel().toString());
         try {
             BasicAnswerRating answerRating = (BasicAnswerRating) answer;
-            answermap.mapPut("rating", answerRating.getRating());
+            answermap.mapPut("rating", answerRating.getRatingValue().toString());
 
         } catch (Exception e) {
             // do nothing
         }
         try {
             BasicAnswerRatingExplanation answerRatingExplanation = (BasicAnswerRatingExplanation) answer;
-            answermap.mapPut("rating", answerRatingExplanation.getRatingValue());
+            answermap.mapPut("rating", answerRatingExplanation.getRatingValue().toString());
             answermap.mapPut("explanation", answerRatingExplanation.getExplanation().toString());
 
         } catch (Exception e) {

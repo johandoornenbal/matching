@@ -46,7 +46,7 @@ public class BasicAnswerRating extends BasicAnswer {
     }
 
     public Integer getRatingValue() {
-        return (rating == null) ? null : rating.ratingValue();
+        return (getRating() == null) ? null : getRating().ratingValue();
     }
 
     public BasicAnswer updateRating(

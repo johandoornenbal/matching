@@ -48,6 +48,11 @@ public class BasicQuestion extends MatchingSecureMutableObject implements info.m
         super("basicQuestion, basicTemplate");
     }
 
+    @Action(semantics = SemanticsOf.SAFE)
+    public String getQuestionId() {
+        return this.getId();
+    }
+
     public String title() {
         final TitleBuffer buf = new TitleBuffer();
         if (getBasicQuestion().length() >= 30) {

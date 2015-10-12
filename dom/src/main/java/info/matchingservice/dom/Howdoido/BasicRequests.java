@@ -21,9 +21,10 @@ import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
-
 import org.joda.time.LocalDateTime;
+
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by jodo on 31/08/15.
@@ -78,5 +79,21 @@ public class BasicRequests extends MatchingDomainService<BasicRequest> {
         return allMatches("findBasicRequestByRequestReceiver", "requestReceiver", requestReceiver);
     }
 
+    // Api v1
+    @Programmatic
+    public BasicRequest matchRequestApiId(final String id) {
+
+        for (BasicRequest d : allInstances(BasicRequest.class)) {
+            String[] parts = d.getOID().split(Pattern.quote("[OID]"));
+            String part1 = parts[0];
+            String ApiId = "L_".concat(part1);
+            if (id.equals(ApiId)) {
+                return d;
+            }
+        }
+
+        return null;
+
+    }
 
 }

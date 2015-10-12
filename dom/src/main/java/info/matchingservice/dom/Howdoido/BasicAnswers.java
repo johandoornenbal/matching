@@ -17,14 +17,13 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
-
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.TrustLevel;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.TrustLevel;
+import java.util.List;
 
 /**
  * Created by jodo on 31/08/15.
@@ -57,6 +56,7 @@ public class BasicAnswers extends MatchingDomainService<BasicAnswer> {
         answer.setBasicForm(form);
         answer.setQuestionToAnswer(basicQuestion.getBasicQuestion());
         answer.setMatchingTrustlevel(trustLevel);
+        answer.setQuestionId(basicQuestion.getId());
 
         persistIfNotAlready(answer);
 
@@ -74,6 +74,7 @@ public class BasicAnswers extends MatchingDomainService<BasicAnswer> {
         answer.setBasicForm(form);
         answer.setQuestionToAnswer(basicQuestion.getBasicQuestion());
         answer.setMatchingTrustlevel(trustLevel);
+        answer.setQuestionId(basicQuestion.getId());
 
         persistIfNotAlready(answer);
 
