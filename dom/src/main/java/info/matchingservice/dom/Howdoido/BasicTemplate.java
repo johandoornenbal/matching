@@ -157,6 +157,23 @@ public class BasicTemplate extends MatchingSecureMutableObject implements Templa
     public void setCategorySuggestion(final String categorySuggestion) {
         this.categorySuggestion = categorySuggestion;
     }
+
+    @Action(semantics = SemanticsOf.IDEMPOTENT)
+    public BasicTemplate updateCategorySuggestion(final String suggestion) {
+        if(!suggestion.equals(getCategorySuggestion()) && !suggestion.equals("_NOVALUE_")) {
+            basicCategorySuggestionsRepo.createBasicCategorySuggestion(suggestion, getBasicCategory());
+            setCategorySuggestion(suggestion);
+        }
+        if(suggestion.equals("_NOVALUE_")){
+            setCategorySuggestion("");
+        }
+        return this;
+    }
+
+    public String default0UpdateCategorySuggestion(final String suggestion) {
+        return getCategorySuggestion();
+    }
+
     //endregion
 
     //region > basicQuestions (SortedSet)
@@ -369,5 +386,8 @@ public class BasicTemplate extends MatchingSecureMutableObject implements Templa
 
     @Inject
     BasicTemplates basicTemplatesRepo;
+
+    @Inject
+    BasicCategorySuggestions basicCategorySuggestionsRepo;
 
 }

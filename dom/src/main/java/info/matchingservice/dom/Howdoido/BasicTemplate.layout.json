@@ -28,6 +28,16 @@
                                 }
                             }
                         },
+                        "categorySuggestion": {
+                            "disabled": {},
+                            "actions": {
+                                "updateCategorySuggestion": {
+                                    "named": {
+                                        "value": "Update Category Suggestion"
+                                    }
+                                }
+                            }
+                        },
                         "templateOwner": {
                             "disabled": {}
                         }

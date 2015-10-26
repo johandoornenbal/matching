@@ -128,6 +128,10 @@ public class Api {
         return basicCategories.findByNameContains(search);
     }
 
+    public List<BasicCategorySuggestion> allBasicCategorySuggestions(){
+        return basicCategorySuggestionsRepo.allBasicCategorySuggestions();
+    }
+
     public List<BasicUser> autoComplete2CreateBasicTemplate(String search) {
         return basicUsers.allBasicUsers();
     }
