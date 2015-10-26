@@ -17,46 +17,18 @@
 
 package info.matchingservice.dom.Howdoido;
 
+import info.matchingservice.dom.Howdoido.Interfaces.*;
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import org.apache.isis.applib.annotation.*;
+import org.joda.time.LocalDateTime;
+
+import javax.inject.Inject;
+import javax.jdo.JDOHelper;
+import javax.jdo.annotations.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import javax.inject.Inject;
-import javax.jdo.JDOHelper;
-import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.VersionStrategy;
-
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Title;
-import org.apache.isis.applib.annotation.Where;
-
-import info.matchingservice.dom.Howdoido.Interfaces.Category;
-import info.matchingservice.dom.Howdoido.Interfaces.Provider;
-import info.matchingservice.dom.Howdoido.Interfaces.Question;
-import info.matchingservice.dom.Howdoido.Interfaces.Receiver;
-import info.matchingservice.dom.Howdoido.Interfaces.RepresentationType;
-import info.matchingservice.dom.Howdoido.Interfaces.Request;
-import info.matchingservice.dom.Howdoido.Interfaces.Template;
-import info.matchingservice.dom.MatchingSecureMutableObject;
 
 /**
  * Created by jodo on 31/08/15.
@@ -72,11 +44,18 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 @javax.jdo.annotations.Version(
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
+@javax.jdo.annotations.Queries({
+        @javax.jdo.annotations.Query(
+                name = "deleteBasicTemplate", language = "JDOQL",
+                value = "DELETE "
+                        + "FROM info.matchingservice.dom.Howdoido.BasicTemplate "
+                        + "WHERE id == :id")
+})
 @DomainObject(autoCompleteRepository = BasicTemplates.class, editing = Editing.DISABLED)
 public class BasicTemplate extends MatchingSecureMutableObject implements Template {
 
     public BasicTemplate() {
-        super("name");
+        super("dateTime, name");
     }
 
     @Action(semantics = SemanticsOf.SAFE)
@@ -149,6 +128,34 @@ public class BasicTemplate extends MatchingSecureMutableObject implements Templa
 
     public void setTemplateOwner(final BasicUser templateOwner) {
         this.templateOwner = templateOwner;
+    }
+    //endregion
+
+    //region > dateTime (property)
+    private LocalDateTime dateTime;
+
+    @MemberOrder(sequence = "4")
+    @Column(allowsNull = "false")
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(final LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+    //endregion
+
+    //region > categorySuggestion (property)
+    private String categorySuggestion;
+
+    @MemberOrder(sequence = "5")
+    @Column(allowsNull = "true")
+    public String getCategorySuggestion() {
+        return categorySuggestion;
+    }
+
+    public void setCategorySuggestion(final String categorySuggestion) {
+        this.categorySuggestion = categorySuggestion;
     }
     //endregion
 
@@ -263,6 +270,32 @@ public class BasicTemplate extends MatchingSecureMutableObject implements Templa
         return basicForms.createBasicForm(getTemplateOwner(), getTemplateOwner(), this);
     }
 
+    @Action(semantics = SemanticsOf.IDEMPOTENT)
+    public BasicUser deleteBasicTemplate(final Boolean confirm) {
+        for (BasicQuestion basicQuestion : getBasicQuestions()) {
+            getContainer().remove(basicQuestion);
+        }
+        for (BasicRequest basicRequest : basicRequests.findBasicRequestByTemplate(this)){
+            getContainer().remove(basicRequest);
+        }
+        BasicUser myUser = getTemplateOwner();
+        getContainer().removeIfNotAlready(this);
+        return myUser;
+    }
+
+    public String validateDeleteBasicTemplate(final Boolean confirm) {
+        return confirm ? null : "Please confirm";
+    }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    public BasicTemplate duplicateBasicTemplate(){
+        BasicTemplate newTemplate = basicTemplatesRepo.createBasicTemplate(getName().concat(" (copy)"), getBasicCategory(), getTemplateOwner());
+        for (BasicQuestion question : getBasicQuestions()){
+            newTemplate.createBasicQuestion(question.getBasicQuestion(), question.getBasicFormType());
+        }
+        return newTemplate;
+    }
+
 
     @Override
     @Programmatic
@@ -317,6 +350,8 @@ public class BasicTemplate extends MatchingSecureMutableObject implements Templa
     //** ownedBy - Override for secure object **//
 
 
+
+
     @Inject
     BasicQuestions basicQuestionsRepo;
 
@@ -331,5 +366,8 @@ public class BasicTemplate extends MatchingSecureMutableObject implements Templa
 
     @Inject
     BasicRequests basicRequests;
+
+    @Inject
+    BasicTemplates basicTemplatesRepo;
 
 }

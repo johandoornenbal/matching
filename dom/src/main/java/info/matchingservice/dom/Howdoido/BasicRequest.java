@@ -57,7 +57,12 @@ import javax.jdo.annotations.*;
                 name = "findBasicRequestByRequestReceiver", language = "JDOQL",
                 value = "SELECT "
                         + "FROM info.matchingservice.dom.Howdoido.BasicRequest "
-                        + "WHERE requestReceiver == :requestReceiver && requestDenied == false && requestHonoured == false")
+                        + "WHERE requestReceiver == :requestReceiver && requestDenied == false && requestHonoured == false"),
+        @javax.jdo.annotations.Query(
+                name = "findBasicRequestByTemplate", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM info.matchingservice.dom.Howdoido.BasicRequest "
+                        + "WHERE basicTemplate == :basicTemplate")
 })
 @DomainObject(autoCompleteRepository = BasicRequests.class, editing = Editing.DISABLED)
 public class BasicRequest extends MatchingDomainObject<BasicRequest> implements Request {
@@ -147,7 +152,6 @@ public class BasicRequest extends MatchingDomainObject<BasicRequest> implements 
         this.requestDenied = requestDenied;
     }
     //endregion
-
 
     //region > date (property)
     private LocalDateTime dateTime;

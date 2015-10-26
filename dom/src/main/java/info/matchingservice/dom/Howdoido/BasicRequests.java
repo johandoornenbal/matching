@@ -79,6 +79,11 @@ public class BasicRequests extends MatchingDomainService<BasicRequest> {
         return allMatches("findBasicRequestByRequestReceiver", "requestReceiver", requestReceiver);
     }
 
+    @Programmatic
+    public List<BasicRequest> findBasicRequestByTemplate(final BasicTemplate basicTemplate) {
+        return allMatches("findBasicRequestByTemplate", "basicTemplate", basicTemplate);
+    }
+
     // Api v1
     @Programmatic
     public BasicRequest matchRequestApiId(final String id) {

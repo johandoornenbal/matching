@@ -203,6 +203,7 @@ public class HowdoidoResource extends ResourceAbstract {
         templatemap.mapPut("URI", Utils.toObjectURI(template.getOID()));
         templatemap.mapPut("name", template.getName());
         templatemap.mapPut("category", template.getBasicCategory().getName());
+        templatemap.mapPut("dateTime", template.getDateTime().toString());
 
         JsonRepresentation questions = JsonRepresentation.newArray();
         for (BasicQuestion question : template.getBasicQuestions()) {
@@ -219,6 +220,7 @@ public class HowdoidoResource extends ResourceAbstract {
 
         questionmap.mapPut("question", question.getBasicQuestion());
         questionmap.mapPut("formType", question.getBasicFormType().toString());
+        questionmap.mapPut("id", question.getId());
 
         return questionmap;
     }
@@ -254,8 +256,7 @@ public class HowdoidoResource extends ResourceAbstract {
         formmap.mapPut("formReceiver", form.getFormReceiver().title());
         formmap.mapPut("formReceiverId", Utils.toApiID(form.getFormReceiver().getOID()));
         formmap.mapPut("formReceiverURI", Utils.toObjectURI(form.getFormReceiver().getOID()));
-        formmap.mapPut("basicTemplateId", Utils.toApiID(form.getBasicTemplate().getOID()));
-        formmap.mapPut("basicTemplateURI", Utils.toObjectURI(form.getBasicTemplate().getOID()));
+        formmap.mapPut("basicCategory", form.getBasicCategory().getName());
         formmap.mapPut("dateTime", form.getDateTime().toString());
         formmap.mapPut("formRated", form.getFormRated());
         formmap.mapPut("anonymous", form.isAnonymous());

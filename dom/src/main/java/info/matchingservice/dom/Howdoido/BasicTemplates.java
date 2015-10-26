@@ -17,13 +17,13 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
-
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDateTime;
 
-import info.matchingservice.dom.MatchingDomainService;
+import java.util.List;
 
 /**
  * Created by jodo on 31/08/15.
@@ -47,10 +47,32 @@ public class BasicTemplates extends MatchingDomainService<BasicTemplate> {
         newTemplate.setName(name.toLowerCase());
         newTemplate.setBasicCategory(category);
         newTemplate.setTemplateOwner(templateOwner);
+        newTemplate.setDateTime(LocalDateTime.now());
         newTemplate.setOwnedBy(templateOwner.getOwnedBy());
 
         persistIfNotAlready(newTemplate);
+        // for OID
+        getContainer().flush();
 
+        return newTemplate;
+
+    }
+
+    @Programmatic
+    public BasicTemplate createBasicTemplate (final String name, final BasicCategory category, final BasicUser templateOwner, final String categorySuggestion) {
+
+        BasicTemplate newTemplate = newTransientInstance(BasicTemplate.class);
+
+        newTemplate.setName(name.toLowerCase());
+        newTemplate.setBasicCategory(category);
+        newTemplate.setTemplateOwner(templateOwner);
+        newTemplate.setCategorySuggestion(categorySuggestion.toLowerCase());
+        newTemplate.setDateTime(LocalDateTime.now());
+        newTemplate.setOwnedBy(templateOwner.getOwnedBy());
+
+        persistIfNotAlready(newTemplate);
+        // for OID
+        getContainer().flush();
 
         return newTemplate;
 

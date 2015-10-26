@@ -28,7 +28,7 @@ public interface Form {
 
     Receiver getReceiver();
 
-    Template getTemplate();
+    Category getCategory();
 
     List<Answer> requestedAnswers();
 

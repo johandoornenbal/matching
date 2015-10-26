@@ -120,12 +120,24 @@ public class Api {
         return basicCategories.findByNameContains(search);
     }
 
+    public BasicCategorySuggestion createNewCategorySuggestion(final String name, final BasicCategory parent){
+        return basicCategorySuggestionsRepo.createBasicCategorySuggestion(name, parent);
+    }
+
+    public List<BasicCategory> autoComplete1CreateNewCategorySuggestion(String search) {
+        return basicCategories.findByNameContains(search);
+    }
+
     public List<BasicUser> autoComplete2CreateBasicTemplate(String search) {
         return basicUsers.allBasicUsers();
     }
 
     public List<BasicCategory> allBasicCategories() {
         return basicCategories.allBasicCategories();
+    }
+
+    public List<BasicCategory> allTopCategories() {
+        return basicCategories.allTopCategories();
     }
 
     public List<BasicUser> allUsers() {
@@ -145,4 +157,7 @@ public class Api {
 
     @Inject
     DomainObjectContainer container;
+
+    @Inject
+    BasicCategorySuggestions basicCategorySuggestionsRepo;
 }

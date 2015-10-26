@@ -81,8 +81,6 @@ public class BasicForm extends MatchingDomainObject<BasicForm> implements Form {
         final TitleBuffer buf = new TitleBuffer();
         buf.append("Feedback to ");
         buf.append(getFormReceiver().getName());
-        buf.append(" regarding ");
-        buf.append(getBasicTemplate().getName());
         return buf.toString();
     }
 
@@ -114,17 +112,31 @@ public class BasicForm extends MatchingDomainObject<BasicForm> implements Form {
     }
     //endregion
 
-    //region > type (property)
-    private BasicTemplate basicTemplate;
+//    //region > type (property)
+//    private BasicTemplate basicTemplate;
+//
+//    @MemberOrder(sequence = "3")
+//    @Column(allowsNull = "false")
+//    public BasicTemplate getBasicTemplate() {
+//        return basicTemplate;
+//    }
+//
+//    public void setBasicTemplate(final BasicTemplate basicTemplate) {
+//        this.basicTemplate = basicTemplate;
+//    }
+//    //endregion
 
-    @MemberOrder(sequence = "3")
+    //region > basicCategory (property)
+    private BasicCategory basicCategory;
+
     @Column(allowsNull = "false")
-    public BasicTemplate getBasicTemplate() {
-        return basicTemplate;
+    @MemberOrder(sequence = "3")
+    public BasicCategory getBasicCategory() {
+        return basicCategory;
     }
 
-    public void setBasicTemplate(final BasicTemplate basicTemplate) {
-        this.basicTemplate = basicTemplate;
+    public void setBasicCategory(final BasicCategory basicCategory) {
+        this.basicCategory = basicCategory;
     }
     //endregion
 
@@ -215,7 +227,7 @@ public class BasicForm extends MatchingDomainObject<BasicForm> implements Form {
                 getFormReceiver(),
                 getFormCreator(),
                 rating,
-                (BasicCategory) getTemplate().getCategory());
+                getBasicCategory());
     }
 
     public boolean hideCreateFeedbackRating(final FeedbackRating rating){
@@ -278,8 +290,8 @@ public class BasicForm extends MatchingDomainObject<BasicForm> implements Form {
 
     @Override
     @Programmatic
-    public Template getTemplate() {
-        return getBasicTemplate();
+    public Category getCategory() {
+        return getBasicCategory();
     }
 
     @Override

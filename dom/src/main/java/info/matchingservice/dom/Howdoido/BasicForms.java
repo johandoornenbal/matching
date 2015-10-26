@@ -77,7 +77,7 @@ public class BasicForms extends MatchingDomainService<BasicForm> {
 
         newBasicForm.setFormCreator(creator);
         newBasicForm.setFormReceiver(receiver);
-        newBasicForm.setBasicTemplate(template);
+        newBasicForm.setBasicCategory(template.getBasicCategory());
         newBasicForm.setFormRated(false);
         newBasicForm.setPublished(false);
         newBasicForm.setDateTime(LocalDateTime.now());

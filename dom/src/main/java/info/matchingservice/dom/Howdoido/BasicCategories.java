@@ -17,15 +17,14 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 
-import info.matchingservice.dom.MatchingDomainService;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jodo on 31/08/15.
@@ -71,6 +70,17 @@ public class BasicCategories extends MatchingDomainService<BasicCategory> {
     public List<BasicCategoryRelationshipTuple> allTopParentTuples(final BasicCategory category) {
 
         return basicCategoryRelationshipTuples.allTopParentTuples(category);
+    }
+
+    @Programmatic
+    public List<BasicCategory> allTopCategories() {
+        List<BasicCategory> output = new ArrayList<>();
+        for (BasicCategory basicCategory : allBasicCategories()){
+            if (basicCategory.isTopcategory()) {
+                output.add(basicCategory);
+            }
+        }
+        return output;
     }
 
 
