@@ -17,15 +17,14 @@
 
 package info.matchingservice.dom.Howdoido;
 
-import java.util.List;
-
+import info.matchingservice.dom.FinderInteraction;
+import org.apache.isis.applib.query.Query;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.apache.isis.applib.query.Query;
+import java.util.List;
 
-import info.matchingservice.dom.FinderInteraction;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

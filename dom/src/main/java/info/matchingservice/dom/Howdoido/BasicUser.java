@@ -242,6 +242,24 @@ public class BasicUser extends MatchingSecureMutableObject implements Provider, 
         return basicCategories.findByNameContains(search);
     }
 
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
+    public Template createTemplateWithCategorySuggestion(
+            @ParameterLayout(named = "name")
+            final String name,
+            @ParameterLayout(named = "category")
+            final Category category,
+            @ParameterLayout(named = "categorySuggestion")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final String categorySuggestion) {
+
+        basicCategorySuggestionRepo.createBasicCategorySuggestion(categorySuggestion, (BasicCategory) category);
+        return basicTemplates.createBasicTemplate(name, (BasicCategory) category, this, categorySuggestion);
+    }
+
+    public List<BasicCategory> autoComplete1CreateTemplateWithCategorySuggestion(String search) {
+        return basicCategories.findByNameContains(search);
+    }
+
     @Action(semantics = SemanticsOf.SAFE)
     @CollectionLayout(render = RenderType.EAGERLY)
     public List<BasicForm> getPublishedFeedback() {
@@ -396,5 +414,8 @@ public class BasicUser extends MatchingSecureMutableObject implements Provider, 
 
     @Inject
     ApplicationUsers applicationUsers;
+
+    @Inject
+    BasicCategorySuggestions basicCategorySuggestionRepo;
 
 }

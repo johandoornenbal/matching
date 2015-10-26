@@ -12,6 +12,7 @@ public class TeardownFixture extends FixtureScript {
         
     	isisJdoSupport.executeUpdate("delete from \"Config\"");
 
+        isisJdoSupport.executeUpdate("delete from \"BasicCategorySuggestion\"");
         isisJdoSupport.executeUpdate("delete from \"BasicRating\"");
         isisJdoSupport.executeUpdate("delete from \"BasicCategoryRelationshipTuple\"");
 

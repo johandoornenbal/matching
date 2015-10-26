@@ -20,6 +20,7 @@ package info.matchingservice.integtest.dom.howdoido;
 import info.matchingservice.dom.Howdoido.*;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.howdoido.BasicQuestionFixtures;
+import info.matchingservice.fixture.howdoido.BasicSubCategoryFixtures;
 import info.matchingservice.fixture.howdoido.BasicTemplateFixtures;
 import info.matchingservice.fixture.howdoido.BasicUserFixtures;
 import info.matchingservice.fixture.security.MatchingRegularRoleAndPermissions;
@@ -142,9 +143,105 @@ public class BasicTemplateTest extends MatchingIntegrationTest {
 
     public static class CreateAnonymousFeedbackRequest extends BasicTemplateTest {
 
+        //TODO: finish this test
         @Before
         public void setup() {
             scenarioExecution().install(new TeardownFixture());
+        }
+
+    }
+
+    public static class DuplicateBasicTemplate extends BasicTemplateTest {
+
+        @Before
+        public void setup() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new BasicQuestionFixtures());
+        }
+
+        @Test
+        public void happyCase() throws Exception {
+
+            BasicTemplate basicTemplate;
+            BasicTemplate basicTemplateCopy;
+
+            //given
+            basicTemplate = basicTemplates.allBasicTemplates().get(0);
+
+            //when
+            basicTemplateCopy = basicTemplate.duplicateBasicTemplate();
+
+            //then
+            assertThat(basicTemplates.allBasicTemplates().size()).isEqualTo(4);
+            assertThat(basicUsers.findBasicUserByName("user1").getMyTemplates().last()).isEqualTo(basicTemplateCopy);
+
+        }
+
+    }
+
+    public static class DeleteBasicTemplate extends BasicTemplateTest {
+
+        @Before
+        public void setup() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new BasicQuestionFixtures());
+        }
+
+        @Test
+        public void happyCase() throws Exception {
+
+            BasicTemplate basicTemplate1;
+            BasicTemplate basicTemplate2;
+
+            //given
+            basicTemplate1 = basicTemplates.allBasicTemplates().get(0);
+            basicTemplate2 = basicTemplates.allBasicTemplates().get(1);
+            assertThat(basicTemplates.allBasicTemplates().size()).isEqualTo(3);
+            assertThat(basicUsers.findBasicUserByName("user1").getMyTemplates().first()).isEqualTo(basicTemplate1);
+            assertThat(basicUsers.findBasicUserByName("user1").getMyTemplates().last()).isEqualTo(basicTemplate2);
+
+            //when
+            basicTemplate1.deleteBasicTemplate(true);
+
+            //then
+            assertThat(basicTemplates.allBasicTemplates().size()).isEqualTo(2);
+            assertThat(basicUsers.findBasicUserByName("user1").getMyTemplates().first()).isEqualTo(basicTemplate2);
+
+        }
+
+    }
+
+    public static class CreateBasicTemplateWithCategorySuggestion extends BasicTemplateTest {
+
+        @Before
+        public void setup() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new BasicUserFixtures());
+            scenarioExecution().install(new BasicSubCategoryFixtures());
+        }
+
+        @Test
+        public void happyCase() throws Exception {
+
+            BasicUser basicUser;
+            BasicCategory category;
+
+            //given
+            basicUser = basicUsers.findBasicUserByName("user1");
+            category = basicCategoryRepo.allBasicCategories().get(0);
+
+            //when
+            BasicTemplate basicTemplate = (BasicTemplate) basicUser.createTemplateWithCategorySuggestion("A template", category, "A subcategory suggestion");
+
+            //then
+            assertThat(basicTemplates.allBasicTemplates().size()).isEqualTo(1);
+            assertThat(basicUsers.findBasicUserByName("user1").getMyTemplates().first()).isEqualTo(basicTemplate);
+            assertThat(basicTemplate.getName()).isEqualTo("a template");
+            assertThat(basicTemplate.getBasicCategory()).isEqualTo(category);
+            assertThat(basicTemplate.getCategorySuggestion()).isEqualTo("a subcategory suggestion");
+            assertThat(basicCategorySuggestionRepo.allBasicCategorySuggestions().size()).isEqualTo(1);
+            assertThat(basicCategorySuggestionRepo.allBasicCategorySuggestions().get(0).getName()).isEqualTo("a subcategory suggestion");
+            assertThat(basicCategorySuggestionRepo.allBasicCategorySuggestions().get(0).getParentCategory()).isEqualTo(category);
         }
 
     }
@@ -154,5 +251,11 @@ public class BasicTemplateTest extends MatchingIntegrationTest {
 
     @Inject
     BasicUsers basicUsers;
+
+    @Inject
+    BasicCategories basicCategoryRepo;
+
+    @Inject
+    BasicCategorySuggestions basicCategorySuggestionRepo;
 
 }

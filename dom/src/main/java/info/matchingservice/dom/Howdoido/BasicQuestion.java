@@ -132,8 +132,9 @@ public class BasicQuestion extends MatchingSecureMutableObject implements info.m
     //endregion
 
     public BasicTemplate deleteQuestion(final boolean AreYouSure) {
+        BasicTemplate myTemplate = getBasicTemplate();
         container.removeIfNotAlready(this);
-        return getBasicTemplate();
+        return myTemplate;
     }
 
     public String validateDeleteQuestion(final boolean AreYouSure) {
