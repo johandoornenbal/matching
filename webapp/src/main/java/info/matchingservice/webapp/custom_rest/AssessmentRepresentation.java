@@ -46,13 +46,13 @@ public class AssessmentRepresentation {
         assessmentMap.mapPut("assessmentOwnerURI", Utils.toObjectURI(assessmentOwner.getOID()));
         assessmentMap.mapPut("assessmentOwnerFullName", assessmentOwner.title());
         assessmentMap.mapPut("assessmentOwnerRoles", assessmentOwner.getRoles());
-        assessmentMap.mapPut("assessmentOwnerPictureLink", assessmentOwner.getPictureLink());
+        assessmentMap.mapPut("assessmentOwnerPictureLink", assessmentOwner.getPictureUrl());
         Person assessmentTargetOwner = (Person) assessment.getTargetOwnerActor();
         assessmentMap.mapPut("assessmentTargetOwnerId", Utils.toApiID(assessmentTargetOwner.getOID()));
         assessmentMap.mapPut("assessmentTargetOwnerURI", Utils.toObjectURI(assessmentTargetOwner.getOID()));
         assessmentMap.mapPut("assessmentTargetOwnerFullName", assessmentTargetOwner.title());
         assessmentMap.mapPut("assessmentTargetOwnerRoles", assessmentTargetOwner.getRoles());
-        assessmentMap.mapPut("assessmentTargetOwnerPictureLink", assessmentTargetOwner.getPictureLink());
+        assessmentMap.mapPut("assessmentTargetOwnerPictureLink", assessmentTargetOwner.getPictureUrl());
 
 //        //try casting target to demand
 //        try {

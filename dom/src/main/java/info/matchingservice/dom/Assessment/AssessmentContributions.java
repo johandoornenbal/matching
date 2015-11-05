@@ -16,19 +16,6 @@
  */
 package info.matchingservice.dom.Assessment;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
-
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
@@ -36,6 +23,11 @@ import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.TrustLevel;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+
+import javax.inject.Inject;
+import java.util.List;
 
 @DomainService(nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 public class AssessmentContributions extends MatchingDomainService<Assessment> {
@@ -55,7 +47,7 @@ public class AssessmentContributions extends MatchingDomainService<Assessment> {
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-    	return assessments.createDemandAssessment(targetOfAssessment, persons.findPersonUnique(currentUserName()), assessmentDescription, feedback, currentUserName());
+    	return assessments.createDemandAssessment(targetOfAssessment, persons.activePerson(currentUserName()), assessmentDescription, feedback, currentUserName());
     }
 
     // Business rule:
@@ -82,7 +74,7 @@ public class AssessmentContributions extends MatchingDomainService<Assessment> {
             @ParameterLayout(named="feedback", multiLine=3)
             final String feedback
             ){
-        return assessments.createSupplyAssessment(targetOfAssessment, persons.findPersonUnique(currentUserName()), assessmentDescription, feedback, currentUserName());
+        return assessments.createSupplyAssessment(targetOfAssessment, persons.activePerson(currentUserName()), assessmentDescription, feedback, currentUserName());
     }
 
     //BUSINESS RULE
@@ -111,7 +103,7 @@ public class AssessmentContributions extends MatchingDomainService<Assessment> {
             ){
         return assessments.createProfileAssessment(
                 targetOfAssessment,
-                persons.findPersonUnique(currentUserName()),
+                persons.activePerson(currentUserName()),
                 assessmentDescription,
                 feedback,
                 currentUserName());
@@ -141,7 +133,7 @@ public class AssessmentContributions extends MatchingDomainService<Assessment> {
     ){
         return assessments.createProfileMatchAssessment(
                 targetOfAssessment,
-                persons.findPersonUnique(currentUserName()),
+                persons.activePerson(currentUserName()),
                 assessmentDescription,
                 currentUserName());
     }

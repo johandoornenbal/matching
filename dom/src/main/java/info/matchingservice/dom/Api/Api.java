@@ -1,50 +1,28 @@
 package info.matchingservice.dom.Api;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-
 import com.google.common.base.Objects;
-
-import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.AbstractFactoryAndRepository;
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.RestrictTo;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.query.QueryDefault;
-import org.apache.isis.applib.value.Blob;
-
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Actor.PersonRoleType;
-import info.matchingservice.dom.Actor.PersonalContact;
-import info.matchingservice.dom.Actor.PersonalContacts;
-import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.Actor.*;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.DemandSupply.Supplies;
 import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Profile.DemandOrSupply;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElements;
-import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Profile.*;
 import info.matchingservice.dom.ProvidedServices.Service;
 import info.matchingservice.dom.ProvidedServices.Services;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.Tags;
 import info.matchingservice.dom.TrustLevel;
+import org.apache.isis.applib.AbstractFactoryAndRepository;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
+
+import javax.inject.Inject;
+import java.util.List;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 @DomainService()
 @DomainServiceLayout()
@@ -53,7 +31,7 @@ public class Api extends AbstractFactoryAndRepository {
 	//***************************************** activePerson ***********************//
 	
 	@Action(semantics=SemanticsOf.SAFE)
-	public List<Person> activePerson(){
+	public Person activePerson(){
 		return persons.activePerson();
 	}
 	
@@ -115,28 +93,7 @@ public class Api extends AbstractFactoryAndRepository {
 			return null;
 		}
 	}
-	
-	
-	//------------------------------------ END getSupplyByUniqueId ---------------------------//
-	
-	//***************************************** getPersonByUniqueId ***********************//
-	
-	@Action(semantics=SemanticsOf.SAFE)
-	public List<Person> findPersonByUniqueId(final UUID uniqueItemId){
-		try
-		{
-			return persons.findPersonByUniqueItemId(uniqueItemId);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
-		
-	}
-	
-	
-	//------------------------------------ END getPersonByUniqueId ---------------------------//
-	
+
 	//***************************************** getProfileByUniqueId ***********************//
 	
 	@Action(semantics=SemanticsOf.SAFE)
@@ -495,8 +452,8 @@ public class Api extends AbstractFactoryAndRepository {
 	public boolean hideFindPersons(
 			final String lastName
 		){
-		if (persons.findPersonUnique(currentUserName())!=null &&
-				persons.findPersonUnique(currentUserName()).getActivated()
+		if (persons.activePerson(currentUserName())!=null &&
+				persons.activePerson(currentUserName()).getActivated()
 				){
 			return false;
 		}
@@ -507,8 +464,8 @@ public class Api extends AbstractFactoryAndRepository {
 			final String lastName
 	){
 
-		if (persons.findPersonUnique(currentUserName())!=null &&
-				persons.findPersonUnique(currentUserName()).getActivated()
+		if (persons.activePerson(currentUserName())!=null &&
+				persons.activePerson(currentUserName()).getActivated()
 				){
 			return null;
 		}

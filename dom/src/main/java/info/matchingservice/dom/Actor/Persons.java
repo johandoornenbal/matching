@@ -27,7 +27,6 @@ import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
-import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.services.clock.ClockService;
 import org.apache.isis.applib.value.Blob;
 import org.isisaddons.module.security.dom.user.ApplicationUsers;
@@ -35,7 +34,6 @@ import org.joda.time.LocalDate;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 
@@ -91,7 +89,7 @@ public class Persons extends MatchingDomainService<Person> {
     
     @MemberOrder(sequence="5")
     @ActionLayout(hidden=Where.ANYWHERE)
-    public List<Person> activePerson() {
+    public Person activePerson() {
         return activePerson(currentUserName());
     }
     
@@ -162,7 +160,7 @@ public class Persons extends MatchingDomainService<Person> {
         person.setDateCreated(clockService.now());
         person.setOwnedBy(userName);
         person.setPicture(picture);
-        person.setPictureLink(pictureLink);
+        person.setPictureUrl(pictureLink);
         if (personRoleType!=null) {
             if (personRoleType.equals(PersonRoleType.STUDENT)) {
                 person.addRoleStudent();
@@ -188,12 +186,8 @@ public class Persons extends MatchingDomainService<Person> {
     
     @Programmatic //userName can now also be set by fixtures
     public boolean hideCreatePerson(String userName) {
-        QueryDefault<Person> query = 
-                QueryDefault.create(
-                        Person.class,
-                        "findPersonUnique",
-                        "ownedBy", userName);
-        return container.firstMatch(query) != null?
+
+        return activePerson(userName) != null?
         true        
         :false;        
     }
@@ -207,13 +201,8 @@ public class Persons extends MatchingDomainService<Person> {
             final String userName,
             final Blob picture,
             final String pictureLink) {
-        
-        QueryDefault<Person> query = 
-                QueryDefault.create(
-                        Person.class, 
-                    "findPersonUnique", 
-                    "ownedBy", userName);        
-        return container.firstMatch(query) != null?
+
+        return activePerson(userName) != null?
         "ONE_INSTANCE_AT_MOST"        
         :null;
         
@@ -236,51 +225,20 @@ public class Persons extends MatchingDomainService<Person> {
 //    	if (picture != null){
     		person.setPicture(picture);
 //    	}
-        person.setPictureLink(pictureLink);
+        person.setPictureUrl(pictureLink);
     	persistIfNotAlready(person);
     	return person;
     }
     
     @Programmatic //userName can now also be set by fixtures
-    public List<Person> activePerson(final String userName) {
-        QueryDefault<Person> query = 
-                QueryDefault.create(
-                        Person.class, 
-                    "findPersonUnique", 
-                    "ownedBy", userName);          
-        return allMatches(query);
-    }
-    
-    @Programmatic
-    public Person findPersonUnique(String ownedBy){
-        QueryDefault<Person> query = 
-                QueryDefault.create(
-                        Person.class, 
-                    "findPersonUnique", 
-                    "ownedBy", ownedBy);
-        if (allMatches(query).isEmpty()){
-        	return null;
-        } else {
-        	return allMatches(query).get(0);
-        }
-    }
-    
-    @Programmatic
-    // for Api
-    public List<Person> findPersonByUniqueItemId(UUID uniqueItemId) {
-        return allMatches("findPersonByUniqueItemId",
-        		"uniqueItemId", uniqueItemId);
+    public Person activePerson(final String userName) {
+        return this.uniqueMatch("findPersonUnique", "ownedBy", userName);
     }
 
     @Programmatic
     // for Api
     public void deletePerson(String ownedBy) {
-        QueryDefault<Person> query =
-                QueryDefault.create(
-                        Person.class,
-                        "findPersonUnique",
-                        "ownedBy", ownedBy);
-        Person personToDelete = allMatches(query).get(0);
+        Person personToDelete = activePerson(ownedBy);
         List<CommunicationChannel> channels = communicationChannels.findCommunicationChannelByPerson(personToDelete);
         for (CommunicationChannel channel : channels){
             channel.deleteCommunicationChannel(true);
@@ -291,13 +249,8 @@ public class Persons extends MatchingDomainService<Person> {
     @Programmatic
     // for Api
     public String activatePerson(String ownedBy){
-        QueryDefault<Person> query =
-                QueryDefault.create(
-                        Person.class,
-                        "findPersonUnique",
-                        "ownedBy", ownedBy);
-        if (allMatches(query).size()>0) {
-            Person personToActivate = allMatches(query).get(0);
+        if (activePerson(ownedBy)!=null) {
+            Person personToActivate = activePerson(ownedBy);
             personToActivate.setActivated(true);
             return "ACTIVATED";
         }
@@ -307,13 +260,8 @@ public class Persons extends MatchingDomainService<Person> {
     @Programmatic
     // for Api
     public String deActivatePerson(String ownedBy){
-        QueryDefault<Person> query =
-                QueryDefault.create(
-                        Person.class,
-                        "findPersonUnique",
-                        "ownedBy", ownedBy);
-        if (allMatches(query).size()>0) {
-            Person personToDeActivate = allMatches(query).get(0);
+        if (activePerson(ownedBy)!=null) {
+            Person personToDeActivate = activePerson(ownedBy);
             personToDeActivate.setActivated(false);
             return "DEACTIVATED";
 
@@ -323,13 +271,12 @@ public class Persons extends MatchingDomainService<Person> {
 
     // Api v1
     @Programmatic
-    public Person matchPersonApiId(final String id) {
+    public Person matchPersonApiId(final Integer id) {
 
         for (Person p : container.allInstances(Person.class)) {
             String[] parts = p.getOID().split(Pattern.quote("[OID]"));
             String part1 = parts[0];
-            String ApiId = "L_".concat(part1);
-            if (id.equals(ApiId)) {
+            if (id.toString().equals(part1)) {
                 return p;
             }
         }

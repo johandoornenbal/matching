@@ -146,7 +146,7 @@ public class UserRegistrationResource extends ResourceAbstract {
 
             //Check for existing username / email
             final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
-            if (persons.findPersonUnique(userName) != null) {
+            if (persons.activePerson(userName) != null) {
                 if (error) {
                     errorString = errorString.concat(", ");
                 }

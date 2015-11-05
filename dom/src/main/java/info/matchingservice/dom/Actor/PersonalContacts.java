@@ -18,27 +18,16 @@
  */
 package info.matchingservice.dom.Actor;
 
+import com.google.common.base.Objects;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.TrustLevel;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.query.QueryDefault;
 
-import com.google.common.base.Objects;
+import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 
 @DomainService(repositoryFor = PersonalContact.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 //@DomainServiceLayout(menuOrder="13")
@@ -123,14 +112,14 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     	final List<PersonalContact> contacts = Collections.emptyList();
     	// find PersonObject of user
     	// if not found return emptyList
-    	if (persons.findPersonUnique(userName) == null ){
+    	if (persons.activatePerson(userName) == null ){
     		return contacts;
     	} else {
             QueryDefault<PersonalContact> query = 
                     QueryDefault.create(
                             PersonalContact.class, 
                         "findPersonalContactReferringToPerson", 
-                        "contact", persons.findPersonUnique(userName).getOwnedBy());
+                        "contact", persons.activePerson(userName).getOwnedBy());
             return allMatches(query);
     	}
     }
@@ -142,7 +131,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         final PersonalContact contact = newTransientInstance(PersonalContact.class);
         contact.setContactPerson(contactPerson);
         contact.setContact(contactPerson.getOwnedBy());
-        contact.setOwnerPerson(persons.findPersonUnique(userName));
+        contact.setOwnerPerson(persons.activePerson(userName));
         contact.setOwnedBy(userName);
         persist(contact);
         return contact;
@@ -156,7 +145,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         final PersonalContact contact = newTransientInstance(PersonalContact.class);
         contact.setContactPerson(contactPerson);
         contact.setContact(contactPerson.getOwnedBy());
-        contact.setOwnerPerson(persons.findPersonUnique(userName));
+        contact.setOwnerPerson(persons.activePerson(userName));
         contact.setOwnedBy(userName);
         contact.setTrustLevel(trustLevel);
         persist(contact);

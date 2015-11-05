@@ -31,7 +31,7 @@ public class PersonViewModel extends ApiAbstractViewModel {
         this.middleName = person.getMiddleName();
         this.birthDay = person.getDateOfBirth().toString();
         this.roles = person.getRoles();
-        this.pictureLink = person.getPictureLink();
+        this.pictureUrl = person.getPictureUrl();
         this.profile = new PersonProfileViewModel(person);
         List<DemandViewModel> demands = new ArrayList<>();
         for (Demand demand : person.getCollectDemands()) {
@@ -60,23 +60,23 @@ public class PersonViewModel extends ApiAbstractViewModel {
 
         try {
             Address address = (Address) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.ADDRESS_MAIN).get(0);
-            this.addressMain = address.getAddress();
-            this.postalCodeMain = address.getPostalCode();
-            this.townMain = address.getTown();
+            this.mainAddres = address.getAddress();
+            this.mainPostalCode = address.getPostalCode();
+            this.mainTown = address.getTown();
         } catch (Exception e) {
             // Ignore
         }
 
         try {
             Email email = (Email) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.EMAIL_MAIN).get(0);
-            this.emailMain = email.getEmail();
+            this.mainEmail = email.getEmail();
         } catch (Exception e) {
             // Ignore
         }
 
         try {
             Phone phone = (Phone) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.PHONE_MAIN).get(0);
-            this.phoneMain = phone.getPhoneNumber();
+            this.mainPhone = phone.getPhoneNumber();
         } catch (Exception e) {
             // Ignore
         }
@@ -149,81 +149,81 @@ public class PersonViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > pictureLink (property)
-    private String pictureLink;
+    //region > pictureUrl (property)
+    private String pictureUrl;
 
     @MemberOrder(sequence = "7")
-    public String getPictureLink() {
-        return pictureLink;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setPictureLink(final String pictureLink) {
-        this.pictureLink = pictureLink;
-    }
-    //endregion
-
-    //region > addressMain (property)
-    private String addressMain;
-
-    @MemberOrder(sequence = "1")
-    public String getAddressMain() {
-        return addressMain;
-    }
-
-    public void setAddressMain(final String addressMain) {
-        this.addressMain = addressMain;
+    public void setPictureUrl(final String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
     //endregion
 
-    //region > postalCodeMain (property)
-    private String postalCodeMain;
+    //region > mainAddres (property)
+    private String mainAddres;
 
     @MemberOrder(sequence = "1")
-    public String getPostalCodeMain() {
-        return postalCodeMain;
+    public String getMainAddres() {
+        return mainAddres;
     }
 
-    public void setPostalCodeMain(final String postalCodeMain) {
-        this.postalCodeMain = postalCodeMain;
+    public void setMainAddres(final String mainAddres) {
+        this.mainAddres = mainAddres;
     }
     //endregion
 
-    //region > townMain (property)
-    private String townMain;
+    //region > mainPostalCode (property)
+    private String mainPostalCode;
 
     @MemberOrder(sequence = "1")
-    public String getTownMain() {
-        return townMain;
+    public String getMainPostalCode() {
+        return mainPostalCode;
     }
 
-    public void setTownMain(final String townMain) {
-        this.townMain = townMain;
+    public void setMainPostalCode(final String mainPostalCode) {
+        this.mainPostalCode = mainPostalCode;
+    }
+    //endregion
+
+    //region > mainTown (property)
+    private String mainTown;
+
+    @MemberOrder(sequence = "1")
+    public String getMainTown() {
+        return mainTown;
+    }
+
+    public void setMainTown(final String mainTown) {
+        this.mainTown = mainTown;
     }
     //endregion
 
     //region > emailMain (property)
-    private String emailMain;
+    private String mainEmail;
 
     @MemberOrder(sequence = "1")
-    public String getEmailMain() {
-        return emailMain;
+    public String getMainEmail() {
+        return mainEmail;
     }
 
-    public void setEmailMain(final String emailMain) {
-        this.emailMain = emailMain;
+    public void setMainEmail(final String mainEmail) {
+        this.mainEmail = mainEmail;
     }
     //endregion
 
-    //region > phoneMain (property)
-    private String phoneMain;
+    //region > mainPhone (property)
+    private String mainPhone;
 
     @MemberOrder(sequence = "1")
-    public String getPhoneMain() {
-        return phoneMain;
+    public String getMainPhone() {
+        return mainPhone;
     }
 
-    public void setPhoneMain(final String phoneMain) {
-        this.phoneMain = phoneMain;
+    public void setMainPhone(final String mainPhone) {
+        this.mainPhone = mainPhone;
     }
     //endregion
 

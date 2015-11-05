@@ -31,6 +31,7 @@ import org.junit.Test;
 import javax.inject.Inject;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -162,7 +163,7 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p1.getLastName(), is(LAST_NAME));
 
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
-            assertThat(p1.getPictureLink(), is(PICTURE_LINK));
+            assertThat(p1.getPictureUrl(), is(PICTURE_LINK));
             
 //            assertThat(p1.getUniqueActorId(), is(UNIQUE_ID));
             
@@ -209,12 +210,12 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void onlyOneYou() throws Exception {
-            assertThat(persons.activePerson("frans").size(), is(1));
+            assertThat(persons.activePerson("frans").getFirstName(), is("Frans"));
         }
         
         @Test
         public void notAYou() throws Exception {
-            assertThat(persons.activePerson("xyz").size(), is(0));
+            assertNull(persons.activePerson("xyz"));
         }
     }
     
@@ -234,7 +235,7 @@ public class PersonTest extends MatchingIntegrationTest {
         
         @Test
         public void allOtherPersons() throws Exception {
-            Person thisIsMe = persons.activePerson("frans").get(0);
+            Person thisIsMe = persons.activePerson("frans");
             assertThat(persons.AllOtherPersons(thisIsMe).size(), is(5));
         }
     }

@@ -52,7 +52,7 @@ public class PersonResource extends ResourceAbstract {
 
         final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
 
-        Person activePerson = persons.activePerson().get(0);
+        Person activePerson = persons.activePerson();
 
         return Response.status(200).entity(personRepresentation(activePerson).toString()).build();
     }
@@ -60,7 +60,7 @@ public class PersonResource extends ResourceAbstract {
     @GET
     @Path("/people/{instanceId}")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response getPeopleServices(@PathParam("instanceId") String instanceId)  {
+    public Response getPeopleServices(@PathParam("instanceId") Integer instanceId)  {
 
         final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
 
@@ -117,7 +117,7 @@ public class PersonResource extends ResourceAbstract {
         activeperson.mapPut("lastName", activePerson.getLastName());
         activeperson.mapPut("middleName", activePerson.getMiddleName());
         activeperson.mapPut("birthDay", activePerson.getDateOfBirth().toString());
-        activeperson.mapPut("pictureLink", activePerson.getPictureLink());
+        activeperson.mapPut("pictureLink", activePerson.getPictureUrl());
         activeperson.mapPut("roles", activePerson.getRoles());
         try {
             Email email = (Email) communicationChannels.findCommunicationChannelByPersonAndType(activePerson, CommunicationChannelType.EMAIL_MAIN).get(0);
@@ -169,7 +169,7 @@ public class PersonResource extends ResourceAbstract {
             personalContactMap.mapPut("contactURI", Utils.toObjectURI(contact.getContactPerson().getOID()));
             personalContactMap.mapPut("contactName", contact.getContactPerson().title());
             personalContactMap.mapPut("contactRoles", contact.getContactPerson().getRoles());
-            personalContactMap.mapPut("contactPictureLink", contact.getContactPerson().getPictureLink());
+            personalContactMap.mapPut("contactPictureLink", contact.getContactPerson().getPictureUrl());
             personalContactMap.mapPut("trustlevel",contact.getTrustLevel().toString());
             personalContactsArray.arrayAdd(personalContactMap);
 

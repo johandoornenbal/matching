@@ -63,12 +63,7 @@ import java.util.TreeSet;
             name = "matchPersonByNameContains", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.Person "
-                    + "WHERE lastName.toLowerCase().indexOf(:search) >= 0 || firstName.toLowerCase().indexOf(:search) >= 0"),
-    @javax.jdo.annotations.Query(
-            name = "findPersonByUniqueItemId", language = "JDOQL",
-            value = "SELECT "
-                    + "FROM info.matchingservice.dom.Actor.Person "
-                    + "WHERE uniqueItemId.matches(:uniqueItemId)")       
+                    + "WHERE lastName.toLowerCase().indexOf(:search) >= 0 || firstName.toLowerCase().indexOf(:search) >= 0")
 })
 @DomainObject(editing=Editing.DISABLED, autoCompleteRepository=Persons.class, autoCompleteAction = "autoComplete")
 public class Person extends Actor {
@@ -137,17 +132,17 @@ public class Person extends Actor {
     }
 
     //region > PictureLink (property)
-    private String pictureLink;
+    private String pictureUrl;
 
     @javax.jdo.annotations.Column(allowsNull = "true")
     @MemberOrder(sequence = "70")
     @PropertyLayout()
-    public String getPictureLink() {
-        return pictureLink;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setPictureLink(final String PictureLink) {
-        this.pictureLink = PictureLink;
+    public void setPictureUrl(final String PictureLink) {
+        this.pictureUrl = PictureLink;
     }
     //endregion
     
@@ -215,23 +210,6 @@ public class Person extends Actor {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- personalContacts --//
-    
-    //** personsReferringToActiveUser **//
-//    @CollectionLayout(render=RenderType.EAGERLY)
-//    public List<PersonalContact> getCollectPersonsReferringToActiveUser(){
-//    	return pcontacts.allPersonalContactsReferringToBasicUser(currentUserName());
-//    }
-//    
-//    // business rule:
-//    // show only on person object of Active User
-//    public boolean hideCollectPersonsReferringToActiveUser(){
-//    	if (getOwnedBy().equals(currentUserName())){
-//    		return false;
-//    	} else {
-//    		return true;
-//    	}
-//    }
-    //-- personsReferringToActiveUser --//
 
     
     //** suppliesOfActor **//
@@ -274,7 +252,7 @@ public class Person extends Actor {
     		@ParameterLayout(named="picture")
     		@Parameter(optionality=Optionality.OPTIONAL)
     		final Blob picture,
-            @ParameterLayout(named="pictureLink")
+            @ParameterLayout(named="pictureUrl")
             @Parameter(optionality=Optionality.OPTIONAL)
             final String pictureLink
     		){
@@ -303,7 +281,7 @@ public class Person extends Actor {
     }
 
     public String default5UpdatePerson(){
-        return getPictureLink();
+        return getPictureUrl();
     }
     //-- updatePerson --//
     
@@ -332,25 +310,25 @@ public class Person extends Actor {
     // Je moet Opdrachtgever zijn om een tafel te starten
     @ActionLayout()
     public Demand createPersonsDemand(
-            @ParameterLayout(named="demandDescription")
-            final String demandDescription,
-            @ParameterLayout(named="demandSummary", multiLine=3)
+            @ParameterLayout(named="description")
+            final String description,
+            @ParameterLayout(named="summary", multiLine=3)
             @Parameter(optionality=Optionality.OPTIONAL)
-            final String demandSummary,
-            @ParameterLayout(named="demandStory", multiLine=8)
+            final String summary,
+            @ParameterLayout(named="story", multiLine=8)
             @Parameter(optionality=Optionality.OPTIONAL)
-            final String demandStory,
-            @ParameterLayout(named="demandAttachment")
+            final String story,
+            @ParameterLayout(named="attachment")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final Blob demandAttachment,
-            @ParameterLayout(named="demandOrSupplyProfileStartDate")
+            final Blob attachment,
+            @ParameterLayout(named="profileStartDate")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final LocalDate demandOrSupplyProfileStartDate,
-            @ParameterLayout(named="demandOrSupplyProfileStartDate")
+            final LocalDate profileStartDate,
+            @ParameterLayout(named="profileStartDate")
             @Parameter(optionality=Optionality.OPTIONAL)
-            final LocalDate demandOrSupplyProfileEndDate
+            final LocalDate profileEndDate
             ){
-        return createDemand(demandDescription, demandSummary, demandStory, demandAttachment, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
+        return createDemand(description, summary, story, attachment, profileStartDate, profileEndDate, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
     }
     
     public boolean hideCreatePersonsDemand(

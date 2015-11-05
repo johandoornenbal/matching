@@ -17,24 +17,14 @@
 
 package info.matchingservice.dom.ProvidedServices;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.RestrictTo;
-import org.apache.isis.applib.annotation.SemanticsOf;
-
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.MatchingDomainService;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+
+import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.util.List;
 
 @DomainService(nature= NatureOfService.VIEW_MENU_ONLY)
 @DomainServiceLayout(named = "Services")
@@ -75,7 +65,7 @@ public class ServiceContributions extends MatchingDomainService<Service> {
         return services.createService(
                 description,
                 summary,
-                persons.findPersonUnique(container.getUser().getName()),
+                persons.activePerson(container.getUser().getName()),
                 type,
                 priceEuro,
                 priceCredits,
