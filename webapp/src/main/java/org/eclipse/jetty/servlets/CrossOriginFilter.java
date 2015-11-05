@@ -14,19 +14,13 @@
 
 package org.eclipse.jetty.servlets;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -105,7 +99,8 @@ public class CrossOriginFilter implements Filter
     private static final String PREFLIGHT_MAX_AGE_PARAM = "preflightMaxAge";
     private static final String ALLOWED_CREDENTIALS_PARAM = "allowCredentials";
     private static final String ANY_ORIGIN = "*";
-    private static final List<String> SIMPLE_HTTP_METHODS = Arrays.asList("GET", "POST", "HEAD");
+    //Yodo: added "PUT", "DELETE" and "OPTIONS" to support Angular and Ember
+    private static final List<String> SIMPLE_HTTP_METHODS = Arrays.asList("GET", "POST", "HEAD", "PUT", "OPTIONS", "DELETE");
 
     private boolean anyOriginAllowed = false;
     private List<String> allowedOrigins = new ArrayList<String>();
@@ -140,7 +135,7 @@ public class CrossOriginFilter implements Filter
         }
 
         String allowedMethodsConfig = config.getInitParameter(ALLOWED_METHODS_PARAM);
-        if (allowedMethodsConfig == null) allowedMethodsConfig = "GET,POST,PUT";
+        if (allowedMethodsConfig == null) allowedMethodsConfig = "GET,POST,PUT,DELETE,OPTIONS";
         allowedMethods.addAll(Arrays.asList(allowedMethodsConfig.split(",")));
 
         String allowedHeadersConfig = config.getInitParameter(ALLOWED_HEADERS_PARAM);

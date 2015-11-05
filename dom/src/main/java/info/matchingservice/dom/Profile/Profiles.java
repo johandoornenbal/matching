@@ -19,21 +19,18 @@
 
 package info.matchingservice.dom.Profile;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
-import org.joda.time.LocalDate;
-
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDate;
 
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
+import java.util.List;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 @DomainService(repositoryFor = Profile.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -111,7 +108,6 @@ public class Profiles extends MatchingDomainService<Profile> {
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final Demand demandProfileOwner,
-            final ProfileTypeMatchingRule profileTypeMatchingRule,
             final String ownedBy
             ){
         final Profile newDemandProfile = newTransientInstance(Profile.class);
@@ -124,7 +120,6 @@ public class Profiles extends MatchingDomainService<Profile> {
         newDemandProfile.setDemandOrSupply(DemandOrSupply.DEMAND);
         newDemandProfile.setProfileType(profileType);
         newDemandProfile.setDemandProfileOwner(demandProfileOwner);
-        newDemandProfile.setProfileTypeMatchingRule(profileTypeMatchingRule);
         newDemandProfile.setOwnedBy(ownedBy);
         persist(newDemandProfile);
         return newDemandProfile;

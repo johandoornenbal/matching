@@ -17,17 +17,21 @@
 
 package info.matchingservice.webapp.custom_rest;
 
+import com.google.gson.Gson;
 import info.matchingservice.dom.Howdoido.*;
+import info.matchingservice.dom.Howdoido.Viewmodels.UserViewModel;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
 import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
+import org.apache.isis.viewer.restfulobjects.rendering.util.Util;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 
 /**
  * Created by jodo on 15/05/15.
@@ -76,6 +80,75 @@ public class HowdoidoResource extends ResourceAbstract {
         BasicRequest request = basicRequests.matchRequestApiId(instanceId);
 
         return Response.status(200).entity(basicRequestRepresentation(request).toString()).build();
+
+    }
+
+    @GET
+    @Path("/gson/{testString}")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response getGsonServices(@PathParam("testString") String testString)  {
+
+
+        final Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
+
+        UserViewModel test = api.test(testString);
+        Gson gson = new Gson();
+        String json = gson.toJson(test);
+        return Response.status(200).entity(json).build();
+
+    }
+
+    @POST
+    @Path("/gson")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response postGsonServices(InputStream object)  {
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+        System.out.println(argRepr);
+
+        String id = "username";
+        JsonRepresentation propertyUsername = argRepr.getRepresentation(id, new Object[0]);
+        String userName = propertyUsername.getString("");
+
+        String response = new String();
+        response = response.concat("{\"username\":\"").concat(userName).concat("\"}");
+        Gson gson = new Gson();
+
+        return Response.status(200).entity(response).build();
+
+    }
+
+    @PUT
+    @Path("/gson/{testString}")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response putGsonServices(@PathParam("testString") String testString, InputStream object)  {
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+
+        String id = "username";
+        JsonRepresentation propertyUsername = argRepr.getRepresentation(id, new Object[0]);
+        String userName = propertyUsername.getString("");
+
+        String response = new String();
+        response = response.concat("{\"").concat(testString).concat("\" : {\"username\": \"").concat(userName).concat("\"}}");
+
+        return Response.status(200).entity(response).build();
+
+    }
+
+    @DELETE
+    @Path("/gson/{testString}")
+    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
+    public Response deleteGsonServices(@PathParam("testString") String testString)  {
+
+        final Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
+
+        UserViewModel test = api.test(testString);
+        Gson gson = new Gson();
+        String json = gson.toJson(test);
+        return Response.status(200).entity(json).build();
+
+
     }
 
     @DELETE

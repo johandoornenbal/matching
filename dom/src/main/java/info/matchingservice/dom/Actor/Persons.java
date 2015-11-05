@@ -155,8 +155,6 @@ public class Persons extends MatchingDomainService<Person> {
             final PersonRoleType personRoleType,
             final String userName) {
         final Person person = newTransientInstance(Person.class);
-        final UUID uuid=UUID.randomUUID();
-        person.setUniqueItemId(uuid);
         person.setFirstName(firstName);
         person.setMiddleName(middleName);
         person.setLastName(lastName);

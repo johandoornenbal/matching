@@ -18,20 +18,13 @@
  */
 package info.matchingservice.dom.Actor;
 
-import java.util.List;
+import info.matchingservice.dom.MatchingTrustedContact;
+import org.apache.isis.applib.annotation.*;
 
 import javax.inject.Inject;
 import javax.jdo.JDOHelper;
 import javax.jdo.annotations.InheritanceStrategy;
-
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.SemanticsOf;
-
-import info.matchingservice.dom.MatchingTrustedContact;
+import java.util.List;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)

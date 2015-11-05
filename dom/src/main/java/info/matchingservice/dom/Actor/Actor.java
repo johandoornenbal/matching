@@ -18,43 +18,23 @@
  */
 package info.matchingservice.dom.Actor;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.UUID;
-
-import javax.inject.Inject;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.VersionStrategy;
-
-import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.Where;
-import org.apache.isis.applib.value.Blob;
-
 import info.matchingservice.dom.Assessment.Assessment;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.DemandSupplyType;
-import info.matchingservice.dom.DemandSupply.Demands;
-import info.matchingservice.dom.DemandSupply.Supplies;
-import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.DemandSupply.*;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
-import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
 import info.matchingservice.dom.TrustLevel;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
+
+import javax.inject.Inject;
+import javax.jdo.annotations.*;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -70,18 +50,6 @@ import info.matchingservice.dom.TrustLevel;
 public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
 	//** API: PROPERTIES **//
-	
-    private UUID uniqueItemId;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    public UUID getUniqueItemId() {
-        return uniqueItemId;
-    }
-    
-    public void setUniqueItemId(final UUID uniqueItemId) {
-        this.uniqueItemId = uniqueItemId;
-    }
 
     //region > activated (property)
     private boolean activated;
@@ -209,7 +177,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     
     //** Constructor **//
     public Actor() {
-        super("uniqueItemId");
+        super("ownedBy, dateCreated");
     }
         
     //** ownedBy - Override for secure object **//
@@ -232,7 +200,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     //** HELPERS **//
     //** HELPERS: generic object helpers **//
     public String title() {
-        return getUniqueItemId().toString();
+        String string = "Actor ownedBy ";
+        return string.concat(getOwnedBy());
     }
     
     private String currentUserName() {
@@ -276,7 +245,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         		demandOrSupplyProfileEndDate, 
         		profileType, 
         		demand,
-        		profileTypeMatchingRules.findProfileTypeMatchingRule("regel1"),
         		ownedBy
         		);
     }
@@ -346,46 +314,9 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     @Inject
     Profiles profiles;
     
-    @Inject
-    ProfileTypeMatchingRules profileTypeMatchingRules;
+//    @Inject
+//    ProfileTypeMatchingRules profileTypeMatchingRules;
     
-    
-    //-- INJECTIONS --//
-    
-    
-	//  /**
-	//  * Generic new Demand
-	//  * @param demandDescription
-	//  * @param weight
-	//  * @param demandSupplyType
-	//  * @return
-	//  */
-	// @ActionLayout(hidden=Where.EVERYWHERE)
-	// @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-	// public Demand createDemand(
-	//         final String demandDescription,
-	//         final Integer weight,
-	//         final DemandSupplyType demandSupplyType
-	//         ) {
-	//     return createDemand(demandDescription, "", "", null, weight, demandSupplyType, this, currentUserName());
-	// }
-	    
-	//  /**
-	//  * Generic new Supply
-	//  * @param supplyDescription
-	//  * @param weight
-	//  * @param demandSupplyType
-	//  * @return
-	//  */
-	// @ActionLayout(hidden=Where.EVERYWHERE)
-	// @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-	// public Supply createSupply(
-	//         final String supplyDescription,
-	//         final Integer weight,
-	//         final DemandSupplyType demandSupplyType){
-	//     return createSupply(supplyDescription, weight, demandSupplyType, this, currentUserName());
-	// }
-    
-    
+
     
 }

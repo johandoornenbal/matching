@@ -19,30 +19,19 @@
 
 package info.matchingservice.dom.Match;
 
-import java.util.UUID;
-
-import javax.inject.Inject;
-import javax.jdo.JDOHelper;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Where;
-
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Assessment.ProfileMatchAssessment;
 import info.matchingservice.dom.Assessment.ProfileMatchAssessments;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+
+import javax.inject.Inject;
+import javax.jdo.JDOHelper;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import java.util.UUID;
 
 /**
  * It takes an action on a Demand Profile to create and persist a ProfileMatch instance

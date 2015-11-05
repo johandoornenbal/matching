@@ -17,9 +17,13 @@
 
 package info.matchingservice.webapp.custom_rest;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.PersonalContact;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.Api.Viewmodels.PersonViewModel;
 import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.CommunicationChannels.*;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -41,8 +45,8 @@ import javax.ws.rs.core.Response;
  * Created by jodo on 15/05/15.
  */
 
-@Path("/v1")
-public class PersonResource extends ResourceAbstract {
+@Path("/v2")
+public class PersonResourceV2 extends ResourceAbstract {
 
 
     @GET
@@ -53,8 +57,14 @@ public class PersonResource extends ResourceAbstract {
         final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
 
         Person activePerson = persons.activePerson().get(0);
+        PersonViewModel personViewModel = new PersonViewModel(activePerson, communicationChannels);
 
-        return Response.status(200).entity(personRepresentation(activePerson).toString()).build();
+        Gson gson = new Gson();
+        JsonElement personRepresentation = gson.toJsonTree(personViewModel);
+        JsonObject result = new JsonObject();
+        result.add("Person", personRepresentation);
+
+        return Response.status(200).entity(result.toString()).build();
     }
 
     @GET

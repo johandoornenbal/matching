@@ -18,26 +18,14 @@
  */
 package info.matchingservice.dom.Actor;
 
-import java.util.List;
-import java.util.UUID;
-
-import javax.inject.Inject;
-
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.services.clock.ClockService;
 
-import info.matchingservice.dom.MatchingDomainService;
+import javax.inject.Inject;
+import java.util.List;
 
 @DomainService(repositoryFor = Organisation.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(menuOrder="15")
@@ -83,8 +71,6 @@ public class Organisations extends MatchingDomainService<Organisation> {
             final String organisationName,
             final String userName) {
         final Organisation organisation = newTransientInstance(Organisation.class);
-        final UUID uuid=UUID.randomUUID();
-        organisation.setUniqueItemId(uuid);
         organisation.setOrganisationName(organisationName);
         organisation.setDateCreated(clockService.now());
         organisation.setOwnedBy(userName);

@@ -17,6 +17,7 @@
 
 package info.matchingservice.dom.Howdoido;
 
+import info.matchingservice.dom.Howdoido.Viewmodels.UserViewModel;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
 
@@ -149,6 +150,17 @@ public class Api {
     }
 
     public List<BasicTemplate> allTemplates() {return basicTemplates.allBasicTemplates();}
+
+    public UserViewModel test(final String string) {
+
+        BasicUser basicUser = basicUsers.findBasicUserByName(string);
+
+        if (basicUser != null){
+            return new UserViewModel(basicUser);
+        }
+
+        return null;
+    }
 
     @Inject
     BasicUsers basicUsers;

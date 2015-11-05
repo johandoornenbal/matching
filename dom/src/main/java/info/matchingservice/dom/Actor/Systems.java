@@ -18,26 +18,15 @@
  */
 package info.matchingservice.dom.Actor;
 
-import java.util.List;
-import java.util.UUID;
-
-import javax.inject.Inject;
-
+import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.Utils.StringUtils;
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.services.clock.ClockService;
 
-import info.matchingservice.dom.MatchingDomainService;
-import info.matchingservice.dom.Utils.StringUtils;
+import javax.inject.Inject;
+import java.util.List;
 
 
 @DomainService(repositoryFor = System.class, nature=NatureOfService.DOMAIN)
@@ -113,8 +102,6 @@ public class Systems extends MatchingDomainService<System> {
             final String systemName,
             final String userName) {
         final System system = newTransientInstance(System.class);
-        final UUID uuid=UUID.randomUUID();
-        system.setUniqueItemId(uuid);
         system.setSystemName(systemName);
         system.setDateCreated(clockService.now());
         system.setOwnedBy(userName);

@@ -19,39 +19,6 @@
 
 package info.matchingservice.dom.Profile;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.UUID;
-
-import javax.inject.Inject;
-import javax.jdo.JDOHelper;
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.Persistent;
-
-import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Where;
-import org.apache.isis.applib.query.QueryDefault;
-
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Assessment.ProfileAssessment;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -59,19 +26,21 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
 import info.matchingservice.dom.HasImageUrl;
-import info.matchingservice.dom.Match.CandidateStatus;
-import info.matchingservice.dom.Match.PersistedProfileElementComparison;
-import info.matchingservice.dom.Match.PersistedProfileElementComparisons;
-import info.matchingservice.dom.Match.ProfileComparison;
-import info.matchingservice.dom.Match.ProfileComparisons;
-import info.matchingservice.dom.Match.ProfileMatch;
-import info.matchingservice.dom.Match.ProfileMatches;
-import info.matchingservice.dom.Match.ProfileMatchingService;
+import info.matchingservice.dom.Match.*;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Rules.ProfileTypeMatchingRule;
 import info.matchingservice.dom.Tags.TagCategories;
 import info.matchingservice.dom.Tags.Tags;
 import info.matchingservice.dom.TrustLevel;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.query.QueryDefault;
+import org.joda.time.LocalDate;
+
+import javax.inject.Inject;
+import javax.jdo.JDOHelper;
+import javax.jdo.annotations.*;
+import java.util.*;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)

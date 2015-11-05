@@ -34,6 +34,7 @@ public class CustomRestfulObjectsApplication extends RestfulObjectsApplication {
         addClass(ProfileResource.class);
         addClass(FindResource.class);
         addClass(HowdoidoResource.class);
+        addClass(PersonResourceV2.class);
 
     }
 

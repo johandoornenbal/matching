@@ -18,10 +18,10 @@
  */
 package info.matchingservice.dom;
 
-import javax.jdo.JDOHelper;
-
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
+
+import javax.jdo.JDOHelper;
 
 /**
  * A domain object that is mutable and can be changed by multiple users over time,
@@ -66,7 +66,32 @@ public abstract class MatchingMutableObject<T extends MatchingDomainObject<T>>
         final String id = objectIdStr.split("\\[OID\\]")[0];
         return id;
     }
-        
+
+    @PropertyLayout(hidden = Where.EVERYWHERE)
+    public Integer getIdAsInt() {
+        Object objectId = JDOHelper.getObjectId(this);
+        if(objectId == null) {
+            return null;
+        }
+        String objectIdStr = objectId.toString();
+        final Integer id = Integer.parseInt(objectIdStr.split("\\[OID\\]")[0]);
+        return id;
+    }
+
+    @PropertyLayout(hidden = Where.EVERYWHERE)
+    public String getUri() {
+        Object objectId = JDOHelper.getObjectId(this);
+        if(objectId == null) {
+            return null;
+        }
+        String objectIdStr = objectId.toString();
+        final String prefix = "objects/";
+        final String id = objectIdStr.split("\\[OID\\]")[0];
+        final String objectRef = objectIdStr.split("\\[OID\\]")[1];
+        final String uri = prefix.concat(objectRef).concat("/").concat(id);
+        return uri;
+    }
+
     // //////////////////////////////////////
 
     @PropertyLayout(hidden = Where.EVERYWHERE)

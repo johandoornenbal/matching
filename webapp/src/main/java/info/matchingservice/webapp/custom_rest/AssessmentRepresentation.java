@@ -58,8 +58,8 @@ public class AssessmentRepresentation {
 //        try {
 //
 //            Demand targetDemand = (Demand) assessment.getTargetOfAssessment();
-//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetDemand.getOID()));
-//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetDemand.getOID()));
+//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetDemand.getHref()));
+//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetDemand.getHref()));
 //
 //        } catch (Exception e) {
 //
@@ -69,8 +69,8 @@ public class AssessmentRepresentation {
 //        try {
 //
 //            Supply targetSupply = (Supply) assessment.getTargetOfAssessment();
-//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetSupply.getOID()));
-//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetSupply.getOID()));
+//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetSupply.getHref()));
+//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetSupply.getHref()));
 //
 //        } catch (Exception e) {
 //
@@ -80,8 +80,8 @@ public class AssessmentRepresentation {
 //        try {
 //
 //            Profile targetProfile = (Profile) assessment.getTargetOfAssessment();
-//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetProfile.getOID()));
-//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetProfile.getOID()));
+//            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetProfile.getHref()));
+//            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetProfile.getHref()));
 //
 //        } catch (Exception e) {
 //
