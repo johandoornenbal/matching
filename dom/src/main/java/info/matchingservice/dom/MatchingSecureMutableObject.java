@@ -148,7 +148,7 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
             return false;
         }
         // for fixtures
-        System.out.println("*****************" + container.getUser().getName() + "*********************");
+//        System.out.println("*****************" + container.getUser().getName() + "*********************");
         if (container.getUser().getName()=="initialisation") {
             return false;
         }

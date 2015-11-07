@@ -23,7 +23,8 @@ public class ActivePersonViewModel extends ApiAbstractViewModel {
 
     public ActivePersonViewModel(
             final Person person,
-            final CommunicationChannels communicationChannels
+            final CommunicationChannels communicationChannels,
+            final String apiNotes
     ) {
         super(person);
         this.firstName = person.getFirstName();
@@ -33,16 +34,16 @@ public class ActivePersonViewModel extends ApiAbstractViewModel {
         this.roles = person.getRoles();
         this.pictureUrl = person.getPictureUrl();
         this.profile = new PersonProfileViewModel(person);
-        List<DemandViewModel> demands = new ArrayList<>();
+        List<DemandDeepNestedViewModel> demands = new ArrayList<>();
         for (Demand demand : person.getDemands()) {
-            DemandViewModel viewModel = new DemandViewModel(demand);
+            DemandDeepNestedViewModel viewModel = new DemandDeepNestedViewModel(demand);
             demands.add(viewModel);
         }
         this.demands = demands;
 
-        List<SupplyViewModel> supplies = new ArrayList<>();
+        List<SupplyDeepNestedViewModel> supplies = new ArrayList<>();
         for (Supply supply : person.getSupplies()) {
-            SupplyViewModel viewModel = new SupplyViewModel(supply);
+            SupplyDeepNestedViewModel viewModel = new SupplyDeepNestedViewModel(supply);
             supplies.add(viewModel);
         }
         this.supplies = supplies;
@@ -80,6 +81,8 @@ public class ActivePersonViewModel extends ApiAbstractViewModel {
         } catch (Exception e) {
             // Ignore
         }
+
+        this.apiNotes = apiNotes;
     }
 
 
@@ -281,27 +284,27 @@ public class ActivePersonViewModel extends ApiAbstractViewModel {
 
 
     //region > demands (property)
-    private List<SupplyViewModel> supplies;
+    private List<SupplyDeepNestedViewModel> supplies;
 
     @MemberOrder(sequence = "1")
-    public List<SupplyViewModel> getSupplies() {
+    public List<SupplyDeepNestedViewModel> getSupplies() {
         return supplies;
     }
 
-    public void setSupplies(final List<SupplyViewModel> supplies) {
+    public void setSupplies(final List<SupplyDeepNestedViewModel> supplies) {
         this.supplies = supplies;
     }
     //endregion
 
     //region > demands (property)
-    private List<DemandViewModel> demands;
+    private List<DemandDeepNestedViewModel> demands;
 
     @MemberOrder(sequence = "1")
-    public List<DemandViewModel> getDemands() {
+    public List<DemandDeepNestedViewModel> getDemands() {
         return demands;
     }
 
-    public void setDemands(final List<DemandViewModel> demands) {
+    public void setDemands(final List<DemandDeepNestedViewModel> demands) {
         this.demands = demands;
     }
     //endregion
@@ -316,6 +319,19 @@ public class ActivePersonViewModel extends ApiAbstractViewModel {
 
     public void setAssessmentsReceivedByActor(final List<AssessmentViewModel> assessmentsReceivedByActor) {
         this.assessmentsReceivedByActor = assessmentsReceivedByActor;
+    }
+    //endregion
+
+    //region > apiNotes (property)
+    private String apiNotes;
+
+    @MemberOrder(sequence = "1")
+    public String getApiNotes() {
+        return apiNotes;
+    }
+
+    public void setApiNotes(final String apiNotes) {
+        this.apiNotes = apiNotes;
     }
     //endregion
 

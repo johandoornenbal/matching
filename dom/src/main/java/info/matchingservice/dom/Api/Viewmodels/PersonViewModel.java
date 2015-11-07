@@ -35,6 +35,7 @@ public class PersonViewModel extends ApiAbstractViewModel {
 //        this.profile = new PersonProfileViewModel(person);
 
         // demands with implementation of trusted circles
+        //TODO: centralize implementation trusted circles
         if (!person.hideDemands()) {
             List<Integer> demands = new ArrayList<>();
             for (Demand demand : person.getDemands()) {
@@ -44,6 +45,7 @@ public class PersonViewModel extends ApiAbstractViewModel {
         }
 
         // supplies with implementation of trusted circles
+        //TODO: centralize implementation trusted circles
         if (!person.hideSupplies()) {
             List<Integer> supplies = new ArrayList<>();
             for (Supply supply : person.getSupplies()) {

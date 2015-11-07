@@ -62,7 +62,9 @@ public class PersonResourceV2 extends ResourceAbstract {
         final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
 
         Person activePerson = persons.activePerson();
-        ActivePersonViewModel activePersonViewModel = new ActivePersonViewModel(activePerson, communicationChannels);
+        String apiNotes ="This is a deepnested presentation of activePerson (Object person connected to currentUser). Property 'profile' is added for convenience in the root. It is the active person's Supply of type PERSON_DEMANDSUPPLY which should be unique.";
+
+        ActivePersonViewModel activePersonViewModel = new ActivePersonViewModel(activePerson, communicationChannels, apiNotes);
 
         Gson gson = new Gson();
         JsonElement personRepresentation = gson.toJsonTree(activePersonViewModel);
@@ -89,6 +91,7 @@ public class PersonResourceV2 extends ResourceAbstract {
         result.add("person", personRepresentation);
 
         // sideload supplies with implementation of trusted circles
+        //TODO: centralize implementation trusted circles
         if(!activePerson.hideSupplies()) {
             List<SupplyViewModel> supplyViewmodels = new ArrayList<>();
             for (Supply supply : activePerson.getSupplies()) {
@@ -99,6 +102,7 @@ public class PersonResourceV2 extends ResourceAbstract {
         }
 
         // sideload demands with implementation of trusted circles
+        //TODO: centralize implementation trusted circles
         if(!activePerson.hideDemands()) {
             List<DemandViewModel> demandViewmodels = new ArrayList<>();
             for (Demand demand : activePerson.getDemands()) {
