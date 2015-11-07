@@ -86,7 +86,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
             //given
             assessmentOwner = persons.findPersons("Hals").get(0);
             assessmentTargetOwner = persons.findPersons("Rijn").get(0);
-            assessmentTarget = assessmentTargetOwner.getCollectDemands().first();
+            assessmentTarget = assessmentTargetOwner.getDemands().first();
             ownedBy = "frans";
 
             //when
@@ -132,7 +132,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
             //given
             assessmentOwner = persons.findPersons("Hals").get(0);
             assessmentTargetOwner = persons.findPersons("Rijn").get(0);
-            assessmentTarget = assessmentTargetOwner.getCollectSupplies().first();
+            assessmentTarget = assessmentTargetOwner.getSupplies().first();
             ownedBy = "frans";
 
             //when
@@ -178,7 +178,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
             //given
             assessmentOwner = persons.findPersons("Hals").get(0);
             assessmentTargetOwner = persons.findPersons("Rijn").get(0);
-            assessmentTarget = assessmentTargetOwner.getCollectSupplies().first().getCollectSupplyProfiles().first();
+            assessmentTarget = assessmentTargetOwner.getSupplies().first().getCollectSupplyProfiles().first();
             ownedBy = "frans";
 
             //when
@@ -217,7 +217,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
             //given
             assessmentOwner = persons.findPersons("Rijn").get(0);
             assessmentTargetOwner = persons.findPersons("Hals").get(0);
-            assessmentTarget = assessmentTargetOwner.getCollectSavedMatches().first();
+            assessmentTarget = assessmentTargetOwner.getSavedMatches().first();
             ownedBy = "rembrandt";
 
             //when

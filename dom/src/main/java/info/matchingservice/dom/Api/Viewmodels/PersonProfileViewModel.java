@@ -18,8 +18,8 @@ public class PersonProfileViewModel extends ApiAbstractViewModel {
     public PersonProfileViewModel(){}
 
     public PersonProfileViewModel(final Person person){
-        super(person.getCollectSupplies().first().getCollectSupplyProfiles().first());
-        Profile p = person.getCollectSupplies().first().getCollectSupplyProfiles().first();
+        super(person.getSupplies().first().getCollectSupplyProfiles().first());
+        Profile p = person.getSupplies().first().getCollectSupplyProfiles().first();
         if (p.getProfileStartDate() != null) {
             this.profileStartDate = p.getProfileStartDate().toString();
         }

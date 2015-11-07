@@ -20,8 +20,8 @@ public class AssessmentsForFransFixture extends AssessmentAbstract {
         Person ASSESSMENT_OWNER_ACTOR = persons.findPersons("Hals").get(0);
         Demand demandOfRembrandt;
         Demand demandOfMichiel;
-        demandOfRembrandt=persons.findPersons("Rijn").get(0).getCollectDemands().first();
-        demandOfMichiel=persons.findPersons("Ruyter").get(0).getCollectDemands().first();
+        demandOfRembrandt=persons.findPersons("Rijn").get(0).getDemands().first();
+        demandOfMichiel=persons.findPersons("Ruyter").get(0).getDemands().first();
         
         createAssessment(
                 demandOfRembrandt,

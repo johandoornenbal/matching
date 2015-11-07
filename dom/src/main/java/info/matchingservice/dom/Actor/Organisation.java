@@ -22,20 +22,14 @@ import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.util.TitleBuffer;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.Where;
-import org.apache.isis.applib.query.QueryDefault;
-import org.apache.isis.applib.util.TitleBuffer;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -95,7 +89,7 @@ public class Organisation extends Actor {
 	//** API: COLLECTIONS **//
     
     // method CollectDemands() is on Actor
-    public boolean hideCollectDemands() {
+    public boolean hideDemands() {
         return !getIsPrincipal();
     }
     

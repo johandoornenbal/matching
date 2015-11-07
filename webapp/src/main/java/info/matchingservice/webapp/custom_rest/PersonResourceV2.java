@@ -21,17 +21,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Actor.PersonalContact;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.Api.Viewmodels.ActivePersonViewModel;
+import info.matchingservice.dom.Api.Viewmodels.DemandViewModel;
 import info.matchingservice.dom.Api.Viewmodels.PersonViewModel;
-import info.matchingservice.dom.Assessment.Assessment;
-import info.matchingservice.dom.CommunicationChannels.*;
+import info.matchingservice.dom.Api.Viewmodels.SupplyViewModel;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Match.ProfileMatches;
 import org.apache.isis.core.runtime.system.context.IsisContext;
-import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
 import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
@@ -40,6 +39,8 @@ import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jodo on 15/05/15.
@@ -49,34 +50,89 @@ import javax.ws.rs.core.Response;
 public class PersonResourceV2 extends ResourceAbstract {
 
 
+    private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);
+    private Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
+    private ProfileMatches profileMatches = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileMatches.class);
+
     @GET
     @Path("/")
-    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response getActivePersonServices()  {
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response getActivePersonServices() {
 
         final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
 
         Person activePerson = persons.activePerson();
-        PersonViewModel personViewModel = new PersonViewModel(activePerson, communicationChannels);
+        ActivePersonViewModel activePersonViewModel = new ActivePersonViewModel(activePerson, communicationChannels);
 
         Gson gson = new Gson();
-        JsonElement personRepresentation = gson.toJsonTree(personViewModel);
+        JsonElement personRepresentation = gson.toJsonTree(activePersonViewModel);
         JsonObject result = new JsonObject();
-        result.add("Person", personRepresentation);
+        result.add("person", personRepresentation);
 
         return Response.status(200).entity(result.toString()).build();
     }
 
     @GET
-    @Path("/people/{instanceId}")
-    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response getPeopleServices(@PathParam("instanceId") Integer instanceId)  {
+    @Path("/persons/{instanceId}")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response getPersonServices(@PathParam("instanceId") Integer instanceId) {
 
         final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
 
-        Person activePerson = persons.matchPersonApiId(instanceId);
+        Gson gson = new Gson();
+        JsonObject result = new JsonObject();
 
-        return Response.status(200).entity(personRepresentation(activePerson).toString()).build();
+        // person
+        Person activePerson = persons.matchPersonApiId(instanceId);
+        PersonViewModel personViewModel = new PersonViewModel(activePerson, communicationChannels);
+        JsonElement personRepresentation = gson.toJsonTree(personViewModel);
+        result.add("person", personRepresentation);
+
+        // sideload supplies with implementation of trusted circles
+        if(!activePerson.hideSupplies()) {
+            List<SupplyViewModel> supplyViewmodels = new ArrayList<>();
+            for (Supply supply : activePerson.getSupplies()) {
+                supplyViewmodels.add(new SupplyViewModel(supply));
+            }
+            JsonElement suppliesRepresentation = gson.toJsonTree(supplyViewmodels);
+            result.add("supplies", suppliesRepresentation);
+        }
+
+        // sideload demands with implementation of trusted circles
+        if(!activePerson.hideDemands()) {
+            List<DemandViewModel> demandViewmodels = new ArrayList<>();
+            for (Demand demand : activePerson.getDemands()) {
+                demandViewmodels.add(new DemandViewModel(demand));
+            }
+            JsonElement demandsRepresentation = gson.toJsonTree(demandViewmodels);
+            result.add("demands", demandsRepresentation);
+        }
+
+        return Response.status(200).entity(result.toString()).build();
+    }
+
+    @GET
+    @Path("/persons")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response getAllPersonsServices() {
+
+        final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
+
+        Gson gson = new Gson();
+
+        // persons
+        List<PersonViewModel> personViewModels = new ArrayList<>();
+        for (Person person : persons.allPersons()) {
+            PersonViewModel personViewModel = new PersonViewModel(person, communicationChannels);
+            personViewModels.add(personViewModel);
+        }
+        JsonElement personRepresentation = gson.toJsonTree(personViewModels);
+
+        // build result
+        JsonObject result = new JsonObject();
+        result.add("persons", personRepresentation);
+
+        return Response.status(200).entity(result.toString()).build();
     }
 
     @DELETE
@@ -114,107 +170,4 @@ public class PersonResourceV2 extends ResourceAbstract {
     public Response putPeopleNotAllowed() {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the people resource is not allowed.", new Object[0]);
     }
-
-    private JsonRepresentation personRepresentation(Person activePerson){
-
-        JsonRepresentation all = JsonRepresentation.newMap();
-
-        // activeperson
-        JsonRepresentation activeperson = JsonRepresentation.newMap();
-        activeperson.mapPut("id", Utils.toApiID(activePerson.getOID()));
-        activeperson.mapPut("URI", Utils.toObjectURI(activePerson.getOID()));
-        activeperson.mapPut("firstName", activePerson.getFirstName());
-        activeperson.mapPut("lastName", activePerson.getLastName());
-        activeperson.mapPut("middleName", activePerson.getMiddleName());
-        activeperson.mapPut("birthDay", activePerson.getDateOfBirth().toString());
-        activeperson.mapPut("pictureUrl", activePerson.getPictureUrl());
-        activeperson.mapPut("roles", activePerson.getRoles());
-        try {
-            Email email = (Email) communicationChannels.findCommunicationChannelByPersonAndType(activePerson, CommunicationChannelType.EMAIL_MAIN).get(0);
-            activeperson.mapPut("email", email.getEmail());
-        } catch (Exception e) {
-            activeperson.mapPut("email", "");
-        }
-        try {
-            Address address = (Address) communicationChannels.findCommunicationChannelByPersonAndType(activePerson, CommunicationChannelType.ADDRESS_MAIN).get(0);
-            activeperson.mapPut("address", address.getAddress());
-            activeperson.mapPut("postalCode", address.getPostalCode());
-            activeperson.mapPut("town", address.getTown());
-        } catch (Exception e) {
-            activeperson.mapPut("address", "");
-            activeperson.mapPut("postalCode", "");
-            activeperson.mapPut("town", "");
-        }
-        try {
-            Phone phone = (Phone) communicationChannels.findCommunicationChannelByPersonAndType(activePerson, CommunicationChannelType.PHONE_MAIN).get(0);
-            activeperson.mapPut("phone", phone.getPhoneNumber());
-        } catch (Exception e) {
-            activeperson.mapPut("phone", "");
-        }
-
-        // demands
-        JsonRepresentation demandsAndProfilesAndElements = JsonRepresentation.newArray();
-        for (Demand demand : activePerson.getCollectDemands()) {
-            DemandRepresentation rep = new DemandRepresentation();
-            demandsAndProfilesAndElements.arrayAdd(rep.ObjectRepresentation(demand));
-        }
-        activeperson.mapPut("demands", demandsAndProfilesAndElements);
-
-        //supplies
-        JsonRepresentation suppliesAndProfilesAndElements = JsonRepresentation.newArray();
-        for (Supply supply : activePerson.getCollectSupplies()) {
-            SupplyRepresentation rep = new SupplyRepresentation();
-            suppliesAndProfilesAndElements.arrayAdd(rep.ObjectRepresentation(supply));
-        }
-        activeperson.mapPut("supplies", suppliesAndProfilesAndElements);
-
-        //personal contacts
-        JsonRepresentation personalContactsArray = JsonRepresentation.newArray();
-        for (PersonalContact contact : activePerson.getCollectPersonalContacts()) {
-
-            JsonRepresentation personalContactMap = JsonRepresentation.newMap();
-            personalContactMap.mapPut("id", Utils.toApiID(contact.getOID()));
-            personalContactMap.mapPut("URI", Utils.toObjectURI(contact.getOID()));
-            personalContactMap.mapPut("contactId", Utils.toApiID(contact.getContactPerson().getOID()));
-            personalContactMap.mapPut("contactURI", Utils.toObjectURI(contact.getContactPerson().getOID()));
-            personalContactMap.mapPut("contactName", contact.getContactPerson().title());
-            personalContactMap.mapPut("contactRoles", contact.getContactPerson().getRoles());
-            personalContactMap.mapPut("contactPictureUrl", contact.getContactPerson().getPictureUrl());
-            personalContactMap.mapPut("trustlevel",contact.getTrustLevel().toString());
-            personalContactsArray.arrayAdd(personalContactMap);
-
-        }
-        activeperson.mapPut("personalContacts", personalContactsArray);
-
-        //assessments received by active person
-        JsonRepresentation assessmentsReceivedArray = JsonRepresentation.newArray();
-        for (Assessment assessment : activePerson.getCollectAssessmentsReceivedByActor()) {
-            AssessmentRepresentation rep = new AssessmentRepresentation();
-            assessmentsReceivedArray.arrayAdd(rep.ObjectRepresentation(assessment));
-        }
-        activeperson.mapPut("assessmentsReceived", assessmentsReceivedArray);
-
-        //assessments given by active person
-        JsonRepresentation assessmentsGivenArray = JsonRepresentation.newArray();
-        for (Assessment assessment : activePerson.getCollectAssessmentsGivenByActor()) {
-            AssessmentRepresentation rep = new AssessmentRepresentation();
-            assessmentsGivenArray.arrayAdd(rep.ObjectRepresentation(assessment));
-        }
-        activeperson.mapPut("assessmentsGiven", assessmentsGivenArray);
-
-        //ProfileMatches
-        JsonRepresentation profileMatchesArray = JsonRepresentation.newArray();
-        for (ProfileMatch match : profileMatches.collectProfileMatches(activePerson)) {
-            ProfileMatchRepresentation rep = new ProfileMatchRepresentation();
-            profileMatchesArray.arrayAdd(rep.ObjectRepresentation(match));
-        }
-        activeperson.mapPut("profileMatches", profileMatchesArray);
-
-        all.mapPut("person",activeperson);
-
-        return all;
-
-    }
-    private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);
-    private ProfileMatches profileMatches = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileMatches.class);
 }

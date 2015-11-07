@@ -17,16 +17,8 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import info.matchingservice.dom.DemandSupply.Supplies;
+import info.matchingservice.dom.DemandSupply.Supply;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
@@ -34,8 +26,9 @@ import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
-import info.matchingservice.dom.DemandSupply.Supplies;
-import info.matchingservice.dom.DemandSupply.Supply;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Created by jodo on 15/05/15.
@@ -46,7 +39,7 @@ public class SupplyResource extends ResourceAbstract {
     @GET
     @Path("/supplies/{instanceId}")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response getSupplyServices(@PathParam("instanceId") String instanceId)  {
+    public Response getSupplyServices(@PathParam("instanceId") Integer instanceId)  {
 
         final Supplies supplies = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Supplies.class);
 

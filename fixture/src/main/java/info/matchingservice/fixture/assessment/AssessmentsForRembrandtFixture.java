@@ -1,10 +1,10 @@
 package info.matchingservice.fixture.assessment;
 
-import javax.inject.Inject;
-
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.fixture.demand.TestDemands;
+
+import javax.inject.Inject;
 
 public class AssessmentsForRembrandtFixture extends AssessmentAbstract {
 
@@ -17,8 +17,8 @@ public class AssessmentsForRembrandtFixture extends AssessmentAbstract {
 
         Demand demandOfFrans;
         Demand demandOfMichiel;
-        demandOfFrans=persons.findPersons("Hals").get(0).getCollectDemands().first();
-        demandOfMichiel=persons.findPersons("Ruyter").get(0).getCollectDemands().first();
+        demandOfFrans=persons.findPersons("Hals").get(0).getDemands().first();
+        demandOfMichiel=persons.findPersons("Ruyter").get(0).getDemands().first();
         
         createAssessment(
                 demandOfFrans,

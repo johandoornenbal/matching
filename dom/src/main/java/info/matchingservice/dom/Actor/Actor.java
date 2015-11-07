@@ -84,49 +84,49 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 	//** API: COLLECTIONS **//
 	
 	//** demandsOfActor **//
-    private SortedSet<Demand> collectDemands = new TreeSet<Demand>();
+    private SortedSet<Demand> demands = new TreeSet<Demand>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "demandOwner", dependentElement = "true")
-    public SortedSet<Demand> getCollectDemands() {
-        return collectDemands;
+    public SortedSet<Demand> getDemands() {
+        return demands;
     }
    
-    public void setCollectDemands(final SortedSet<Demand> demandsOfActor) {
-        this.collectDemands = demandsOfActor;
+    public void setDemands(final SortedSet<Demand> demandsOfActor) {
+        this.demands = demandsOfActor;
     }   
     //-- demandsOfActor --//
     
     //** suppliesOfActor **//
-    private SortedSet<Supply> collectSupplies = new TreeSet<Supply>();
+    private SortedSet<Supply> supplies = new TreeSet<Supply>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
-    public SortedSet<Supply> getCollectSupplies() {
-        return collectSupplies;
+    public SortedSet<Supply> getSupplies() {
+        return supplies;
     }
    
-    public void setCollectSupplies(final SortedSet<Supply> suppliesOfActor) {
-        this.collectSupplies = suppliesOfActor;
+    public void setSupplies(final SortedSet<Supply> suppliesOfActor) {
+        this.supplies = suppliesOfActor;
     }
     //-- suppliesOfActor --//
     
     //** savedMatchesOfActor **//
-    private SortedSet<ProfileMatch> collectSavedMatches = new TreeSet<ProfileMatch>();
+    private SortedSet<ProfileMatch> savedMatches = new TreeSet<ProfileMatch>();
     
     @Persistent(mappedBy = "ownerActor", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<ProfileMatch> getCollectSavedMatches() {
-        return collectSavedMatches;
+    public SortedSet<ProfileMatch> getSavedMatches() {
+        return savedMatches;
     }
     
-    public void setCollectSavedMatches(final SortedSet<ProfileMatch> savedMatchesOfActor){
-        this.collectSavedMatches = savedMatchesOfActor;
+    public void setSavedMatches(final SortedSet<ProfileMatch> savedMatchesOfActor){
+        this.savedMatches = savedMatchesOfActor;
     }
     
     //Business rule: 
     //only visible for inner-circle
-    public boolean hideCollectSavedMatches(){
+    public boolean hideSavedMatches(){
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- savedMatchesOfActor --//
@@ -222,7 +222,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner, 
             final String ownedBy){
-        return demands.createDemand(demandDescription, demandSummary, demandStory, demandAttachment, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
+        return demandRepo.createDemand(demandDescription, demandSummary, demandStory, demandAttachment, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
     }
     
     @Programmatic
@@ -237,7 +237,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final String ownedBy){
-        final Demand demand = demands.createDemand(demandDescription, "", "", null, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
+        final Demand demand = demandRepo.createDemand(demandDescription, "", "", null, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
         return profiles.createDemandProfile(
         		demandProfileDescription, 
         		profileWeight, 
@@ -258,7 +258,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final DemandSupplyType demandSupplyType,
             final Actor supplyOwner, 
             final String ownedBy){
-        return supplies.createSupply(supplyDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, demandSupplyType, supplyOwner, ownedBy);
+        return supplyRepo.createSupply(supplyDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, demandSupplyType, supplyOwner, ownedBy);
     }
     
     @Programmatic
@@ -273,7 +273,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
             final String ownedBy){
-        final Supply supply = supplies.createSupply(
+        final Supply supply = supplyRepo.createSupply(
         		supplyDescription, 
         		weight, 
         		demandOrSupplyProfileStartDate, 
@@ -306,16 +306,14 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     private DomainObjectContainer container;
     
     @Inject
-    Supplies supplies;
+    Supplies supplyRepo;
     
     @Inject
-    Demands demands;    
+    Demands demandRepo;
 
     @Inject
     Profiles profiles;
-    
-//    @Inject
-//    ProfileTypeMatchingRules profileTypeMatchingRules;
+
     
 
     

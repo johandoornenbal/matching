@@ -13,12 +13,12 @@ import java.util.List;
  * Created by jodo on 02/11/15.
  */
 @DomainObject(nature = Nature.VIEW_MODEL)
-public class DemandViewModel extends ApiAbstractViewModel {
+public class DemandDeepNestedViewModel extends ApiAbstractViewModel {
 
-    public DemandViewModel(){
+    public DemandDeepNestedViewModel(){
     }
 
-    public DemandViewModel(final Demand demand){
+    public DemandDeepNestedViewModel(final Demand demand){
         super(demand);
         this.demandDescription = demand.getDemandDescription();
         this.demandSummary = demand.getDemandSummary();
@@ -34,9 +34,10 @@ public class DemandViewModel extends ApiAbstractViewModel {
         this.imageUrl = demand.getImageUrl();
         this.demandType = demand.getDemandType().toString();
         this.weight = demand.getWeight();
-        List<Integer> demandProfiles = new ArrayList<>();
+        List<ProfileViewModel> demandProfiles = new ArrayList<>();
         for (Profile profile : demand.getCollectDemandProfiles()){
-            demandProfiles.add(profile.getIdAsInt());
+            ProfileViewModel viewModel = new ProfileViewModel(profile);
+            demandProfiles.add(viewModel);
         }
         this.demandProfiles = demandProfiles;
     }
@@ -146,14 +147,14 @@ public class DemandViewModel extends ApiAbstractViewModel {
     //endregion
 
     //region > demandProfiles (property)
-    private List<Integer> demandProfiles;
+    private List<ProfileViewModel> demandProfiles;
 
     @MemberOrder(sequence = "1")
-    public List<Integer> getDemandProfiles() {
+    public List<ProfileViewModel> getDemandProfiles() {
         return demandProfiles;
     }
 
-    public void setDemandProfiles(final List<Integer> demandProfiles) {
+    public void setDemandProfiles(final List<ProfileViewModel> demandProfiles) {
         this.demandProfiles = demandProfiles;
     }
     //endregion

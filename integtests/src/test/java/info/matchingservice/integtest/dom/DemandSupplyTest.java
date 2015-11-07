@@ -96,7 +96,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void findDemand() throws Exception {
             Integer maxindex = supplies.allSupplies().size() - 1;
             s1 = supplies.allSupplies().get(maxindex);
-            assertThat(s1.getSupplyDescription(), is(SUPPLY_DESCRIPTION));
+            assertThat(s1.getDescription(), is(SUPPLY_DESCRIPTION));
             assertThat(s1.getWeight(), is(WEIGHT));
             assertThat(s1.getSupplyType(), is(DEMAND_SUPPLY_TYPE));
             assertThat(s1.getSupplyOwner(), is((Actor) persons.findPersons("Hals").get(0)));

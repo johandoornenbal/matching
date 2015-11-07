@@ -38,7 +38,6 @@ import javax.jdo.JDOHelper;
 import javax.jdo.annotations.*;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.UUID;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -64,36 +63,20 @@ import java.util.UUID;
             name = "findSupplyByDescription", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Supply "
-                    + "WHERE ownedBy == :ownedBy && supplyDescription.indexOf(:supplyDescription) >= 0"),
-    @javax.jdo.annotations.Query(
-            name = "findSupplyByUniqueItemId", language = "JDOQL",
-            value = "SELECT "
-                    + "FROM info.matchingservice.dom.DemandSupply.Supply "
-                    + "WHERE uniqueItemId.matches(:uniqueItemId)")  
+                    + "WHERE ownedBy == :ownedBy && description.indexOf(:description) >= 0")
 })
 @DomainObject(editing=Editing.DISABLED)
 public class Supply extends MatchingSecureMutableObject<Supply> implements HasImageUrl {
+
+    public Supply() {
+        super("supplyOwner, supplyType, description, weight, startDate, endDate, ownedBy");
+    }
 
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
         return JDOHelper.getObjectId(this).toString();
     }
-	//** API: PROPERTIES **//
-	
-	//** uniqueItemId **//
-    private UUID uniqueItemId;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    public UUID getUniqueItemId() {
-        return uniqueItemId;
-    }
-    
-    public void setUniqueItemId(final UUID uniqueItemId) {
-        this.uniqueItemId = uniqueItemId;
-    }
-    //-- uniqueItemId --//
-    
+
     //** supplyOwner **//
     private Actor supplyOwner;
     
@@ -109,62 +92,61 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     }
     //-- supplyOwner --//
     
-    //** supplyDescription **//
-    private String supplyDescription;
+    //** description **//
+    private String description;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout(multiLine=4)
-    public String getSupplyDescription(){
-        return supplyDescription;
+    public String getDescription(){
+        return description;
     }
     
-    public void setSupplyDescription(final String description) {
-        this.supplyDescription = description;
+    public void setDescription(final String description) {
+        this.description = description;
     }
-    //-- supplyDescription --//
+    //-- description --//
     
-	//** demandOrSupplyProfileStartDate **//
-	private LocalDate demandOrSupplyProfileStartDate;
+	//** startDate **//
+	private LocalDate startDate;
 	
 	@javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getDemandOrSupplyProfileStartDate() {
-		return demandOrSupplyProfileStartDate;
+	public LocalDate getStartDate() {
+		return startDate;
 	}
 	
-	public void setDemandOrSupplyProfileStartDate(final LocalDate demandOrSupplyProfileStartDate){
-		this.demandOrSupplyProfileStartDate = demandOrSupplyProfileStartDate;
+	public void setStartDate(final LocalDate startDate){
+		this.startDate = startDate;
 	}	
-	//-- demandOrSupplyProfileStartDate --//
+	//-- startDate --//
 	
-	//** demandOrSupplyProfileEndDate **//	
-	private LocalDate demandOrSupplyProfileEndDate;
+	//** endDate **//
+	private LocalDate endDate;
 	
 	@javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getDemandOrSupplyProfileEndDate() {
-		return demandOrSupplyProfileEndDate;
+	public LocalDate getEndDate() {
+		return endDate;
 	}
 	
-	public void setDemandOrSupplyProfileEndDate(final LocalDate demandOrSupplyProfileEndDate){
-		this.demandOrSupplyProfileEndDate = demandOrSupplyProfileEndDate;
+	public void setEndDate(final LocalDate endDate){
+		this.endDate = endDate;
 	}	
-	//-- demandOrSupplyProfileStartDate --//
+	//-- startDate --//
 
     //region > imageUrl (property)
     private String imageUrl;
 
+    @Override
     @javax.jdo.annotations.Column(allowsNull = "true")
     public String getImageUrl() {
         return imageUrl;
     }
 
+    @Override
     public void setImageUrl(final String imageUrl) {
         this.imageUrl = imageUrl;
     }
     //endregion
-    
-	//-- API: PROPERTIES --//
-	//** API: COLLECTIONS **//
-    
+
     //** supplyProfiles **//
     private SortedSet<Profile> collectSupplyProfiles = new TreeSet<Profile>();
     
@@ -199,41 +181,40 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     }
     //-- supplyAssessments --//
     
-	//-- API: COLLECTIONS --//
-	//** API: ACTIONS **//
+
     
     //** updateSupply **//
     @Action(semantics=SemanticsOf.IDEMPOTENT)
     public Supply updateSupply(
-            @ParameterLayout(named="supplyDescription", multiLine=4)
+            @ParameterLayout(named="description", multiLine=4)
             final String supplyDescription,
-            @ParameterLayout(named="demandOrSupplyProfileStartDate")
+            @ParameterLayout(named="startDate")
             @Parameter(optionality=Optionality.OPTIONAL)
             final LocalDate demandOrSupplyProfileStartDate,
-            @ParameterLayout(named="demandOrSupplyProfileEndDate")
+            @ParameterLayout(named="endDate")
             @Parameter(optionality=Optionality.OPTIONAL)
             final LocalDate demandOrSupplyProfileEndDate,
             @ParameterLayout(named="imageUrl")
             @Parameter(optionality=Optionality.OPTIONAL)
             final String imageUrl
             ){
-        this.setSupplyDescription(supplyDescription);
-        this.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
-        this.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
+        this.setDescription(supplyDescription);
+        this.setStartDate(demandOrSupplyProfileStartDate);
+        this.setEndDate(demandOrSupplyProfileEndDate);
         this.setImageUrl(imageUrl);
         return this;
     }
     
     public String default0UpdateSupply(){
-        return this.getSupplyDescription();
+        return this.getDescription();
     }
     
     public LocalDate default1UpdateSupply(){
-        return this.getDemandOrSupplyProfileStartDate();
+        return this.getStartDate();
     }
     
     public LocalDate default2UpdateSupply(){
-        return this.getDemandOrSupplyProfileEndDate();
+        return this.getEndDate();
     }
 
     public String default3UpdateSupply(){
@@ -273,25 +254,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
      }
     
     //-- updateSupply --//
-    
-    //** deleteSupply **//
-//    @ActionLayout()
-//    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-//    public Actor deleteSupply(
-//            @ParameterLayout(named="confirmDelete")
-//            @Parameter(optionality=Optionality.OPTIONAL)
-//            boolean confirmDelete
-//            ){
-//        container.removeIfNotAlready(this);
-//        container.informUser("Supply deleted");
-//        return getSupplyOwner();
-//    }
-//    
-//    public String validateDeleteSupply(boolean confirmDelete) {
-//        return confirmDelete? null:"CONFIRM_DELETE";
-//    }
-    //-- deleteSupply --//
-    
+
     //** createPersonSupplyProfile **//
     @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
@@ -351,13 +314,8 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
      }
      //-- createPersonSupplyProfile --//
     
-    
-	//-- API: ACTIONS --//
-	//** GENERIC OBJECT STUFF **//
-	//** constructor **//
-    public Supply() {
-        super("supplyDescription, weight, ownedBy, uniqueItemId");
-    }
+
+
 	//** ownedBy - Override for secure object **//
     private String ownedBy;
     
@@ -372,23 +330,15 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
-	//-- GENERIC OBJECT STUFF --//
-	//** HELPERS **//
-    //** HELPERS: generic object helpers **//
+
     private String currentUserName() {
         return container.getUser().getName();
     }
     
     public String toString() {
-        return getSupplyDescription() + " - " + getSupplyOwner().title();
+        return getDescription() + " - " + getSupplyOwner().title();
     }
-	//-- HELPERS: generic object helpers --//
-	//** HELPERS: programmatic actions **//
-    @Programmatic
-    public Actor getProfileOwnerIsOwnedBy(){
-        return getSupplyOwner();
-    }
-    
+
     @Programmatic
     public Profile createSupplyProfile(
             final String supplyProfileDescription,
@@ -400,18 +350,9 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
             final String ownedBy) {
         return allSupplyProfiles.createSupplyProfile(supplyProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supplyProfileOwner, ownedBy);
     }
-	//-- HELPERS: programmatic actions --// 
-	//-- HELPERS --//
-	//** INJECTIONS **//
-    @javax.inject.Inject
-    private DomainObjectContainer container;
-    
-    @Inject
-    Profiles allSupplyProfiles;
-	//-- INJECTIONS --//
-	//** HIDDEN: PROPERTIES **//
-    
+
     //** supplyType **//
+
     private DemandSupplyType supplyType;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -440,8 +381,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     }
     //-- weight --//
     
-	//-- HIDDEN: PROPERTIES --//
-	//** HIDDEN: ACTIONS **//
+
     @ActionLayout(hidden=Where.EVERYWHERE)
     @Action(semantics=SemanticsOf.IDEMPOTENT)
     public Supply updateWeight(
@@ -455,59 +395,12 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     public Integer default0UpdateWeight(){
         return this.getWeight();
     }
-	//-- HIDDEN: ACTIONS --//
 
-    
-//    @ActionLayout(hidden=Where.EVERYWHERE)
-//    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-//    public Profile createSupplyProfile(
-//            final String supplyProfileDescription,
-//            final Integer weight
-//            ) {
-//        return createSupplyProfile(supplyProfileDescription, weight, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
-//    }
-   
 
-    
-//    @ActionLayout(named="Nieuwe cursus", hidden=Where.EVERYWHERE)
-//    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-//    public Profile createCourseSupplyProfile(
-//            @ParameterLayout(named="profileName")
-//            final String supplyProfileDescription
-//            ) {
-//        return createSupplyProfile(supplyProfileDescription, 10, null, null, ProfileType.COURSE_PROFILE, this, currentUserName());
-//    }
-//    
-//    // BUSINESS RULE voor hide en validate van de aktie 'nieuw cursus profiel'
-//    // alleen tonen op supply van type cursus
-//    // je kunt alleen een cursus profiel aanmaken als je ZP-er bent.
-//    
-//    public boolean hideCreateCourseSupplyProfile(
-//            final String supplyProfileDescription
-//            ) {
-//        if (this.getSupplyType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
-//            return true;
-//        }
-//        
-//        if (!((Person) getSupplyOwner()).getIsProfessional()){
-//            return true;
-//        }
-//        
-//        return false;
-//    }
-//    
-//    public String validateCreateCourseSupplyProfile(
-//            final String supplyProfileDescription
-//            ) {
-//        if (this.getSupplyType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
-//            return "Kan alleen op type Cursus";
-//        }
-//        
-//        if (!((Person) getSupplyOwner()).getIsProfessional()){
-//            return "Je moet ZP-er zijn";
-//        }
-//        
-//        return null;
-//    }
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+
+    @Inject
+    Profiles allSupplyProfiles;
 
 }

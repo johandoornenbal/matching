@@ -144,7 +144,7 @@ public class PersonResource extends ResourceAbstract {
 
         // demands
         JsonRepresentation demandsAndProfilesAndElements = JsonRepresentation.newArray();
-        for (Demand demand : activePerson.getCollectDemands()) {
+        for (Demand demand : activePerson.getDemands()) {
             DemandRepresentation rep = new DemandRepresentation();
             demandsAndProfilesAndElements.arrayAdd(rep.ObjectRepresentation(demand));
         }
@@ -152,7 +152,7 @@ public class PersonResource extends ResourceAbstract {
 
         //supplies
         JsonRepresentation suppliesAndProfilesAndElements = JsonRepresentation.newArray();
-        for (Supply supply : activePerson.getCollectSupplies()) {
+        for (Supply supply : activePerson.getSupplies()) {
             SupplyRepresentation rep = new SupplyRepresentation();
             suppliesAndProfilesAndElements.arrayAdd(rep.ObjectRepresentation(supply));
         }
@@ -160,7 +160,7 @@ public class PersonResource extends ResourceAbstract {
 
         //personal contacts
         JsonRepresentation personalContactsArray = JsonRepresentation.newArray();
-        for (PersonalContact contact : activePerson.getCollectPersonalContacts()) {
+        for (PersonalContact contact : activePerson.getPersonalContacts()) {
 
             JsonRepresentation personalContactMap = JsonRepresentation.newMap();
             personalContactMap.mapPut("id", Utils.toApiID(contact.getOID()));

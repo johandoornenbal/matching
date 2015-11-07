@@ -69,23 +69,23 @@ public class PersistedProfileMatchTest extends MatchingIntegrationTest {
             Person frans = persons.findPersons("Hals").get(0);
 
             //then
-            assertThat(frans.getCollectDemands().first().getCollectDemandProfiles().first().getCollectPersistedProfileMatches().size(), is(2));
-            assertNull(frans.getCollectDemands().first().getCollectDemandProfiles().first().getChosenProfileMatch());
+            assertThat(frans.getDemands().first().getCollectDemandProfiles().first().getCollectPersistedProfileMatches().size(), is(2));
+            assertNull(frans.getDemands().first().getCollectDemandProfiles().first().getChosenProfileMatch());
 
             //when
             // the first persisted profileMatch gets status reserved
-            frans.getCollectDemands().first().getCollectDemandProfiles().first().getCollectPersistedProfileMatches().first().setCandidateStatus(CandidateStatus.RESERVED);
+            frans.getDemands().first().getCollectDemandProfiles().first().getCollectPersistedProfileMatches().first().setCandidateStatus(CandidateStatus.RESERVED);
 
             //then
-            assertThat(frans.getCollectDemands().first().getCollectDemandProfiles().first().getChosenProfileMatch().getCandidateStatus(), is(CandidateStatus.RESERVED));
+            assertThat(frans.getDemands().first().getCollectDemandProfiles().first().getChosenProfileMatch().getCandidateStatus(), is(CandidateStatus.RESERVED));
 
             //when
             // the SECOND and LAST persisted profileMatch gets status chosen
-            frans.getCollectDemands().first().getCollectDemandProfiles().first().getCollectPersistedProfileMatches().last().setCandidateStatus(CandidateStatus.CHOSEN);
+            frans.getDemands().first().getCollectDemandProfiles().first().getCollectPersistedProfileMatches().last().setCandidateStatus(CandidateStatus.CHOSEN);
 
             //then
             //status chosen overrules status reserved
-            assertThat(frans.getCollectDemands().first().getCollectDemandProfiles().first().getChosenProfileMatch().getCandidateStatus(), is(CandidateStatus.CHOSEN));
+            assertThat(frans.getDemands().first().getCollectDemandProfiles().first().getChosenProfileMatch().getCandidateStatus(), is(CandidateStatus.CHOSEN));
         }
 
     }

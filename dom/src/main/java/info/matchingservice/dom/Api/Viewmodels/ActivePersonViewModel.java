@@ -16,12 +16,12 @@ import java.util.List;
  * Created by jodo on 01/11/15.
  */
 @DomainObject(nature = Nature.VIEW_MODEL)
-public class PersonViewModel extends ApiAbstractViewModel {
+public class ActivePersonViewModel extends ApiAbstractViewModel {
 
-    public PersonViewModel() {
+    public ActivePersonViewModel() {
     }
 
-    public PersonViewModel(
+    public ActivePersonViewModel(
             final Person person,
             final CommunicationChannels communicationChannels
     ) {
@@ -32,25 +32,20 @@ public class PersonViewModel extends ApiAbstractViewModel {
         this.birthDay = person.getDateOfBirth().toString();
         this.roles = person.getRoles();
         this.pictureUrl = person.getPictureUrl();
-//        this.profile = new PersonProfileViewModel(person);
-
-        // demands with implementation of trusted circles
-        if (!person.hideDemands()) {
-            List<Integer> demands = new ArrayList<>();
-            for (Demand demand : person.getDemands()) {
-                demands.add(demand.getIdAsInt());
-            }
-            this.demands = demands;
+        this.profile = new PersonProfileViewModel(person);
+        List<DemandViewModel> demands = new ArrayList<>();
+        for (Demand demand : person.getDemands()) {
+            DemandViewModel viewModel = new DemandViewModel(demand);
+            demands.add(viewModel);
         }
+        this.demands = demands;
 
-        // supplies with implementation of trusted circles
-        if (!person.hideSupplies()) {
-            List<Integer> supplies = new ArrayList<>();
-            for (Supply supply : person.getSupplies()) {
-                supplies.add(supply.getIdAsInt());
-            }
-            this.supplies = supplies;
+        List<SupplyViewModel> supplies = new ArrayList<>();
+        for (Supply supply : person.getSupplies()) {
+            SupplyViewModel viewModel = new SupplyViewModel(supply);
+            supplies.add(viewModel);
         }
+        this.supplies = supplies;
 
         List<AssessmentViewModel> assessmentsReceivedByActor = new ArrayList<>();
         for (Assessment assessment : person.getCollectAssessmentsReceivedByActor()) {
@@ -286,27 +281,27 @@ public class PersonViewModel extends ApiAbstractViewModel {
 
 
     //region > demands (property)
-    private List<Integer> supplies;
+    private List<SupplyViewModel> supplies;
 
     @MemberOrder(sequence = "1")
-    public List<Integer> getSupplies() {
+    public List<SupplyViewModel> getSupplies() {
         return supplies;
     }
 
-    public void setSupplies(final List<Integer> supplies) {
+    public void setSupplies(final List<SupplyViewModel> supplies) {
         this.supplies = supplies;
     }
     //endregion
 
     //region > demands (property)
-    private List<Integer> demands;
+    private List<DemandViewModel> demands;
 
     @MemberOrder(sequence = "1")
-    public List<Integer> getDemands() {
+    public List<DemandViewModel> getDemands() {
         return demands;
     }
 
-    public void setDemands(final List<Integer> demands) {
+    public void setDemands(final List<DemandViewModel> demands) {
         this.demands = demands;
     }
     //endregion

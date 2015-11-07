@@ -13,12 +13,12 @@ import java.util.List;
  * Created by jodo on 02/11/15.
  */
 @DomainObject(nature = Nature.VIEW_MODEL)
-public class SupplyViewModel extends ApiAbstractViewModel {
+public class SupplyDeepNestedViewModel extends ApiAbstractViewModel {
 
-    public SupplyViewModel(){
+    public SupplyDeepNestedViewModel(){
     }
 
-    public SupplyViewModel(final Supply supply){
+    public SupplyDeepNestedViewModel(final Supply supply){
         super(supply);
         this.description = supply.getDescription();
         if (supply.getStartDate()!=null){
@@ -32,9 +32,10 @@ public class SupplyViewModel extends ApiAbstractViewModel {
         this.imageUrl = supply.getImageUrl();
         this.supplyType = supply.getSupplyType().toString();
         this.weight = supply.getWeight();
-        List<Integer> supplyProfiles = new ArrayList<>();
+        List<ProfileViewModel> supplyProfiles = new ArrayList<>();
         for (Profile profile : supply.getCollectSupplyProfiles()){
-            supplyProfiles.add(profile.getIdAsInt());
+            ProfileViewModel viewModel = new ProfileViewModel(profile);
+            supplyProfiles.add(viewModel);
         }
         this.supplyProfiles = supplyProfiles;
     }
@@ -51,6 +52,7 @@ public class SupplyViewModel extends ApiAbstractViewModel {
         this.description = description;
     }
     //endregion
+
 
 
     private String startDate;
@@ -117,14 +119,14 @@ public class SupplyViewModel extends ApiAbstractViewModel {
     //endregion
 
     //region > supplyProfiles (property)
-    private List<Integer> supplyProfiles;
+    private List<ProfileViewModel> supplyProfiles;
 
     @MemberOrder(sequence = "1")
-    public List<Integer> getSupplyProfiles() {
+    public List<ProfileViewModel> getSupplyProfiles() {
         return supplyProfiles;
     }
 
-    public void setSupplyProfiles(final List<Integer> supplyProfiles) {
+    public void setSupplyProfiles(final List<ProfileViewModel> supplyProfiles) {
         this.supplyProfiles = supplyProfiles;
     }
     //endregion

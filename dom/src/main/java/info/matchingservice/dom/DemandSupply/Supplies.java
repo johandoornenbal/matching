@@ -19,19 +19,16 @@
 
 package info.matchingservice.dom.DemandSupply;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
-import org.joda.time.LocalDate;
-
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDate;
 
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.MatchingDomainService;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @DomainService(repositoryFor = Supply.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -50,17 +47,10 @@ public class Supplies extends MatchingDomainService<Supply> {
     }
     
     @Programmatic
-    // for Api
-    public List<Supply> findSupplyByUniqueItemId(UUID uniqueItemId) {
-        return allMatches("findSupplyByUniqueItemId",
-                "uniqueItemId", uniqueItemId);
-    }
-    
-    @Programmatic
     // for fixtures
-    public List<Supply> findSupplyByDescription(String supplyDescription, String ownedBy) {
+    public List<Supply> findSupplyByDescription(String description, String ownedBy) {
         return allMatches("findSupplyByDescription",
-        		"supplyDescription", supplyDescription,
+        		"description", description,
         		"ownedBy", ownedBy);
     }
 
@@ -74,28 +64,26 @@ public class Supplies extends MatchingDomainService<Supply> {
             final Actor supplyOwner,
             final String ownedBy) {
         final Supply newSupply = newTransientInstance(Supply.class);
-        final UUID uuid=UUID.randomUUID();
-        newSupply.setUniqueItemId(uuid);
-        newSupply.setSupplyDescription(supplyDescription);
-        newSupply.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
-        newSupply.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
+        newSupply.setDescription(supplyDescription);
+        newSupply.setStartDate(demandOrSupplyProfileStartDate);
+        newSupply.setEndDate(demandOrSupplyProfileEndDate);
         newSupply.setSupplyType(demandSupplyType);
         newSupply.setWeight(weight);
         newSupply.setSupplyOwner(supplyOwner);
         newSupply.setOwnedBy(ownedBy);
         persist(newSupply);
+        getContainer().flush();
         return newSupply;
     }
 
     // Api v1
     @Programmatic
-    public Supply matchSupplyApiId(final String id) {
+    public Supply matchSupplyApiId(final Integer id) {
 
         for (Supply s : allInstances(Supply.class)) {
             String[] parts = s.getOID().split(Pattern.quote("[OID]"));
             String part1 = parts[0];
-            String ApiId = "L_".concat(part1);
-            if (id.equals(ApiId)) {
+            if (id.toString().equals(part1)) {
                 return s;
             }
         }

@@ -5,7 +5,6 @@ import info.matchingservice.dom.Actor.*;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.DemandSupply.Supplies;
-import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.*;
 import info.matchingservice.dom.ProvidedServices.Service;
 import info.matchingservice.dom.ProvidedServices.Services;
@@ -80,19 +79,6 @@ public class Api extends AbstractFactoryAndRepository {
 	
 	//------------------------------------ END getDemandByUniqueId ---------------------------//
 	
-	//***************************************** getSupplyByUniqueId ***********************//
-	
-	@Action(semantics=SemanticsOf.SAFE)
-	public List<Supply> findSupplyByUniqueId(final UUID uniqueItemId){
-		try
-		{
-			return supplies.findSupplyByUniqueItemId(uniqueItemId);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
-	}
 
 	//***************************************** getProfileByUniqueId ***********************//
 	

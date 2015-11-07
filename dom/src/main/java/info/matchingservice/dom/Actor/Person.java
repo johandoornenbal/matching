@@ -192,21 +192,21 @@ public class Person extends Actor {
     //** API: COLLECTIONS **//
     
     //** personalContacts **//
-    private SortedSet<PersonalContact> collectPersonalContacts = new TreeSet<PersonalContact>();
+    private SortedSet<PersonalContact> personalContacts = new TreeSet<PersonalContact>();
     
     @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<PersonalContact> getCollectPersonalContacts() {
-        return collectPersonalContacts;
+    public SortedSet<PersonalContact> getPersonalContacts() {
+        return personalContacts;
     }
     
-    public void setCollectPersonalContacts(final SortedSet<PersonalContact> personalContacts) {
-        this.collectPersonalContacts = personalContacts;
+    public void setPersonalContacts(final SortedSet<PersonalContact> personalContacts) {
+        this.personalContacts = personalContacts;
     }
     
     // Business rule: 
     // only visible for inner-circle
-    public boolean hideCollectPersonalContacts(){
+    public boolean hidePersonalContacts(){
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- personalContacts --//
@@ -215,7 +215,7 @@ public class Person extends Actor {
     //** suppliesOfActor **//
     // Business rule:
     // - hide if not role student or professional
-    public boolean hideCollectSupplies(){
+    public boolean hideSupplies(){
         
         if (!(getIsStudent() || getIsProfessional() )){
             return true;
@@ -228,7 +228,7 @@ public class Person extends Actor {
     //** demandsOfActor **//
     // Business rule:
     // Je moet minimaal INNERCIRCLE zijn om de demands te zien
-    public boolean hideCollectDemands() { 
+    public boolean hideDemands() {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- demandsOfActor --//

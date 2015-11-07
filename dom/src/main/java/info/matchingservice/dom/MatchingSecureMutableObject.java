@@ -147,6 +147,11 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
         if (container.getUser().hasRole(".*matching-admin-role")) {
             return false;
         }
+        // for fixtures
+        System.out.println("*****************" + container.getUser().getName() + "*********************");
+        if (container.getUser().getName()=="initialisation") {
+            return false;
+        }
         if (getViewerRights() != null && trustlevel.compareTo(getViewerRights()) <= 0) {
             return false;
         }

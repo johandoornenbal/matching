@@ -37,16 +37,16 @@ public class SupplyRepresentation {
 
         supplymap.mapPut("id", Utils.toApiID(supply.getOID()));
         supplymap.mapPut("URI", Utils.toObjectURI(supply.getOID()));
-        supplymap.mapPut("description", supply.getSupplyDescription());
-        if (supply.getDemandOrSupplyProfileStartDate() == null){
+        supplymap.mapPut("description", supply.getDescription());
+        if (supply.getStartDate() == null){
             supplymap.mapPut("startDate", "");
         } else {
-            supplymap.mapPut("startDate", supply.getDemandOrSupplyProfileStartDate().toString());
+            supplymap.mapPut("startDate", supply.getStartDate().toString());
         }
-        if (supply.getDemandOrSupplyProfileEndDate() == null){
+        if (supply.getEndDate() == null){
             supplymap.mapPut("endDate", "");
         } else {
-            supplymap.mapPut("endDate", supply.getDemandOrSupplyProfileEndDate().toString());
+            supplymap.mapPut("endDate", supply.getEndDate().toString());
         }
         if (supply.getImageUrl() == null) {
             supplymap.mapPut("imageUrl", "");
