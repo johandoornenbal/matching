@@ -141,7 +141,7 @@ public class Api extends AbstractFactoryAndRepository {
 	public List<String> getActionsForPerson(final Person person){
 		List<String> actions = new ArrayList<>();
 
-		if (currentUserName().equals(person.getOwnedBy())) {
+		if (currentUserName().equals(person.getOwnedBy()) && person.getIsPrincipal()) {
 			String createPersonsDemand = "createPersonsDemand";
 			actions.add(createPersonsDemand);
 		}
