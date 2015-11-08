@@ -23,7 +23,6 @@ import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
@@ -205,10 +204,14 @@ public class Person extends Actor {
         this.personalContacts = personalContacts;
     }
     
-    // Business rule: 
-    // only visible for inner-circle
+    // Business logic:
     public boolean hidePersonalContacts(){
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+        return super.allowedTrustLevel(
+                trustedCircleConfigRepo.propertyOrCollectionIsHiddenFor(
+                        getOwnedBy(),
+                        "personalContacts",
+                        "Person")
+        );
     }
     //-- personalContacts --//
 

@@ -49,7 +49,7 @@ public class ActivePersonViewModel extends ApiAbstractViewModel {
         this.supplies = supplies;
 
         List<AssessmentViewModel> assessmentsReceivedByActor = new ArrayList<>();
-        for (Assessment assessment : person.getCollectAssessmentsReceivedByActor()) {
+        for (Assessment assessment : person.getAssessmentsReceived()) {
             AssessmentViewModel viewmodel = new AssessmentViewModel(assessment);
             assessmentsReceivedByActor.add(viewmodel);
         }

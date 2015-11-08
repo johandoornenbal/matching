@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Api.Viewmodels;
 
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonalContact;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.CommunicationChannels.*;
@@ -46,13 +47,25 @@ public class PersonViewModel extends ApiAbstractViewModel {
         }
         this.supplies = supplies;
 
-        // TODO: refactor via API with businessLogic
-        List<AssessmentViewModel> assessmentsReceivedByActor = new ArrayList<>();
-        for (Assessment assessment : person.getCollectAssessmentsReceivedByActor()) {
+        List<AssessmentViewModel> assessmentsReceived = new ArrayList<>();
+        for (Assessment assessment : api.getAssessmentsReceived(person)) {
             AssessmentViewModel viewmodel = new AssessmentViewModel(assessment);
-            assessmentsReceivedByActor.add(viewmodel);
+            assessmentsReceived.add(viewmodel);
         }
-        this.assessmentsReceivedByActor = assessmentsReceivedByActor;
+        this.assessmentsReceived = assessmentsReceived;
+
+        List<AssessmentViewModel> assessmentsGiven = new ArrayList<>();
+        for (Assessment assessment : api.getAssessmentsGiven(person)) {
+            AssessmentViewModel viewmodel = new AssessmentViewModel(assessment);
+            assessmentsGiven.add(viewmodel);
+        }
+        this.assessmentsGiven = assessmentsGiven;
+
+        List<Integer> personalContacts = new ArrayList<>();
+        for (PersonalContact contact : api.getPersonalContacts(person)) {
+            personalContacts.add(contact.getIdAsInt());
+        }
+        this.personalContacts = personalContacts;
 
         List<CommunicationChannelViewModel> addresses = new ArrayList<>();
         List<CommunicationChannelViewModel> emailAddresses = new ArrayList<>();
@@ -309,16 +322,42 @@ public class PersonViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > AssessmentsReceivedByActor (property)
-    private List<AssessmentViewModel> assessmentsReceivedByActor;
+    //region > AssessmentsReceived (property)
+    private List<AssessmentViewModel> assessmentsReceived;
 
     @MemberOrder(sequence = "1")
-    public List<AssessmentViewModel> getAssessmentsReceivedByActor() {
-        return assessmentsReceivedByActor;
+    public List<AssessmentViewModel> getAssessmentsReceived() {
+        return assessmentsReceived;
     }
 
-    public void setAssessmentsReceivedByActor(final List<AssessmentViewModel> assessmentsReceivedByActor) {
-        this.assessmentsReceivedByActor = assessmentsReceivedByActor;
+    public void setAssessmentsReceived(final List<AssessmentViewModel> assessmentsReceived) {
+        this.assessmentsReceived = assessmentsReceived;
+    }
+    //endregion
+
+    //region > assessmentsGiven (property)
+    private List<AssessmentViewModel> assessmentsGiven;
+
+    @MemberOrder(sequence = "1")
+    public List<AssessmentViewModel> getAssessmentsGiven() {
+        return assessmentsGiven;
+    }
+
+    public void setAssessmentsGiven(final List<AssessmentViewModel> assessmentsGiven) {
+        this.assessmentsGiven = assessmentsGiven;
+    }
+    //endregion
+
+    //region > personalContacts (property)
+    private List<Integer> personalContacts;
+
+    @MemberOrder(sequence = "1")
+    public List<Integer> getPersonalContacts() {
+        return personalContacts;
+    }
+
+    public void setPersonalContacts(final List<Integer> personalContacts) {
+        this.personalContacts = personalContacts;
     }
     //endregion
 

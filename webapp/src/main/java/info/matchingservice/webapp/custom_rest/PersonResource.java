@@ -178,7 +178,7 @@ public class PersonResource extends ResourceAbstract {
 
         //assessments received by active person
         JsonRepresentation assessmentsReceivedArray = JsonRepresentation.newArray();
-        for (Assessment assessment : activePerson.getCollectAssessmentsReceivedByActor()) {
+        for (Assessment assessment : activePerson.getAssessmentsReceived()) {
             AssessmentRepresentation rep = new AssessmentRepresentation();
             assessmentsReceivedArray.arrayAdd(rep.ObjectRepresentation(assessment));
         }
@@ -186,7 +186,7 @@ public class PersonResource extends ResourceAbstract {
 
         //assessments given by active person
         JsonRepresentation assessmentsGivenArray = JsonRepresentation.newArray();
-        for (Assessment assessment : activePerson.getCollectAssessmentsGivenByActor()) {
+        for (Assessment assessment : activePerson.getAssessmentsGiven()) {
             AssessmentRepresentation rep = new AssessmentRepresentation();
             assessmentsGivenArray.arrayAdd(rep.ObjectRepresentation(assessment));
         }

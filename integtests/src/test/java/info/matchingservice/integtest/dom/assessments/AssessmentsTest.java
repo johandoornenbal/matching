@@ -261,11 +261,11 @@ public class AssessmentsTest extends MatchingIntegrationTest {
         public void valuesSet() throws Exception {
 
             // then
-            assertThat(frans.getCollectAssessmentsReceivedByActor().size(), is(1));
-            assertThat(frans.getCollectAssessmentsGivenByActor().size(), is(2));
+            assertThat(frans.getAssessmentsReceived().size(), is(1));
+            assertThat(frans.getAssessmentsGiven().size(), is(2));
 
-            assertFalse(frans.getCollectAssessmentsReceivedByActor().first().getOwnedBy().equals("frans"));
-            assertTrue(frans.getCollectAssessmentsGivenByActor().first().getOwnedBy().equals("frans"));
+            assertFalse(frans.getAssessmentsReceived().first().getOwnedBy().equals("frans"));
+            assertTrue(frans.getAssessmentsGiven().first().getOwnedBy().equals("frans"));
         }
 
     }

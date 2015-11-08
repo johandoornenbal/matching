@@ -2,6 +2,7 @@ package info.matchingservice.dom.Api;
 
 import com.google.common.base.Objects;
 import info.matchingservice.dom.Actor.*;
+import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
@@ -131,6 +132,32 @@ public class Api extends AbstractFactoryAndRepository {
 		return communicationChannels.findCommunicationChannelByPersonAndType(person,addressMain);
 	}
 
+    @Programmatic
+    public List<Assessment> getAssessmentsReceived(final Person person){
+        // apply business logic
+        if (person.hideAssessmentsReceived()){
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(person.getAssessmentsReceived());
+    }
+
+    @Programmatic
+    public List<Assessment> getAssessmentsGiven(final Person person){
+        // apply business logic
+        if (person.hideAssessmentsGiven()){
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(person.getAssessmentsGiven());
+    }
+
+    @Programmatic
+    public List<PersonalContact> getPersonalContacts(final Person person){
+        // apply business logic
+        if (person.hidePersonalContacts()){
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(person.getPersonalContacts());
+    }
 
 
 	///////////
@@ -140,6 +167,15 @@ public class Api extends AbstractFactoryAndRepository {
 	@Programmatic
 	public List<String> getActionsForPerson(final Person person){
 		List<String> actions = new ArrayList<>();
+
+        if (currentUserName().equals(person.getOwnedBy())) {
+            String createAddres = "createAddres";
+            actions.add(createAddres);
+            String createEmail = "createEmail";
+            actions.add(createEmail);
+            String createPhone = "createPhone";
+            actions.add(createPhone);
+        }
 
 		if (currentUserName().equals(person.getOwnedBy()) && person.getIsPrincipal()) {
 			String createPersonsDemand = "createPersonsDemand";

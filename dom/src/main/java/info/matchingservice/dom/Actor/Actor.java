@@ -26,6 +26,7 @@ import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.TrustLevel;
+import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.value.Blob;
@@ -131,45 +132,53 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     }
     //-- savedMatchesOfActor --//
     
-    //** assessmentsGivenByActor **//
-    private SortedSet<Assessment> collectAssessmentsGivenByActor = new TreeSet<Assessment>();
+    //** assessmentsGiven **//
+    private SortedSet<Assessment> assessmentsGiven = new TreeSet<Assessment>();
     
     @Persistent(mappedBy = "assessmentOwnerActor", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<Assessment> getCollectAssessmentsGivenByActor() {
-        return collectAssessmentsGivenByActor;
+    public SortedSet<Assessment> getAssessmentsGiven() {
+        return assessmentsGiven;
     }
     
-    public void setCollectAssessmentsGivenByActor(final SortedSet<Assessment> assessmentsGivenByActor){
-        this.collectAssessmentsGivenByActor = assessmentsGivenByActor;
+    public void setAssessmentsGiven(final SortedSet<Assessment> assessmentsGiven){
+        this.assessmentsGiven = assessmentsGiven;
     }
-    
-    //Business rule: 
-    //only visible for intimate-circle
-    public boolean hideCollectAssessmentsGivenByActor(){
-        return super.allowedTrustLevel(TrustLevel.INTIMATE);
+
+    // business logic
+    public boolean hideAssessmentsGiven(){
+        return super.allowedTrustLevel(
+                trustedCircleConfigRepo.propertyOrCollectionIsHiddenFor(
+                        getOwnedBy(),
+                        "assessmentsGiven",
+                        "Actor")
+        );
     }
-    //-- assessmentsGivenByActor --//
+    //-- assessmentsGiven --//
     
-    //** assessmentsGivenByActor **//
-    private SortedSet<Assessment> collectAssessmentsReceivedByActor = new TreeSet<Assessment>();
+    //** assessmentsGiven **//
+    private SortedSet<Assessment> assessmentsReceived = new TreeSet<Assessment>();
     
     @Persistent(mappedBy = "targetOwnerActor", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<Assessment> getCollectAssessmentsReceivedByActor() {
-        return collectAssessmentsReceivedByActor;
+    public SortedSet<Assessment> getAssessmentsReceived() {
+        return assessmentsReceived;
     }
     
-    public void setCollectAssessmentsReceivedByActor(final SortedSet<Assessment> assessmentsReceivedByActor){
-        this.collectAssessmentsReceivedByActor = assessmentsReceivedByActor;
+    public void setAssessmentsReceived(final SortedSet<Assessment> assessmentsReceivedByActor){
+        this.assessmentsReceived = assessmentsReceivedByActor;
     }
-    
-    // Business rule: 
-    // only visible for inner-circle
-    public boolean hideCollectAssessmentsReceivedByActor(){
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+
+    // business logic
+    public boolean hideAssessmentsReceived(){
+        return super.allowedTrustLevel(
+                trustedCircleConfigRepo.propertyOrCollectionIsHiddenFor(
+                        getOwnedBy(),
+                        "assessmentsReceived",
+                        "Actor")
+        );
     }    
-    //-- assessmentsGivenByActor --//
+    //-- assessmentsGiven --//
     
     //-- END API: COLLECTIONS --//
     
@@ -313,6 +322,9 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
 
     @Inject
     Profiles profiles;
+
+    @Inject
+    private TrustedCircleConfigRepo trustedCircleConfigRepo;
 
     
 

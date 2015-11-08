@@ -21,12 +21,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonalContact;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Api.Api;
-import info.matchingservice.dom.Api.Viewmodels.ActivePersonViewModel;
-import info.matchingservice.dom.Api.Viewmodels.DemandViewModel;
-import info.matchingservice.dom.Api.Viewmodels.PersonViewModel;
-import info.matchingservice.dom.Api.Viewmodels.SupplyViewModel;
+import info.matchingservice.dom.Api.Viewmodels.*;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
@@ -254,6 +252,13 @@ public class PersonResourceV2 extends ResourceAbstract {
         }
         JsonElement demandsRepresentation = gson.toJsonTree(demandViewmodels);
         result.add("demands", demandsRepresentation);
+
+        List<PersonalContactViewModel> personalContactViewmodels = new ArrayList<>();
+        for (PersonalContact contact : api.getPersonalContacts(chosenPerson)){
+            personalContactViewmodels.add(new PersonalContactViewModel(contact));
+        }
+        JsonElement personalContactsRepresentation = gson.toJsonTree(personalContactViewmodels);
+        result.add("personalContacts", personalContactsRepresentation);
 
         return result;
     }

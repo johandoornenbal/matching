@@ -27,6 +27,9 @@ public class TrustedCircleConfigRepo extends MatchingDomainService<TrustedCircle
         config.setOwnedBy(owner);
         persistIfNotAlready(config);
         TrustedCircleElement elementDemands = trustedCircleElementRepo.createElement(config, "demands", Identifier.Type.PROPERTY_OR_COLLECTION, "Person", TrustLevel.INNER_CIRCLE);
+        TrustedCircleElement elementAssessmentsGiven = trustedCircleElementRepo.createElement(config, "assessmentsGiven", Identifier.Type.PROPERTY_OR_COLLECTION, "Actor", TrustLevel.INTIMATE);
+        TrustedCircleElement elementAssessmentsReceived = trustedCircleElementRepo.createElement(config, "assessmentsReceived", Identifier.Type.PROPERTY_OR_COLLECTION, "Actor", TrustLevel.INNER_CIRCLE);
+        TrustedCircleElement elementPersonalContacts = trustedCircleElementRepo.createElement(config, "personalContacts", Identifier.Type.PROPERTY_OR_COLLECTION, "Person", TrustLevel.INNER_CIRCLE);
         return config;
     }
 
