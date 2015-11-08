@@ -163,7 +163,7 @@ public class PersonTest extends MatchingIntegrationTest {
             assertThat(p1.getLastName(), is(LAST_NAME));
 
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
-            assertThat(p1.getPictureUrl(), is(PICTURE_LINK));
+            assertThat(p1.getImageUrl(), is(PICTURE_LINK));
             
 //            assertThat(p1.getUniqueActorId(), is(UNIQUE_ID));
             

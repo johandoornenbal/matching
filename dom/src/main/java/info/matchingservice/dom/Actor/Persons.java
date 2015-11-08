@@ -160,7 +160,7 @@ public class Persons extends MatchingDomainService<Person> {
         person.setDateCreated(clockService.now());
         person.setOwnedBy(userName);
         person.setPicture(picture);
-        person.setPictureUrl(pictureLink);
+        person.setImageUrl(pictureLink);
         if (personRoleType!=null) {
             if (personRoleType.equals(PersonRoleType.STUDENT)) {
                 person.addRoleStudent();
@@ -225,7 +225,7 @@ public class Persons extends MatchingDomainService<Person> {
 //    	if (picture != null){
     		person.setPicture(picture);
 //    	}
-        person.setPictureUrl(pictureLink);
+        person.setImageUrl(pictureLink);
     	persistIfNotAlready(person);
     	return person;
     }

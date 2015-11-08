@@ -117,7 +117,7 @@ public class PersonResource extends ResourceAbstract {
         activeperson.mapPut("lastName", activePerson.getLastName());
         activeperson.mapPut("middleName", activePerson.getMiddleName());
         activeperson.mapPut("birthDay", activePerson.getDateOfBirth().toString());
-        activeperson.mapPut("pictureLink", activePerson.getPictureUrl());
+        activeperson.mapPut("pictureLink", activePerson.getImageUrl());
         activeperson.mapPut("roles", activePerson.getRoles());
         try {
             Email email = (Email) communicationChannels.findCommunicationChannelByPersonAndType(activePerson, CommunicationChannelType.EMAIL_MAIN).get(0);
@@ -169,7 +169,7 @@ public class PersonResource extends ResourceAbstract {
             personalContactMap.mapPut("contactURI", Utils.toObjectURI(contact.getContactPerson().getOID()));
             personalContactMap.mapPut("contactName", contact.getContactPerson().title());
             personalContactMap.mapPut("contactRoles", contact.getContactPerson().getRoles());
-            personalContactMap.mapPut("contactPictureLink", contact.getContactPerson().getPictureUrl());
+            personalContactMap.mapPut("contactPictureLink", contact.getContactPerson().getImageUrl());
             personalContactMap.mapPut("trustlevel",contact.getTrustLevel().toString());
             personalContactsArray.arrayAdd(personalContactMap);
 

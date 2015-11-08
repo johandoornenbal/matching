@@ -1,12 +1,13 @@
 package info.matchingservice.fixture.actor;
 
-import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-import org.apache.isis.applib.value.Blob;
-
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
+
+import javax.inject.Inject;
 
 public abstract class PersonAbstract extends FixtureScript {
 
@@ -25,6 +26,7 @@ public abstract class PersonAbstract extends FixtureScript {
             ) {
         Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, "link", null, user);
         newPerson.setActivated(activated);
+        trustedCircleConfigRepo.findOrCreateConfig(user);
                        
         return executionContext.add(this, newPerson);
     }
@@ -33,6 +35,9 @@ public abstract class PersonAbstract extends FixtureScript {
     //region > injected services
     @javax.inject.Inject
     private Persons persons;
+
+    @Inject
+    private TrustedCircleConfigRepo trustedCircleConfigRepo;
 
 
 }

@@ -24,6 +24,7 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.TrustLevel;
+import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.query.QueryDefault;
@@ -132,17 +133,17 @@ public class Person extends Actor {
     }
 
     //region > PictureLink (property)
-    private String pictureUrl;
+    private String imageUrl;
 
     @javax.jdo.annotations.Column(allowsNull = "true")
     @MemberOrder(sequence = "70")
     @PropertyLayout()
-    public String getPictureUrl() {
-        return pictureUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setPictureUrl(final String PictureLink) {
-        this.pictureUrl = PictureLink;
+    public void setImageUrl(final String PictureLink) {
+        this.imageUrl = PictureLink;
     }
     //endregion
     
@@ -226,10 +227,13 @@ public class Person extends Actor {
     //-- suppliesOfActor --//
     
     //** demandsOfActor **//
-    // Business rule:
-    // Je moet minimaal INNERCIRCLE zijn om de demands te zien
     public boolean hideDemands() {
-        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
+        return super.allowedTrustLevel(
+                trustedCircleConfigRepo.propertyOrCollectionIsHiddenFor(
+                        getOwnedBy(),
+                        "demands",
+                        "Person")
+        );
     }
     //-- demandsOfActor --//
     
@@ -252,7 +256,7 @@ public class Person extends Actor {
     		@ParameterLayout(named="picture")
     		@Parameter(optionality=Optionality.OPTIONAL)
     		final Blob picture,
-            @ParameterLayout(named="pictureUrl")
+            @ParameterLayout(named="imageUrl")
             @Parameter(optionality=Optionality.OPTIONAL)
             final String pictureLink
     		){
@@ -281,7 +285,7 @@ public class Person extends Actor {
     }
 
     public String default5UpdatePerson(){
-        return getPictureUrl();
+        return getImageUrl();
     }
     //-- updatePerson --//
     
@@ -733,5 +737,8 @@ public class Person extends Actor {
     }
     
     //-- HIDDEN ACTIONS --//
+
+    @Inject
+    private TrustedCircleConfigRepo trustedCircleConfigRepo;
 
 }

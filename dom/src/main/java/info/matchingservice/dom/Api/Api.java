@@ -35,6 +35,23 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 	
 	//------------------------------------ END activePerson ---------------------------//
+
+	@Programmatic
+	public Person updatePerson(
+			final Person person,
+			final String firstName,
+			final String middleName,
+			final String lastName,
+			final String dateOfBirth,
+			final String imageUrl){
+		return person.updatePerson(
+				firstName,
+				middleName,
+				lastName,
+				new LocalDate(dateOfBirth),
+				null,
+				imageUrl);
+	}
 	
 	//***************************************** getDemandByUniqueId ***********************//
 	

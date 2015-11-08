@@ -31,7 +31,7 @@ public class PersonViewModel extends ApiAbstractViewModel {
         this.middleName = person.getMiddleName();
         this.birthDay = person.getDateOfBirth().toString();
         this.roles = person.getRoles();
-        this.pictureUrl = person.getPictureUrl();
+        this.pictureUrl = person.getImageUrl();
 //        this.profile = new PersonProfileViewModel(person);
 
         // demands with implementation of trusted circles
