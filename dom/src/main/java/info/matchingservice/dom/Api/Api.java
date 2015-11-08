@@ -17,6 +17,8 @@ import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.value.Blob;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.regex.Pattern;
 @DomainService()
 @DomainServiceLayout()
 public class Api extends AbstractFactoryAndRepository {
+
+	private static Pattern DATE_REGEX = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
 	
 	//***************************************** activePerson ***********************//
 	
@@ -44,11 +48,42 @@ public class Api extends AbstractFactoryAndRepository {
 			final String lastName,
 			final String dateOfBirth,
 			final String imageUrl){
+
+		//validate and replace values by their originals if not valid
+		String firstNameUpdate;
+		if (firstName.length()<1){
+			firstNameUpdate = person.getFirstName();
+		} else {
+			firstNameUpdate = firstName;
+		}
+
+		String lastNameUpdate;
+		if (lastName.length()<1){
+			lastNameUpdate = person.getLastName();
+		} else {
+			lastNameUpdate = lastName;
+		}
+
+		LocalDate dateOfBirthUpdate = null;
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
+		try {
+			dateOfBirthUpdate = LocalDate.parse(dateOfBirth, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (dateOfBirthUpdate == null) {
+			// dateOfBirth is not a valid date
+			dateOfBirthUpdate=person.getDateOfBirth();
+		} else {
+			// dateOfBirth is a Date
+			dateOfBirthUpdate = new LocalDate(dateOfBirth);
+		}
+
 		return person.updatePerson(
-				firstName,
+				firstNameUpdate,
 				middleName,
-				lastName,
-				new LocalDate(dateOfBirth),
+				lastNameUpdate,
+				dateOfBirthUpdate,
 				null,
 				imageUrl);
 	}

@@ -33,14 +33,17 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Match.ProfileMatches;
 import org.apache.isis.applib.Identifier;
 import org.apache.isis.core.runtime.system.context.IsisContext;
+import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
 import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
+import org.apache.isis.viewer.restfulobjects.rendering.util.Util;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +57,7 @@ public class PersonResourceV2 extends ResourceAbstract {
 
     private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);
     private Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
+    private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
     private ProfileMatches profileMatches = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileMatches.class);
 
     @GET
@@ -81,93 +85,86 @@ public class PersonResourceV2 extends ResourceAbstract {
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
     public Response getPersonServices(@PathParam("instanceId") Integer instanceId) {
 
-        final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
-
-        Gson gson = new Gson();
-        JsonObject result = new JsonObject();
-
-        // person
-        Person chosenPerson = persons.matchPersonApiId(instanceId);
-        PersonViewModel personViewModel = new PersonViewModel(chosenPerson, communicationChannels);
-        JsonElement personRepresentation = gson.toJsonTree(personViewModel);
-        result.add("person", personRepresentation);
-
-        // sideload supplies with implementation of trusted circles
-        //TODO: centralize implementation trusted circles
-        if(!chosenPerson.hideSupplies()) {
-            List<SupplyViewModel> supplyViewmodels = new ArrayList<>();
-            for (Supply supply : chosenPerson.getSupplies()) {
-                supplyViewmodels.add(new SupplyViewModel(supply));
-            }
-            JsonElement suppliesRepresentation = gson.toJsonTree(supplyViewmodels);
-            result.add("supplies", suppliesRepresentation);
-        }
-
-        // sideload demands with implementation of trusted circles
-        //TODO: centralize implementation trusted circles
-        if(!chosenPerson.hideDemands()) {
-            List<DemandViewModel> demandViewmodels = new ArrayList<>();
-            for (Demand demand : chosenPerson.getDemands()) {
-                demandViewmodels.add(new DemandViewModel(demand));
-            }
-            JsonElement demandsRepresentation = gson.toJsonTree(demandViewmodels);
-            result.add("demands", demandsRepresentation);
-        }
-
+        JsonObject result = createPersonResult(instanceId);
         return Response.status(200).entity(result.toString()).build();
     }
 
     @PUT
     @Path("/persons/{instanceId}")
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
-    public Response putPersonServices(@PathParam("instanceId") Integer instanceId) {
+    public Response putPersonServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
 
-
-        final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
-        final Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
         Person chosenPerson = persons.matchPersonApiId(instanceId);
 
-        // apply business logic
-        if (chosenPerson.disabled(Identifier.Type.ACTION)!=null){
-            String disabledMsg = chosenPerson.disabled(Identifier.Type.ACTION);
-            String error = "{\"success\" : 0 , \"error\" : \"";
-            error = error.concat(disabledMsg);
-            error = error.concat("\"}");
-            return Response.status(401).entity(error).build();
-        }
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+        if(!argRepr.isMap())
+        {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
 
-        chosenPerson = api.updatePerson(chosenPerson,"firstName", "middleName", "lastName", "2000-12-31", "pictureLink");
+        } else {
 
-        Gson gson = new Gson();
-        JsonObject result = new JsonObject();
-
-        PersonViewModel personViewModel = new PersonViewModel(chosenPerson, communicationChannels);
-        JsonElement personRepresentation = gson.toJsonTree(personViewModel);
-        result.add("person", personRepresentation);
-
-        // sideload supplies with implementation of trusted circles
-        //TODO: centralize implementation trusted circles
-        if(!chosenPerson.hideSupplies()) {
-            List<SupplyViewModel> supplyViewmodels = new ArrayList<>();
-            for (Supply supply : chosenPerson.getSupplies()) {
-                supplyViewmodels.add(new SupplyViewModel(supply));
+            // apply business logic
+            if (chosenPerson.disabled(Identifier.Type.ACTION) != null) {
+                String disabledMsg = chosenPerson.disabled(Identifier.Type.ACTION);
+                String error = "{\"success\" : 0 , \"error\" : \"";
+                error = error.concat(disabledMsg);
+                error = error.concat("\"}");
+                return Response.status(401).entity(error).build();
             }
-            JsonElement suppliesRepresentation = gson.toJsonTree(supplyViewmodels);
-            result.add("supplies", suppliesRepresentation);
-        }
 
-        // sideload demands with implementation of trusted circles
-        //TODO: centralize implementation trusted circles
-        if(!chosenPerson.hideDemands()) {
-            List<DemandViewModel> demandViewmodels = new ArrayList<>();
-            for (Demand demand : chosenPerson.getDemands()) {
-                demandViewmodels.add(new DemandViewModel(demand));
+            // try and see if properties are present; if not replace by original
+            String id = "firstName";
+            String firstName;
+            try {
+            JsonRepresentation propertyFirstName = argRepr.getRepresentation(id, new Object[0]);
+            firstName = propertyFirstName.getString("");
+            } catch (Exception e) {
+                firstName = chosenPerson.getFirstName();
             }
-            JsonElement demandsRepresentation = gson.toJsonTree(demandViewmodels);
-            result.add("demands", demandsRepresentation);
-        }
 
-        return Response.status(200).entity(result.toString()).build();
+            String id2 = "middleName";
+            String middleName;
+            try {
+                JsonRepresentation propertyMiddleName = argRepr.getRepresentation(id2, new Object[0]);
+                middleName = propertyMiddleName.getString("");
+            } catch (Exception e) {
+                middleName = chosenPerson.getMiddleName();
+            }
+
+            String id3 = "lastName";
+            String lastName;
+            try {
+                JsonRepresentation propertyLastName = argRepr.getRepresentation(id3, new Object[0]);
+                lastName = propertyLastName.getString("");
+            } catch (Exception e) {
+                lastName = chosenPerson.getLastName();
+            }
+
+            String id4 = "dateOfBirth";
+            String dateOfBirth;
+            try {
+                JsonRepresentation propertyDateOfBirth = argRepr.getRepresentation(id4, new Object[0]);
+                dateOfBirth = propertyDateOfBirth.getString("");
+            } catch (Exception e) {
+                dateOfBirth = chosenPerson.getDateOfBirth().toString();
+            }
+
+            String id5 = "imageUrl";
+            String imageUrl;
+            try {
+                JsonRepresentation propertyImageUrl = argRepr.getRepresentation(id5, new Object[0]);
+                imageUrl = propertyImageUrl.getString("");
+            } catch (Exception e) {
+                imageUrl = chosenPerson.getImageUrl();
+            }
+
+            // update action through api method!
+            api.updatePerson(chosenPerson, firstName, middleName, lastName, dateOfBirth, imageUrl);
+
+            JsonObject result = createPersonResult(instanceId);
+            return Response.status(200).entity(result.toString()).build();
+        }
     }
 
     @GET
@@ -222,6 +219,41 @@ public class PersonResourceV2 extends ResourceAbstract {
     @Path("/people/{instanceId}")
     public Response postPeopleNotAllowed() {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the people resource is not allowed.", new Object[0]);
+    }
+
+    private JsonObject createPersonResult(final Integer instanceId) {
+        Gson gson = new Gson();
+        JsonObject result = new JsonObject();
+
+        // person
+        Person chosenPerson = persons.matchPersonApiId(instanceId);
+        PersonViewModel personViewModel = new PersonViewModel(chosenPerson, communicationChannels);
+        JsonElement personRepresentation = gson.toJsonTree(personViewModel);
+        result.add("person", personRepresentation);
+
+        // sideload supplies with implementation of trusted circles
+        //TODO: centralize implementation trusted circles
+        if(!chosenPerson.hideSupplies()) {
+            List<SupplyViewModel> supplyViewmodels = new ArrayList<>();
+            for (Supply supply : chosenPerson.getSupplies()) {
+                supplyViewmodels.add(new SupplyViewModel(supply));
+            }
+            JsonElement suppliesRepresentation = gson.toJsonTree(supplyViewmodels);
+            result.add("supplies", suppliesRepresentation);
+        }
+
+        // sideload demands with implementation of trusted circles
+        //TODO: centralize implementation trusted circles
+        if(!chosenPerson.hideDemands()) {
+            List<DemandViewModel> demandViewmodels = new ArrayList<>();
+            for (Demand demand : chosenPerson.getDemands()) {
+                demandViewmodels.add(new DemandViewModel(demand));
+            }
+            JsonElement demandsRepresentation = gson.toJsonTree(demandViewmodels);
+            result.add("demands", demandsRepresentation);
+        }
+
+        return result;
     }
 
 }

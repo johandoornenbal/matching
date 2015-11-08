@@ -29,9 +29,9 @@ public class PersonViewModel extends ApiAbstractViewModel {
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
         this.middleName = person.getMiddleName();
-        this.birthDay = person.getDateOfBirth().toString();
+        this.dateOfBirth = person.getDateOfBirth().toString();
         this.roles = person.getRoles();
-        this.pictureUrl = person.getImageUrl();
+        this.imageUrl = person.getImageUrl();
 //        this.profile = new PersonProfileViewModel(person);
 
         // demands with implementation of trusted circles
@@ -130,16 +130,16 @@ public class PersonViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > birthDay (property)
-    private String birthDay;
+    //region > dateOfBirth (property)
+    private String dateOfBirth;
 
     @MemberOrder(sequence = "5")
-    public String getBirthDay() {
-        return birthDay;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setBirthDay(final String birthDay) {
-        this.birthDay = birthDay;
+    public void setDateOfBirth(final String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
     //endregion
 
@@ -156,16 +156,16 @@ public class PersonViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > pictureUrl (property)
-    private String pictureUrl;
+    //region > imageUrl (property)
+    private String imageUrl;
 
     @MemberOrder(sequence = "7")
-    public String getPictureUrl() {
-        return pictureUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setPictureUrl(final String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public void setImageUrl(final String imageUrl) {
+        this.imageUrl = imageUrl;
     }
     //endregion
 
