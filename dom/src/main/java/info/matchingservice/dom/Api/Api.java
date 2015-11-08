@@ -2,9 +2,13 @@ package info.matchingservice.dom.Api;
 
 import com.google.common.base.Objects;
 import info.matchingservice.dom.Actor.*;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.DemandSupply.Supplies;
+import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.*;
 import info.matchingservice.dom.ProvidedServices.Service;
 import info.matchingservice.dom.ProvidedServices.Services;
@@ -21,6 +25,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -28,8 +33,6 @@ import java.util.regex.Pattern;
 @DomainService()
 @DomainServiceLayout()
 public class Api extends AbstractFactoryAndRepository {
-
-	private static Pattern DATE_REGEX = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
 	
 	//***************************************** activePerson ***********************//
 	
@@ -37,9 +40,11 @@ public class Api extends AbstractFactoryAndRepository {
 	public Person activePerson(){
 		return persons.activePerson();
 	}
-	
-	//------------------------------------ END activePerson ---------------------------//
 
+
+	/////////
+
+	//***************************************** updatePerson ***********************//
 	@Programmatic
 	public Person updatePerson(
 			final Person person,
@@ -48,6 +53,11 @@ public class Api extends AbstractFactoryAndRepository {
 			final String lastName,
 			final String dateOfBirth,
 			final String imageUrl){
+
+		//check ownership (only owner can modify Person)
+		if (!currentUserName().equals(person.getOwnedBy())){
+			return person;
+		}
 
 		//validate and replace values by their originals if not valid
 		String firstNameUpdate;
@@ -87,7 +97,79 @@ public class Api extends AbstractFactoryAndRepository {
 				null,
 				imageUrl);
 	}
-	
+
+	///////////
+
+	//***************************************** Collections of Person ***********************//
+
+	@Programmatic
+	public List<Demand> getDemandsForPerson(final Person person){
+
+		// apply business logic
+		if (person.hideDemands()){
+			return new ArrayList<>();
+		}
+
+		return new ArrayList<>(person.getDemands());
+
+	}
+
+	@Programmatic
+	public List<Supply> getSuppliesForPerson(final Person person){
+
+		// apply business logic
+		if (person.hideSupplies()){
+			return new ArrayList<>();
+		}
+
+		return new ArrayList<>(person.getSupplies());
+
+	}
+
+	@Programmatic
+	public List<CommunicationChannel> findCommunicationChannelByPersonAndType(Person person, CommunicationChannelType addressMain) {
+		return communicationChannels.findCommunicationChannelByPersonAndType(person,addressMain);
+	}
+
+
+
+	///////////
+
+	//***************************************** Actions of Person ***********************//
+
+	@Programmatic
+	public List<String> getActionsForPerson(final Person person){
+		List<String> actions = new ArrayList<>();
+
+		if (currentUserName().equals(person.getOwnedBy())) {
+			String createPersonsDemand = "createPersonsDemand";
+			actions.add(createPersonsDemand);
+		}
+
+		// do not show when already contacted
+		QueryDefault<PersonalContact> query =
+				QueryDefault.create(
+						PersonalContact.class,
+						"findPersonalContactUniqueContact",
+						"ownedBy", currentUserName(),
+						"contact", person);
+		Boolean isContact = container.firstMatch(query) != null?
+				true  : false;
+
+		if (!currentUserName().equals(person.getOwnedBy())	&& !isContact ) {
+			String addAsPersonalContact = "addAsPersonalContact";
+			actions.add(addAsPersonalContact);
+		}
+
+        if (!currentUserName().equals(person.getOwnedBy())	&& isContact ) {
+            String addAsPersonalContact = "removeAsPersonalContact (TODO)";
+            actions.add(addAsPersonalContact);
+        }
+
+		return actions;
+	}
+
+
 	//***************************************** getDemandByUniqueId ***********************//
 	
 	@Action(semantics=SemanticsOf.SAFE)
@@ -645,5 +727,9 @@ public class Api extends AbstractFactoryAndRepository {
 	@Inject
 	private ProfileElements profileElements;
 
-	
+	@Inject
+	private CommunicationChannels communicationChannels;
+
+
+
 }

@@ -1,6 +1,7 @@
 package info.matchingservice.dom.Api.Viewmodels;
 
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.CommunicationChannels.*;
 import info.matchingservice.dom.DemandSupply.Demand;
@@ -23,7 +24,7 @@ public class PersonViewModel extends ApiAbstractViewModel {
 
     public PersonViewModel(
             final Person person,
-            final CommunicationChannels communicationChannels
+            final Api api
     ) {
         super(person);
         this.firstName = person.getFirstName();
@@ -32,28 +33,20 @@ public class PersonViewModel extends ApiAbstractViewModel {
         this.dateOfBirth = person.getDateOfBirth().toString();
         this.roles = person.getRoles();
         this.imageUrl = person.getImageUrl();
-//        this.profile = new PersonProfileViewModel(person);
 
-        // demands with implementation of trusted circles
-        //TODO: centralize implementation trusted circles
-        if (!person.hideDemands()) {
-            List<Integer> demands = new ArrayList<>();
-            for (Demand demand : person.getDemands()) {
+        List<Integer> demands = new ArrayList<>();
+        for (Demand demand : api.getDemandsForPerson(person)) {
                 demands.add(demand.getIdAsInt());
-            }
-            this.demands = demands;
         }
+        this.demands = demands;
 
-        // supplies with implementation of trusted circles
-        //TODO: centralize implementation trusted circles
-        if (!person.hideSupplies()) {
-            List<Integer> supplies = new ArrayList<>();
-            for (Supply supply : person.getSupplies()) {
+        List<Integer> supplies = new ArrayList<>();
+        for (Supply supply : api.getSuppliesForPerson(person)) {
                 supplies.add(supply.getIdAsInt());
-            }
-            this.supplies = supplies;
         }
+        this.supplies = supplies;
 
+        // TODO: refactor via API with businessLogic
         List<AssessmentViewModel> assessmentsReceivedByActor = new ArrayList<>();
         for (Assessment assessment : person.getCollectAssessmentsReceivedByActor()) {
             AssessmentViewModel viewmodel = new AssessmentViewModel(assessment);
@@ -66,7 +59,7 @@ public class PersonViewModel extends ApiAbstractViewModel {
         List<CommunicationChannelViewModel> phones = new ArrayList<>();
 
         try {
-            Address address = (Address) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.ADDRESS_MAIN).get(0);
+            Address address = (Address) api.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.ADDRESS_MAIN).get(0);
             this.mainAddres = address.getAddress();
             this.mainPostalCode = address.getPostalCode();
             this.mainTown = address.getTown();
@@ -75,18 +68,21 @@ public class PersonViewModel extends ApiAbstractViewModel {
         }
 
         try {
-            Email email = (Email) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.EMAIL_MAIN).get(0);
+            Email email = (Email) api.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.EMAIL_MAIN).get(0);
             this.mainEmail = email.getEmail();
         } catch (Exception e) {
             // Ignore
         }
 
         try {
-            Phone phone = (Phone) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.PHONE_MAIN).get(0);
+            Phone phone = (Phone) api.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.PHONE_MAIN).get(0);
             this.mainPhone = phone.getPhoneNumber();
         } catch (Exception e) {
             // Ignore
         }
+
+        this.actions = api.getActionsForPerson(person);
+
     }
 
 
@@ -323,6 +319,19 @@ public class PersonViewModel extends ApiAbstractViewModel {
 
     public void setAssessmentsReceivedByActor(final List<AssessmentViewModel> assessmentsReceivedByActor) {
         this.assessmentsReceivedByActor = assessmentsReceivedByActor;
+    }
+    //endregion
+
+    //region > actions (property)
+    private List<String> actions;
+
+    @MemberOrder(sequence = "1")
+    public List<String> getActions() {
+        return actions;
+    }
+
+    public void setActions(final List<String> actions) {
+        this.actions = actions;
     }
     //endregion
 
