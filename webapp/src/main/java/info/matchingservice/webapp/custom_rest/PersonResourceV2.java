@@ -314,6 +314,40 @@ public class PersonResourceV2 extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the people resource is not allowed.", new Object[0]);
     }
 
+    @GET
+    @Path("/apidoc")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response getApiDocServices() {
+
+        String apiDocLine1;
+        String apiDocLine2;
+        String apiDocLine3;
+        String apiDocLine4;
+        Gson gson = new Gson();
+        JsonObject result = new JsonObject();
+
+        apiDocLine1 = "Custom Rest Api documentation";
+        JsonElement line1 = gson.toJsonTree(apiDocLine1);
+        result.add("TITLE",line1);
+
+        apiDocLine2 = "GET '/', GET '/persons', GET '/persons/{id}', POST '/persons/{id}/actions/createPersonDemand', PUT '/persons/{id}'";
+        JsonElement line2 = gson.toJsonTree(apiDocLine2);
+        result.add("EndPoints",line2);
+
+        apiDocLine3 = "IDEMPOTENT; Properties that can be updated: firstName, lastName, middleName, dateOfBirth, imageUrl";
+        JsonElement line3 = gson.toJsonTree(apiDocLine3);
+        result.add("PUT '/persons/{id}'",line3);
+
+        apiDocLine4 = "NON-IDEMPOTENT; Payload: description (Mandatory), summary, story, startDate, endDate";
+        JsonElement line4 = gson.toJsonTree(apiDocLine4);
+        result.add("POST '/persons/{id}/actions/createPersonDemand'",line4);
+
+        return Response.status(200).entity(result.toString()).build();
+
+    }
+
+
+
     /**
      *
      * @param instanceId
