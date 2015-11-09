@@ -47,19 +47,17 @@ public class PersonViewModel extends ApiAbstractViewModel {
         }
         this.supplies = supplies;
 
-        List<AssessmentViewModel> assessmentsReceived = new ArrayList<>();
+        List<Integer> assessmentsReceived = new ArrayList<>();
         for (Assessment assessment : api.getAssessmentsReceived(person)) {
-            AssessmentViewModel viewmodel = new AssessmentViewModel(assessment);
-            assessmentsReceived.add(viewmodel);
+            assessmentsReceived.add(assessment.getIdAsInt());
         }
-        this.assessmentsReceived = assessmentsReceived;
+        this.demandFeedbackReceived = assessmentsReceived;
 
-        List<AssessmentViewModel> assessmentsGiven = new ArrayList<>();
+        List<Integer> assessmentsGiven = new ArrayList<>();
         for (Assessment assessment : api.getAssessmentsGiven(person)) {
-            AssessmentViewModel viewmodel = new AssessmentViewModel(assessment);
-            assessmentsGiven.add(viewmodel);
+            assessmentsGiven.add(assessment.getIdAsInt());
         }
-        this.assessmentsGiven = assessmentsGiven;
+        this.demandFeedbackGiven = assessmentsGiven;
 
         List<Integer> personalContacts = new ArrayList<>();
         for (PersonalContact contact : api.getPersonalContacts(person)) {
@@ -322,29 +320,29 @@ public class PersonViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > AssessmentsReceived (property)
-    private List<AssessmentViewModel> assessmentsReceived;
+    //region > demandFeedbackReceived (property)
+    private List<Integer> demandFeedbackReceived;
 
     @MemberOrder(sequence = "1")
-    public List<AssessmentViewModel> getAssessmentsReceived() {
-        return assessmentsReceived;
+    public List<Integer> getDemandFeedbackReceived() {
+        return demandFeedbackReceived;
     }
 
-    public void setAssessmentsReceived(final List<AssessmentViewModel> assessmentsReceived) {
-        this.assessmentsReceived = assessmentsReceived;
+    public void setDemandFeedbackReceived(final List<Integer> demandFeedbackReceived) {
+        this.demandFeedbackReceived = demandFeedbackReceived;
     }
     //endregion
 
-    //region > assessmentsGiven (property)
-    private List<AssessmentViewModel> assessmentsGiven;
+    //region > demandFeedbackGiven (property)
+    private List<Integer> demandFeedbackGiven;
 
     @MemberOrder(sequence = "1")
-    public List<AssessmentViewModel> getAssessmentsGiven() {
-        return assessmentsGiven;
+    public List<Integer> getDemandFeedbackGiven() {
+        return demandFeedbackGiven;
     }
 
-    public void setAssessmentsGiven(final List<AssessmentViewModel> assessmentsGiven) {
-        this.assessmentsGiven = assessmentsGiven;
+    public void setDemandFeedbackGiven(final List<Integer> demandFeedbackGiven) {
+        this.demandFeedbackGiven = demandFeedbackGiven;
     }
     //endregion
 

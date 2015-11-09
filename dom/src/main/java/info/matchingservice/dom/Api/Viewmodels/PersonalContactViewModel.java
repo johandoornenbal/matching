@@ -17,23 +17,67 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
             final PersonalContact personalContact
     ){
         super(personalContact);
-        this.contactPerson = personalContact.getContactPerson().getUri();
+        this.contactPersonHref = personalContact.getContactPerson().getUri();
+        this.contactFullName = personalContact.getContactPerson().title();
+        this.contactPersonId = personalContact.getContactPerson().getIdAsInt();
+        this.contactPersonImageUrl = personalContact.getContactPerson().getImageUrl();
         this.ownerPerson = personalContact.getOwnerPerson().getUri();
         this.trustLevel = personalContact.getTrustLevel().toString();
     }
 
-    //region > contactPerson (property)
-    private String contactPerson;
+
+    //region > contactFullName (property)
+    private String contactFullName;
 
     @MemberOrder(sequence = "1")
-    public String getContactPerson() {
-        return contactPerson;
+    public String getContactFullName() {
+        return contactFullName;
     }
 
-    public void setContactPerson(final String contactPerson) {
-        this.contactPerson = contactPerson;
+    public void setContactFullName(final String contactFullName) {
+        this.contactFullName = contactFullName;
     }
     //endregion
+
+    //region > contactPersonImageUrl (property)
+    private String contactPersonImageUrl;
+
+    @MemberOrder(sequence = "1")
+    public String getContactPersonImageUrl() {
+        return contactPersonImageUrl;
+    }
+
+    public void setContactPersonImageUrl(final String contactPersonImageUrl) {
+        this.contactPersonImageUrl = contactPersonImageUrl;
+    }
+    //endregion
+
+    //region > contactPersonId (property)
+    private Integer contactPersonId;
+
+    @MemberOrder(sequence = "1")
+    public Integer getContactPersonId() {
+        return contactPersonId;
+    }
+
+    public void setContactPersonId(final Integer contactPersonId) {
+        this.contactPersonId = contactPersonId;
+    }
+    //endregion
+
+    //region > contactPersonHref (property)
+    private String contactPersonHref;
+
+    @MemberOrder(sequence = "1")
+    public String getContactPersonHref() {
+        return contactPersonHref;
+    }
+
+    public void setContactPersonHref(final String contactPersonHref) {
+        this.contactPersonHref = contactPersonHref;
+    }
+    //endregion
+
 
     //region > ownerPerson (property)
     private String ownerPerson;
