@@ -33,6 +33,7 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.value.Blob;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import javax.inject.Inject;
 import javax.jdo.JDOHelper;
@@ -70,13 +71,26 @@ import java.util.TreeSet;
 public class Demand extends MatchingSecureMutableObject<Demand> implements HasImageUrl {
 
     public Demand() {
-        super("demandOwner, description, summary, story, startDate, endDate, weight, ownedBy");
+        super("ownedBy, description, timeStamp");
     }
 
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
         return JDOHelper.getObjectId(this).toString();
     }
+
+    //region > date (property)
+    private LocalDateTime timeStamp;
+
+    @Column(allowsNull = "false")
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(final LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+    //endregion
 
 	//** API: PROPERTIES **//
 

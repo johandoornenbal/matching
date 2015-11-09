@@ -27,6 +27,7 @@ import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.value.Blob;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -85,6 +86,7 @@ public class Demands extends MatchingDomainService<Demand> {
         newDemand.setDemandType(demandSupplyType);
         newDemand.setDemandOwner(demandOwner);
         newDemand.setOwnedBy(ownedBy);
+        newDemand.setTimeStamp(LocalDateTime.now());
         persist(newDemand);
         getContainer().flush();
         return newDemand;
