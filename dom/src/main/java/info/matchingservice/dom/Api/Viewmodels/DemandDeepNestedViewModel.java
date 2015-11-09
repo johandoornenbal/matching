@@ -20,22 +20,22 @@ public class DemandDeepNestedViewModel extends ApiAbstractViewModel {
 
     public DemandDeepNestedViewModel(final Demand demand){
         super(demand);
-        this.demandDescription = demand.getDemandDescription();
-        this.demandSummary = demand.getDemandSummary();
-        this.demandStory = demand.getDemandStory();
-        if (demand.getDemandOrSupplyProfileStartDate()!=null){
-            this.demandOrSupplyProfileStartDate = demand.getDemandOrSupplyProfileStartDate().toString();
+        this.demandDescription = demand.getDescription();
+        this.demandSummary = demand.getSummary();
+        this.demandStory = demand.getStory();
+        if (demand.getStartDate()!=null){
+            this.demandOrSupplyProfileStartDate = demand.getStartDate().toString();
 
         }
-        if (demand.getDemandOrSupplyProfileEndDate()!=null){
-            this.demandOrSupplyProfileEndDate = demand.getDemandOrSupplyProfileEndDate().toString();
+        if (demand.getEndDate()!=null){
+            this.demandOrSupplyProfileEndDate = demand.getEndDate().toString();
 
         }
         this.imageUrl = demand.getImageUrl();
         this.demandType = demand.getDemandType().toString();
         this.weight = demand.getWeight();
         List<ProfileViewModel> demandProfiles = new ArrayList<>();
-        for (Profile profile : demand.getCollectDemandProfiles()){
+        for (Profile profile : demand.getDemandProfiles()){
             ProfileViewModel viewModel = new ProfileViewModel(profile);
             demandProfiles.add(viewModel);
         }

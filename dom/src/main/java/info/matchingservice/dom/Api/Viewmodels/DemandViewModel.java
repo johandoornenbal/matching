@@ -20,89 +20,132 @@ public class DemandViewModel extends ApiAbstractViewModel {
 
     public DemandViewModel(final Demand demand){
         super(demand);
-        this.demandDescription = demand.getDemandDescription();
-        this.demandSummary = demand.getDemandSummary();
-        this.demandStory = demand.getDemandStory();
-        if (demand.getDemandOrSupplyProfileStartDate()!=null){
-            this.demandOrSupplyProfileStartDate = demand.getDemandOrSupplyProfileStartDate().toString();
+        this.demandOwnerId = demand.getDemandOwner().getIdAsInt();
+        this.demandOwnerUri = demand.getDemandOwner().getUri();
+        this.demandOwnerFullName = demand.getDemandOwner().title();
+        this.description = demand.getDescription();
+        this.summary = demand.getSummary();
+        this.story = demand.getStory();
+        if (demand.getStartDate()!=null){
+            this.startDate = demand.getStartDate().toString();
 
         }
-        if (demand.getDemandOrSupplyProfileEndDate()!=null){
-            this.demandOrSupplyProfileEndDate = demand.getDemandOrSupplyProfileEndDate().toString();
+        if (demand.getEndDate()!=null){
+            this.endDate = demand.getEndDate().toString();
 
         }
         this.imageUrl = demand.getImageUrl();
         this.demandType = demand.getDemandType().toString();
         this.weight = demand.getWeight();
         List<Integer> demandProfiles = new ArrayList<>();
-        for (Profile profile : demand.getCollectDemandProfiles()){
+        for (Profile profile : demand.getDemandProfiles()){
             demandProfiles.add(profile.getIdAsInt());
         }
         this.demandProfiles = demandProfiles;
     }
 
-    //region > demandDescription (property)
-    private String demandDescription;
+    //region > demandOwnerId (property)
+    private Integer demandOwnerId;
 
     @MemberOrder(sequence = "1")
-    public String getDemandDescription() {
-        return demandDescription;
+    public Integer getDemandOwnerId() {
+        return demandOwnerId;
     }
 
-    public void setDemandDescription(final String demandDescription) {
-        this.demandDescription = demandDescription;
+    public void setDemandOwnerId(final Integer demandOwnerId) {
+        this.demandOwnerId = demandOwnerId;
     }
     //endregion
 
-    //region > demandSummary (property)
-    private String demandSummary;
+    //region > demandOwnerUri (property)
+    private String demandOwnerUri;
 
     @MemberOrder(sequence = "1")
-    public String getDemandSummary() {
-        return demandSummary;
+    public String getDemandOwnerUri() {
+        return demandOwnerUri;
     }
 
-    public void setDemandSummary(final String demandSummary) {
-        this.demandSummary = demandSummary;
+    public void setDemandOwnerUri(final String demandOwnerUri) {
+        this.demandOwnerUri = demandOwnerUri;
     }
     //endregion
 
-    //region > demandStory (property)
-    private String demandStory;
+    //region > demandOwnerFullName (property)
+    private String demandOwnerFullName;
 
     @MemberOrder(sequence = "1")
-    public String getDemandStory() {
-        return demandStory;
+    public String getDemandOwnerFullName() {
+        return demandOwnerFullName;
     }
 
-    public void setDemandStory(final String demandStory) {
-        this.demandStory = demandStory;
+    public void setDemandOwnerFullName(final String demandOwnerFullName) {
+        this.demandOwnerFullName = demandOwnerFullName;
     }
     //endregion
 
-    //region > demandStory (property)
-    private String demandOrSupplyProfileStartDate;
+
+    //region > description (property)
+    private String description;
 
     @MemberOrder(sequence = "1")
-    public String getDemandOrSupplyProfileStartDate() {
-        return demandOrSupplyProfileStartDate;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDemandOrSupplyProfileStartDate(final String demandOrSupplyProfileStartDate) {
-        this.demandOrSupplyProfileStartDate = demandOrSupplyProfileStartDate;
+    public void setDescription(final String description) {
+        this.description = description;
     }
     //endregion
 
-    //region > demandStory (property)
-    private String demandOrSupplyProfileEndDate;
+    //region > summary (property)
+    private String summary;
 
     @MemberOrder(sequence = "1")
-    public String getDemandOrSupplyProfileEndDate() {
-        return demandOrSupplyProfileEndDate;
+    public String getSummary() {
+        return summary;
     }
 
-    public void setDemandOrSupplyProfileEndDate(final String demandOrSupplyProfileEndDate) {
-        this.demandOrSupplyProfileEndDate = demandOrSupplyProfileEndDate;
+    public void setSummary(final String summary) {
+        this.summary = summary;
+    }
+    //endregion
+
+    //region > story (property)
+    private String story;
+
+    @MemberOrder(sequence = "1")
+    public String getStory() {
+        return story;
+    }
+
+    public void setStory(final String story) {
+        this.story = story;
+    }
+    //endregion
+
+    //region > story (property)
+    private String startDate;
+
+    @MemberOrder(sequence = "1")
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(final String startDate) {
+        this.startDate = startDate;
+    }
+    //endregion
+
+    //region > story (property)
+    private String endDate;
+
+    @MemberOrder(sequence = "1")
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(final String endDate) {
+        this.endDate = endDate;
     }
     //endregion
 

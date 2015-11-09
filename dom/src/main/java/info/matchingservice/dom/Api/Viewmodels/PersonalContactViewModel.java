@@ -17,7 +17,7 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
             final PersonalContact personalContact
     ){
         super(personalContact);
-        this.contactPersonHref = personalContact.getContactPerson().getUri();
+        this.contactPersonUri = personalContact.getContactPerson().getUri();
         this.contactFullName = personalContact.getContactPerson().title();
         this.contactPersonId = personalContact.getContactPerson().getIdAsInt();
         this.contactPersonImageUrl = personalContact.getContactPerson().getImageUrl();
@@ -65,16 +65,16 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > contactPersonHref (property)
-    private String contactPersonHref;
+    //region > contactPersonUri (property)
+    private String contactPersonUri;
 
     @MemberOrder(sequence = "1")
-    public String getContactPersonHref() {
-        return contactPersonHref;
+    public String getContactPersonUri() {
+        return contactPersonUri;
     }
 
-    public void setContactPersonHref(final String contactPersonHref) {
-        this.contactPersonHref = contactPersonHref;
+    public void setContactPersonUri(final String contactPersonUri) {
+        this.contactPersonUri = contactPersonUri;
     }
     //endregion
 

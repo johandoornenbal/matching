@@ -264,50 +264,6 @@ public class Api extends AbstractFactoryAndRepository {
                 person.getOwnedBy()
 		);
 	}
-
-
-	//***************************************** getDemandByUniqueId ***********************//
-	
-	@Action(semantics=SemanticsOf.SAFE)
-	public List<Demand> findDemandByUniqueId(final UUID uniqueItemId){
-		try
-		{
-			return demands.findDemandByUniqueItemId(uniqueItemId);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
-	}
-	
-	public String validateFindDemandByUniqueId(final UUID uniqueItemId){
-		// implementation of Trusted Circles Business Rule: demands are accessible only for INNER_CIRCLE
-		// TODO: this should be transferred to object itself for maintainability; now there are at least to places to adapt code
-		// TODO: integration test to verify access
-		try
-		{	
-			if (
-					// Not the owner
-					!demands.findDemandByUniqueItemId(uniqueItemId).get(0).getOwnedBy().equals(currentUserName())
-					
-					&&
-					
-					// At least Inner Circle
-					demands.findDemandByUniqueItemId(uniqueItemId).get(0).allowedTrustLevel(TrustLevel.INNER_CIRCLE)
-				) 
-			{
-				return "NO_ACCESS";
-			}
-		}
-		catch (Exception e)
-		{
-			return "VALIDATION_FAILURE";
-		}
-		
-		return null;
-	}
-	
-	//------------------------------------ END getDemandByUniqueId ---------------------------//
 	
 
 	//***************************************** getProfileByUniqueId ***********************//

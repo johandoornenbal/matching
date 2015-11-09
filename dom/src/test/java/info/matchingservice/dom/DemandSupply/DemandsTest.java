@@ -1,15 +1,13 @@
 package info.matchingservice.dom.DemandSupply;
 
-import java.util.List;
-import java.util.UUID;
-
+import info.matchingservice.dom.FinderInteraction;
+import org.apache.isis.applib.query.Query;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.apache.isis.applib.query.Query;
+import java.util.List;
 
-import info.matchingservice.dom.FinderInteraction;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -57,7 +55,7 @@ public class DemandsTest {
             assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
             Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.DemandSupply.Demand.class);
             assertThat(finderInteraction.getQueryName(), is("findDemandByDescription"));
-            assertThat(finderInteraction.getArgumentsByParameterName().get("demandDescription"), is((Object) demandDescription));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("description"), is((Object) demandDescription));
             assertThat(finderInteraction.getArgumentsByParameterName().get("ownedBy"), is((Object) ownedBy));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(2));
 
@@ -67,29 +65,11 @@ public class DemandsTest {
             assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
             Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.DemandSupply.Demand.class);
             assertThat(finderInteraction.getQueryName(), is("findDemandByDescriptionOnly"));
-            assertThat(finderInteraction.getArgumentsByParameterName().get("demandDescription"), is((Object) demandDescription));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("description"), is((Object) demandDescription));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
         }
 
     }
-
-    public static class FindDemandByUniqueItemId extends DemandsTest {
-
-        @Test
-        public void happyCase() {
-
-            UUID uuid = UUID.randomUUID();;
-            demands.findDemandByUniqueItemId(uuid);
-
-            assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
-            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.DemandSupply.Demand.class);
-            assertThat(finderInteraction.getQueryName(), is("findDemandByUniqueItemId"));
-            assertThat(finderInteraction.getArgumentsByParameterName().get("uniqueItemId"), is((Object) uuid));
-            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
-        }
-    }
-
-
 
 
 }

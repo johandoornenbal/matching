@@ -39,7 +39,6 @@ import javax.jdo.JDOHelper;
 import javax.jdo.annotations.*;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.UUID;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -60,20 +59,19 @@ import java.util.UUID;
             name = "findDemandByDescription", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Demand "
-                    + "WHERE ownedBy == :ownedBy && demandDescription.indexOf(:demandDescription) >= 0"),
+                    + "WHERE ownedBy == :ownedBy && description.indexOf(:description) >= 0"),
     @javax.jdo.annotations.Query(
             name = "findDemandByDescriptionOnly", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Demand "
-                    + "WHERE demandDescription.toLowerCase().indexOf(:demandDescription) >= 0"),
-    @javax.jdo.annotations.Query(
-            name = "findDemandByUniqueItemId", language = "JDOQL",
-            value = "SELECT "
-                    + "FROM info.matchingservice.dom.DemandSupply.Demand "
-                    + "WHERE uniqueItemId.matches(:uniqueItemId)")                    
+                    + "WHERE description.toLowerCase().indexOf(:description) >= 0")
 })
 @DomainObject(editing=Editing.DISABLED)
 public class Demand extends MatchingSecureMutableObject<Demand> implements HasImageUrl {
+
+    public Demand() {
+        super("demandOwner, description, summary, story, startDate, endDate, weight, ownedBy");
+    }
 
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
@@ -81,21 +79,8 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
     }
 
 	//** API: PROPERTIES **//
-	
-	//** uniqueItemId **//
-    private UUID uniqueItemId;
-    
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    public UUID getUniqueItemId() {
-        return uniqueItemId;
-    }
-    
-    public void setUniqueItemId(final UUID uniqueItemId) {
-        this.uniqueItemId = uniqueItemId;
-    }
-    //-- uniqueItemId --//
-    
+
+
     //** demandOwner **//
     private Actor demandOwner;
     
@@ -111,94 +96,94 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
     }
     //-- demandOwner --//
     
-    //** demandDescription **//
-    private String demandDescription;
+    //** description **//
+    private String description;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getDemandDescription(){
-        return demandDescription;
+    public String getDescription(){
+        return description;
     }
     
-    public void setDemandDescription(final String description) {
-        this.demandDescription = description;
+    public void setDescription(final String description) {
+        this.description = description;
     }
-    //-- demandDescription --//
+    //-- description --//
     
-    //** demandSummary **//
-    private String demandSummary;
+    //** summary **//
+    private String summary;
     
     @javax.jdo.annotations.Column(allowsNull = "true", length=1024)
     @PropertyLayout(multiLine=4)
     @Property(maxLength=1024)
-    public String getDemandSummary() {
-		return demandSummary;
+    public String getSummary() {
+		return summary;
 	}
 
-	public void setDemandSummary(String demandSummary) {
-		this.demandSummary = demandSummary;
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
-	//-- demandSummary --//
+	//-- summary --//
 
-	//** demandStory **//
-	private String demandStory;
+	//** story **//
+	private String story;
     
 	@javax.jdo.annotations.Column(allowsNull = "true", length=2048)
     @PropertyLayout(multiLine=8)
 	@Property(maxLength=2048)
-	public String getDemandStory() {
-		return demandStory;
+	public String getStory() {
+		return story;
 	}
 
-	public void setDemandStory(String demandStory) {
-		this.demandStory = demandStory;
+	public void setStory(String story) {
+		this.story = story;
 	}
-	//-- demandStory--//
+	//-- story--//
 	
-	//** demandAttachment **//
-	private Blob demandAttachment;
+	//** attachment **//
+	private Blob attachment;
 	
     @javax.jdo.annotations.Persistent(defaultFetchGroup="false", columns = {
-            @javax.jdo.annotations.Column(name = "demandAttachment_name"),
-            @javax.jdo.annotations.Column(name = "demandAttachment_mimetype"),
-            @javax.jdo.annotations.Column(name = "demandAttachment_bytes", jdbcType = "BLOB", sqlType = "BLOB")
+            @javax.jdo.annotations.Column(name = "attachment_name"),
+            @javax.jdo.annotations.Column(name = "attachment_mimetype"),
+            @javax.jdo.annotations.Column(name = "attachment_bytes", jdbcType = "BLOB", sqlType = "BLOB")
     })
     @Property(
     		optionality=Optionality.OPTIONAL
     )
-	public Blob getDemandAttachment(){
-		return demandAttachment;
+	public Blob getAttachment(){
+		return attachment;
 	}
 	
-	public void setDemandAttachment(Blob demandAttachment) {
-		this.demandAttachment = demandAttachment;
+	public void setAttachment(Blob attachment) {
+		this.attachment = attachment;
 	}
-	//-- demandAttachment --//
+	//-- attachment --//
 	
-	//** demandOrSupplyProfileStartDate **//
-	private LocalDate demandOrSupplyProfileStartDate;
+	//** startDate **//
+	private LocalDate startDate;
 	
 	@javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getDemandOrSupplyProfileStartDate() {
-		return demandOrSupplyProfileStartDate;
+	public LocalDate getStartDate() {
+		return startDate;
 	}
 	
-	public void setDemandOrSupplyProfileStartDate(final LocalDate demandOrSupplyProfileStartDate){
-		this.demandOrSupplyProfileStartDate = demandOrSupplyProfileStartDate;
+	public void setStartDate(final LocalDate startDate){
+		this.startDate = startDate;
 	}	
-	//-- demandOrSupplyProfileStartDate --//
+	//-- startDate --//
 	
-	//** demandOrSupplyProfileEndDate **//	
-	private LocalDate demandOrSupplyProfileEndDate;
+	//** endDate **//
+	private LocalDate endDate;
 	
 	@javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getDemandOrSupplyProfileEndDate() {
-		return demandOrSupplyProfileEndDate;
+	public LocalDate getEndDate() {
+		return endDate;
 	}
 	
-	public void setDemandOrSupplyProfileEndDate(final LocalDate demandOrSupplyProfileEndDate){
-		this.demandOrSupplyProfileEndDate = demandOrSupplyProfileEndDate;
+	public void setEndDate(final LocalDate endDate){
+		this.endDate = endDate;
 	}	
-	//-- demandOrSupplyProfileStartDate --//
+	//-- startDate --//
 
     //region > imageUrl (property)
     private String imageUrl;
@@ -218,35 +203,35 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
 	//** API: COLLECTIONS **//
 	
 	//** demandProfiles **//
-    private SortedSet<Profile> collectDemandProfiles = new TreeSet<Profile>();
+    private SortedSet<Profile> demandProfiles = new TreeSet<Profile>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
-    public SortedSet<Profile> getCollectDemandProfiles() {
-        return collectDemandProfiles;
+    public SortedSet<Profile> getDemandProfiles() {
+        return demandProfiles;
     }
     
-    public void setCollectDemandProfiles(final SortedSet<Profile> vac){
-        this.collectDemandProfiles = vac;
+    public void setDemandProfiles(final SortedSet<Profile> vac){
+        this.demandProfiles = vac;
     }
     //-- demandProfiles --//
     
     //** demandAssessments **//
-    private SortedSet<DemandAssessment> collectDemandAssessments = new TreeSet<DemandAssessment>();
+    private SortedSet<DemandAssessment> assessments = new TreeSet<DemandAssessment>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
-    public SortedSet<DemandAssessment> getCollectDemandAssessments() {
-        return collectDemandAssessments;
+    public SortedSet<DemandAssessment> getAssessments() {
+        return assessments;
     }
    
-    public void setCollectDemandAssessments(final SortedSet<DemandAssessment> demandAssessment) {
-        this.collectDemandAssessments = demandAssessment;
+    public void setAssessments(final SortedSet<DemandAssessment> demandAssessment) {
+        this.assessments = demandAssessment;
     }
     
     // Business rule: 
     // only visible for inner-circle
-    public boolean hideCollectDemandAssessments() {
+    public boolean hideAssessments() {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }  
     //-- demandAssessments --//
@@ -258,59 +243,59 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
 	//** updateDemand **//
     @Action(semantics=SemanticsOf.IDEMPOTENT)
     public Demand updateDemand(
-            @ParameterLayout(named="demandDescription")
+            @ParameterLayout(named="description")
             final String demandDescription,
-            @ParameterLayout(named="demandSummary", multiLine=3)
+            @ParameterLayout(named="summary", multiLine=3)
             @Parameter(optionality=Optionality.OPTIONAL)
             final String demandSummary,
-            @ParameterLayout(named="demandStory", multiLine=8)
+            @ParameterLayout(named="story", multiLine=8)
             @Parameter(optionality=Optionality.OPTIONAL)
             final String demandStory,
-            @ParameterLayout(named="demandAttachment")
+            @ParameterLayout(named="attachment")
             @Parameter(optionality=Optionality.OPTIONAL)
             final Blob demandAttachment,
-            @ParameterLayout(named="demandOrSupplyProfileStartDate")
+            @ParameterLayout(named="startDate")
             @Parameter(optionality=Optionality.OPTIONAL)
             final LocalDate demandOrSupplyProfileStartDate,
-            @ParameterLayout(named="demandOrSupplyProfileEndDate")
+            @ParameterLayout(named="endDate")
             @Parameter(optionality=Optionality.OPTIONAL)
             final LocalDate demandOrSupplyProfileEndDate,
             @ParameterLayout(named="imageUrl")
             @Parameter(optionality=Optionality.OPTIONAL)
             final String imageUrl
             ){
-        this.setDemandDescription(demandDescription);
-        this.setDemandSummary(demandSummary);
-        this.setDemandStory(demandStory);
-        this.setDemandAttachment(demandAttachment);
-        this.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
-        this.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
+        this.setDescription(demandDescription);
+        this.setSummary(demandSummary);
+        this.setStory(demandStory);
+        this.setAttachment(demandAttachment);
+        this.setStartDate(demandOrSupplyProfileStartDate);
+        this.setEndDate(demandOrSupplyProfileEndDate);
         this.setImageUrl(imageUrl);
         return this;
     }
     
     public String default0UpdateDemand(){
-        return this.getDemandDescription();
+        return this.getDescription();
     }
     
     public String default1UpdateDemand(){
-        return this.getDemandSummary();
+        return this.getSummary();
     }
     
     public String default2UpdateDemand(){
-        return this.getDemandStory();
+        return this.getStory();
     }
     
     public Blob default3UpdateDemand(){
-        return this.getDemandAttachment();
+        return this.getAttachment();
     }
     
     public LocalDate default4UpdateDemand(){
-        return this.getDemandOrSupplyProfileStartDate();
+        return this.getStartDate();
     }
     
     public LocalDate default5UpdateDemand(){
-        return this.getDemandOrSupplyProfileEndDate();
+        return this.getEndDate();
     }
 
     public String default6UpdateDemand(){
@@ -387,8 +372,8 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
         return createDemandProfile(
         		demandProfileDescription, 
         		10, 
-        		this.getDemandOrSupplyProfileStartDate(), 
-        		this.getDemandOrSupplyProfileEndDate(), 
+        		this.getStartDate(),
+        		this.getEndDate(),
         		ProfileType.PERSON_PROFILE, 
         		this,
         		profileTypeMatchingRules.findProfileTypeMatchingRule("regel1"),
@@ -424,9 +409,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
 	//** GENERIC OBJECT STUFF **//
 	
 	//** constructor **//
-    public Demand() {
-        super("demandDescription, weight, ownedBy, uniqueItemId");
-    }
+
     
     //** ownedBy - Override for secure object **//
     private String ownedBy;
@@ -451,7 +434,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
     }
     
     public String toString() {
-        return getDemandDescription() + " - " + getDemandOwner().title();
+        return getDescription() + " - " + getDemandOwner().title();
     }
 
 	//-- HELPERS: generic object helpers --//
@@ -538,51 +521,5 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
     }
     
   	//-- HIDDEN: ACTIONS --//
-    
-    
-    //XTALUS 
-    //Nieuwe cursus gezocht
-//    @ActionLayout(named="Nieuwe cursus zoeken", hidden=Where.ANYWHERE)
-//    public Profile newCourseDemandProfile(
-//            @ParameterLayout(named="profileName", multiLine=4)
-//            final  String demandProfileDescription
-//            ){
-//        return createDemandProfile(demandProfileDescription, 10, null, null, ProfileType.COURSE_PROFILE, this, currentUserName());
-//    }
-//    
-//    // BUSINESS RULE voor hide en validate van de aktie 'nieuw cursus gezocht'
-//    // alleen tonen op demand van type cursus
-//    
-//    public boolean hideNewCourseDemandProfile(
-//            final  String demandProfileDescription
-//            ){
-//        if (this.getDemandType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
-//            return true;
-//        }
-//        
-//        return false;
-//    }
-//    
-//    public String validateNewCourseDemandProfile(
-//            final  String demandProfileDescription
-//            ){
-//        if (this.getDemandType() != DemandSupplyType.COURSE_DEMANDSUPPLY){
-//            return "Alleen op type CURSUS";
-//        }
-//        
-//        return null;
-//    }    
-
-    //XTALUS 
-    //Nieuwe persoon gezocht
-
-    
-//    @ActionLayout(hidden=Where.EVERYWHERE)
-//    public Profile newDemandProfile(
-//            final  String demandProfileDescription,
-//            final Integer weight 
-//            ) {
-//        return createDemandProfile(demandProfileDescription, weight, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
-//    }
 
 }

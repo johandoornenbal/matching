@@ -29,7 +29,6 @@ import org.apache.isis.applib.value.Blob;
 import org.joda.time.LocalDate;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 @DomainService(repositoryFor = Demand.class, nature=NatureOfService.DOMAIN)
@@ -52,7 +51,7 @@ public class Demands extends MatchingDomainService<Demand> {
     // for fixtures
     public List<Demand> findDemandByDescription(String demandDescription, String ownedBy) {
         return allMatches("findDemandByDescription",
-                "demandDescription", demandDescription,
+                "description", demandDescription,
                 "ownedBy", ownedBy);
     }
 
@@ -60,14 +59,7 @@ public class Demands extends MatchingDomainService<Demand> {
     // for Api
     public List<Demand> findDemandByDescription(String demandDescription) {
         return allMatches("findDemandByDescriptionOnly",
-                "demandDescription", demandDescription.toLowerCase());
-    }
-    
-    @Programmatic
-    // for Api
-    public List<Demand> findDemandByUniqueItemId(UUID uniqueItemId) {
-        return allMatches("findDemandByUniqueItemId",
-        		"uniqueItemId", uniqueItemId);
+                "description", demandDescription.toLowerCase());
     }
 
     @Programmatic
@@ -82,22 +74,20 @@ public class Demands extends MatchingDomainService<Demand> {
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner,
             final String ownedBy) {
-        final Demand newNeed = newTransientInstance(Demand.class);
-        final UUID uuid=UUID.randomUUID();
-        newNeed.setUniqueItemId(uuid);
-        newNeed.setDemandDescription(demandDescription);
-        newNeed.setDemandSummary(demandSummary);
-        newNeed.setDemandStory(demandStory);
-        newNeed.setDemandAttachment(demandAttachment);
-        newNeed.setDemandOrSupplyProfileStartDate(demandOrSupplyProfileStartDate);
-        newNeed.setDemandOrSupplyProfileEndDate(demandOrSupplyProfileEndDate);
-        newNeed.setWeight(weight);
-        newNeed.setDemandType(demandSupplyType);
-        newNeed.setDemandOwner(demandOwner);
-        newNeed.setOwnedBy(ownedBy);
-        persist(newNeed);
+        final Demand newDemand = newTransientInstance(Demand.class);
+        newDemand.setDescription(demandDescription);
+        newDemand.setSummary(demandSummary);
+        newDemand.setStory(demandStory);
+        newDemand.setAttachment(demandAttachment);
+        newDemand.setStartDate(demandOrSupplyProfileStartDate);
+        newDemand.setEndDate(demandOrSupplyProfileEndDate);
+        newDemand.setWeight(weight);
+        newDemand.setDemandType(demandSupplyType);
+        newDemand.setDemandOwner(demandOwner);
+        newDemand.setOwnedBy(ownedBy);
+        persist(newDemand);
         getContainer().flush();
-        return newNeed;
+        return newDemand;
     }
 
     // Api v1

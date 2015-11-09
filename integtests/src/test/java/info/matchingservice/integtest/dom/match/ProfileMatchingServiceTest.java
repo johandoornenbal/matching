@@ -65,8 +65,8 @@ public class ProfileMatchingServiceTest extends MatchingIntegrationTest {
         public void setUp() {
             frans = persons.findPersons("Hals").get(0);
             gerard = persons.findPersons("Dou").get(0);
-            profileComparisons = frans.getDemands().first().getCollectDemandProfiles().first().updateSupplyProfileComparisons();
-            demandProfile = frans.getDemands().first().getCollectDemandProfiles().first();
+            profileComparisons = frans.getDemands().first().getDemandProfiles().first().updateSupplyProfileComparisons();
+            demandProfile = frans.getDemands().first().getDemandProfiles().first();
         }
 
         @Test
@@ -82,28 +82,28 @@ public class ProfileMatchingServiceTest extends MatchingIntegrationTest {
             // when adding a requiredProfileElementRole with check for student
             demandProfile.createRequiredProfileElementRole(1, true, false, false);
             // then
-            profileComparisons = frans.getDemands().first().getCollectDemandProfiles().first().updateSupplyProfileComparisons();
+            profileComparisons = frans.getDemands().first().getDemandProfiles().first().updateSupplyProfileComparisons();
             assertThat(profileComparisons.size(), is(2));
 
             // when checking out student on requiredProfileElementRole
             requiredProfileElementRole = (RequiredProfileElementRole) profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).get(0);
             requiredProfileElementRole.setStudent(false);
             // then
-            profileComparisons = frans.getDemands().first().getCollectDemandProfiles().first().updateSupplyProfileComparisons();
+            profileComparisons = frans.getDemands().first().getDemandProfiles().first().updateSupplyProfileComparisons();
             assertThat(profileComparisons.size(), is(0));
 
             // when checking professional on requiredProfileElementRole
             requiredProfileElementRole = (RequiredProfileElementRole) profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).get(0);
             requiredProfileElementRole.setProfessional(true);
             // then
-            profileComparisons = frans.getDemands().first().getCollectDemandProfiles().first().updateSupplyProfileComparisons();
+            profileComparisons = frans.getDemands().first().getDemandProfiles().first().updateSupplyProfileComparisons();
             assertThat(profileComparisons.size(), is(3));
 
             // when checking professional and student on requiredProfileElementRole
             requiredProfileElementRole = (RequiredProfileElementRole) profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).get(0);
             requiredProfileElementRole.setStudent(true);
             // then
-            profileComparisons = frans.getDemands().first().getCollectDemandProfiles().first().updateSupplyProfileComparisons();
+            profileComparisons = frans.getDemands().first().getDemandProfiles().first().updateSupplyProfileComparisons();
             assertThat(profileComparisons.size(), is(4));
 
         }

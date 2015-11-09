@@ -110,7 +110,7 @@ public class FindResource extends ResourceAbstract {
 
             demandMap.mapPut("id", Utils.toApiID(demand.getOID()));
             demandMap.mapPut("URI", Utils.toObjectURI(demand.getOID()));
-            demandMap.mapPut("description", demand.getDemandDescription());
+            demandMap.mapPut("description", demand.getDescription());
             demandArray.arrayAdd(demandMap);
         }
 

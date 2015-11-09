@@ -37,18 +37,18 @@ public class DemandRepresentation {
 
         demandmap.mapPut("id", Utils.toApiID(demand.getOID()));
         demandmap.mapPut("URI", Utils.toObjectURI(demand.getOID()));
-        demandmap.mapPut("description", demand.getDemandDescription());
-        demandmap.mapPut("summary", demand.getDemandSummary());
-        demandmap.mapPut("story", demand.getDemandStory());
-        if (demand.getDemandOrSupplyProfileStartDate() == null){
+        demandmap.mapPut("description", demand.getDescription());
+        demandmap.mapPut("summary", demand.getSummary());
+        demandmap.mapPut("story", demand.getStory());
+        if (demand.getStartDate() == null){
             demandmap.mapPut("startDate", "");
         } else {
-            demandmap.mapPut("startDate", demand.getDemandOrSupplyProfileStartDate().toString());
+            demandmap.mapPut("startDate", demand.getStartDate().toString());
         }
-        if (demand.getDemandOrSupplyProfileEndDate() == null){
+        if (demand.getEndDate() == null){
             demandmap.mapPut("endDate", "");
         } else {
-            demandmap.mapPut("endDate", demand.getDemandOrSupplyProfileEndDate().toString());
+            demandmap.mapPut("endDate", demand.getEndDate().toString());
         }
         if (demand.getImageUrl() == null) {
             demandmap.mapPut("imageUrl", "");
@@ -60,7 +60,7 @@ public class DemandRepresentation {
         // profiles
         JsonRepresentation profiles = JsonRepresentation.newArray();
 
-        for (Profile profile : demand.getCollectDemandProfiles()) {
+        for (Profile profile : demand.getDemandProfiles()) {
 
             ProfileRepresentation rep = new ProfileRepresentation();
             profiles.arrayAdd(rep.ObjectRepresentation(profile));
@@ -72,7 +72,7 @@ public class DemandRepresentation {
         // assessments
         JsonRepresentation assessments = JsonRepresentation.newArray();
 
-        for (Assessment assessment : demand.getCollectDemandAssessments()) {
+        for (Assessment assessment : demand.getAssessments()) {
             AssessmentRepresentation rep = new AssessmentRepresentation();
             assessments.arrayAdd(rep.ObjectRepresentation(assessment));
         }

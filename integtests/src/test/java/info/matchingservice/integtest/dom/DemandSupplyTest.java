@@ -1,27 +1,20 @@
 package info.matchingservice.integtest.dom;
 
-import java.util.UUID;
-
-import javax.inject.Inject;
-
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.DemandSupplyType;
-import info.matchingservice.dom.DemandSupply.Demands;
-import info.matchingservice.dom.DemandSupply.Supplies;
-import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.DemandSupply.*;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.inject.Inject;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -68,7 +61,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void findDemand() throws Exception {
             Integer maxindex = demands.allDemands().size() - 1;
             d1 = demands.allDemands().get(maxindex);
-            assertThat(d1.getDemandDescription(), is(DEMAND_DESCRIPTION));
+            assertThat(d1.getDescription(), is(DEMAND_DESCRIPTION));
             assertThat(d1.getWeight(), is(WEIGHT));
             assertThat(d1.getDemandType(), is(DEMAND_SUPPLY_TYPE));
             assertThat(d1.getDemandOwner(), is((Actor) persons.findPersons("Hals").get(0)));
@@ -132,7 +125,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void findProfile() throws Exception {
             Integer maxindex = demands.allDemands().size() - 1;
             d1 = demands.allDemands().get(maxindex);
-            pf1=d1.getCollectDemandProfiles().first();
+            pf1=d1.getDemandProfiles().first();
             assertThat(pf1.getProfileName(), is(DEMAND_PROFILE_DESCRIPTION));  
             assertThat(pf1.getWeight(), is(WEIGHT)); 
             assertThat(pf1.getProfileType(), is(PROFILE_TYPE));
@@ -251,7 +244,6 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
 public static class UpdateDemand extends DemandSupplyTest{
         
         Demand d1;
-        UUID unid;
         Integer numberOfdemands;
         Integer numberOfDemandProfiles;
         
@@ -269,20 +261,16 @@ public static class UpdateDemand extends DemandSupplyTest{
         @Before
         public void setUp() throws Exception {
             d1=demands.createDemand(DEMAND_DESCRIPTION, DEMAND_SUMMARY, DEMAND_STORY, null, START_DATE, END_DATE, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
-            unid = d1.getUniqueItemId();
-            assertThat(d1.getDemandDescription(), is(DEMAND_DESCRIPTION));
-            assertThat(d1.getUniqueItemId(), is(unid));
+            assertThat(d1.getDescription(), is(DEMAND_DESCRIPTION));
             assertThat(d1.getOwnedBy(), is(OWNED_BY));
             d1.updateDemand(DEMAND_DESCRIPTION + "test123", DEMAND_SUMMARY + "test456", DEMAND_STORY + "test789", null, START_DATE, new LocalDate(2015,12,31), IMAGE_URL);
-            //unid should not change
-            assertThat(d1.getUniqueItemId(), is(unid));
             //owner should not change
             assertThat(d1.getOwnedBy(), is(OWNED_BY));
-            assertThat(d1.getDemandDescription(), is("Dit is de vraagomschrijvingtest123"));
-            assertThat(d1.getDemandSummary(), is("Dit is de samenvattingtest456"));
-            assertThat(d1.getDemandStory(), is("Dit is het hele verhaaltest789"));
-            assertThat(d1.getDemandOrSupplyProfileStartDate(), is(START_DATE));
-            assertThat(d1.getDemandOrSupplyProfileEndDate(), is(new LocalDate(2015,12,31)));
+            assertThat(d1.getDescription(), is("Dit is de vraagomschrijvingtest123"));
+            assertThat(d1.getSummary(), is("Dit is de samenvattingtest456"));
+            assertThat(d1.getStory(), is("Dit is het hele verhaaltest789"));
+            assertThat(d1.getStartDate(), is(START_DATE));
+            assertThat(d1.getEndDate(), is(new LocalDate(2015,12,31)));
             assertThat(d1.getImageUrl(), is(IMAGE_URL));
         }
         
