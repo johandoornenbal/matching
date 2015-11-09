@@ -316,29 +316,29 @@ public class Person extends Actor {
     // Business rule: 
     // Je moet Opdrachtgever zijn om een tafel te starten
     @ActionLayout()
-    public Demand createPersonsDemand(
-            @ParameterLayout(named="description")
+    public Demand createPersonDemand(
+            @ParameterLayout(named = "description")
             final String description,
-            @ParameterLayout(named="summary", multiLine=3)
-            @Parameter(optionality=Optionality.OPTIONAL)
+            @ParameterLayout(named = "summary", multiLine = 3)
+            @Parameter(optionality = Optionality.OPTIONAL)
             final String summary,
-            @ParameterLayout(named="story", multiLine=8)
-            @Parameter(optionality=Optionality.OPTIONAL)
+            @ParameterLayout(named = "story", multiLine = 8)
+            @Parameter(optionality = Optionality.OPTIONAL)
             final String story,
-            @ParameterLayout(named="attachment")
-            @Parameter(optionality=Optionality.OPTIONAL)
+            @ParameterLayout(named = "attachment")
+            @Parameter(optionality = Optionality.OPTIONAL)
             final Blob attachment,
-            @ParameterLayout(named="profileStartDate")
-            @Parameter(optionality=Optionality.OPTIONAL)
+            @ParameterLayout(named = "profileStartDate")
+            @Parameter(optionality = Optionality.OPTIONAL)
             final LocalDate profileStartDate,
-            @ParameterLayout(named="profileStartDate")
-            @Parameter(optionality=Optionality.OPTIONAL)
+            @ParameterLayout(named = "profileStartDate")
+            @Parameter(optionality = Optionality.OPTIONAL)
             final LocalDate profileEndDate
-            ){
+    ){
         return createDemand(description, summary, story, attachment, profileStartDate, profileEndDate, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
     }
     
-    public boolean hideCreatePersonsDemand(
+    public boolean hideCreatePersonDemand(
     		final String demandDescription,
     		final String demandSummary,
     		final String demandStory,
@@ -349,7 +349,7 @@ public class Person extends Actor {
         return hideCreateDemand(demandDescription, this);
     }
     
-    public String validateCreatePersonsDemand(
+    public String validateCreatePersonDemand(
     		final String demandDescription,
     		final String demandSummary,
     		final String demandStory,

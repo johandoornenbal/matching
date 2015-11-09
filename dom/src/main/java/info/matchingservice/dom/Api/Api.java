@@ -6,10 +6,7 @@ import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.Demands;
-import info.matchingservice.dom.DemandSupply.Supplies;
-import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.DemandSupply.*;
 import info.matchingservice.dom.Profile.*;
 import info.matchingservice.dom.ProvidedServices.Service;
 import info.matchingservice.dom.ProvidedServices.Services;
@@ -178,7 +175,7 @@ public class Api extends AbstractFactoryAndRepository {
         }
 
 		if (currentUserName().equals(person.getOwnedBy()) && person.getIsPrincipal()) {
-			String createPersonsDemand = "createPersonsDemand";
+			String createPersonsDemand = "createPersonDemand";
 			actions.add(createPersonsDemand);
 		}
 
@@ -203,6 +200,69 @@ public class Api extends AbstractFactoryAndRepository {
         }
 
 		return actions;
+	}
+
+	@Programmatic
+	public Demand createPersonDemand(
+			final Person person,
+			final String description,
+            final String summary,
+            final String story,
+            final String startDate,
+            final String endDate){
+        //check description
+        if (description==null || description==""){
+            return null;
+        }
+        //check dates
+        LocalDate startDateEntry = null;
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
+        try {
+            startDateEntry = LocalDate.parse(startDate, dtf);
+        } catch (Exception e) {
+            //ignore
+        }
+        if (startDateEntry == null) {
+            // startDate is not a valid date
+            startDateEntry=null;
+        } else {
+            // startDate is a Date
+            startDateEntry = new LocalDate(startDate);
+        }
+
+        LocalDate endDateEntry = null;
+        try {
+            endDateEntry = LocalDate.parse(endDate, dtf);
+        } catch (Exception e) {
+            //ignore
+        }
+        if (endDateEntry == null) {
+            // endDate is not a valid date
+            endDateEntry=null;
+        } else {
+            // endDate is a Date
+            endDateEntry = new LocalDate(endDate);
+        }
+
+        // if invalid period [endDate before startDate] set both to null
+        if (startDateEntry!=null && endDateEntry!=null && endDateEntry.isBefore(startDateEntry)){
+            startDateEntry=null;
+            endDateEntry=null;
+        }
+
+
+		return demands.createDemand(
+				description,
+                summary,
+                story,
+                null,
+                startDateEntry,
+                endDateEntry,
+                10,
+                DemandSupplyType.PERSON_DEMANDSUPPLY,
+                person,
+                person.getOwnedBy()
+		);
 	}
 
 

@@ -19,20 +19,18 @@
 
 package info.matchingservice.dom.DemandSupply;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
-import org.joda.time.LocalDate;
-
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.value.Blob;
+import org.joda.time.LocalDate;
 
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.MatchingDomainService;
+import java.util.List;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 @DomainService(repositoryFor = Demand.class, nature=NatureOfService.DOMAIN)
 @DomainServiceLayout(
@@ -98,6 +96,7 @@ public class Demands extends MatchingDomainService<Demand> {
         newNeed.setDemandOwner(demandOwner);
         newNeed.setOwnedBy(ownedBy);
         persist(newNeed);
+        getContainer().flush();
         return newNeed;
     }
 
@@ -108,8 +107,7 @@ public class Demands extends MatchingDomainService<Demand> {
         for (Demand d : allInstances(Demand.class)) {
             String[] parts = d.getOID().split(Pattern.quote("[OID]"));
             String part1 = parts[0];
-            String ApiId = "L_".concat(part1);
-            if (id.equals(ApiId)) {
+            if (id.equals(part1)) {
                 return d;
             }
         }

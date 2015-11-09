@@ -175,8 +175,6 @@ public class PersonResourceV2 extends ResourceAbstract {
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
     public Response getAllPersonsServices() {
 
-        final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
-
         Gson gson = new Gson();
 
         // persons
@@ -192,6 +190,98 @@ public class PersonResourceV2 extends ResourceAbstract {
         result.add("persons", personRepresentation);
 
         return Response.status(200).entity(result.toString()).build();
+    }
+
+    @POST
+    @Path("/persons/{instanceId}/actions/createPersonDemand")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response createPersonsDemandServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
+
+        Person chosenPerson = persons.matchPersonApiId(instanceId);
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+
+        if(!argRepr.isMap())
+        {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
+
+        } else {
+
+            // apply business logic: only owner can modify
+            if (chosenPerson.disabled(Identifier.Type.ACTION) != null) {
+                String disabledMsg = chosenPerson.disabled(Identifier.Type.ACTION);
+                String error = "{\"success\" : 0 , \"error\" : \"";
+                error = error.concat(disabledMsg);
+                error = error.concat("\"}");
+                return Response.status(401).entity(error).build();
+            }
+
+            // try and see if properties are present; if not replace by original
+            String id = "description";
+            String description;
+            try {
+                JsonRepresentation propertyDescription = argRepr.getRepresentation(id, new Object[0]);
+                description = propertyDescription.getString("");
+            } catch (Exception e) {
+                String error = "{\"success\" : 0 , \"error\" : \"parameter 'description' is required\"}";
+                return Response.status(400).entity(error).build();
+            }
+
+            String id2 = "summary";
+            String summary = null;
+            try {
+                JsonRepresentation propertySummary = argRepr.getRepresentation(id2, new Object[0]);
+                summary = propertySummary.getString("");
+            } catch (Exception e) {
+                //
+            }
+
+            String id3 = "story";
+            String story = null;
+            try {
+                JsonRepresentation propertyStory = argRepr.getRepresentation(id3, new Object[0]);
+                story = propertyStory.getString("");
+            } catch (Exception e) {
+                //
+            }
+
+            String id4 = "startDate";
+            String startDate = null;
+            try {
+                JsonRepresentation propertyStartDate = argRepr.getRepresentation(id4, new Object[0]);
+                startDate = propertyStartDate.getString("");
+            } catch (Exception e) {
+                //
+            }
+
+            String id5 = "endDate";
+            String endDate = null;
+            try {
+                JsonRepresentation propertyEndDate = argRepr.getRepresentation(id5, new Object[0]);
+                endDate = propertyEndDate.getString("");
+            } catch (Exception e) {
+                //
+            }
+
+            Demand demand = api.createPersonDemand(chosenPerson, description, summary, story, startDate, endDate);
+
+            if (demand==null){
+                String error = "{\"success\" : 0 , \"error\" : \"not able to create demand - please check parameters\"}";
+                return Response.status(400).entity(error).build();
+            }
+
+            Gson gson = new Gson();
+            JsonObject result = new JsonObject();
+
+            DemandViewModel demandViewModel = new DemandViewModel(demand);
+            JsonElement demandResult = gson.toJsonTree(demandViewModel);
+            result.add("demand", demandResult);
+
+            JsonElement successElement = gson.toJsonTree(new Integer(1));
+            result.add("success", successElement);
+
+            return Response.status(200).entity(result.toString()).build();
+        }
     }
 
     @DELETE
