@@ -53,7 +53,7 @@ public class ProfileElementAgeComparison {
 
                     supplyProfileElementPersonOwner.getDateOfBirth() != null
                             &&
-                            supplyProfileElementUsePredicate.getProfileElementOwner().getProfileType() == ProfileType.PERSON_PROFILE
+                            supplyProfileElementUsePredicate.getProfileElementOwner().getType() == ProfileType.PERSON_PROFILE
                     ) {
                 LocalDate supplyDateOfBirth = supplyProfileElementPersonOwner.getDateOfBirth();
                 new LocalDate();

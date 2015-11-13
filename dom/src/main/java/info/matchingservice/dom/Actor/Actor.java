@@ -49,8 +49,10 @@ import java.util.TreeSet;
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
 public abstract class Actor extends MatchingSecureMutableObject<Actor> {
-    
-	//** API: PROPERTIES **//
+
+    public Actor() {
+        super("ownedBy, dateCreated");
+    }
 
     //region > activated (property)
     private boolean activated;
@@ -80,15 +82,11 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     }
     //endregion
 
-    //-- API: PROPERTIES --//
-	
-	//** API: COLLECTIONS **//
-	
-	//** demandsOfActor **//
+	//** demands **//
     private SortedSet<Demand> demands = new TreeSet<Demand>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "demandOwner", dependentElement = "true")
+    @Persistent(mappedBy = "owner", dependentElement = "true")
     public SortedSet<Demand> getDemands() {
         return demands;
     }
@@ -96,13 +94,13 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public void setDemands(final SortedSet<Demand> demandsOfActor) {
         this.demands = demandsOfActor;
     }   
-    //-- demandsOfActor --//
+    //-- demands --//
     
-    //** suppliesOfActor **//
+    //** supplies **//
     private SortedSet<Supply> supplies = new TreeSet<Supply>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "supplyOwner", dependentElement = "true")
+    @Persistent(mappedBy = "owner", dependentElement = "true")
     public SortedSet<Supply> getSupplies() {
         return supplies;
     }
@@ -110,9 +108,9 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public void setSupplies(final SortedSet<Supply> suppliesOfActor) {
         this.supplies = suppliesOfActor;
     }
-    //-- suppliesOfActor --//
+    //-- supplies --//
     
-    //** savedMatchesOfActor **//
+    //** savedMatches **//
     private SortedSet<ProfileMatch> savedMatches = new TreeSet<ProfileMatch>();
     
     @Persistent(mappedBy = "ownerActor", dependentElement = "true")
@@ -130,7 +128,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public boolean hideSavedMatches(){
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
-    //-- savedMatchesOfActor --//
+    //-- savedMatches --//
     
     //** assessmentsGiven **//
     private SortedSet<Assessment> assessmentsGiven = new TreeSet<Assessment>();
@@ -179,15 +177,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         );
     }    
     //-- assessmentsGiven --//
-    
-    //-- END API: COLLECTIONS --//
-    
-    //** GENERIC OBJECT STUFF **//
-    
-    //** Constructor **//
-    public Actor() {
-        super("ownedBy, dateCreated");
-    }
+
+
         
     //** ownedBy - Override for secure object **//
     private String ownedBy;
@@ -203,8 +194,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
-    
-    //-- GENERIC OBJECT STUFF --//
     
     //** HELPERS **//
     //** HELPERS: generic object helpers **//

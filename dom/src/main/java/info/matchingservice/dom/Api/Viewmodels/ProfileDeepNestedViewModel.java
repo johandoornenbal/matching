@@ -12,11 +12,11 @@ import java.util.List;
  * Created by jodo on 01/11/15.
  */
 @DomainObject(nature = Nature.VIEW_MODEL)
-public class ProfileViewModel extends ApiAbstractViewModel {
+public class ProfileDeepNestedViewModel extends ApiAbstractViewModel {
 
-    public ProfileViewModel(){}
+    public ProfileDeepNestedViewModel(){}
 
-    public ProfileViewModel(final Profile profile){
+    public ProfileDeepNestedViewModel(final Profile profile){
         super(profile);
         this.name = profile.getName();
         if (profile.getStartDate() != null) {

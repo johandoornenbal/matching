@@ -57,7 +57,7 @@ public class SupplyRepresentation {
         // profiles
         JsonRepresentation profiles = JsonRepresentation.newArray();
 
-        for (Profile profile : supply.getCollectSupplyProfiles()) {
+        for (Profile profile : supply.getProfiles()) {
 
             ProfileRepresentation rep = new ProfileRepresentation();
             profiles.arrayAdd(rep.ObjectRepresentation(profile));

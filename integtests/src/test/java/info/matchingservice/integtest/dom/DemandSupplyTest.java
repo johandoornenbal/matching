@@ -64,7 +64,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
             assertThat(d1.getDescription(), is(DEMAND_DESCRIPTION));
             assertThat(d1.getWeight(), is(WEIGHT));
             assertThat(d1.getDemandType(), is(DEMAND_SUPPLY_TYPE));
-            assertThat(d1.getDemandOwner(), is((Actor) persons.findPersons("Hals").get(0)));
+            assertThat(d1.getOwner(), is((Actor) persons.findPersons("Hals").get(0)));
             assertThat(d1.getOwnedBy(), is(OWNED_BY));
         }
         
@@ -92,7 +92,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
             assertThat(s1.getDescription(), is(SUPPLY_DESCRIPTION));
             assertThat(s1.getWeight(), is(WEIGHT));
             assertThat(s1.getSupplyType(), is(DEMAND_SUPPLY_TYPE));
-            assertThat(s1.getSupplyOwner(), is((Actor) persons.findPersons("Hals").get(0)));
+            assertThat(s1.getOwner(), is((Actor) persons.findPersons("Hals").get(0)));
             assertThat(s1.getOwnedBy(), is(OWNED_BY));
         }
         
@@ -125,11 +125,11 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void findProfile() throws Exception {
             Integer maxindex = demands.allDemands().size() - 1;
             d1 = demands.allDemands().get(maxindex);
-            pf1=d1.getDemandProfiles().first();
-            assertThat(pf1.getProfileName(), is(DEMAND_PROFILE_DESCRIPTION));  
+            pf1=d1.getProfiles().first();
+            assertThat(pf1.getName(), is(DEMAND_PROFILE_DESCRIPTION));
             assertThat(pf1.getWeight(), is(WEIGHT)); 
-            assertThat(pf1.getProfileType(), is(PROFILE_TYPE));
-            assertThat(pf1.getDemandProfileOwner(), is(d1));
+            assertThat(pf1.getType(), is(PROFILE_TYPE));
+            assertThat(pf1.getDemand(), is(d1));
             assertThat(pf1.getOwnedBy(), is(OWNED_BY));
             // these test show that the profile is added to demands and not to supplies
             assertThat(profiles.allDemandProfiles().size(), is(numberOfDemandProfiles + 1));
@@ -163,11 +163,11 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void findProfile() throws Exception {
             Integer maxindex = supplies.allSupplies().size() - 1;
             s1 = supplies.allSupplies().get(maxindex);
-            pf1=s1.getCollectSupplyProfiles().first();
-            assertThat(pf1.getProfileName(), is(SUPPLY_PROFILE_DESCRIPTION));  
+            pf1=s1.getProfiles().first();
+            assertThat(pf1.getName(), is(SUPPLY_PROFILE_DESCRIPTION));
             assertThat(pf1.getWeight(), is(WEIGHT)); 
-            assertThat(pf1.getProfileType(), is(PROFILE_TYPE));
-            assertThat(pf1.getSupplyProfileOwner(), is(s1));
+            assertThat(pf1.getType(), is(PROFILE_TYPE));
+            assertThat(pf1.getSupply(), is(s1));
             assertThat(pf1.getOwnedBy(), is(OWNED_BY));
             // these test show that the profile is added to supplies and not to demands
             assertThat(profiles.allDemandProfiles().size(), is(numberOfDemandProfiles));

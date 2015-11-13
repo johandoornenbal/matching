@@ -1,5 +1,7 @@
 package info.matchingservice.dom.Api.Viewmodels;
 
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.Profile.Profile;
 import org.apache.isis.applib.annotation.DomainObject;
@@ -18,11 +20,13 @@ public class DemandViewModel extends ApiAbstractViewModel {
     public DemandViewModel(){
     }
 
-    public DemandViewModel(final Demand demand){
+    public DemandViewModel(final Demand demand, final Api api){
         super(demand);
-        this.demandOwnerId = demand.getDemandOwner().getIdAsInt();
-        this.demandOwnerUri = demand.getDemandOwner().getUri();
-        this.demandOwnerFullName = demand.getDemandOwner().title();
+        this.ownerId = demand.getOwner().getIdAsInt();
+        this.ownerUri = demand.getOwner().getUri();
+        this.ownerFullName = demand.getOwner().title();
+        Person owner = (Person)demand.getOwner();
+        this.ownerImageUrl = owner.getImageUrl();
         this.description = demand.getDescription();
         this.summary = demand.getSummary();
         this.story = demand.getStory();
@@ -38,51 +42,63 @@ public class DemandViewModel extends ApiAbstractViewModel {
         this.demandType = demand.getDemandType().toString();
         this.weight = demand.getWeight();
         List<Integer> demandProfiles = new ArrayList<>();
-        for (Profile profile : demand.getDemandProfiles()){
+        for (Profile profile : api.getProfilesForDemand(demand)){
             demandProfiles.add(profile.getIdAsInt());
         }
-        this.demandProfiles = demandProfiles;
+        this.profiles = demandProfiles;
     }
 
-    //region > demandOwnerId (property)
-    private Integer demandOwnerId;
+    //region > ownerId (property)
+    private Integer ownerId;
 
     @MemberOrder(sequence = "1")
-    public Integer getDemandOwnerId() {
-        return demandOwnerId;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setDemandOwnerId(final Integer demandOwnerId) {
-        this.demandOwnerId = demandOwnerId;
+    public void setOwnerId(final Integer ownerId) {
+        this.ownerId = ownerId;
     }
     //endregion
 
-    //region > demandOwnerUri (property)
-    private String demandOwnerUri;
+    //region > ownerUri (property)
+    private String ownerUri;
 
     @MemberOrder(sequence = "1")
-    public String getDemandOwnerUri() {
-        return demandOwnerUri;
+    public String getOwnerUri() {
+        return ownerUri;
     }
 
-    public void setDemandOwnerUri(final String demandOwnerUri) {
-        this.demandOwnerUri = demandOwnerUri;
+    public void setOwnerUri(final String ownerUri) {
+        this.ownerUri = ownerUri;
     }
     //endregion
 
-    //region > demandOwnerFullName (property)
-    private String demandOwnerFullName;
+    //region > ownerFullName (property)
+    private String ownerFullName;
 
     @MemberOrder(sequence = "1")
-    public String getDemandOwnerFullName() {
-        return demandOwnerFullName;
+    public String getOwnerFullName() {
+        return ownerFullName;
     }
 
-    public void setDemandOwnerFullName(final String demandOwnerFullName) {
-        this.demandOwnerFullName = demandOwnerFullName;
+    public void setOwnerFullName(final String ownerFullName) {
+        this.ownerFullName = ownerFullName;
     }
     //endregion
 
+    //region > ownerImageUrl (property)
+    private String ownerImageUrl;
+
+    @MemberOrder(sequence = "1")
+    public String getOwnerImageUrl() {
+        return ownerImageUrl;
+    }
+
+    public void setOwnerImageUrl(final String ownerImageUrl) {
+        this.ownerImageUrl = ownerImageUrl;
+    }
+    //endregion
 
     //region > description (property)
     private String description;
@@ -188,16 +204,16 @@ public class DemandViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > demandProfiles (property)
-    private List<Integer> demandProfiles;
+    //region > profiles (property)
+    private List<Integer> profiles;
 
     @MemberOrder(sequence = "1")
-    public List<Integer> getDemandProfiles() {
-        return demandProfiles;
+    public List<Integer> getProfiles() {
+        return profiles;
     }
 
-    public void setDemandProfiles(final List<Integer> demandProfiles) {
-        this.demandProfiles = demandProfiles;
+    public void setProfiles(final List<Integer> profiles) {
+        this.profiles = profiles;
     }
     //endregion
 

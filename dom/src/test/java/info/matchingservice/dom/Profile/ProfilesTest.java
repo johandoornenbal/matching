@@ -18,19 +18,17 @@
  */
 package info.matchingservice.dom.Profile;
 
-import java.util.List;
-import java.util.UUID;
-
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.FinderInteraction;
+import info.matchingservice.dom.FinderInteraction.FinderMethod;
+import org.apache.isis.applib.query.Query;
 import org.assertj.core.api.Assertions;
 import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.apache.isis.applib.query.Query;
+import java.util.List;
 
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.FinderInteraction;
-import info.matchingservice.dom.FinderInteraction.FinderMethod;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -64,26 +62,6 @@ public class ProfilesTest {
         };
     }
 
-
-
-    public static class FindProfiles extends ProfilesTest {
-
-        @Test
-        public void happyCase() {
-
-        	final UUID uuid = UUID.randomUUID();
-        	
-        	profiles.findProfileByUniqueItemId(uuid);
-
-            assertThat(finderInteraction.getFinderMethod(), is(FinderMethod.ALL_MATCHES));
-//            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(Profile.class));
-            Assertions.assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Profile.Profile.class);
-            assertThat(finderInteraction.getQueryName(), is("findProfileByUniqueItemId"));
-            assertThat(finderInteraction.getArgumentsByParameterName().get("uniqueItemId"), is((Object) uuid));
-            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
-        }
-
-    }
     
     public static class findProfileByDemandProfileOwner extends ProfilesTest {
     	

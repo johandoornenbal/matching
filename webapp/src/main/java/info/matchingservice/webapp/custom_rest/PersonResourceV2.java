@@ -273,7 +273,7 @@ public class PersonResourceV2 extends ResourceAbstract {
             Gson gson = new Gson();
             JsonObject result = new JsonObject();
 
-            DemandViewModel demandViewModel = new DemandViewModel(demand);
+            DemandViewModel demandViewModel = new DemandViewModel(demand, api);
             JsonElement demandResult = gson.toJsonTree(demandViewModel);
             result.add("demand", demandResult);
 
@@ -330,7 +330,7 @@ public class PersonResourceV2 extends ResourceAbstract {
         JsonElement line1 = gson.toJsonTree(apiDocLine1);
         result.add("TITLE",line1);
 
-        apiDocLine2 = "GET '/', GET '/persons', GET '/persons/{id}', POST '/persons/{id}/actions/createPersonDemand', PUT '/persons/{id}'";
+        apiDocLine2 = "GET '/', GET '/persons', GET '/persons/{id}', GET '/demands/{id}' , POST '/persons/{id}/actions/createPersonDemand', PUT '/persons/{id}'";
         JsonElement line2 = gson.toJsonTree(apiDocLine2);
         result.add("EndPoints",line2);
 
@@ -363,6 +363,7 @@ public class PersonResourceV2 extends ResourceAbstract {
         JsonElement personRepresentation = gson.toJsonTree(personViewModel);
         result.add("person", personRepresentation);
 
+        // sideload supplies
         List<SupplyViewModel> supplyViewmodels = new ArrayList<>();
         for (Supply supply : api.getSuppliesForPerson(chosenPerson)) {
                 supplyViewmodels.add(new SupplyViewModel(supply));
@@ -370,13 +371,15 @@ public class PersonResourceV2 extends ResourceAbstract {
         JsonElement suppliesRepresentation = gson.toJsonTree(supplyViewmodels);
         result.add("supplies", suppliesRepresentation);
 
+        // sideload demands
         List<DemandViewModel> demandViewmodels = new ArrayList<>();
         for (Demand demand : api.getDemandsForPerson(chosenPerson)){
-            demandViewmodels.add(new DemandViewModel(demand));
+            demandViewmodels.add(new DemandViewModel(demand, api));
         }
         JsonElement demandsRepresentation = gson.toJsonTree(demandViewmodels);
         result.add("demands", demandsRepresentation);
 
+        // sideload personal contacts
         List<PersonalContactViewModel> personalContactViewmodels = new ArrayList<>();
         for (PersonalContact contact : api.getPersonalContacts(chosenPerson)){
             personalContactViewmodels.add(new PersonalContactViewModel(contact));

@@ -95,20 +95,20 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
 	//** API: PROPERTIES **//
 
 
-    //** demandOwner **//
-    private Actor demandOwner;
+    //** owner **//
+    private Actor owner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
     @PropertyLayout()
-    public Actor getDemandOwner() {
-        return demandOwner;
+    public Actor getOwner() {
+        return owner;
     }
     
-    public void setDemandOwner(final Actor needOwner) {
-        this.demandOwner = needOwner;
+    public void setOwner(final Actor needOwner) {
+        this.owner = needOwner;
     }
-    //-- demandOwner --//
+    //-- owner --//
     
     //** description **//
     private String description;
@@ -216,19 +216,19 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
 	
 	//** API: COLLECTIONS **//
 	
-	//** demandProfiles **//
-    private SortedSet<Profile> demandProfiles = new TreeSet<Profile>();
+	//** profiles **//
+    private SortedSet<Profile> profiles = new TreeSet<Profile>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "demandProfileOwner", dependentElement = "true")
-    public SortedSet<Profile> getDemandProfiles() {
-        return demandProfiles;
+    @Persistent(mappedBy = "demand", dependentElement = "true")
+    public SortedSet<Profile> getProfiles() {
+        return profiles;
     }
     
-    public void setDemandProfiles(final SortedSet<Profile> vac){
-        this.demandProfiles = vac;
+    public void setProfiles(final SortedSet<Profile> profiles){
+        this.profiles = profiles;
     }
-    //-- demandProfiles --//
+    //-- profiles --//
     
     //** demandAssessments **//
     private SortedSet<DemandAssessment> assessments = new TreeSet<DemandAssessment>();
@@ -362,12 +362,12 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
             ){
         container.removeIfNotAlready(this);
         container.informUser("Demand deleted");
-        return getDemandOwner();
+        return getOwner();
     }
     
     public String validateDeleteDemand(boolean confirmDelete) {
-    	// test if there are any profiles on this demand
-    	if (!profiles.findProfileByDemandProfileOwner(this).isEmpty()) {
+    	// test if there are any profilesRepo on this demand
+    	if (!profilesRepo.findProfileByDemandProfileOwner(this).isEmpty()) {
     		
     		return "DELETE_ALL_PROFILES_FIRST";
     	}
@@ -448,14 +448,14 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
     }
     
     public String toString() {
-        return getDescription() + " - " + getDemandOwner().title();
+        return getDescription() + " - " + getOwner().title();
     }
 
 	//-- HELPERS: generic object helpers --//
 	//** HELPERS: programmatic actions **//
     @Programmatic
     public Actor getProfileOwnerIsOwnedBy(){
-        return getDemandOwner();
+        return getOwner();
     }
     
     @Programmatic
@@ -468,7 +468,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
             final Demand demandProfileOwner,
             final ProfileTypeMatchingRule profileTypeMatchingRule,
             final String ownedBy) {
-        return profiles.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demandProfileOwner, ownedBy);
+        return profilesRepo.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demandProfileOwner, ownedBy);
     }
 	//-- HELPERS: programmatic actions --// 
 	//-- HELPERS --//
@@ -477,7 +477,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
     private DomainObjectContainer container;
     
     @Inject
-    Profiles profiles;
+    Profiles profilesRepo;
     
     @Inject
     ProfileTypeMatchingRules profileTypeMatchingRules;

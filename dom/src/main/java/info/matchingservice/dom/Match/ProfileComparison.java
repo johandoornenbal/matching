@@ -100,7 +100,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     //Region>Actions ////////////////////////////////////////////////////////
     
     public ProfileMatch SaveMatch(){
-        return profileMatches.newProfileMatch((Person) getDemandProfile().getDemandProfileOwner().getDemandOwner(), (Person) getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner(), getDemandProfile(), getMatchingSupplyProfile());
+        return profileMatches.newProfileMatch((Person) getDemandProfile().getDemand().getOwner(), (Person) getMatchingSupplyProfile().getSupply().getOwner(), getDemandProfile(), getMatchingSupplyProfile());
     }
 
     public String toString() {
@@ -108,7 +108,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
     }
     
     public Actor getProposedPerson() {
-        return getMatchingSupplyProfile().getSupplyProfileOwner().getSupplyOwner();
+        return getMatchingSupplyProfile().getSupply().getOwner();
     }
 
     public Actor getDemandingPerson() {return getDemandProfile().getActorOwner(); }

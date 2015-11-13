@@ -1,5 +1,6 @@
 package info.matchingservice.dom.Api.Viewmodels;
 
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import org.apache.isis.applib.annotation.DomainObject;
@@ -20,6 +21,11 @@ public class SupplyViewModel extends ApiAbstractViewModel {
 
     public SupplyViewModel(final Supply supply){
         super(supply);
+        this.ownerId = supply.getOwner().getIdAsInt();
+        this.ownerUri = supply.getOwner().getUri();
+        this.ownerFullName = supply.getOwner().title();
+        Person owner = (Person)supply.getOwner();
+        this.ownerImageUrl = owner.getImageUrl();
         this.description = supply.getDescription();
         if (supply.getStartDate()!=null){
             this.startDate = supply.getStartDate().toString();
@@ -33,11 +39,63 @@ public class SupplyViewModel extends ApiAbstractViewModel {
         this.supplyType = supply.getSupplyType().toString();
         this.weight = supply.getWeight();
         List<Integer> supplyProfiles = new ArrayList<>();
-        for (Profile profile : supply.getCollectSupplyProfiles()){
+        for (Profile profile : supply.getProfiles()){
             supplyProfiles.add(profile.getIdAsInt());
         }
-        this.supplyProfiles = supplyProfiles;
+        this.profiles = supplyProfiles;
     }
+
+    //region > ownerId (property)
+    private Integer ownerId;
+
+    @MemberOrder(sequence = "1")
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(final Integer ownerId) {
+        this.ownerId = ownerId;
+    }
+    //endregion
+
+    //region > ownerUri (property)
+    private String ownerUri;
+
+    @MemberOrder(sequence = "1")
+    public String getOwnerUri() {
+        return ownerUri;
+    }
+
+    public void setOwnerUri(final String ownerUri) {
+        this.ownerUri = ownerUri;
+    }
+    //endregion
+
+    //region > ownerFullName (property)
+    private String ownerFullName;
+
+    @MemberOrder(sequence = "1")
+    public String getOwnerFullName() {
+        return ownerFullName;
+    }
+
+    public void setOwnerFullName(final String ownerFullName) {
+        this.ownerFullName = ownerFullName;
+    }
+    //endregion
+
+    //region > ownerImageUrl (property)
+    private String ownerImageUrl;
+
+    @MemberOrder(sequence = "1")
+    public String getOwnerImageUrl() {
+        return ownerImageUrl;
+    }
+
+    public void setOwnerImageUrl(final String ownerImageUrl) {
+        this.ownerImageUrl = ownerImageUrl;
+    }
+    //endregion
 
     //region > demandDescription (property)
     private String description;
@@ -116,16 +174,16 @@ public class SupplyViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > supplyProfiles (property)
-    private List<Integer> supplyProfiles;
+    //region > profiles (property)
+    private List<Integer> profiles;
 
     @MemberOrder(sequence = "1")
-    public List<Integer> getSupplyProfiles() {
-        return supplyProfiles;
+    public List<Integer> getProfiles() {
+        return profiles;
     }
 
-    public void setSupplyProfiles(final List<Integer> supplyProfiles) {
-        this.supplyProfiles = supplyProfiles;
+    public void setProfiles(final List<Integer> profiles) {
+        this.profiles = profiles;
     }
     //endregion
 

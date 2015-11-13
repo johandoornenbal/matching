@@ -175,7 +175,7 @@
   </association>  
   <association id="20">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="21" name="supplyOwner"/>      
+      <attribute id="21" name="owner"/>
       <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
@@ -191,7 +191,7 @@
   </generalization>  
   <association id="25">    
     <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="26" name="supplyProfileOwner"/>      
+      <attribute id="26" name="supply"/>
       <multiplicity id="27" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
@@ -235,7 +235,7 @@
   </generalization>  
   <association id="39">    
     <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="40" name="demandProfileOwner"/>      
+      <attribute id="40" name="demand"/>
       <multiplicity id="41" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    

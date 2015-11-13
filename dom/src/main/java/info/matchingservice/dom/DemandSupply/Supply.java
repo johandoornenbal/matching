@@ -58,7 +58,7 @@ import java.util.TreeSet;
             name = "findSupplyByActorOwnerAndType", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.DemandSupply.Supply "
-                    + "WHERE supplyOwner == :supplyOwner && supplyType == :supplyType"),
+                    + "WHERE owner == :owner && supplyType == :supplyType"),
     @javax.jdo.annotations.Query(
             name = "findSupplyByDescription", language = "JDOQL",
             value = "SELECT "
@@ -69,7 +69,7 @@ import java.util.TreeSet;
 public class Supply extends MatchingSecureMutableObject<Supply> implements HasImageUrl {
 
     public Supply() {
-        super("supplyOwner, supplyType, description, weight, startDate, endDate, ownedBy");
+        super("owner, supplyType, description, weight, startDate, endDate, ownedBy");
     }
 
     @Action(semantics = SemanticsOf.SAFE)
@@ -77,20 +77,20 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
         return JDOHelper.getObjectId(this).toString();
     }
 
-    //** supplyOwner **//
-    private Actor supplyOwner;
+    //** owner **//
+    private Actor owner;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
     @PropertyLayout()
-    public Actor getSupplyOwner() {
-        return supplyOwner;
+    public Actor getOwner() {
+        return owner;
     }
     
-    public void setSupplyOwner(final Actor supplyOwner) {
-        this.supplyOwner = supplyOwner;
+    public void setOwner(final Actor owner) {
+        this.owner = owner;
     }
-    //-- supplyOwner --//
+    //-- owner --//
     
     //** description **//
     private String description;
@@ -148,16 +148,16 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     //endregion
 
     //** supplyProfiles **//
-    private SortedSet<Profile> collectSupplyProfiles = new TreeSet<Profile>();
+    private SortedSet<Profile> profiles = new TreeSet<Profile>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "supplyProfileOwner", dependentElement = "true")
-    public SortedSet<Profile> getCollectSupplyProfiles() {
-        return collectSupplyProfiles;
+    @Persistent(mappedBy = "supply", dependentElement = "true")
+    public SortedSet<Profile> getProfiles() {
+        return profiles;
     }
     
-    public void setCollectSupplyProfiles(final SortedSet<Profile> supplyProfile){
-        this.collectSupplyProfiles = supplyProfile;
+    public void setProfiles(final SortedSet<Profile> supplyProfile){
+        this.profiles = supplyProfile;
     }
     //-- supplyProfiles --//
     
@@ -259,7 +259,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     @ActionLayout()
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile createPersonSupplyProfile(){
-        return createSupplyProfile("PERSON_PROFILE_OF " + this.getSupplyOwner().title(), 10, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
+        return createSupplyProfile("PERSON_PROFILE_OF " + this.getOwner().title(), 10, null, null, ProfileType.PERSON_PROFILE, this, currentUserName());
     }
     
     // Business rule:
@@ -282,7 +282,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
              return true;
          }
          
-         if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
+         if (!(((Person) getOwner()).getIsStudent() || ((Person) getOwner()).getIsProfessional())){
              return true;
          }
          
@@ -300,7 +300,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
                return "ONE_INSTANCE_AT_MOST";
            }
            
-           if (!(((Person) getSupplyOwner()).getIsStudent() || ((Person) getSupplyOwner()).getIsProfessional())){
+           if (!(((Person) getOwner()).getIsStudent() || ((Person) getOwner()).getIsProfessional())){
                return "NO_STUDENT_OR_PROFESSIONAL";
            }
            
@@ -336,7 +336,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     }
     
     public String toString() {
-        return getDescription() + " - " + getSupplyOwner().title();
+        return getDescription() + " - " + getOwner().title();
     }
 
     @Programmatic

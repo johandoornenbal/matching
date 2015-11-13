@@ -65,10 +65,10 @@ public class ProfileElementTagTest extends MatchingIntegrationTest {
     	@Before
         public void setUp() throws Exception {	
     		gerard = persons.findPersons("Dou").get(0);
-    		pf1 = gerard.getSupplies().first().getCollectSupplyProfiles().first();
+    		pf1 = gerard.getSupplies().first().getProfiles().first();
     		
     		frans = persons.findPersons("Hals").get(0);
-    		pf2 = frans.getSupplies().first().getCollectSupplyProfiles().first();
+    		pf2 = frans.getSupplies().first().getProfiles().first();
     		
     	}
     	

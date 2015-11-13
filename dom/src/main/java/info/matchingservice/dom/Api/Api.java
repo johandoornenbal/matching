@@ -264,57 +264,20 @@ public class Api extends AbstractFactoryAndRepository {
                 person.getOwnedBy()
 		);
 	}
-	
 
-	//***************************************** getProfileByUniqueId ***********************//
-	
-	@Action(semantics=SemanticsOf.SAFE)
-	public List<Profile> findProfileByUniqueId(final UUID uniqueItemId){
-		try
-		{
-			return profiles.findProfileByUniqueItemId(uniqueItemId);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
-		
-	}
-	
-	public String validateFindProfileByUniqueId(final UUID uniqueItemId){
-		// implementation of Trusted Circles Business Rule: demands are accessible only for INNER_CIRCLE
-		// TODO: this should be transferred to object itself for maintainability; now there are at least to places to adapt code
-		// TODO: integration test to verify access
-		try
-		{	
-			if (
-					// Not the owner
-					!profiles.findProfileByUniqueItemId(uniqueItemId).get(0).getOwnedBy().equals(currentUserName())
-					
-					&&
-					
-					// At least Inner Circle
-					profiles.findProfileByUniqueItemId(uniqueItemId).get(0).allowedTrustLevel(TrustLevel.INNER_CIRCLE)
-					
-					&&
-					
-					// only for demands
-					profiles.findProfileByUniqueItemId(uniqueItemId).get(0).getDemandOrSupply() == DemandOrSupply.DEMAND
-				) 
-			{
-				return "NO_ACCESS";
-			}
-		}
-		catch (Exception e)
-		{
-			return "VALIDATION_FAILURE";
-		}
-		
-		return null;
-	}
-	
-	
-	//------------------------------------ END getProfileByUniqueId ---------------------------//
+    //***************************************** Collections of Demand ***********************//
+
+    @Programmatic
+    public List<Profile> getProfilesForDemand(final Demand demand){
+        Person demandOwner = (Person) demand.getOwner();
+
+        // apply business logic
+        if (demandOwner.hideDemands()){
+            return null;
+        }
+
+        return new ArrayList<>(demand.getProfiles());
+    }
 
 	//***************************************** getProfileElementByUniqueId ***********************//
 
@@ -747,8 +710,7 @@ public class Api extends AbstractFactoryAndRepository {
 	private String toApiID(final String OID){
 		String[] parts = OID.split(Pattern.quote("[OID]"));
 		String part1 = parts[0];
-		String ApiID = "L_".concat(part1);
-		return ApiID;
+		return part1;
 	}
 	
     //Injections

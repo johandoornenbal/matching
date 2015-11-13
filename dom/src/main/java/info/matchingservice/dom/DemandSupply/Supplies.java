@@ -69,7 +69,7 @@ public class Supplies extends MatchingDomainService<Supply> {
         newSupply.setEndDate(demandOrSupplyProfileEndDate);
         newSupply.setSupplyType(demandSupplyType);
         newSupply.setWeight(weight);
-        newSupply.setSupplyOwner(supplyOwner);
+        newSupply.setOwner(supplyOwner);
         newSupply.setOwnedBy(ownedBy);
         persist(newSupply);
         getContainer().flush();

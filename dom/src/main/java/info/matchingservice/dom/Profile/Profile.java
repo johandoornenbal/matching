@@ -36,6 +36,7 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.query.QueryDefault;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import javax.inject.Inject;
 import javax.jdo.JDOHelper;
@@ -55,55 +56,54 @@ import java.util.*;
             name = "allSupplyProfiles", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE supplyProfileOwner != null"),
+                    + "WHERE supply != null"),
     @javax.jdo.annotations.Query(
             name = "allSupplyProfilesOtherOwners", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE supplyProfileOwner != null && ownedBy != :ownedBy"),
+                    + "WHERE supply != null && ownedBy != :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "allDemandProfilesOtherOwners", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE demandProfileOwner != null && ownedBy != :ownedBy"),
+                    + "WHERE demand != null && ownedBy != :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "allSupplyProfilesOfType", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE supplyProfileOwner != null && profileType == :profileType"),
+                    + "WHERE supply != null && type == :type"),
     @javax.jdo.annotations.Query(
             name = "allDemandProfiles", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE demandProfileOwner != null"),
+                    + "WHERE demand != null"),
     @javax.jdo.annotations.Query(
             name = "allDemandProfilesOfType", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE demandProfileOwner != null && profileType == :profileType"),
+                    + "WHERE demand != null && type == :type"),
     @javax.jdo.annotations.Query(
             name = "allSupplyProfilesOfTypeByOwner", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE supplyProfileOwner != null && profileType == :profileType && ownedBy == :ownedBy"),
+                    + "WHERE supply != null && type == :type && ownedBy == :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "searchNameOfProfilesOfTypeByOwner", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE demandOrSupply == :demandOrSupply && profileType == :profileType && ownedBy == :ownedBy && profileName.indexOf(:profileName) >= 0"),
-    @javax.jdo.annotations.Query(
-            name = "findProfileByUniqueItemId", language = "JDOQL",
-            value = "SELECT "
-                    + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE uniqueItemId.matches(:uniqueItemId)"),
+                    + "WHERE demandOrSupply == :demandOrSupply && type == :type && ownedBy == :ownedBy && name.indexOf(:name) >= 0"),
     @javax.jdo.annotations.Query(
             name = "findProfileByDemandProfileOwner", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Profile.Profile "
-                    + "WHERE demandProfileOwner == :demandProfileOwner")                      
+                    + "WHERE demand == :demand")
 })
 @DomainObject(editing = Editing.DISABLED)
 public class Profile extends MatchingSecureMutableObject<Profile> implements HasImageUrl {
+
+    public Profile() {
+        super("name, type, ownedBy, timeStamp");
+    }
 
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
@@ -111,18 +111,18 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     }
 	//** API: PROPERTIES **//
 	
-	//** profileName **//
-    private String profileName;
+	//** name **//
+    private String name;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public String getProfileName() {
-        return profileName;
+    public String getName() {
+        return name;
     }
 
-    public void setProfileName(final String test) {
-        this.profileName = test;
+    public void setName(final String test) {
+        this.name = test;
     }
-    //-- profileName --//
+    //-- name --//
     
     //** weight **//
     private Integer weight;
@@ -137,60 +137,59 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
         this.weight = weight;
     }
     //-- weight --//
-    
-    //** profileStartDate **//
-    private LocalDate profileStartDate;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    public LocalDate getProfileStartDate() {
-		return profileStartDate;
-	}
 
-	public void setProfileStartDate(LocalDate demandOrSupplyStartDate) {
-		this.profileStartDate = demandOrSupplyStartDate;
-	}
-    //-- profileStartDate --//
-	
-	//** profileEndDate **//
-    private LocalDate profileEndDate;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true")
-	public LocalDate getProfileEndDate() {
-		return profileEndDate;
-	}
+    //region > dateTime (property)
+    private LocalDateTime timeStamp;
 
-	public void setProfileEndDate(LocalDate demandOrSupplyEndDate) {
-		this.profileEndDate = demandOrSupplyEndDate;
-	}
-	//-- profileEndDate --//
-	
-	//** uniqueItemId **//
-    private UUID uniqueItemId;
-    
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    public UUID getUniqueItemId() {
-        return uniqueItemId;
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
     }
-    
-    public void setUniqueItemId(final UUID uniqueItemId) {
-        this.uniqueItemId = uniqueItemId;
+
+    public void setTimeStamp(final LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
     }
-    //-- uniqueItemId --//
+    //endregion
     
-    //** profileType **//
-    private ProfileType profileType;
+    //** startDate **//
+    private LocalDate startDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate demandOrSupplyStartDate) {
+		this.startDate = demandOrSupplyStartDate;
+	}
+    //-- startDate --//
+	
+	//** endDate **//
+    private LocalDate endDate;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate demandOrSupplyEndDate) {
+		this.endDate = demandOrSupplyEndDate;
+	}
+	//-- endDate --//
+    
+    //** type **//
+    private ProfileType type;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout(hidden=Where.EVERYWHERE)
-    public ProfileType getProfileType() {
-        return profileType;
+    public ProfileType getType() {
+        return type;
     }
     
-    public void setProfileType(final ProfileType profileType){
-        this.profileType = profileType;
+    public void setType(final ProfileType type){
+        this.type = type;
     }
-    //-- profileType --//
+    //-- type --//
    
     //** demandOrSupply **//
     private DemandOrSupply demandOrSupply;
@@ -206,59 +205,59 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     }
     //-- demandOrSupply --//
     
-    //** demandProfileOwner **//
-    private Demand demandProfileOwner;
+    //** demand **//
+    private Demand demand;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Property(editing=Editing.DISABLED)
     @PropertyLayout(hidden=Where.ALL_TABLES)
-    public Demand getDemandProfileOwner(){
-        return demandProfileOwner;
+    public Demand getDemand(){
+        return demand;
     }
     
-    public void setDemandProfileOwner(final Demand demandProfileOwner){
-        this.demandProfileOwner = demandProfileOwner;
+    public void setDemand(final Demand demand){
+        this.demand = demand;
     }
     
-    public boolean hideDemandProfileOwner(){
-        if (getDemandProfileOwner() == null){
+    public boolean hideDemand(){
+        if (getDemand() == null){
             return true;
         }
         
         return false;
     }
-    //-- demandProfileOwner --//
+    //-- demand --//
     
-    //** supplyProfileOwner **//
-    private Supply supplyProfileOwner;
+    //** supply **//
+    private Supply supply;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Property(editing=Editing.DISABLED)
     @PropertyLayout(hidden=Where.ALL_TABLES)
-    public Supply getSupplyProfileOwner(){
-        return supplyProfileOwner;
+    public Supply getSupply(){
+        return supply;
     }
     
-    public void setSupplyProfileOwner(final Supply supplyProfileOwner){
-        this.supplyProfileOwner = supplyProfileOwner;
+    public void setSupply(final Supply supply){
+        this.supply = supply;
     }
     
-    public boolean hideSupplyProfileOwner(){
-        if (getSupplyProfileOwner() == null){
+    public boolean hideSupply(){
+        if (getSupply() == null){
             return true;
         }
         
         return false;
     }
-    //-- supplyProfileOwner --//
+    //-- supply --//
     
     //** actorOwner **//
     @PropertyLayout(hidden=Where.PARENTED_TABLES)
     public Actor getActorOwner() {
         if (this.getDemandOrSupply().equals(DemandOrSupply.DEMAND)){
-            return getDemandProfileOwner().getDemandOwner();
+            return getDemand().getOwner();
         } else {
-            return getSupplyProfileOwner().getSupplyOwner();
+            return getSupply().getOwner();
         }
     }
     //-- actorOwner --//
@@ -452,7 +451,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
 
         // alleen op profile van type PERSON of ORGANISATION
         // alleen op demand profiel
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
+        if ((this.getType() != ProfileType.PERSON_PROFILE && this.getType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
             return true;
         }
 
@@ -478,7 +477,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     ){
 
         // alleen op profile van type PERSON of ORGANISATION
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
+        if ((this.getType() != ProfileType.PERSON_PROFILE && this.getType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
             return "ONLY_ON_PERSON_DEMAND_AND_PERSON_OR_ORGANISATION_PROFILE";
         }
 
@@ -528,7 +527,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
         
     	// alleen op profile van type PERSON of ORGANISATION
         // alleen op aanbod profiel
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.DEMAND){
+        if ((this.getType() != ProfileType.PERSON_PROFILE && this.getType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.DEMAND){
             return true;
         }
         
@@ -552,7 +551,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
             ){
         
     	// alleen op profile van type PERSON of ORGANISATION
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE && this.getProfileType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.DEMAND){
+        if ((this.getType() != ProfileType.PERSON_PROFILE && this.getType() != ProfileType.ORGANISATION_PROFILE) || this.demandOrSupply == DemandOrSupply.DEMAND){
             return "ONLY_ON_PERSON_SUPPLY_AND_PERSON_OR_ORGANISATION_PROFILE";
         }
         
@@ -592,7 +591,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     public boolean hideCreatePassionTagElement(final Integer weight){
         // only on profile van type PERSON
         // only on DEMAND PROFILE
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
+        if ((this.getType() != ProfileType.PERSON_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
             return true;
         }
         
@@ -613,7 +612,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     public String validateCreatePassionTagElement(final Integer weight){
         // only on profile van type PERSON
         // only on DEMAND PROFILE
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
+        if ((this.getType() != ProfileType.PERSON_PROFILE) || this.demandOrSupply == DemandOrSupply.SUPPLY){
             return "ONLY_ON_PERSON_DEMAND_AND_PERSON_PROFILE";
         }
         
@@ -651,7 +650,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
     public boolean hideCreateBrancheTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+        if ((this.getType() != ProfileType.PERSON_PROFILE) && (this.getType() != ProfileType.ORGANISATION_PROFILE)){
             return true;
         }
         
@@ -671,7 +670,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
     public String validateCreateBrancheTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
-    	if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+    	if ((this.getType() != ProfileType.PERSON_PROFILE) && (this.getType() != ProfileType.ORGANISATION_PROFILE)){
             return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
         }
         
@@ -712,7 +711,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
     public boolean hideCreateQualityTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+        if ((this.getType() != ProfileType.PERSON_PROFILE) && (this.getType() != ProfileType.ORGANISATION_PROFILE)){
             return true;
         }
         
@@ -732,7 +731,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
     public String validateCreateQualityTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
-    	if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+    	if ((this.getType() != ProfileType.PERSON_PROFILE) && (this.getType() != ProfileType.ORGANISATION_PROFILE)){
             return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
         }
         
@@ -773,7 +772,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
     public boolean hideCreateWeekDayTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
-        if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+        if ((this.getType() != ProfileType.PERSON_PROFILE) && (this.getType() != ProfileType.ORGANISATION_PROFILE)){
             return true;
         }
         
@@ -793,7 +792,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
     public String validateCreateWeekDayTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
-    	if ((this.getProfileType() != ProfileType.PERSON_PROFILE) && (this.getProfileType() != ProfileType.ORGANISATION_PROFILE)){
+    	if ((this.getType() != ProfileType.PERSON_PROFILE) && (this.getType() != ProfileType.ORGANISATION_PROFILE)){
             return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
         }
         
@@ -854,7 +853,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
         }
     	
     	// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
-    	if (this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE){
+    	if (this.type == ProfileType.PERSON_PROFILE || this.type == ProfileType.ORGANISATION_PROFILE){
     		return false;
     	}
     	
@@ -873,7 +872,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
         }
     	
     	// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
-    	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+    	if (this.type != ProfileType.PERSON_PROFILE && this.type != ProfileType.ORGANISATION_PROFILE){
     		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
     	}
     	
@@ -911,7 +910,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
 
         if (
                         // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
-                        (this.getProfileType() == ProfileType.PERSON_PROFILE || this.getProfileType() == ProfileType.ORGANISATION_PROFILE)
+                        (this.getType() == ProfileType.PERSON_PROFILE || this.getType() == ProfileType.ORGANISATION_PROFILE)
 
                         &&
 
@@ -940,7 +939,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
 
         }
 
-        if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+        if (this.type != ProfileType.PERSON_PROFILE && this.type != ProfileType.ORGANISATION_PROFILE){
 
             return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
 
@@ -983,7 +982,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     			&&
     			
     			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
-    			(this.getProfileType() == ProfileType.PERSON_PROFILE || this.getProfileType() == ProfileType.ORGANISATION_PROFILE)
+    			(this.getType() == ProfileType.PERSON_PROFILE || this.getType() == ProfileType.ORGANISATION_PROFILE)
     			
     			&&
     			
@@ -1012,7 +1011,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     		
     	}
     	
-    	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+    	if (this.type != ProfileType.PERSON_PROFILE && this.type != ProfileType.ORGANISATION_PROFILE){
     		
     		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
     		
@@ -1047,7 +1046,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
    	
    	if (
    			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
-   			(this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+   			(this.type == ProfileType.PERSON_PROFILE || this.type == ProfileType.ORGANISATION_PROFILE)
    			
    			&&
    			
@@ -1080,7 +1079,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
    		
    	}
    	
-   	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+   	if (this.type != ProfileType.PERSON_PROFILE && this.type != ProfileType.ORGANISATION_PROFILE){
    		
    		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
    		
@@ -1127,7 +1126,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     	
     	if (
     			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
-    			(this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+    			(this.type == ProfileType.PERSON_PROFILE || this.type == ProfileType.ORGANISATION_PROFILE)
     			
     			&&
     			
@@ -1160,7 +1159,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     		
     	}
     	
-    	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+    	if (this.type != ProfileType.PERSON_PROFILE && this.type != ProfileType.ORGANISATION_PROFILE){
     		
     		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
     		
@@ -1227,7 +1226,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     	
     	if (
     			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
-    			(this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+    			(this.type == ProfileType.PERSON_PROFILE || this.type == ProfileType.ORGANISATION_PROFILE)
     			
     			&&
     			
@@ -1260,7 +1259,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     		
     	}
     	
-    	if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+    	if (this.type != ProfileType.PERSON_PROFILE && this.type != ProfileType.ORGANISATION_PROFILE){
     		
     		return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
     		
@@ -1312,7 +1311,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
 
         if (
             // alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
-                (this.profileType == ProfileType.PERSON_PROFILE || this.profileType == ProfileType.ORGANISATION_PROFILE)
+                (this.type == ProfileType.PERSON_PROFILE || this.type == ProfileType.ORGANISATION_PROFILE)
 
                         &&
 
@@ -1340,7 +1339,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
 
         }
 
-        if (this.profileType != ProfileType.PERSON_PROFILE && this.profileType != ProfileType.ORGANISATION_PROFILE){
+        if (this.type != ProfileType.PERSON_PROFILE && this.type != ProfileType.ORGANISATION_PROFILE){
 
             return "ONLY_ON_PERSON_OR_ORGANISATION_PROFILE";
 
@@ -1375,7 +1374,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
             final Integer numericValue
             ){
         
-        if (this.getProfileType() != ProfileType.COURSE_PROFILE){
+        if (this.getType() != ProfileType.COURSE_PROFILE){
             return true;
         }
         
@@ -1395,7 +1394,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
             final Integer numericValue
             ){
         
-        if (this.getProfileType() != ProfileType.COURSE_PROFILE){
+        if (this.getType() != ProfileType.COURSE_PROFILE){
             return "ONLY_ON_COURSE_PROFILE";
         }
         
@@ -1415,30 +1414,30 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     //** updateProfile **//
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile updateProfile(
-            @ParameterLayout(named="profileName")
+            @ParameterLayout(named="name")
             String newString,
             @ParameterLayout(named="weight")
             Integer newInteger,
-            @ParameterLayout(named="profileStartDate")
+            @ParameterLayout(named="startDate")
             @Parameter(optionality=Optionality.OPTIONAL)
             LocalDate profileStartDate,
-            @ParameterLayout(named="profileEndDate")
+            @ParameterLayout(named="endDate")
             @Parameter(optionality=Optionality.OPTIONAL)
             LocalDate profileEndDate,
             @ParameterLayout(named="imageUrl")
             @Parameter(optionality=Optionality.OPTIONAL)
             final String imageUrl
             ){
-        this.setProfileName(newString);
+        this.setName(newString);
         this.setWeight(newInteger);
-        this.setProfileStartDate(profileStartDate);
-        this.setProfileEndDate(profileEndDate);
+        this.setStartDate(profileStartDate);
+        this.setEndDate(profileEndDate);
         this.setImageUrl(imageUrl);
         return this;
     }
     
     public String default0UpdateProfile() {
-        return getProfileName();
+        return getName();
     }
     
     public Integer default1UpdateProfile() {
@@ -1446,11 +1445,11 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     }
     
     public LocalDate default2UpdateProfile() {
-        return getProfileStartDate();
+        return getStartDate();
     }
     
     public LocalDate default3UpdateProfile() {
-        return getProfileEndDate();
+        return getEndDate();
     }
 
     public String default4UpdateProfile() {
@@ -1476,7 +1475,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     	}
         container.removeIfNotAlready(this);
         container.informUser("Profile deleted");
-        return this.getDemandProfileOwner();
+        return this.getDemand();
             
     }
 
@@ -1519,9 +1518,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
 	//** GENERIC OBJECT STUFF **//
 	//** constructor **//
-	public Profile() {
-        super("profileName, profileType, ownedBy, uniqueItemId");
-    }
+
 	
 	//** ownedBy - Override for secure object **//
     private String ownedBy;
@@ -1542,7 +1539,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
 	//** HELPERS **//
     //** HELPERS: generic object helpers **//
     public String toString() {
-        return "Profiel: " + this.profileName;
+        return "Profiel: " + this.name;
     }
 	//-- HELPERS: generic object helpers --//
 	//** HELPERS: programmatic actions **//

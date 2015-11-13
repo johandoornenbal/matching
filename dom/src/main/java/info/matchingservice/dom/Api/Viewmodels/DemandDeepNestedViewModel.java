@@ -20,90 +20,90 @@ public class DemandDeepNestedViewModel extends ApiAbstractViewModel {
 
     public DemandDeepNestedViewModel(final Demand demand){
         super(demand);
-        this.demandDescription = demand.getDescription();
-        this.demandSummary = demand.getSummary();
-        this.demandStory = demand.getStory();
+        this.description = demand.getDescription();
+        this.summary = demand.getSummary();
+        this.story = demand.getStory();
         if (demand.getStartDate()!=null){
-            this.demandOrSupplyProfileStartDate = demand.getStartDate().toString();
+            this.startDate = demand.getStartDate().toString();
 
         }
         if (demand.getEndDate()!=null){
-            this.demandOrSupplyProfileEndDate = demand.getEndDate().toString();
+            this.endDate = demand.getEndDate().toString();
 
         }
         this.imageUrl = demand.getImageUrl();
         this.demandType = demand.getDemandType().toString();
         this.weight = demand.getWeight();
-        List<ProfileViewModel> demandProfiles = new ArrayList<>();
-        for (Profile profile : demand.getDemandProfiles()){
-            ProfileViewModel viewModel = new ProfileViewModel(profile);
+        List<ProfileDeepNestedViewModel> demandProfiles = new ArrayList<>();
+        for (Profile profile : demand.getProfiles()){
+            ProfileDeepNestedViewModel viewModel = new ProfileDeepNestedViewModel(profile);
             demandProfiles.add(viewModel);
         }
-        this.demandProfiles = demandProfiles;
+        this.profiles = demandProfiles;
     }
 
-    //region > demandDescription (property)
-    private String demandDescription;
+    //region > description (property)
+    private String description;
 
     @MemberOrder(sequence = "1")
-    public String getDemandDescription() {
-        return demandDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDemandDescription(final String demandDescription) {
-        this.demandDescription = demandDescription;
+    public void setDescription(final String description) {
+        this.description = description;
     }
     //endregion
 
-    //region > demandSummary (property)
-    private String demandSummary;
+    //region > summary (property)
+    private String summary;
 
     @MemberOrder(sequence = "1")
-    public String getDemandSummary() {
-        return demandSummary;
+    public String getSummary() {
+        return summary;
     }
 
-    public void setDemandSummary(final String demandSummary) {
-        this.demandSummary = demandSummary;
+    public void setSummary(final String summary) {
+        this.summary = summary;
     }
     //endregion
 
-    //region > demandStory (property)
-    private String demandStory;
+    //region > story (property)
+    private String story;
 
     @MemberOrder(sequence = "1")
-    public String getDemandStory() {
-        return demandStory;
+    public String getStory() {
+        return story;
     }
 
-    public void setDemandStory(final String demandStory) {
-        this.demandStory = demandStory;
+    public void setStory(final String story) {
+        this.story = story;
     }
     //endregion
 
-    //region > demandStory (property)
-    private String demandOrSupplyProfileStartDate;
+    //region > story (property)
+    private String startDate;
 
     @MemberOrder(sequence = "1")
-    public String getDemandOrSupplyProfileStartDate() {
-        return demandOrSupplyProfileStartDate;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setDemandOrSupplyProfileStartDate(final String demandOrSupplyProfileStartDate) {
-        this.demandOrSupplyProfileStartDate = demandOrSupplyProfileStartDate;
+    public void setStartDate(final String startDate) {
+        this.startDate = startDate;
     }
     //endregion
 
-    //region > demandStory (property)
-    private String demandOrSupplyProfileEndDate;
+    //region > story (property)
+    private String endDate;
 
     @MemberOrder(sequence = "1")
-    public String getDemandOrSupplyProfileEndDate() {
-        return demandOrSupplyProfileEndDate;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setDemandOrSupplyProfileEndDate(final String demandOrSupplyProfileEndDate) {
-        this.demandOrSupplyProfileEndDate = demandOrSupplyProfileEndDate;
+    public void setEndDate(final String endDate) {
+        this.endDate = endDate;
     }
     //endregion
 
@@ -146,16 +146,16 @@ public class DemandDeepNestedViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > demandProfiles (property)
-    private List<ProfileViewModel> demandProfiles;
+    //region > profiles (property)
+    private List<ProfileDeepNestedViewModel> profiles;
 
     @MemberOrder(sequence = "1")
-    public List<ProfileViewModel> getDemandProfiles() {
-        return demandProfiles;
+    public List<ProfileDeepNestedViewModel> getProfiles() {
+        return profiles;
     }
 
-    public void setDemandProfiles(final List<ProfileViewModel> demandProfiles) {
-        this.demandProfiles = demandProfiles;
+    public void setProfiles(final List<ProfileDeepNestedViewModel> profiles) {
+        this.profiles = profiles;
     }
     //endregion
 

@@ -1,35 +1,23 @@
 package info.matchingservice.integtest.dom;
 
-import javax.inject.Inject;
-
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.DemandSupplyType;
-import info.matchingservice.dom.DemandSupply.Demands;
-import info.matchingservice.dom.DemandSupply.Supplies;
-import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.DemandSupply.*;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElements;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElementDropDown;
-import info.matchingservice.dom.Profile.ProfileElementDropDownAndText;
-import info.matchingservice.dom.Profile.ProfileElementNumeric;
-import info.matchingservice.dom.Profile.ProfileElementText;
-import info.matchingservice.dom.Profile.ProfileElementType;
-import info.matchingservice.dom.Profile.ProfileType;
-import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Profile.*;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.demand.TestDemandProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.inject.Inject;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -90,9 +78,9 @@ public class ProfileTest extends MatchingIntegrationTest {
 //    	public void createSupplyWithPassion() throws Exception {
 //    		assertThat(p1.getFirstName(), is("TESTvn"));
 //    		assertThat(s1.getOwnedBy(), is("tester"));
-//    		assertThat(s1.getSupplyOwner().toString(), is(p1.toString()) );
+//    		assertThat(s1.getOwner().toString(), is(p1.toString()) );
 //    		assertThat(pf1.getActorOwner().toString(), is(p1.toString()) );
-//    		assertThat(pf1.getProfileType(), is(ProfileType.PERSON_PROFILE));
+//    		assertThat(pf1.getType(), is(ProfileType.PERSON_PROFILE));
 //    		assertThat(pf1.getProfileElement().isEmpty(), is(false));
 //    	}
     	

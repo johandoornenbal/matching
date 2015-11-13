@@ -202,7 +202,7 @@ public class ProfileMatchingService extends AbstractService {
 				
 				// implementation of mockRule1
 				// types of profile must be the same
-				demandProfile.getProfileType() == supplyProfile.getProfileType()
+				demandProfile.getType() == supplyProfile.getType()
 				
 				&&
 				
@@ -363,7 +363,7 @@ public class ProfileMatchingService extends AbstractService {
 			
 			
 			if (
-					demandProfile.getProfileType() == supplyProfile.getProfileType()
+					demandProfile.getType() == supplyProfile.getType()
 					) 
 			{
 				
@@ -401,7 +401,7 @@ public class ProfileMatchingService extends AbstractService {
 
 
 			if (
-					supplyProfile.getProfileType() == demandProfile.getProfileType()
+					supplyProfile.getType() == demandProfile.getType()
 					)
 			{
 

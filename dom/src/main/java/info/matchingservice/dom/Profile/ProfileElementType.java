@@ -282,9 +282,9 @@ public enum ProfileElementType implements TitledEnum {
                     // 	demand -------------------*enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     //	supply xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx *startdate* ----------------
                     if (
-                            supplyProfileElement.getProfileElementOwner().getProfileStartDate() != null
+                            supplyProfileElement.getProfileElementOwner().getStartDate() != null
                                     &&
-                                    supplyProfileElement.getProfileElementOwner().getProfileStartDate().isAfter(demandProfileElementTimePeriod.getEndDate())
+                                    supplyProfileElement.getProfileElementOwner().getStartDate().isAfter(demandProfileElementTimePeriod.getEndDate())
 
                             ) {
                         matchValue = 0;
@@ -302,9 +302,9 @@ public enum ProfileElementType implements TitledEnum {
                     // 	supply -------------------*enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                     if (
-                            supplyProfileElement.getProfileElementOwner().getProfileEndDate() != null
+                            supplyProfileElement.getProfileElementOwner().getEndDate() != null
                                     &&
-                                    demandProfileElementTimePeriod.getStartDate().isAfter(supplyProfileElement.getProfileElementOwner().getProfileEndDate())
+                                    demandProfileElementTimePeriod.getStartDate().isAfter(supplyProfileElement.getProfileElementOwner().getEndDate())
 
                             ) {
                         matchValue = 0;
@@ -322,26 +322,26 @@ public enum ProfileElementType implements TitledEnum {
 
                     if (
                             (
-                                    supplyProfileElement.getProfileElementOwner().getProfileEndDate() != null
+                                    supplyProfileElement.getProfileElementOwner().getEndDate() != null
                                             &&
-                                            supplyProfileElement.getProfileElementOwner().getProfileEndDate().isBefore(demandProfileElementTimePeriod.getEndDate().plusDays(1))
+                                            supplyProfileElement.getProfileElementOwner().getEndDate().isBefore(demandProfileElementTimePeriod.getEndDate().plusDays(1))
                             )
                                     &&
                                     (
                                             (
-                                                    supplyProfileElement.getProfileElementOwner().getProfileStartDate() != null
+                                                    supplyProfileElement.getProfileElementOwner().getStartDate() != null
                                                             &&
-                                                            supplyProfileElement.getProfileElementOwner().getProfileStartDate().isBefore(demandProfileElementTimePeriod.getStartDate().plusDays(1))
+                                                            supplyProfileElement.getProfileElementOwner().getStartDate().isBefore(demandProfileElementTimePeriod.getStartDate().plusDays(1))
                                             )
                                                     ||
                                                     (
-                                                            supplyProfileElement.getProfileElementOwner().getProfileStartDate() == null
+                                                            supplyProfileElement.getProfileElementOwner().getStartDate() == null
                                                     )
                                     )
                             ) {
 
                         final int demandDays = Days.daysBetween(demandProfileElementTimePeriod.getStartDate(), demandProfileElementTimePeriod.getEndDate()).getDays();
-                        final int deltaDays = Days.daysBetween(supplyProfileElement.getProfileElementOwner().getProfileEndDate(), demandProfileElementTimePeriod.getEndDate()).getDays();
+                        final int deltaDays = Days.daysBetween(supplyProfileElement.getProfileElementOwner().getEndDate(), demandProfileElementTimePeriod.getEndDate()).getDays();
 
                         final double value = 100 * (1 - (double) deltaDays / (double) demandDays);
 
@@ -358,27 +358,27 @@ public enum ProfileElementType implements TitledEnum {
                     if (
 
                             (
-                                    supplyProfileElement.getProfileElementOwner().getProfileStartDate() != null
+                                    supplyProfileElement.getProfileElementOwner().getStartDate() != null
                                             &&
-                                            supplyProfileElement.getProfileElementOwner().getProfileStartDate().isAfter(demandProfileElementTimePeriod.getStartDate().minusDays(1))
+                                            supplyProfileElement.getProfileElementOwner().getStartDate().isAfter(demandProfileElementTimePeriod.getStartDate().minusDays(1))
                             )
                                     &&
                                     (
                                             (
-                                                    supplyProfileElement.getProfileElementOwner().getProfileEndDate() != null
+                                                    supplyProfileElement.getProfileElementOwner().getEndDate() != null
                                                             &&
-                                                            supplyProfileElement.getProfileElementOwner().getProfileEndDate().isAfter(demandProfileElementTimePeriod.getEndDate().minusDays(1))
+                                                            supplyProfileElement.getProfileElementOwner().getEndDate().isAfter(demandProfileElementTimePeriod.getEndDate().minusDays(1))
                                             )
                                                     ||
                                                     (
-                                                            supplyProfileElement.getProfileElementOwner().getProfileEndDate() == null
+                                                            supplyProfileElement.getProfileElementOwner().getEndDate() == null
                                                     )
                                     )
 
                             ) {
 
                         final int demandDays = Days.daysBetween(demandProfileElementTimePeriod.getStartDate(), demandProfileElementTimePeriod.getEndDate()).getDays();
-                        final int deltaDays = Days.daysBetween(demandProfileElementTimePeriod.getStartDate(), supplyProfileElement.getProfileElementOwner().getProfileStartDate()).getDays();
+                        final int deltaDays = Days.daysBetween(demandProfileElementTimePeriod.getStartDate(), supplyProfileElement.getProfileElementOwner().getStartDate()).getDays();
 
                         final double value = 100 * (1 - (double) deltaDays / (double) demandDays);
 
@@ -394,24 +394,24 @@ public enum ProfileElementType implements TitledEnum {
                     // 	supply xxxxxxxxxxxxxxxxxxxxxxxx*startdate* ----------------------------- *enddate* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     if (
 
-                            supplyProfileElement.getProfileElementOwner().getProfileStartDate() != null
+                            supplyProfileElement.getProfileElementOwner().getStartDate() != null
                                     &&
-                                    supplyProfileElement.getProfileElementOwner().getProfileEndDate() != null
+                                    supplyProfileElement.getProfileElementOwner().getEndDate() != null
                                     &&
-                                    supplyProfileElement.getProfileElementOwner().getProfileStartDate().isAfter(demandProfileElementTimePeriod.getStartDate())
+                                    supplyProfileElement.getProfileElementOwner().getStartDate().isAfter(demandProfileElementTimePeriod.getStartDate())
                                     &&
-                                    supplyProfileElement.getProfileElementOwner().getProfileEndDate().isBefore(demandProfileElementTimePeriod.getEndDate().plusDays(1))
+                                    supplyProfileElement.getProfileElementOwner().getEndDate().isBefore(demandProfileElementTimePeriod.getEndDate().plusDays(1))
 
                             ) {
 
                         final int demandDays = Days.daysBetween(demandProfileElementTimePeriod.getStartDate(), demandProfileElementTimePeriod.getEndDate()).getDays();
                         final int deltaDays =
                                 Days.daysBetween(demandProfileElementTimePeriod.getStartDate(),
-                                        supplyProfileElement.getProfileElementOwner().getProfileStartDate()).
+                                        supplyProfileElement.getProfileElementOwner().getStartDate()).
                                         getDays()
                                         +
                                         Days.daysBetween(supplyProfileElement.getProfileElementOwner().
-                                                        getProfileEndDate(),
+                                                        getEndDate(),
                                                 demandProfileElementTimePeriod.getEndDate()
                                         ).getDays();
 
@@ -424,7 +424,7 @@ public enum ProfileElementType implements TitledEnum {
                         System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() + " >> start supply after start demand and end supply before end demand");
                         System.out.println("matchValue:  " + matchValue);
                         System.out.println("demand:  " + demandProfileElementTimePeriod.getStartDate().toString() + " - " + demandProfileElementTimePeriod.getEndDate().toString());
-                        System.out.println("supply:  " + supplyProfileElement.getProfileElementOwner().getProfileStartDate().toString() + " - " + supplyProfileElement.getProfileElementOwner().getProfileEndDate().toString());
+                        System.out.println("supply:  " + supplyProfileElement.getProfileElementOwner().getStartDate().toString() + " - " + supplyProfileElement.getProfileElementOwner().getEndDate().toString());
                         System.out.println("demandDays: " + demandDays + "  deltaDays: " + deltaDays);
 
                     }

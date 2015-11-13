@@ -60,7 +60,7 @@ public class DemandRepresentation {
         // profiles
         JsonRepresentation profiles = JsonRepresentation.newArray();
 
-        for (Profile profile : demand.getDemandProfiles()) {
+        for (Profile profile : demand.getProfiles()) {
 
             ProfileRepresentation rep = new ProfileRepresentation();
             profiles.arrayAdd(rep.ObjectRepresentation(profile));

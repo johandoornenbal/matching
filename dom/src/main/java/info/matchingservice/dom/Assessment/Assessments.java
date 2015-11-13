@@ -57,7 +57,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
         final UUID uuid=UUID.randomUUID();
         newAs.setUniqueItemId(uuid);
         newAs.setTargetOfAssessment(targetObject);
-        newAs.setTargetOwnerActor(targetObject.getDemandOwner());
+        newAs.setTargetOwnerActor(targetObject.getOwner());
         newAs.setAssessmentOwnerActor(ownerActor);
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);
@@ -78,7 +78,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
         final UUID uuid=UUID.randomUUID();
         newAs.setUniqueItemId(uuid);
         newAs.setTargetOfAssessment(targetObject);
-        newAs.setTargetOwnerActor(targetObject.getSupplyOwner());
+        newAs.setTargetOwnerActor(targetObject.getOwner());
         newAs.setAssessmentOwnerActor(ownerActor);
         newAs.setAssessmentDescription(description);
         newAs.setFeedback(feedback);

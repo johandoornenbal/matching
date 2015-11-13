@@ -178,7 +178,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
             //given
             assessmentOwner = persons.findPersons("Hals").get(0);
             assessmentTargetOwner = persons.findPersons("Rijn").get(0);
-            assessmentTarget = assessmentTargetOwner.getSupplies().first().getCollectSupplyProfiles().first();
+            assessmentTarget = assessmentTargetOwner.getSupplies().first().getProfiles().first();
             ownedBy = "frans";
 
             //when

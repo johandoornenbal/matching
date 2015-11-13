@@ -76,15 +76,15 @@ public class ProfileElementTypeTest {
 		Profile demandProfile = new Profile();
 		ProfileElementTimePeriod demandProfileElement = new ProfileElementTimePeriod();
 
-		supply.setSupplyOwner(supplier);
+		supply.setOwner(supplier);
 		supplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
-		supplyProfile.setSupplyProfileOwner(supply);
+		supplyProfile.setSupply(supply);
 		demandProfileElement.setProfileElementOwner(demandProfile);
 		supplyProfileElement.setProfileElementOwner(supplyProfile);
 		demandProfileElement.setProfileElementType(ProfileElementType.TIME_PERIOD);
 		supplyProfileElement.setProfileElementType(ProfileElementType.USE_TIME_PERIOD);
 
-		assertEquals(supplyProfile.getSupplyProfileOwner(), supply);
+		assertEquals(supplyProfile.getSupply(), supply);
 		assertEquals(supplyProfile.getActorOwner(), supplier);
 		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
 
@@ -111,56 +111,56 @@ public class ProfileElementTypeTest {
 		supplyProfileElement.setUseTimePeriod(true);
 		demandProfileElement.setStartDate(new LocalDate(2015, 3, 1));
 		demandProfileElement.setEndDate(new LocalDate(2015, 3, 11));
-		supplyProfile.setProfileStartDate(new LocalDate(2015, 3 , 1));
-		supplyProfile.setProfileEndDate(new LocalDate(2015, 3 , 11));
+		supplyProfile.setStartDate(new LocalDate(2015, 3, 1));
+		supplyProfile.setEndDate(new LocalDate(2015, 3, 11));
 		ProfileElementComparison comp4 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp4.getCalculatedMatchingValue().intValue(), 100);
 
 		// half of period, supply end before demand end
-		supplyProfile.setProfileStartDate(new LocalDate(2015, 3 , 1));
-		supplyProfile.setProfileEndDate(new LocalDate(2015, 3 , 6));
+		supplyProfile.setStartDate(new LocalDate(2015, 3, 1));
+		supplyProfile.setEndDate(new LocalDate(2015, 3, 6));
 		ProfileElementComparison comp5 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp5.getCalculatedMatchingValue().intValue(), 50);
 
 		// third with supply start way before
-		supplyProfile.setProfileStartDate(new LocalDate(2015, 1 , 1));
-		supplyProfile.setProfileEndDate(new LocalDate(2015, 3 , 4));
+		supplyProfile.setStartDate(new LocalDate(2015, 1, 1));
+		supplyProfile.setEndDate(new LocalDate(2015, 3, 4));
 		ProfileElementComparison comp6 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp6.getCalculatedMatchingValue().intValue(), 30);
 
 		// half of period, supply start after demand start
-		supplyProfile.setProfileStartDate(new LocalDate(2015, 3 , 6));
-		supplyProfile.setProfileEndDate(new LocalDate(2015, 3 , 21));
+		supplyProfile.setStartDate(new LocalDate(2015, 3, 6));
+		supplyProfile.setEndDate(new LocalDate(2015, 3, 21));
 		ProfileElementComparison comp7 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp7.getCalculatedMatchingValue().intValue(), 50);
 
 		// half of period, supply start after demand start
-		supplyProfile.setProfileStartDate(new LocalDate(2015, 3 , 8));
-		supplyProfile.setProfileEndDate(new LocalDate(2015, 3 , 21));
+		supplyProfile.setStartDate(new LocalDate(2015, 3, 8));
+		supplyProfile.setEndDate(new LocalDate(2015, 3, 21));
 		ProfileElementComparison comp8 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp8.getCalculatedMatchingValue().intValue(), 30);
 
 		// supply period in the middle of demand period
-		supplyProfile.setProfileStartDate(new LocalDate(2015, 3 , 3));
-		supplyProfile.setProfileEndDate(new LocalDate(2015, 3 , 8));
+		supplyProfile.setStartDate(new LocalDate(2015, 3, 3));
+		supplyProfile.setEndDate(new LocalDate(2015, 3, 8));
 		ProfileElementComparison comp9 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp9.getCalculatedMatchingValue().intValue(), 50);
 
 		// no supply end date, start date after demand start
-		supplyProfile.setProfileStartDate(new LocalDate(2015, 3 , 5));
-		supplyProfile.setProfileEndDate(null);
+		supplyProfile.setStartDate(new LocalDate(2015, 3, 5));
+		supplyProfile.setEndDate(null);
 		ProfileElementComparison comp10 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp10.getCalculatedMatchingValue().intValue(), 60);
 
 		// no supply start date, end date before demand end
-		supplyProfile.setProfileStartDate(null);
-		supplyProfile.setProfileEndDate(new LocalDate(2015, 3 , 7));
+		supplyProfile.setStartDate(null);
+		supplyProfile.setEndDate(new LocalDate(2015, 3, 7));
 		ProfileElementComparison comp11 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp11.getCalculatedMatchingValue().intValue(), 60);
 
 		// no supply start and end
-		supplyProfile.setProfileStartDate(null);
-		supplyProfile.setProfileEndDate(null);
+		supplyProfile.setStartDate(null);
+		supplyProfile.setEndDate(null);
 		ProfileElementComparison comp12 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp12.getCalculatedMatchingValue().intValue(), 100);
 
@@ -179,16 +179,16 @@ public class ProfileElementTypeTest {
 		Profile demandProfile = new Profile();
 		ProfileElementNumeric demandProfileElement = new ProfileElementNumeric();
 
-		supply.setSupplyOwner(supplier);
+		supply.setOwner(supplier);
 		supplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
-		supplyProfile.setSupplyProfileOwner(supply);
-		supplyProfile.setProfileType(ProfileType.PERSON_PROFILE);
+		supplyProfile.setSupply(supply);
+		supplyProfile.setType(ProfileType.PERSON_PROFILE);
 		demandProfileElement.setProfileElementOwner(demandProfile);
 		supplyProfileElement.setProfileElementOwner(supplyProfile);
 		demandProfileElement.setProfileElementType(ProfileElementType.AGE);
 		supplyProfileElement.setProfileElementType(ProfileElementType.USE_AGE);
 
-		assertEquals(supplyProfile.getSupplyProfileOwner(), supply);
+		assertEquals(supplyProfile.getSupply(), supply);
 		assertEquals(supplyProfile.getActorOwner(), supplier);
 		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
 
@@ -283,7 +283,7 @@ public class ProfileElementTypeTest {
 		assertEquals(comp14.getCalculatedMatchingValue().intValue(), 0);
 
 		// no points when ProfileType not PERSON_PROFILE for supply profile
-		supplyProfile.setProfileType(ProfileType.COURSE_PROFILE);
+		supplyProfile.setType(ProfileType.COURSE_PROFILE);
 		supplyProfileElement.setUseAge(true);
 		demandProfileElement.setNumericValue(20);
 		person.setDateOfBirth(LocalDate.now().minusYears(20));
@@ -306,15 +306,15 @@ public class ProfileElementTypeTest {
 		Profile demandProfile = new Profile();
 		ProfileElementNumeric demandProfileElement = new ProfileElementNumeric();
 
-		supply.setSupplyOwner(supplier);
+		supply.setOwner(supplier);
 		supplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
-		supplyProfile.setSupplyProfileOwner(supply);
+		supplyProfile.setSupply(supply);
 		demandProfileElement.setProfileElementOwner(demandProfile);
 		supplyProfileElement.setProfileElementOwner(supplyProfile);
 		demandProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
 		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
 
-		assertEquals(supplyProfile.getSupplyProfileOwner(), supply);
+		assertEquals(supplyProfile.getSupply(), supply);
 		assertEquals(supplyProfile.getActorOwner(), supplier);
 		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
 
@@ -402,15 +402,15 @@ public class ProfileElementTypeTest {
 		Profile demandProfile = new Profile();
 		ProfileElementDropDown demandProfileElement = new ProfileElementDropDown();
 
-		supply.setSupplyOwner(supplier);
+		supply.setOwner(supplier);
 		supplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
-		supplyProfile.setSupplyProfileOwner(supply);
+		supplyProfile.setSupply(supply);
 		demandProfileElement.setProfileElementOwner(demandProfile);
 		supplyProfileElement.setProfileElementOwner(supplyProfile);
 		demandProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
 		supplyProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
 
-		assertEquals(supplyProfile.getSupplyProfileOwner(), supply);
+		assertEquals(supplyProfile.getSupply(), supply);
 		assertEquals(supplyProfile.getActorOwner(), supplier);
 		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
 

@@ -46,11 +46,11 @@ public class ProfileMatchesForTesting extends ProfileMatchAbstract {
 
         Person frans = persons.findPersons("Hals").get(0);
         Demand fransDemand = frans.getDemands().first();
-        Profile fransDemandProfile = fransDemand.getDemandProfiles().first();
+        Profile fransDemandProfile = fransDemand.getProfiles().first();
         Person gerard = persons.findPersons("Dou").get(0);
-        Profile gerardSupplyProfile = gerard.getSupplies().first().getCollectSupplyProfiles().first();
+        Profile gerardSupplyProfile = gerard.getSupplies().first().getProfiles().first();
         Person rembrandt = persons.findPersons("Rijn").get(0);
-        Profile rembrandtSupplyProfile = rembrandt.getSupplies().first().getCollectSupplyProfiles().first();
+        Profile rembrandtSupplyProfile = rembrandt.getSupplies().first().getProfiles().first();
 
         createProfileMatch(frans, gerard, fransDemandProfile, gerardSupplyProfile, "frans", CandidateStatus.CANDIDATE, executionContext);
         createProfileMatch(frans, rembrandt, fransDemandProfile, rembrandtSupplyProfile, "frans", CandidateStatus.CANDIDATE, executionContext);

@@ -32,12 +32,12 @@ public class SupplyDeepNestedViewModel extends ApiAbstractViewModel {
         this.imageUrl = supply.getImageUrl();
         this.supplyType = supply.getSupplyType().toString();
         this.weight = supply.getWeight();
-        List<ProfileViewModel> supplyProfiles = new ArrayList<>();
-        for (Profile profile : supply.getCollectSupplyProfiles()){
-            ProfileViewModel viewModel = new ProfileViewModel(profile);
+        List<ProfileDeepNestedViewModel> supplyProfiles = new ArrayList<>();
+        for (Profile profile : supply.getProfiles()){
+            ProfileDeepNestedViewModel viewModel = new ProfileDeepNestedViewModel(profile);
             supplyProfiles.add(viewModel);
         }
-        this.supplyProfiles = supplyProfiles;
+        this.profiles = supplyProfiles;
     }
 
     //region > demandDescription (property)
@@ -118,16 +118,16 @@ public class SupplyDeepNestedViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > supplyProfiles (property)
-    private List<ProfileViewModel> supplyProfiles;
+    //region > profiles (property)
+    private List<ProfileDeepNestedViewModel> profiles;
 
     @MemberOrder(sequence = "1")
-    public List<ProfileViewModel> getSupplyProfiles() {
-        return supplyProfiles;
+    public List<ProfileDeepNestedViewModel> getProfiles() {
+        return profiles;
     }
 
-    public void setSupplyProfiles(final List<ProfileViewModel> supplyProfiles) {
-        this.supplyProfiles = supplyProfiles;
+    public void setProfiles(final List<ProfileDeepNestedViewModel> profiles) {
+        this.profiles = profiles;
     }
     //endregion
 

@@ -24,7 +24,7 @@ public class ProfileTest {
                     .withFixture(pojos(Demand.class, DemandForTesting.class))
                     .withFixture(pojos(Supply.class, SupplyForTesting.class))
                     .withFixture(pojos(ProfileTypeMatchingRule.class, ProfileTypeMatchingRuleForTesting.class))
-                    .exercise(pojo, FilterSet.excluding("uniqueItemId"));
+                    .exercise(pojo, FilterSet.excluding("timeStamp"));
         }
 
     }

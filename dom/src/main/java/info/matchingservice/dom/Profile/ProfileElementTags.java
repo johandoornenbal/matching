@@ -90,7 +90,7 @@ public class ProfileElementTags extends MatchingDomainService<ProfileElementTag>
     	for (ProfileElementTag e : container.allInstances(ProfileElementTag.class)) {
     		if (!e.getOwnedBy().equals(ownedBy) && e.getProfileElementOwner().getDemandOrSupply() == DemandOrSupply.SUPPLY){
     			for (ProfileType pt: profileTypeArray){
-    				if (e.getProfileElementOwner().getProfileType() == pt){
+    				if (e.getProfileElementOwner().getType() == pt){
     					for (ProfileElementType pet: profileElementTypeArray){
     						if(e.getProfileElementType() == pet){
     							elementList.add(e);

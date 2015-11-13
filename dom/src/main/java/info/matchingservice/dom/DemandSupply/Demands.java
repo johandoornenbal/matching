@@ -84,7 +84,7 @@ public class Demands extends MatchingDomainService<Demand> {
         newDemand.setEndDate(demandOrSupplyProfileEndDate);
         newDemand.setWeight(weight);
         newDemand.setDemandType(demandSupplyType);
-        newDemand.setDemandOwner(demandOwner);
+        newDemand.setOwner(demandOwner);
         newDemand.setOwnedBy(ownedBy);
         newDemand.setTimeStamp(LocalDateTime.now());
         persist(newDemand);

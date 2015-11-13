@@ -27,9 +27,9 @@ import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 @DomainService(repositoryFor = Profile.class, nature=NatureOfService.DOMAIN)
@@ -64,40 +64,33 @@ public class Profiles extends MatchingDomainService<Profile> {
     }
     
     @Programmatic
-    public List<Profile> allSupplyProfilesOfType(ProfileType profileType) {
-        return allMatches("allSupplyProfilesOfType","profileType",profileType);
+    public List<Profile> allSupplyProfilesOfType(ProfileType type) {
+        return allMatches("allSupplyProfilesOfType","type",type);
     }
     
     @Programmatic
-    public List<Profile> allDemandProfilesOfType(ProfileType profileType) {
-        return allMatches("allDemandProfilesOfType","profileType",profileType);
+    public List<Profile> allDemandProfilesOfType(ProfileType type) {
+        return allMatches("allDemandProfilesOfType","type",type);
     }
 
     @Programmatic
     public List<Profile> allDemandProfilesOtherOwners(final String ownedBy) {
         return allMatches("allDemandProfilesOtherOwners", "ownedBy", ownedBy);
     }
-
-    @Programmatic
-    // for Api
-    public List<Profile> findProfileByUniqueItemId(UUID uniqueItemId) {
-        return allMatches("findProfileByUniqueItemId",
-        		"uniqueItemId", uniqueItemId);
-    }
     
     @Programmatic
     // for fixtures
-    public List<Profile> searchNameOfProfilesOfTypeByOwner(String profileName, DemandOrSupply demandOrSupply, ProfileType profileType, String ownedBy) {
+    public List<Profile> searchNameOfProfilesOfTypeByOwner(String name, DemandOrSupply demandOrSupply, ProfileType type, String ownedBy) {
         return allMatches("searchNameOfProfilesOfTypeByOwner",
-        		"profileName", profileName,
+        		"name", name,
         		"demandOrSupply", demandOrSupply ,
-        		"profileType",profileType, 
+        		"type",type,
         		"ownedBy", ownedBy);
     }
     
     @Programmatic
-    public List<Profile> findProfileByDemandProfileOwner(Demand demandProfileOwner) {
-        return allMatches("findProfileByDemandProfileOwner","demandProfileOwner",demandProfileOwner);
+    public List<Profile> findProfileByDemandProfileOwner(Demand demand) {
+        return allMatches("findProfileByDemandProfileOwner","demand",demand);
     }
     
     @Programmatic
@@ -111,16 +104,15 @@ public class Profiles extends MatchingDomainService<Profile> {
             final String ownedBy
             ){
         final Profile newDemandProfile = newTransientInstance(Profile.class);
-        final UUID uuid=UUID.randomUUID();
-        newDemandProfile.setUniqueItemId(uuid);
-        newDemandProfile.setProfileName(demandProfileDescription);
+        newDemandProfile.setName(demandProfileDescription);
         newDemandProfile.setWeight(weight);
-        newDemandProfile.setProfileStartDate(demandOrSupplyProfileStartDate);
-        newDemandProfile.setProfileEndDate(demandOrSupplyProfileEndDate);
+        newDemandProfile.setStartDate(demandOrSupplyProfileStartDate);
+        newDemandProfile.setEndDate(demandOrSupplyProfileEndDate);
         newDemandProfile.setDemandOrSupply(DemandOrSupply.DEMAND);
-        newDemandProfile.setProfileType(profileType);
-        newDemandProfile.setDemandProfileOwner(demandProfileOwner);
+        newDemandProfile.setType(profileType);
+        newDemandProfile.setDemand(demandProfileOwner);
         newDemandProfile.setOwnedBy(ownedBy);
+        newDemandProfile.setTimeStamp(LocalDateTime.now());
         persist(newDemandProfile);
         return newDemandProfile;
     }
@@ -136,16 +128,15 @@ public class Profiles extends MatchingDomainService<Profile> {
             final String ownedBy
             ){
         final Profile newSupplyProfile = newTransientInstance(Profile.class);
-        final UUID uuid=UUID.randomUUID();
-        newSupplyProfile.setUniqueItemId(uuid);
-        newSupplyProfile.setProfileName(supplyProfileDescription);
+        newSupplyProfile.setName(supplyProfileDescription);
         newSupplyProfile.setWeight(weight);
-        newSupplyProfile.setProfileStartDate(demandOrSupplyProfileStartDate);
-        newSupplyProfile.setProfileEndDate(demandOrSupplyProfileEndDate);
+        newSupplyProfile.setStartDate(demandOrSupplyProfileStartDate);
+        newSupplyProfile.setEndDate(demandOrSupplyProfileEndDate);
         newSupplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
-        newSupplyProfile.setProfileType(profileType);
-        newSupplyProfile.setSupplyProfileOwner(supplyProfileOwner);
+        newSupplyProfile.setType(profileType);
+        newSupplyProfile.setSupply(supplyProfileOwner);
         newSupplyProfile.setOwnedBy(ownedBy);
+        newSupplyProfile.setTimeStamp(LocalDateTime.now());
         persist(newSupplyProfile);
         return newSupplyProfile;
     }
@@ -157,8 +148,7 @@ public class Profiles extends MatchingDomainService<Profile> {
         for (Profile p : allInstances(Profile.class)) {
             String[] parts = p.getOID().split(Pattern.quote("[OID]"));
             String part1 = parts[0];
-            String ApiId = "L_".concat(part1);
-            if (id.equals(ApiId)) {
+            if (id.equals(part1)) {
                 return p;
             }
         }
