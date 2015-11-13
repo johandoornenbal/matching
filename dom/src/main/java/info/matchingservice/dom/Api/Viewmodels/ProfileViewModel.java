@@ -26,71 +26,14 @@ public class ProfileViewModel extends ApiAbstractViewModel {
             this.endDate = profile.getEndDate().toString();
         }
         this.imageUrl = profile.getImageUrl();
+        this.type = profile.getType().title();
+        this.demandOrSupply = profile.getDemandOrSupply().toString();
 
-        List<ProfileElementViewModel> profileElements = new ArrayList<>();
+        List<Integer> profileElements = new ArrayList<>();
         for (ProfileElement element : profile.getCollectProfileElements()) {
-            //profile element tag
-            if (element.getClass().equals(ProfileElementTag.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementTag) element);
-                profileElements.add(model);
-            }
-
-            //required profile element role
-            if (element.getClass().equals(RequiredProfileElementRole.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((RequiredProfileElementRole) element);
-                profileElements.add(model);
-            }
-
-            //profile element location
-            if (element.getClass().equals(ProfileElementLocation.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementLocation) element);
-                profileElements.add(model);
-            }
-
-            //profile element boolean
-            if (element.getClass().equals(ProfileElementBoolean.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementBoolean) element);
-                profileElements.add(model);
-            }
-
-            //profile element dropdown
-            if (element.getClass().equals(ProfileElementDropDown.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementDropDown) element);
-                profileElements.add(model);
-            }
-
-            //profile element numeric
-            if (element.getClass().equals(ProfileElementNumeric.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementNumeric) element);
-                profileElements.add(model);
-            }
-
-            //profile element text
-            if (element.getClass().equals(ProfileElementText.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementText) element);
-                profileElements.add(model);
-            }
-
-            //profile element time period
-            if (element.getClass().equals(ProfileElementTimePeriod.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementTimePeriod) element);
-                profileElements.add(model);
-            }
-
-            //profile element use predicate
-            if (element.getClass().equals(ProfileElementUsePredicate.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementUsePredicate) element);
-                profileElements.add(model);
-            }
-
-            //profile element text
-            if (element.getClass().equals(ProfileElementChoice.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel(element);
-                profileElements.add(model);
-            }
-
+            profileElements.add(element.getIdAsInt());
         }
-        this.profileElements = profileElements;
+        this.elements = profileElements;
 
     }
 
@@ -146,13 +89,39 @@ public class ProfileViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    private List<ProfileElementViewModel> profileElements;
+    //region > type (property)
+    private String type;
 
-    public List<ProfileElementViewModel> getProfileElements() {
-        return profileElements;
+    @MemberOrder(sequence = "1")
+    public String getType() {
+        return type;
     }
 
-    public void setProfileElements(List<ProfileElementViewModel> profileElements) {
-        this.profileElements = profileElements;
+    public void setType(final String type) {
+        this.type = type;
+    }
+    //endregion
+
+    //region > demandOrSupply (property)
+    private String demandOrSupply;
+
+    @MemberOrder(sequence = "1")
+    public String getDemandOrSupply() {
+        return demandOrSupply;
+    }
+
+    public void setDemandOrSupply(final String demandOrSupply) {
+        this.demandOrSupply = demandOrSupply;
+    }
+    //endregion
+
+    private List<Integer> elements;
+
+    public List<Integer> getElements() {
+        return elements;
+    }
+
+    public void setElements(List<Integer> elements) {
+        this.elements = elements;
     }
 }

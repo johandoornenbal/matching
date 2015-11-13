@@ -241,19 +241,6 @@ public class PersonViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > profile (property)
-    private PersonProfileViewModel profile;
-
-    @MemberOrder(sequence = "8")
-    public PersonProfileViewModel getProfile() {
-        return profile;
-    }
-
-    public void setProfile(final PersonProfileViewModel profile) {
-        this.profile = profile;
-    }
-    //endregion
-
     //region > addresses (property)
     private List<CommunicationChannelViewModel> addresses;
 

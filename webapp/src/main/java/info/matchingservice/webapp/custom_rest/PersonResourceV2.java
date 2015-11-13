@@ -29,6 +29,8 @@ import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Match.ProfileMatches;
+import info.matchingservice.dom.Profile.*;
+import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.applib.Identifier;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
@@ -52,7 +54,7 @@ import java.util.List;
 @Path("/v2")
 public class PersonResourceV2 extends ResourceAbstract {
 
-
+    private Gson gson = new Gson();
     private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);
     private Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
@@ -70,7 +72,6 @@ public class PersonResourceV2 extends ResourceAbstract {
 
         ActivePersonViewModel activePersonViewModel = new ActivePersonViewModel(activePerson, communicationChannels, apiNotes);
 
-        Gson gson = new Gson();
         JsonElement personRepresentation = gson.toJsonTree(activePersonViewModel);
         JsonObject result = new JsonObject();
         result.add("activePerson", personRepresentation);
@@ -162,7 +163,6 @@ public class PersonResourceV2 extends ResourceAbstract {
             api.updatePerson(chosenPerson, firstName, middleName, lastName, dateOfBirth, imageUrl);
 
             JsonObject result = createPersonResult(instanceId);
-            Gson gson = new Gson();
             JsonElement successElement = gson.toJsonTree(new Integer(1));
             result.add("success", successElement);
 
@@ -174,8 +174,6 @@ public class PersonResourceV2 extends ResourceAbstract {
     @Path("/persons")
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
     public Response getAllPersonsServices() {
-
-        Gson gson = new Gson();
 
         // persons
         List<PersonViewModel> personViewModels = new ArrayList<>();
@@ -270,7 +268,6 @@ public class PersonResourceV2 extends ResourceAbstract {
                 return Response.status(400).entity(error).build();
             }
 
-            Gson gson = new Gson();
             JsonObject result = new JsonObject();
 
             DemandViewModel demandViewModel = new DemandViewModel(demand, api);
@@ -323,7 +320,6 @@ public class PersonResourceV2 extends ResourceAbstract {
         String apiDocLine2;
         String apiDocLine3;
         String apiDocLine4;
-        Gson gson = new Gson();
         JsonObject result = new JsonObject();
 
         apiDocLine1 = "Custom Rest Api documentation";
@@ -347,14 +343,13 @@ public class PersonResourceV2 extends ResourceAbstract {
     }
 
 
-
     /**
      *
      * @param instanceId
      * @return  A JsonObject containing a person representation with sideloaded collections
      */
     private JsonObject createPersonResult(final Integer instanceId) {
-        Gson gson = new Gson();
+
         JsonObject result = new JsonObject();
 
         // person
@@ -364,30 +359,186 @@ public class PersonResourceV2 extends ResourceAbstract {
         result.add("person", personRepresentation);
 
         // sideload supplies
-        List<SupplyViewModel> supplyViewmodels = new ArrayList<>();
-        for (Supply supply : api.getSuppliesForPerson(chosenPerson)) {
-                supplyViewmodels.add(new SupplyViewModel(supply));
-        }
-        JsonElement suppliesRepresentation = gson.toJsonTree(supplyViewmodels);
-        result.add("supplies", suppliesRepresentation);
+        result.add("supplies", sideLoadSupplies(chosenPerson));
 
         // sideload demands
-        List<DemandViewModel> demandViewmodels = new ArrayList<>();
-        for (Demand demand : api.getDemandsForPerson(chosenPerson)){
-            demandViewmodels.add(new DemandViewModel(demand, api));
-        }
-        JsonElement demandsRepresentation = gson.toJsonTree(demandViewmodels);
-        result.add("demands", demandsRepresentation);
+        result.add("demands", sideLoadDemands(chosenPerson));
+
+        //sideload profiles
+        result.add("profiles", sideLoadProfiles(chosenPerson));
+
+        //sideload elements
+        result.add("elements", sideLoadProfileElements(chosenPerson));
+
+        //sideload tagholders
+        result.add("tagHolders", sideLoadTagHolders(chosenPerson));
 
         // sideload personal contacts
-        List<PersonalContactViewModel> personalContactViewmodels = new ArrayList<>();
-        for (PersonalContact contact : api.getPersonalContacts(chosenPerson)){
-            personalContactViewmodels.add(new PersonalContactViewModel(contact));
-        }
-        JsonElement personalContactsRepresentation = gson.toJsonTree(personalContactViewmodels);
-        result.add("personalContacts", personalContactsRepresentation);
+        result.add("personalContacts", sideLoadPersonalContacts(chosenPerson));
 
         return result;
+    }
+
+    private JsonElement sideLoadSupplies(final Person person){
+
+        List<SupplyViewModel> supplyViewmodels = new ArrayList<>();
+        for (Supply supply : api.getSuppliesForPerson(person)) {
+            supplyViewmodels.add(new SupplyViewModel(supply));
+        }
+        return gson.toJsonTree(supplyViewmodels);
+    }
+
+    private JsonElement sideLoadDemands(final Person person){
+
+        List<DemandViewModel> demandViewmodels = new ArrayList<>();
+        for (Demand demand : api.getDemandsForPerson(person)){
+            demandViewmodels.add(new DemandViewModel(demand, api));
+        }
+        return gson.toJsonTree(demandViewmodels);
+    }
+
+    private JsonElement sideLoadProfiles(final Person person){
+
+        List<ProfileViewModel> profileViewModels = new ArrayList<>();
+        for (Supply supply : person.getSupplies()){
+            for (Profile profile : supply.getProfiles()) {
+                profileViewModels.add(new ProfileViewModel(profile));
+            }
+        }
+        for (Demand demand : person.getDemands()){
+            for (Profile profile : demand.getProfiles()) {
+                profileViewModels.add(new ProfileViewModel(profile));
+            }
+        }
+        return gson.toJsonTree(profileViewModels);
+    }
+
+    private JsonElement sideLoadProfileElements(final Person person){
+
+        // collect the elements
+        List<ProfileElement> profileElementList = new ArrayList<>();
+        for (Supply supply : person.getSupplies()){
+            for (Profile profile : supply.getProfiles()) {
+                for (ProfileElement element : profile.getCollectProfileElements()){
+                    profileElementList.add(element);
+                }
+            }
+        }
+        for (Demand demand : person.getDemands()){
+            for (Profile profile : demand.getProfiles()) {
+                for (ProfileElement element : profile.getCollectProfileElements()){
+                    profileElementList.add(element);
+                }
+            }
+        }
+        // generate viewmodels
+        List<ProfileElementViewModel> profileElementViewModels = new ArrayList<>();
+        for (ProfileElement element : profileElementList){
+
+            //profile element tag
+            if (element.getClass().equals(ProfileElementTag.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementTag) element);
+                profileElementViewModels.add(model);
+            }
+
+            //required profile element role
+            if (element.getClass().equals(RequiredProfileElementRole.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((RequiredProfileElementRole) element);
+                profileElementViewModels.add(model);
+            }
+
+            //profile element location
+            if (element.getClass().equals(ProfileElementLocation.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementLocation) element);
+                profileElementViewModels.add(model);
+            }
+
+            //profile element boolean
+            if (element.getClass().equals(ProfileElementBoolean.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementBoolean) element);
+                profileElementViewModels.add(model);
+            }
+
+            //profile element dropdown
+            if (element.getClass().equals(ProfileElementDropDown.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementDropDown) element);
+                profileElementViewModels.add(model);
+            }
+
+            //profile element numeric
+            if (element.getClass().equals(ProfileElementNumeric.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementNumeric) element);
+                profileElementViewModels.add(model);
+            }
+
+            //profile element text
+            if (element.getClass().equals(ProfileElementText.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementText) element);
+                profileElementViewModels.add(model);
+            }
+
+            //profile element time period
+            if (element.getClass().equals(ProfileElementTimePeriod.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementTimePeriod) element);
+                profileElementViewModels.add(model);
+            }
+
+            //profile element use predicate
+            if (element.getClass().equals(ProfileElementUsePredicate.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementUsePredicate) element);
+                profileElementViewModels.add(model);
+            }
+
+            //profile element text
+            if (element.getClass().equals(ProfileElementChoice.class)) {
+                ProfileElementViewModel model = new ProfileElementViewModel(element);
+                profileElementViewModels.add(model);
+            }
+
+        }
+
+        return gson.toJsonTree(profileElementViewModels);
+    }
+
+    private JsonElement sideLoadTagHolders(final Person person){
+
+        // collect the Tag elements
+        List<ProfileElementTag> profileElementTagList = new ArrayList<>();
+        for (Supply supply : person.getSupplies()){
+            for (Profile profile : supply.getProfiles()) {
+                for (ProfileElement element : profile.getCollectProfileElements()){
+                    if (element.getClass().equals(ProfileElementTag.class)) {
+                        profileElementTagList.add((ProfileElementTag) element);
+                    }
+                }
+            }
+        }
+        for (Demand demand : person.getDemands()){
+            for (Profile profile : demand.getProfiles()) {
+                for (ProfileElement element : profile.getCollectProfileElements()){
+                    if (element.getClass().equals(ProfileElementTag.class)) {
+                        profileElementTagList.add((ProfileElementTag) element);
+                    }
+                }
+            }
+        }
+
+        //generate viewmodels
+        List<TagHolderViewModel> tagHolderViewModels = new ArrayList<>();
+        for (ProfileElementTag element : profileElementTagList){
+            for (TagHolder tagHolder : element.getCollectTagHolders()) {
+                tagHolderViewModels.add(new TagHolderViewModel(tagHolder));
+            }
+        }
+        return gson.toJsonTree(tagHolderViewModels);
+    }
+
+    private JsonElement sideLoadPersonalContacts(final Person person){
+        List<PersonalContactViewModel> personalContactViewmodels = new ArrayList<>();
+        for (PersonalContact contact : api.getPersonalContacts(person)){
+            personalContactViewmodels.add(new PersonalContactViewModel(contact));
+        }
+        return gson.toJsonTree(personalContactViewmodels);
     }
 
 }

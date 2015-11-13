@@ -13,11 +13,11 @@ import java.util.List;
  * Created by jodo on 01/11/15.
  */
 @DomainObject(nature = Nature.VIEW_MODEL)
-public class ProfileElementViewModel extends ApiAbstractViewModel {
+public class ProfileElementDeepNestedViewModel extends ApiAbstractViewModel {
 
-    public ProfileElementViewModel() {}
+    public ProfileElementDeepNestedViewModel() {}
 
-    public ProfileElementViewModel(final ProfileElement element){
+    public ProfileElementDeepNestedViewModel(final ProfileElement element){
         super(element);
         this.description = element.getDescription();
         this.weight = element.getWeight();
@@ -25,21 +25,21 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
         if (element.getDisplayValue() != null) {
             this.displayValue = element.getDisplayValue().toString();
         }
-        this.type=element.getClass().getSimpleName();   
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final ProfileElementTag element
     ) {
         this((ProfileElement) element);
-        List<Integer> tagholders = new ArrayList<>();
+        List<TagHolderViewModel> tagholders = new ArrayList<>();
         for (TagHolder tagHolder : element.getCollectTagHolders()){
-            tagholders.add(tagHolder.getIdAsInt());
+            TagHolderViewModel tagHolderViewModel = new TagHolderViewModel(tagHolder);
+            tagholders.add(tagHolderViewModel);
         }
         this.tagholders = tagholders;
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final RequiredProfileElementRole element
     ) {
         this((ProfileElement) element);
@@ -48,7 +48,7 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
         this.principal = element.getPrincipal();
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final ProfileElementLocation element
     ) {
         this((ProfileElement) element);
@@ -58,34 +58,34 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
         this.isValid = element.getIsValid();
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final ProfileElementBoolean element
     ) {
         this((ProfileElement) element);
         this.booleanValue = element.getBooleanValue();
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final ProfileElementDropDown element
     ) {
         this((ProfileElement) element);
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final ProfileElementNumeric element
     ) {
         this((ProfileElement) element);
         this.numericValue = element.getNumericValue();
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final ProfileElementText element
     ) {
         this((ProfileElement) element);
         this.textValue = element.getTextValue();
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final ProfileElementTimePeriod element
     ) {
         this((ProfileElement) element);
@@ -97,7 +97,7 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
         }
     }
 
-    public ProfileElementViewModel(
+    public ProfileElementDeepNestedViewModel(
             final ProfileElementUsePredicate element
     ) {
         this((ProfileElement) element);
@@ -115,19 +115,6 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
 //    }
 
     /// Generic properties for profileElement /////////////////////////////////////////////
-
-    //region > type (property)
-    private String type;
-
-    @MemberOrder(sequence = "1")
-    public String getType() {
-        return type;
-    }
-
-    public void setType(final String type) {
-        this.type = type;
-    }
-    //endregion
 
     //region > description (property)
     private String description;
@@ -183,13 +170,13 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
 
     /// properties for profile element tag /////////////////////////////////////////////
 
-    private List<Integer> tagholders;
+    private List<TagHolderViewModel> tagholders;
 
-    public List<Integer> getTagholders() {
+    public List<TagHolderViewModel> getTagholders() {
         return tagholders;
     }
 
-    public void setTagholders(List<Integer> tagholders) {
+    public void setTagholders(List<TagHolderViewModel> tagholders) {
         this.tagholders = tagholders;
     }
 

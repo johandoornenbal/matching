@@ -17,22 +17,22 @@ public class TagHolderViewModel extends ApiAbstractViewModel {
             final TagHolder tagHolder
     ){
         super(tagHolder);
-        this.description = tagHolder.getTag().getTagDescription();
+        this.value = tagHolder.getTag().getTagDescription();
         this.category = tagHolder.getTag().getTagCategory().getTagCategoryDescription();
         this.numberOfTimesUsed = tagHolder.getTag().getNumberOfTimesUsed();
         this.dateLastUsed = tagHolder.getTag().getDateLastUsed().toString();
     }
 
     //region > description (property)
-    private String description;
+    private String value;
 
     @MemberOrder(sequence = "1")
-    public String getDescription() {
-        return description;
+    public String getValue() {
+        return value;
     }
 
-    public void setDescription(final String description) {
-        this.description = description;
+    public void setValue(final String description) {
+        this.value = description;
     }
     //endregion
 
