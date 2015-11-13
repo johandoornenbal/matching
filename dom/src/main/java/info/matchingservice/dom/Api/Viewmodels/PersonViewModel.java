@@ -7,6 +7,7 @@ import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.CommunicationChannels.*;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Match.ProfileMatch;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Nature;
@@ -59,6 +60,12 @@ public class PersonViewModel extends ApiAbstractViewModel {
         }
         this.assesmentsGiven = assessmentsGiven;
 
+        //all assessments
+        List<Integer> assessments = new ArrayList<>();
+        assessments.addAll(assessmentsReceived);
+        assessments.addAll(assessmentsGiven);
+        this.assessments = assessments;
+
         List<Integer> personalContacts = new ArrayList<>();
         for (PersonalContact contact : api.getPersonalContacts(person)) {
             personalContacts.add(contact.getIdAsInt());
@@ -91,6 +98,18 @@ public class PersonViewModel extends ApiAbstractViewModel {
         } catch (Exception e) {
             // Ignore
         }
+
+        List<Integer> communicationChannels = new ArrayList<>();
+        for (CommunicationChannel channel : api.getCommunicationchannelsForPerson(person)) {
+            communicationChannels.add(channel.getIdAsInt());
+        }
+        this.communicationChannels = communicationChannels;
+
+        List<Integer> profileMatches = new ArrayList<>();
+        for (ProfileMatch profileMatch : api.getProfileMatchesForPerson(person)){
+            profileMatches.add(profileMatch.getIdAsInt());
+        }
+        this.profileMatches = profileMatches;
 
         this.actions = api.getActionsForPerson(person);
 
@@ -320,6 +339,19 @@ public class PersonViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
+    //region > assessments (property)
+    private List<Integer> assessments;
+
+    @MemberOrder(sequence = "1")
+    public List<Integer> getAssessments() {
+        return assessments;
+    }
+
+    public void setAssessments(final List<Integer> assessments) {
+        this.assessments = assessments;
+    }
+    //endregion
+
     //region > assesmentsGiven (property)
     private List<Integer> assesmentsGiven;
 
@@ -345,6 +377,33 @@ public class PersonViewModel extends ApiAbstractViewModel {
         this.personalContacts = personalContacts;
     }
     //endregion
+
+    //region > communicationChannels (property)
+    private List<Integer> communicationChannels;
+
+    @MemberOrder(sequence = "1")
+    public List<Integer> getCommunicationChannels() {
+        return communicationChannels;
+    }
+
+    public void setCommunicationChannels(final List<Integer> communicationChannels) {
+        this.communicationChannels = communicationChannels;
+    }
+    //endregion
+
+    //region > profileMatches (property)
+    private List<Integer> profileMatches;
+
+    @MemberOrder(sequence = "1")
+    public List<Integer> getProfileMatches() {
+        return profileMatches;
+    }
+
+    public void setProfileMatches(final List<Integer> profileMatches) {
+        this.profileMatches = profileMatches;
+    }
+    //endregion
+
 
     //region > actions (property)
     private List<String> actions;

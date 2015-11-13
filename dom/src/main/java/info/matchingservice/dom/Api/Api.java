@@ -7,7 +7,12 @@ import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.DemandSupply.*;
-import info.matchingservice.dom.Profile.*;
+import info.matchingservice.dom.Match.ProfileMatch;
+import info.matchingservice.dom.Match.ProfileMatches;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElements;
+import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.ProvidedServices.Service;
 import info.matchingservice.dom.ProvidedServices.Services;
 import info.matchingservice.dom.Tags.Tag;
@@ -168,6 +173,23 @@ public class Api extends AbstractFactoryAndRepository {
         }
         return new ArrayList<>(person.getPersonalContacts());
     }
+
+	@Programmatic
+	public List<CommunicationChannel> getCommunicationchannelsForPerson(Person person) {
+		return communicationChannels.findCommunicationChannelByPerson(person);
+	}
+
+	@Programmatic
+	public List<ProfileMatch> getProfileMatchesForPerson(Person person) {
+		List<ProfileMatch> profileMatches = new ArrayList<>();
+		if (!person.hideSavedMatches()){
+			profileMatches.addAll(person.getSavedMatches());
+		}
+		if (!profileMatchRepo.hideCollectProfileMatches(person)){
+			profileMatches.addAll(profileMatchRepo.collectProfileMatches(person));
+		}
+		return profileMatches;
+	}
 
 
 	///////////
@@ -757,6 +779,7 @@ public class Api extends AbstractFactoryAndRepository {
 	@Inject
 	private CommunicationChannels communicationChannels;
 
-
+	@Inject
+	private ProfileMatches profileMatchRepo;
 
 }

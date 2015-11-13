@@ -26,7 +26,7 @@ import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Api.Viewmodels.*;
 import info.matchingservice.dom.Assessment.*;
-import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
+import info.matchingservice.dom.CommunicationChannels.*;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Match.ProfileMatches;
@@ -380,6 +380,9 @@ public class PersonResourceV2 extends ResourceAbstract {
         //sideload assessments
         result.add("assessments", sideLoadAssessments(chosenPerson));
 
+        //sideload assessments
+        result.add("communicationChannels", sideLoadCommunicationChannels(chosenPerson));
+
         return result;
     }
 
@@ -564,6 +567,22 @@ public class PersonResourceV2 extends ResourceAbstract {
             }
         }
         return gson.toJsonTree(assessmentViewModels);
+    }
+
+    private JsonElement sideLoadCommunicationChannels(final Person person){
+        List<CommunicationChannelViewModel> communicationChannelViewModels = new ArrayList<>();
+        for (CommunicationChannel communicationChannel : api.getCommunicationchannelsForPerson(person)){
+            if (communicationChannel.getClass().equals(Email.class)) {
+                communicationChannelViewModels.add(new CommunicationChannelViewModel((Email) communicationChannel));
+            }
+            if (communicationChannel.getClass().equals(Address.class)) {
+                communicationChannelViewModels.add(new CommunicationChannelViewModel((Address) communicationChannel));
+            }
+            if (communicationChannel.getClass().equals(Phone.class)) {
+                communicationChannelViewModels.add(new CommunicationChannelViewModel((Phone) communicationChannel));
+            }
+        }
+        return gson.toJsonTree(communicationChannelViewModels);
     }
 
 }

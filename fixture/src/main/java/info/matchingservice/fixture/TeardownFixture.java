@@ -34,7 +34,7 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"OrganisationRole\"");
         isisJdoSupport.executeUpdate("delete from \"SystemRole\"");
         isisJdoSupport.executeUpdate("delete from \"Role\"");
-        
+
         isisJdoSupport.executeUpdate("delete from \"Assessment\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileMatch\"");
 

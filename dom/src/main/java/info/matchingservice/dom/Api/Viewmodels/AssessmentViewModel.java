@@ -19,17 +19,17 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
         this.targetOwner = assessment.getTargetOwnerActor().getUri();
         this.targetOwnerFullName = assessment.getTargetOwnerActor().title();
         this.targetOwnerId = assessment.getTargetOwnerActor().getIdAsInt();
-        this.targetOwnerType = assessment.getTargetOwnerActor().getClass().getSimpleName();
+        this.targetOwnerClassType = assessment.getTargetOwnerActor().getClass().getSimpleName();
         Person targetOwner = (Person) assessment.getTargetOwnerActor();
         this.targetOwnerImageUrl = targetOwner.getImageUrl();
         this.owner = assessment.getAssessmentOwnerActor().getUri();
         this.ownerId = assessment.getAssessmentOwnerActor().getIdAsInt();
         this.ownerFullName = assessment.getAssessmentOwnerActor().title();
-        this.ownerType = assessment.getAssessmentOwnerActor().getClass().getSimpleName();
+        this.ownerClassType = assessment.getAssessmentOwnerActor().getClass().getSimpleName();
         Person assessmentOwner = (Person) assessment.getAssessmentOwnerActor();
         this.ownerImageUrl = assessmentOwner.getImageUrl();
         this.description = assessment.getDescription();
-        this.type =  assessment.getClass().getSimpleName();
+        this.classType =  assessment.getClass().getSimpleName();
     }
 
     public AssessmentViewModel(final DemandAssessment assessment){
@@ -84,16 +84,16 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
         this.feedback = assessment.getFeedback();
     }
 
-    //region > type (property)
-    private String type;
+    //region > classType (property)
+    private String classType;
 
     @MemberOrder(sequence = "1")
-    public String getType() {
-        return type;
+    public String getClassType() {
+        return classType;
     }
 
-    public void setType(final String type) {
-        this.type = type;
+    public void setClassType(final String classType) {
+        this.classType = classType;
     }
     //endregion
 
@@ -149,16 +149,16 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > targetOwnerType (property)
-    private String targetOwnerType;
+    //region > targetOwnerClassType (property)
+    private String targetOwnerClassType;
 
     @MemberOrder(sequence = "1")
-    public String getTargetOwnerType() {
-        return targetOwnerType;
+    public String getTargetOwnerClassType() {
+        return targetOwnerClassType;
     }
 
-    public void setTargetOwnerType(final String targetOwnerType) {
-        this.targetOwnerType = targetOwnerType;
+    public void setTargetOwnerClassType(final String targetOwnerClassType) {
+        this.targetOwnerClassType = targetOwnerClassType;
     }
     //endregion
 
@@ -227,16 +227,16 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > ownerType (property)
-    private String ownerType;
+    //region > ownerClassType (property)
+    private String ownerClassType;
 
     @MemberOrder(sequence = "1")
-    public String getOwnerType() {
-        return ownerType;
+    public String getOwnerClassType() {
+        return ownerClassType;
     }
 
-    public void setOwnerType(final String ownerType) {
-        this.ownerType = ownerType;
+    public void setOwnerClassType(final String ownerClassType) {
+        this.ownerClassType = ownerClassType;
     }
     //endregion
 

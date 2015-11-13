@@ -13,20 +13,32 @@ public class CommunicationChannelViewModel extends ApiAbstractViewModel {
     public CommunicationChannelViewModel(){}
 
     public CommunicationChannelViewModel(final Address address) {
+        super(address);
         this.address = address.getAddress();
         this.postalCode = address.getPostalCode();
         this.town = address.getTown();
+        this.classType = address.getClass().getSimpleName();
         this.type = address.getType().title();
+        this.owner = address.getPerson().getIdAsInt();
+        this.ownerClassType = address.getPerson().getClass().getSimpleName();
     }
 
     public CommunicationChannelViewModel(final Email email){
+        super(email);
         this.email = email.getEmail();
+        this.classType = email.getClass().getSimpleName();
         this.type = email.getType().title();
+        this.owner = email.getPerson().getIdAsInt();
+        this.ownerClassType = email.getPerson().getClass().getSimpleName();
     }
 
-    public CommunicationChannelViewModel(final Phone phone){
+    public CommunicationChannelViewModel(final Phone phone) {
+        super(phone);
         this.phoneNumber = phone.getPhoneNumber();
+        this.classType = phone.getClass().getSimpleName();
         this.type = phone.getType().title();
+        this.owner = phone.getPerson().getIdAsInt();
+        this.ownerClassType = phone.getPerson().getClass().getSimpleName();
     }
 
     //region > addressMain (property)
@@ -81,6 +93,19 @@ public class CommunicationChannelViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
+    //region > classType (property)
+    private String classType;
+
+    @MemberOrder(sequence = "1")
+    public String getClassType() {
+        return classType;
+    }
+
+    public void setClassType(final String classType) {
+        this.classType = classType;
+    }
+    //endregion
+
     //region > email (property)
     private String email;
 
@@ -104,6 +129,32 @@ public class CommunicationChannelViewModel extends ApiAbstractViewModel {
 
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    //endregion
+
+    //region > owner (property)
+    private Integer owner;
+
+    @MemberOrder(sequence = "1")
+    public Integer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(final Integer owner) {
+        this.owner = owner;
+    }
+    //endregion
+
+    //region > ownerClassType (property)
+    private String ownerClassType;
+
+    @MemberOrder(sequence = "1")
+    public String getOwnerClassType() {
+        return ownerClassType;
+    }
+
+    public void setOwnerClassType(final String ownerClassType) {
+        this.ownerClassType = ownerClassType;
     }
     //endregion
 

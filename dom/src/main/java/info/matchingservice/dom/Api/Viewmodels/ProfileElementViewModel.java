@@ -25,7 +25,7 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
         if (element.getDisplayValue() != null) {
             this.displayValue = element.getDisplayValue().toString();
         }
-        this.type=element.getClass().getSimpleName();   
+        this.classType=element.getClass().getSimpleName();
     }
 
     public ProfileElementViewModel(
@@ -116,16 +116,16 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
 
     /// Generic properties for profileElement /////////////////////////////////////////////
 
-    //region > type (property)
-    private String type;
+    //region > classType (property)
+    private String classType;
 
     @MemberOrder(sequence = "1")
-    public String getType() {
-        return type;
+    public String getClassType() {
+        return classType;
     }
 
-    public void setType(final String type) {
-        this.type = type;
+    public void setClassType(final String classType) {
+        this.classType = classType;
     }
     //endregion
 
