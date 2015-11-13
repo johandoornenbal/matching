@@ -18,16 +18,33 @@
  */
 package info.matchingservice.dom.Assessment;
 
+import info.matchingservice.dom.Profile.Profile;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.PropertyLayout;
-
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
-public class ProfileFeedback extends ProfileAssessment {
+public class ProfileFeedback extends Assessment {
     
 	//** API: PROPERTIES **//
+
+    private Profile targetOfAssessment;
+
+    @javax.jdo.annotations.Column(allowsNull = "false", name = "profileId")
+    @Property(editing= Editing.DISABLED)
+    @PropertyLayout()
+    public Profile getTargetOfAssessment() {
+        return targetOfAssessment;
+    }
+
+    public void setTargetOfAssessment(final Profile targetOfAssessment) {
+        this.targetOfAssessment = targetOfAssessment;
+    }
+
     private String feedback;
     
     @PropertyLayout(multiLine=3)

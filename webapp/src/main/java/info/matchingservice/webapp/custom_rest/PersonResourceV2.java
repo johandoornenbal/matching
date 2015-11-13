@@ -25,6 +25,7 @@ import info.matchingservice.dom.Actor.PersonalContact;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Api.Viewmodels.*;
+import info.matchingservice.dom.Assessment.*;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
@@ -376,6 +377,9 @@ public class PersonResourceV2 extends ResourceAbstract {
         // sideload personal contacts
         result.add("personalContacts", sideLoadPersonalContacts(chosenPerson));
 
+        //sideload assessments
+        result.add("assessments", sideLoadAssessments(chosenPerson));
+
         return result;
     }
 
@@ -539,6 +543,27 @@ public class PersonResourceV2 extends ResourceAbstract {
             personalContactViewmodels.add(new PersonalContactViewModel(contact));
         }
         return gson.toJsonTree(personalContactViewmodels);
+    }
+
+    private JsonElement sideLoadAssessments(final Person person){
+        //collect assessments
+        List<Assessment> assessments = api.getAllAssessments(person);
+        List<AssessmentViewModel> assessmentViewModels = new ArrayList<>();
+        for (Assessment assessment : assessments){
+            if (assessment.getClass().equals(DemandFeedback.class)) {
+                assessmentViewModels.add(new AssessmentViewModel((DemandFeedback)assessment));
+            }
+            if (assessment.getClass().equals(SupplyFeedback.class)) {
+                assessmentViewModels.add(new AssessmentViewModel((SupplyFeedback)assessment));
+            }
+            if (assessment.getClass().equals(ProfileFeedback.class)) {
+                assessmentViewModels.add(new AssessmentViewModel((ProfileFeedback)assessment));
+            }
+            if (assessment.getClass().equals(ProfileMatchAssessment.class)) {
+                assessmentViewModels.add(new AssessmentViewModel((ProfileMatchAssessment) assessment));
+            }
+        }
+        return gson.toJsonTree(assessmentViewModels);
     }
 
 }

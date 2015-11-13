@@ -18,19 +18,19 @@
  */
 package info.matchingservice.dom.Assessment;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.Programmatic;
-
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.Profile;
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.joda.time.LocalDateTime;
+
+import java.util.List;
+import java.util.UUID;
 
 
 @DomainService(repositoryFor = Assessment.class, nature=NatureOfService.DOMAIN)
@@ -59,10 +59,12 @@ public class Assessments extends MatchingDomainService<Assessment> {
         newAs.setTargetOfAssessment(targetObject);
         newAs.setTargetOwnerActor(targetObject.getOwner());
         newAs.setAssessmentOwnerActor(ownerActor);
-        newAs.setAssessmentDescription(description);
+        newAs.setDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(ownedBy);
-        persist(newAs);
+        newAs.setTimeStamp(LocalDateTime.now());
+        persistIfNotAlready(newAs);
+        getContainer().flush();
         return newAs;
     }
     
@@ -80,10 +82,12 @@ public class Assessments extends MatchingDomainService<Assessment> {
         newAs.setTargetOfAssessment(targetObject);
         newAs.setTargetOwnerActor(targetObject.getOwner());
         newAs.setAssessmentOwnerActor(ownerActor);
-        newAs.setAssessmentDescription(description);
+        newAs.setDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(ownedBy);
-        persist(newAs);
+        newAs.setTimeStamp(LocalDateTime.now());
+        persistIfNotAlready(newAs);
+        getContainer().flush();
         return newAs;
     }
 
@@ -101,10 +105,12 @@ public class Assessments extends MatchingDomainService<Assessment> {
         newAs.setTargetOfAssessment(targetObject);
         newAs.setTargetOwnerActor(targetObject.getActorOwner());
         newAs.setAssessmentOwnerActor(ownerActor);
-        newAs.setAssessmentDescription(description);
+        newAs.setDescription(description);
         newAs.setFeedback(feedback);
         newAs.setOwnedBy(ownedBy);
-        persist(newAs);
+        newAs.setTimeStamp(LocalDateTime.now());
+        persistIfNotAlready(newAs);
+        getContainer().flush();
         return newAs;
     }
 
@@ -121,9 +127,11 @@ public class Assessments extends MatchingDomainService<Assessment> {
         newAs.setTargetOfAssessment(targetObject);
         newAs.setTargetOwnerActor(targetObject.getOwnerActor());
         newAs.setAssessmentOwnerActor(ownerActor);
-        newAs.setAssessmentDescription(description);
+        newAs.setDescription(description);
         newAs.setOwnedBy(ownedBy);
-        persist(newAs);
+        newAs.setTimeStamp(LocalDateTime.now());
+        persistIfNotAlready(newAs);
+        getContainer().flush();
         return newAs;
     }
 

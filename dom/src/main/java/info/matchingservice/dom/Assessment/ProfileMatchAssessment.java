@@ -16,25 +16,16 @@
  */
 package info.matchingservice.dom.Assessment;
 
-import javax.jdo.annotations.DiscriminatorStrategy;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.InheritanceStrategy;
-
+import info.matchingservice.dom.Match.ProfileMatch;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 
-import info.matchingservice.dom.Match.ProfileMatch;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
-@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@javax.jdo.annotations.Discriminator(
-        strategy = DiscriminatorStrategy.CLASS_NAME,
-        column = "discriminator")
-@javax.jdo.annotations.DatastoreIdentity(
-        strategy = IdGeneratorStrategy.NATIVE,
-        column = "id")
+@javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
                 name = "findProfileMatchesAssessmentByProfileMatch", language = "JDOQL",
@@ -47,7 +38,7 @@ public class ProfileMatchAssessment extends Assessment {
 
     private ProfileMatch targetOfAssessment;
 
-    @javax.jdo.annotations.Column(allowsNull = "false")
+    @javax.jdo.annotations.Column(allowsNull = "false", name = "profileMatchId")
     @Property(editing= Editing.DISABLED)
     @PropertyLayout()
     public ProfileMatch getTargetOfAssessment() {

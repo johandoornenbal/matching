@@ -51,13 +51,13 @@ public class PersonViewModel extends ApiAbstractViewModel {
         for (Assessment assessment : api.getAssessmentsReceived(person)) {
             assessmentsReceived.add(assessment.getIdAsInt());
         }
-        this.demandFeedbackReceived = assessmentsReceived;
+        this.assessmentsReceived = assessmentsReceived;
 
         List<Integer> assessmentsGiven = new ArrayList<>();
         for (Assessment assessment : api.getAssessmentsGiven(person)) {
             assessmentsGiven.add(assessment.getIdAsInt());
         }
-        this.demandFeedbackGiven = assessmentsGiven;
+        this.assesmentsGiven = assessmentsGiven;
 
         List<Integer> personalContacts = new ArrayList<>();
         for (PersonalContact contact : api.getPersonalContacts(person)) {
@@ -307,29 +307,29 @@ public class PersonViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > demandFeedbackReceived (property)
-    private List<Integer> demandFeedbackReceived;
+    //region > assessmentsReceived (property)
+    private List<Integer> assessmentsReceived;
 
     @MemberOrder(sequence = "1")
-    public List<Integer> getDemandFeedbackReceived() {
-        return demandFeedbackReceived;
+    public List<Integer> getAssessmentsReceived() {
+        return assessmentsReceived;
     }
 
-    public void setDemandFeedbackReceived(final List<Integer> demandFeedbackReceived) {
-        this.demandFeedbackReceived = demandFeedbackReceived;
+    public void setAssessmentsReceived(final List<Integer> assessmentsReceived) {
+        this.assessmentsReceived = assessmentsReceived;
     }
     //endregion
 
-    //region > demandFeedbackGiven (property)
-    private List<Integer> demandFeedbackGiven;
+    //region > assesmentsGiven (property)
+    private List<Integer> assesmentsGiven;
 
     @MemberOrder(sequence = "1")
-    public List<Integer> getDemandFeedbackGiven() {
-        return demandFeedbackGiven;
+    public List<Integer> getAssesmentsGiven() {
+        return assesmentsGiven;
     }
 
-    public void setDemandFeedbackGiven(final List<Integer> demandFeedbackGiven) {
-        this.demandFeedbackGiven = demandFeedbackGiven;
+    public void setAssesmentsGiven(final List<Integer> assesmentsGiven) {
+        this.assesmentsGiven = assesmentsGiven;
     }
     //endregion
 

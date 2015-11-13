@@ -19,17 +19,34 @@
 
 package info.matchingservice.dom.Assessment;
 
+import info.matchingservice.dom.DemandSupply.Supply;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 
-import org.apache.isis.applib.annotation.PropertyLayout;
-
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
-
-public class SupplyFeedback extends SupplyAssessment {
+public class SupplyFeedback extends Assessment {
     
 	//** API: PROPERTIES **//
+
+    private Supply targetOfAssessment;
+
+    @javax.jdo.annotations.Column(allowsNull = "false", name = "supplyId")
+    @Property(editing= Editing.DISABLED)
+    @PropertyLayout()
+    public Supply getTargetOfAssessment() {
+        return targetOfAssessment;
+    }
+
+    public void setTargetOfAssessment(final Supply targetOfAssessment) {
+        this.targetOfAssessment = targetOfAssessment;
+    }
+
+
     private String feedback;
     
     @PropertyLayout(multiLine=3)

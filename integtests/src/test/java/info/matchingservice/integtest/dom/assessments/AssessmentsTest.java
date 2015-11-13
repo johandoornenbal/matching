@@ -94,7 +94,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
 
             //then
             assertThat(demandFeedback.getOwnedBy(), is(ownedBy));
-            assertThat(demandFeedback.getAssessmentDescription(), is(DESCRIPTION));
+            assertThat(demandFeedback.getDescription(), is(DESCRIPTION));
             assertThat(demandFeedback.getAssessmentOwnerActor(), is((Object) assessmentOwner));
             assertThat(demandFeedback.getTargetOfAssessment(), is((Object) assessmentTarget));
             assertThat(demandFeedback.getTargetOwnerActor(), is((Object) assessmentTargetOwner));
@@ -140,7 +140,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
 
             //then
             assertThat(supplyFeedback.getOwnedBy(), is(ownedBy));
-            assertThat(supplyFeedback.getAssessmentDescription(), is(DESCRIPTION));
+            assertThat(supplyFeedback.getDescription(), is(DESCRIPTION));
             assertThat(supplyFeedback.getAssessmentOwnerActor(), is((Object) assessmentOwner));
             assertThat(supplyFeedback.getTargetOfAssessment(), is((Object) assessmentTarget));
             assertThat(supplyFeedback.getTargetOwnerActor(), is((Object) assessmentTargetOwner));
@@ -186,7 +186,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
 
             //then
             assertThat(profileFeedback.getOwnedBy(), is(ownedBy));
-            assertThat(profileFeedback.getAssessmentDescription(), is(DESCRIPTION));
+            assertThat(profileFeedback.getDescription(), is(DESCRIPTION));
             assertThat(profileFeedback.getAssessmentOwnerActor(), is((Object) assessmentOwner));
             assertThat(profileFeedback.getTargetOfAssessment(), is((Object) assessmentTarget));
             assertThat(profileFeedback.getTargetOwnerActor(), is((Object) assessmentTargetOwner));
@@ -225,7 +225,7 @@ public class AssessmentsTest extends MatchingIntegrationTest {
 
             //then
             assertThat(profileFeedback.getOwnedBy(), is(ownedBy));
-            assertThat(profileFeedback.getAssessmentDescription(), is(DESCRIPTION));
+            assertThat(profileFeedback.getDescription(), is(DESCRIPTION));
             assertThat(profileFeedback.getAssessmentOwnerActor(), is((Object) assessmentOwner));
             assertThat(profileFeedback.getTargetOfAssessment(), is((Object) assessmentTarget));
             assertThat(profileFeedback.getTargetOwnerActor(), is((Object) assessmentTargetOwner));

@@ -129,6 +129,19 @@ public class Api extends AbstractFactoryAndRepository {
 		return communicationChannels.findCommunicationChannelByPersonAndType(person,addressMain);
 	}
 
+	@Programmatic
+	public List<Assessment> getAllAssessments(final Person person){
+		List<Assessment> result = new ArrayList<>();
+		if (!person.hideAssessmentsReceived()) {
+			result.addAll(person.getAssessmentsReceived());
+		}
+		if (!person.hideAssessmentsGiven()) {
+			result.addAll(person.getAssessmentsGiven());
+		}
+
+		return result;
+	}
+
     @Programmatic
     public List<Assessment> getAssessmentsReceived(final Person person){
         // apply business logic

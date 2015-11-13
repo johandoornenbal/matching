@@ -194,7 +194,7 @@ public class Person extends Actor {
     //** personalContacts **//
     private SortedSet<PersonalContact> personalContacts = new TreeSet<PersonalContact>();
     
-    @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
+    @Persistent(mappedBy = "owner", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
     public SortedSet<PersonalContact> getPersonalContacts() {
         return personalContacts;
@@ -370,7 +370,7 @@ public class Person extends Actor {
     //** HELPERS **//
     //** HELPERS: generic object helpers **//
     public String title() {
-        if (getMiddleName()==null) {
+        if (getMiddleName()==null || getMiddleName().equals("")) {
             return this.getFirstName() + " " + this.getLastName();
         } else {
             return this.getFirstName() + " " + this.getMiddleName() + " " + this.getLastName();
@@ -395,6 +395,7 @@ public class Person extends Actor {
             return true;
         }        
         // if there is already a personal Supply
+        //TODO: move to repo
         QueryDefault<Supply> query = 
                 QueryDefault.create(
                         Supply.class, 
@@ -419,6 +420,7 @@ public class Person extends Actor {
             return "NO_STUDENT_OR_PROFESSIONAL";
         }        
         // if there is already a personal Supply
+        //TODO: move to repo
         QueryDefault<Supply> query = 
                 QueryDefault.create(
                         Supply.class, 
@@ -491,6 +493,7 @@ public class Person extends Actor {
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsStudent(Person ownerPerson) {
+        //TODO: move to repo
         QueryDefault<PersonRole> query =
                 QueryDefault.create(
                         PersonRole.class,

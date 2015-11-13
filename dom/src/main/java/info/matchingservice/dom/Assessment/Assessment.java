@@ -18,26 +18,17 @@
  */
 package info.matchingservice.dom.Assessment;
 
-import java.util.UUID;
+import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.MatchingSecureMutableObject;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+import org.joda.time.LocalDateTime;
 
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Optionality;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.PropertyLayout;
-import org.apache.isis.applib.annotation.Where;
-
-import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.MatchingSecureMutableObject;
+import java.util.UUID;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -47,8 +38,12 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 @javax.jdo.annotations.DatastoreIdentity(
         strategy = IdGeneratorStrategy.NATIVE,
         column = "id")
-@DomainObject(editing=Editing.DISABLED)
+@DomainObject(editing=Editing.DISABLED, autoCompleteRepository = Assessments.class)
 public abstract class Assessment extends MatchingSecureMutableObject<Assessment> {
+
+    public Assessment() {
+        super("description, ownedBy, timeStamp, uniqueItemId");
+    }
 	
 	//** API: PROPERTIES **//
 	
@@ -57,6 +52,7 @@ public abstract class Assessment extends MatchingSecureMutableObject<Assessment>
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public UUID getUniqueItemId() {
         return uniqueItemId;
     }
@@ -65,24 +61,21 @@ public abstract class Assessment extends MatchingSecureMutableObject<Assessment>
         this.uniqueItemId = uniqueItemId;
     }
     //-- uniqueItemId --//
-    
-//    //** target **//
-//    /**
-//     * Should be overridden for use on specific Object Type
-//     */
-//    private Object targetOfAssessment;
-//
-//    @javax.jdo.annotations.Column(allowsNull = "false", name = "target")
-//    @Property(editing=Editing.DISABLED)
-//    @PropertyLayout()
-//    public Object getTargetOfAssessment() {
-//        return targetOfAssessment;
-//    }
-//
-//    public void setTargetOfAssessment(final Object object) {
-//        this.targetOfAssessment = object;
-//    }
-//    //-- target --//
+
+    //region > timeStamp (property)
+    private LocalDateTime timeStamp;
+
+    @MemberOrder(sequence = "1")
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(final LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+    //endregion
+
     
     //** targetOwnerActor **//
     private Actor targetOwnerActor;
@@ -114,24 +107,19 @@ public abstract class Assessment extends MatchingSecureMutableObject<Assessment>
     }
     //-- ownerActor --//
     
-    //** assessmentDescription **//
-    private String assessmentDescription;
+    //** description **//
+    private String description;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @PropertyLayout()
-    public String getAssessmentDescription() {
-        return assessmentDescription;
+    public String getDescription() {
+        return description;
     }
     
-    public void setAssessmentDescription(final String assessmentDescription){
-        this.assessmentDescription = assessmentDescription;
+    public void setDescription(final String description){
+        this.description = description;
     }
-    //-- assessmentDescription --//
-
-	//-- API: PROPERTIES --//
-	//** API: COLLECTIONS **//
-	//-- API: COLLECTIONS --//
-	//** API: ACTIONS **//
+    //-- description --//
     
     //** deleteAssessment **//
     @ActionLayout()
@@ -148,14 +136,7 @@ public abstract class Assessment extends MatchingSecureMutableObject<Assessment>
         return confirmDelete? null:"CONFIRM_DELETE";
     }
     //-- deleteAssessment --//
-    
-	//-- API: ACTIONS --//
-	//** GENERIC OBJECT STUFF **//
-	//** constructor **//
-    public Assessment() {
-        super("assessmentDescription, ownedBy, uniqueItemId");
-    }
-	//** ownedBy - Override for secure object **//
+
     private String ownedBy;
     
     @Override
@@ -169,23 +150,13 @@ public abstract class Assessment extends MatchingSecureMutableObject<Assessment>
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
-	//-- GENERIC OBJECT STUFF --//
-	//** HELPERS **//
-    //** HELPERS: generic object helpers **//
+
     public String title() {
-        return "Assessment " + " - " + getAssessmentDescription();
+        return "Assessment " + " - " + getDescription();
     }
-	//-- HELPERS: generic object helpers --//
-	//** HELPERS: programmatic actions **//
-	//-- HELPERS: programmatic actions --// 
-	//-- HELPERS --//
-	//** INJECTIONS **//
+
     @javax.inject.Inject
     private DomainObjectContainer container;
-	//-- INJECTIONS --//
-	//** HIDDEN: PROPERTIES **//
-	//-- HIDDEN: PROPERTIES --//
-	//** HIDDEN: ACTIONS **//
-	//-- HIDDEN: ACTIONS --//
+
 }
 

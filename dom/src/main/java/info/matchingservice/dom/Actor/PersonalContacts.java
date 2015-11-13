@@ -131,7 +131,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         final PersonalContact contact = newTransientInstance(PersonalContact.class);
         contact.setContactPerson(contactPerson);
         contact.setContact(contactPerson.getOwnedBy());
-        contact.setOwnerPerson(persons.activePerson(userName));
+        contact.setOwner(persons.activePerson(userName));
         contact.setOwnedBy(userName);
         persist(contact);
         return contact;
@@ -145,7 +145,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         final PersonalContact contact = newTransientInstance(PersonalContact.class);
         contact.setContactPerson(contactPerson);
         contact.setContact(contactPerson.getOwnedBy());
-        contact.setOwnerPerson(persons.activePerson(userName));
+        contact.setOwner(persons.activePerson(userName));
         contact.setOwnedBy(userName);
         contact.setTrustLevel(trustLevel);
         persist(contact);

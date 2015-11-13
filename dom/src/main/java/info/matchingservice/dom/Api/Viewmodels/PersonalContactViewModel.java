@@ -17,11 +17,14 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
             final PersonalContact personalContact
     ){
         super(personalContact);
-        this.contactPersonUri = personalContact.getContactPerson().getUri();
+        this.contactUri = personalContact.getContactPerson().getUri();
         this.contactFullName = personalContact.getContactPerson().title();
-        this.contactPersonId = personalContact.getContactPerson().getIdAsInt();
-        this.contactPersonImageUrl = personalContact.getContactPerson().getImageUrl();
-        this.ownerPerson = personalContact.getOwnerPerson().getUri();
+        this.contactId = personalContact.getContactPerson().getIdAsInt();
+        this.contactImageUrl = personalContact.getContactPerson().getImageUrl();
+        this.owner = personalContact.getOwner().getUri();
+        this.ownerFullName = personalContact.getOwner().title();
+        this.ownerId = personalContact.getOwner().getIdAsInt();
+        this.ownerImageUrl = personalContact.getOwner().getImageUrl();
         this.trustLevel = personalContact.getTrustLevel().toString();
     }
 
@@ -39,58 +42,99 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > contactPersonImageUrl (property)
-    private String contactPersonImageUrl;
+    //region > contactImageUrl (property)
+    private String contactImageUrl;
 
     @MemberOrder(sequence = "1")
-    public String getContactPersonImageUrl() {
-        return contactPersonImageUrl;
+    public String getContactImageUrl() {
+        return contactImageUrl;
     }
 
-    public void setContactPersonImageUrl(final String contactPersonImageUrl) {
-        this.contactPersonImageUrl = contactPersonImageUrl;
+    public void setContactImageUrl(final String contactImageUrl) {
+        this.contactImageUrl = contactImageUrl;
     }
     //endregion
 
-    //region > contactPersonId (property)
-    private Integer contactPersonId;
+    //region > contactId (property)
+    private Integer contactId;
 
     @MemberOrder(sequence = "1")
-    public Integer getContactPersonId() {
-        return contactPersonId;
+    public Integer getContactId() {
+        return contactId;
     }
 
-    public void setContactPersonId(final Integer contactPersonId) {
-        this.contactPersonId = contactPersonId;
+    public void setContactId(final Integer contactId) {
+        this.contactId = contactId;
     }
     //endregion
 
-    //region > contactPersonUri (property)
-    private String contactPersonUri;
+    //region > contactUri (property)
+    private String contactUri;
 
     @MemberOrder(sequence = "1")
-    public String getContactPersonUri() {
-        return contactPersonUri;
+    public String getContactUri() {
+        return contactUri;
     }
 
-    public void setContactPersonUri(final String contactPersonUri) {
-        this.contactPersonUri = contactPersonUri;
+    public void setContactUri(final String contactUri) {
+        this.contactUri = contactUri;
     }
     //endregion
 
 
-    //region > ownerPerson (property)
-    private String ownerPerson;
+    //region > owner (property)
+    private String owner;
 
     @MemberOrder(sequence = "1")
-    public String getOwnerPerson() {
-        return ownerPerson;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setOwnerPerson(final String ownerPerson) {
-        this.ownerPerson = ownerPerson;
+    public void setOwner(final String owner) {
+        this.owner = owner;
     }
     //endregion
+
+    //region > ownerFullName (property)
+    private String ownerFullName;
+
+    @MemberOrder(sequence = "1")
+    public String getOwnerFullName() {
+        return ownerFullName;
+    }
+
+    public void setOwnerFullName(final String ownerFullName) {
+        this.ownerFullName = ownerFullName;
+    }
+    //endregion
+
+    //region > ownerImageUrl (property)
+    private String ownerImageUrl;
+
+    @MemberOrder(sequence = "1")
+    public String getOwnerImageUrl() {
+        return ownerImageUrl;
+    }
+
+    public void setOwnerImageUrl(final String ownerImageUrl) {
+        this.ownerImageUrl = ownerImageUrl;
+    }
+    //endregion
+
+    //region > ownerId (property)
+    private Integer ownerId;
+
+    @MemberOrder(sequence = "1")
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(final Integer ownerId) {
+        this.ownerId = ownerId;
+    }
+    //endregion
+
+
 
     //region > trustLevel (property)
     private String trustLevel;

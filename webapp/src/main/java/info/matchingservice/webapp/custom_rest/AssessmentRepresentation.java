@@ -34,7 +34,7 @@ public class AssessmentRepresentation {
     public JsonRepresentation ObjectRepresentation(final Assessment assessment) {
 
         JsonRepresentation assessmentMap = JsonRepresentation.newMap();
-        assessmentMap.mapPut("description" , assessment.getAssessmentDescription());
+        assessmentMap.mapPut("description" , assessment.getDescription());
         try {
             ProfileFeedback feedback = (ProfileFeedback) assessment;
             assessmentMap.mapPut("feedback" , feedback.getFeedback());
@@ -57,7 +57,7 @@ public class AssessmentRepresentation {
 //        //try casting target to demand
 //        try {
 //
-//            Demand targetDemand = (Demand) assessment.getTargetOfAssessment();
+//            Demand targetDemand = (Demand) assessment.getTarget();
 //            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetDemand.getHref()));
 //            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetDemand.getHref()));
 //
@@ -68,7 +68,7 @@ public class AssessmentRepresentation {
 //        //try casting target to supply
 //        try {
 //
-//            Supply targetSupply = (Supply) assessment.getTargetOfAssessment();
+//            Supply targetSupply = (Supply) assessment.getTarget();
 //            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetSupply.getHref()));
 //            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetSupply.getHref()));
 //
@@ -79,7 +79,7 @@ public class AssessmentRepresentation {
 //        //try casting target to profile
 //        try {
 //
-//            Profile targetProfile = (Profile) assessment.getTargetOfAssessment();
+//            Profile targetProfile = (Profile) assessment.getTarget();
 //            assessmentMap.mapPut("targetOfAssessmentId", Utils.toApiID(targetProfile.getHref()));
 //            assessmentMap.mapPut("targetOfAssessmentURI", Utils.toObjectURI(targetProfile.getHref()));
 //

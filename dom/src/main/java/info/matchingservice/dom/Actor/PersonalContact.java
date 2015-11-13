@@ -73,45 +73,26 @@ public class PersonalContact extends MatchingTrustedContact {
     }
     //-- contactPerson --//
  
-    //** ownerPerson **//
-    private Person ownerPerson;
+    //** owner **//
+    private Person owner;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Property(editing=Editing.DISABLED)
     @PropertyLayout()
-    public Person getOwnerPerson() {
-        return ownerPerson;
+    public Person getOwner() {
+        return owner;
     }
 
-    public void setOwnerPerson(final Person ownerPerson) {
-        this.ownerPerson = ownerPerson;
+    public void setOwner(final Person owner) {
+        this.owner = owner;
     }
-    //--  ownerPerson --//
-    
-	//-- API: PROPERTIES --//
-	//** API: COLLECTIONS **//
-	//-- API: COLLECTIONS --//
-	//** API: ACTIONS **//
-	//-- API: ACTIONS --//
-	//** GENERIC OBJECT STUFF **//
-	//** constructor **//
-	//** ownedBy - Override for secure object **//
-	//-- GENERIC OBJECT STUFF --//
-	//** HELPERS **//
-    //** HELPERS: generic object helpers **//
+    //--  owner --//
+
     public String title(){
         return "CONTACT_WITH " + getContactPerson().title();
     }
-	//-- HELPERS: generic object helpers --//
-	//** HELPERS: programmatic actions **//
-	//-- HELPERS: programmatic actions --// 
-	//-- HELPERS --//
-	//** INJECTIONS **//
+
     @Inject
     Persons persons;
-	//-- INJECTIONS --//
-	//** HIDDEN: PROPERTIES **//
-	//-- HIDDEN: PROPERTIES --//
-	//** HIDDEN: ACTIONS **//
-	//-- HIDDEN: ACTIONS --//
+
 }

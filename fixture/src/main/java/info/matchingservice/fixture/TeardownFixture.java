@@ -29,32 +29,26 @@ public class TeardownFixture extends FixtureScript {
     	isisJdoSupport.executeUpdate("delete from \"TagHolder\"");
     	isisJdoSupport.executeUpdate("delete from \"Tag\"");
     	isisJdoSupport.executeUpdate("delete from \"TagCategory\"");
-    	
-    	isisJdoSupport.executeUpdate("delete from \"DemandAssessment\"");
-        isisJdoSupport.executeUpdate("delete from \"ProfileAssessment\"");
-        isisJdoSupport.executeUpdate("delete from \"SupplyAssessment\"");
-        isisJdoSupport.executeUpdate("delete from \"ProfileMatchAssessment\"");
-        isisJdoSupport.executeUpdate("delete from \"Assessment\"");
-        
+
         isisJdoSupport.executeUpdate("delete from \"PersonRole\"");
         isisJdoSupport.executeUpdate("delete from \"OrganisationRole\"");
         isisJdoSupport.executeUpdate("delete from \"SystemRole\"");
         isisJdoSupport.executeUpdate("delete from \"Role\"");
         
+        isisJdoSupport.executeUpdate("delete from \"Assessment\"");
         isisJdoSupport.executeUpdate("delete from \"ProfileMatch\"");
-
 
         isisJdoSupport.executeUpdate("delete from \"ProfileComparison\"");
 
         isisJdoSupport.executeUpdate("delete from \"PersistedProfileElementComparison\"");
 
         isisJdoSupport.executeUpdate("delete from \"ProfileElement\"");
+
+
         isisJdoSupport.executeUpdate("delete from \"Profile\"");
         isisJdoSupport.executeUpdate("delete from \"Demand\"");
         isisJdoSupport.executeUpdate("delete from \"Supply\"");
 
-
-        
         isisJdoSupport.executeUpdate("delete from \"MatchingTrustedContact\"");
         isisJdoSupport.executeUpdate("delete from \"CommunicationChannel\"");
 

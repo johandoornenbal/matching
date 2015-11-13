@@ -118,7 +118,7 @@
   </association>  
   <association id="18">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="19" name="targetOfAssessment"/>      
+      <attribute id="19" name="target"/>
       <multiplicity id="20" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    

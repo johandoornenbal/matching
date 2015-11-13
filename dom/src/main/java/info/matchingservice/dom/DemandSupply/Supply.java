@@ -273,7 +273,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
                        Profile.class, 
                    "allSupplyProfilesOfTypeByOwner", 
                    "ownedBy", currentUserName(),
-                   "profileType", ProfileType.PERSON_PROFILE);
+                   "type", ProfileType.PERSON_PROFILE);
          if (container.firstMatch(query) != null) {
            return true;
          }
