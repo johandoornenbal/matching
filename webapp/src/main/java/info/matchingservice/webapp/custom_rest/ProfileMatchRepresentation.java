@@ -39,15 +39,15 @@ public class ProfileMatchRepresentation {
         profileMatchMap.mapPut("supplyCandidatePictureLink", match.getSupplyCandidate().getImageUrl());
         profileMatchMap.mapPut("supplyCandidateURI", Utils.toObjectURI(match.getSupplyCandidate().getOID()));
         profileMatchMap.mapPut("supplyCandidateId", Utils.toApiID(match.getSupplyCandidate().getOID()));
-        profileMatchMap.mapPut("demandProfileId", Utils.toApiID(match.getDemandProfile().getOID()));
-        profileMatchMap.mapPut("demandProfileURI", Utils.toObjectURI(match.getDemandProfile().getOID()));
+        profileMatchMap.mapPut("demandProfileId", Utils.toApiID(match.getProfile().getOID()));
+        profileMatchMap.mapPut("demandProfileURI", Utils.toObjectURI(match.getProfile().getOID()));
         profileMatchMap.mapPut("matchingSupplyProfileId", Utils.toApiID(match.getMatchingSupplyProfile().getOID()));
         profileMatchMap.mapPut("matchingSupplyProfileURI", Utils.toObjectURI(match.getMatchingSupplyProfile().getOID()));
         profileMatchMap.mapPut("candidateStatus", match.getCandidateStatus().toString());
-        profileMatchMap.mapPut("ownerFullName", match.getOwnerActor().title());
-        profileMatchMap.mapPut("ownerPictureLink", match.getOwnerActor().getImageUrl());
-        profileMatchMap.mapPut("ownerURI", Utils.toObjectURI(match.getOwnerActor().getOID()));
-        profileMatchMap.mapPut("ownerId", Utils.toApiID(match.getOwnerActor().getOID()));
+        profileMatchMap.mapPut("ownerFullName", match.getOwner().title());
+        profileMatchMap.mapPut("ownerPictureLink", match.getOwner().getImageUrl());
+        profileMatchMap.mapPut("ownerURI", Utils.toObjectURI(match.getOwner().getOID()));
+        profileMatchMap.mapPut("ownerId", Utils.toApiID(match.getOwner().getOID()));
 
         return profileMatchMap;
     }

@@ -26,6 +26,7 @@ import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
+import org.joda.time.LocalDateTime;
 
 import javax.inject.Inject;
 import javax.jdo.JDOHelper;
@@ -48,12 +49,12 @@ import java.util.UUID;
             name = "findProfileMatchUnique", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Match.ProfileMatch "
-                    + "WHERE ownedBy == :ownedBy && supplyCandidate == :vacancyCandidate && demandProfile == :vacancyProfile"),
+                    + "WHERE ownedBy == :ownedBy && supplyCandidate == :vacancyCandidate && profile == :vacancyProfile"),
     @javax.jdo.annotations.Query(
             name = "findProfileMatchesByDemandProfile", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Match.ProfileMatch "
-                    + "WHERE demandProfile == :demandProfile"),
+                    + "WHERE profile == :profile"),
     @javax.jdo.annotations.Query(
             name = "findProfileMatchesBySupplyCandidate", language = "JDOQL",
             value = "SELECT "
@@ -63,13 +64,13 @@ import java.util.UUID;
             name = "findProfileMatchesByDemandProfileAndStatus", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Match.ProfileMatch "
-                    + "WHERE demandProfile == :demandProfile && candidateStatus == :candidateStatus")
+                    + "WHERE profile == :profile && candidateStatus == :candidateStatus")
 })
 @DomainObject(editing=Editing.DISABLED)
 public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
 
     public ProfileMatch() {
-        super("ownedBy, supplyCandidate, demandProfile, candidateStatus, uniqueItemId");
+        super("ownedBy, supplyCandidate, profile, candidateStatus, uniqueItemId");
     }
     
     public String title(){
@@ -92,6 +93,20 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
     public void setUniqueItemId(final UUID uniqueItemId) {
         this.uniqueItemId = uniqueItemId;
     }
+
+    //region > timeStamp (property)
+    private LocalDateTime timeStamp;
+
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(final LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+    //endregion
     
     private String ownedBy;
     
@@ -107,17 +122,17 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
         this.ownedBy = owner;
     }
     
-    private Person ownerActor;
+    private Person owner;
     
     @PropertyLayout()
     @Property(editing=Editing.DISABLED)
     @javax.jdo.annotations.Column(allowsNull = "false")
-    public Person getOwnerActor() {
-        return ownerActor;
+    public Person getOwner() {
+        return owner;
     }
     
-    public void setOwnerActor(final Person ownerActor) {
-        this.ownerActor = ownerActor;
+    public void setOwner(final Person owner) {
+        this.owner = owner;
     }
     
     private Person supplyCandidate;
@@ -132,16 +147,16 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
         this.supplyCandidate = candidate;
     }
     
-    private Profile demandProfile;
+    private Profile profile;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
-    public Profile getDemandProfile() {
-        return demandProfile;
+    public Profile getProfile() {
+        return profile;
     }
     
-    public void setDemandProfile(final Profile vacancyProfile){
-        this.demandProfile = vacancyProfile;
+    public void setProfile(final Profile vacancyProfile){
+        this.profile = vacancyProfile;
     }
     
     private CandidateStatus candidateStatus;
@@ -189,7 +204,7 @@ public class ProfileMatch extends MatchingSecureMutableObject<ProfileMatch> {
             profileMatchAssessment.deleteAssessment(true);
         }
         container.removeIfNotAlready(this);
-        return this.getDemandProfile();
+        return this.getProfile();
     }
     
     public String validateDeleteMatch(boolean confirmDelete) {

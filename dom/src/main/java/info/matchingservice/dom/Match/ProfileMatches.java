@@ -19,29 +19,18 @@
 
 package info.matchingservice.dom.Match;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.Contributed;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.annotation.Where;
-
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.MatchingDomainService;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.TrustLevel;
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.*;
+import org.joda.time.LocalDateTime;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 @DomainService(repositoryFor = ProfileMatch.class, nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 @DomainServiceLayout(menuOrder="100")
@@ -59,13 +48,13 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
     @Programmatic
     public List<ProfileMatch> findProfileMatchesByDemandProfile(Profile demandProfile) {
     	return allMatches("findProfileMatchesByDemandProfile",
-                "demandProfile", demandProfile);
+                "profile", demandProfile);
     }
 
     @Programmatic
     public List<ProfileMatch> findProfileMatchesByDemandProfileAndStatus(final Profile demandProfile, final CandidateStatus candidateStatus) {
         return allMatches("findProfileMatchesByDemandProfileAndStatus",
-                "demandProfile", demandProfile, "candidateStatus", candidateStatus);
+                "profile", demandProfile, "candidateStatus", candidateStatus);
     }
     
     @ActionLayout(hidden=Where.EVERYWHERE)
@@ -112,13 +101,15 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
         ProfileMatch newMatch = newTransientInstance(ProfileMatch.class);
         final UUID uuid=UUID.randomUUID();
         newMatch.setUniqueItemId(uuid);
-        newMatch.setOwnerActor(ownerActor);
+        newMatch.setOwner(ownerActor);
         newMatch.setSupplyCandidate(supplyCandidate);
-        newMatch.setDemandProfile(demandProfile);
+        newMatch.setProfile(demandProfile);
         newMatch.setMatchingSupplyProfile(matchingSupplyProfile);
         newMatch.setOwnedBy(owner);
         newMatch.setCandidateStatus(candidateStatus);
+        newMatch.setTimeStamp(new LocalDateTime().now());
         persist(newMatch);
+        getContainer().flush();
         return newMatch;
     }
 
@@ -129,8 +120,7 @@ public class ProfileMatches extends MatchingDomainService<ProfileMatch> {
         for (ProfileMatch p : allInstances(ProfileMatch.class)) {
             String[] parts = p.getOID().split(Pattern.quote("[OID]"));
             String part1 = parts[0];
-            String ApiId = "L_".concat(part1);
-            if (id.equals(ApiId)) {
+            if (id.equals(part1)) {
                 return p;
             }
         }

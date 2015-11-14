@@ -361,7 +361,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     private SortedSet<ProfileMatch> collectPersistedProfileMatches = new TreeSet<ProfileMatch>();
 
     @CollectionLayout(render=RenderType.EAGERLY)
-    @Persistent(mappedBy = "demandProfile", dependentElement = "true")
+    @Persistent(mappedBy = "profile", dependentElement = "true")
     public SortedSet<ProfileMatch> getCollectPersistedProfileMatches() {return collectPersistedProfileMatches; }
 
     public void setCollectPersistedProfileMatches(final SortedSet<ProfileMatch> profileMatches) {

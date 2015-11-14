@@ -22,7 +22,7 @@ public class ProfileMatchTest {
                     .withFixture(pojos(Profile.class, ProfileForTesting.class))
                     .withFixture(pojos(Person.class, PersonForTesting.class))
                     .withFixture(pojos(Actor.class, ActorForTesting.class))
-                    .exercise(pojo, FilterSet.excluding("uniqueItemId"));
+                    .exercise(pojo, FilterSet.excluding("uniqueItemId", "timeStamp"));
         }
 
     }

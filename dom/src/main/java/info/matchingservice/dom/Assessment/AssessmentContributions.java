@@ -165,7 +165,7 @@ public class AssessmentContributions extends MatchingDomainService<Assessment> {
     // BusinessRule: hide for users not in intimate circle
     public boolean hideCollectAssessments(final ProfileMatch profileMatch){
 
-        return profileMatch.getOwnerActor().allowedTrustLevel(TrustLevel.INTIMATE);
+        return profileMatch.getOwner().allowedTrustLevel(TrustLevel.INTIMATE);
 
     }
 

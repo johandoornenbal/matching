@@ -113,7 +113,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     //** savedMatches **//
     private SortedSet<ProfileMatch> savedMatches = new TreeSet<ProfileMatch>();
     
-    @Persistent(mappedBy = "ownerActor", dependentElement = "true")
+    @Persistent(mappedBy = "owner", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
     public SortedSet<ProfileMatch> getSavedMatches() {
         return savedMatches;

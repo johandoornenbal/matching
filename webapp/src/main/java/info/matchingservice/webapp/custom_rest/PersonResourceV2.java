@@ -29,6 +29,7 @@ import info.matchingservice.dom.Assessment.*;
 import info.matchingservice.dom.CommunicationChannels.*;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Profile.*;
 import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.applib.Identifier;
@@ -398,6 +399,9 @@ public class PersonResourceV2 extends ResourceAbstract {
         //sideload assessments
         result.add("communicationChannels", sideLoadCommunicationChannels(chosenPerson));
 
+        //sideload profileMatches
+        result.add("profileMatches", sideLoadProfileMatches(chosenPerson));
+
         //add success
         result.addProperty("success", 1);
 
@@ -601,6 +605,14 @@ public class PersonResourceV2 extends ResourceAbstract {
             }
         }
         return gson.toJsonTree(communicationChannelViewModels);
+    }
+
+    private JsonElement sideLoadProfileMatches(final Person person){
+        List<ProfileMatchViewModel> profileMatchViewModels = new ArrayList<>();
+        for (ProfileMatch match : api.getProfileMatchesForPerson(person)){
+            profileMatchViewModels.add(new ProfileMatchViewModel(match));
+        }
+        return gson.toJsonTree(profileMatchViewModels);
     }
 
 }
