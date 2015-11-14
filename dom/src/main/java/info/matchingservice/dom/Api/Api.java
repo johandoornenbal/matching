@@ -44,6 +44,11 @@ public class Api extends AbstractFactoryAndRepository {
 		return persons.activePerson();
 	}
 
+	@Programmatic
+	public Person findPersonById(Integer instanceId) {
+		return persons.findPersonById(instanceId);
+	}
+
 
 	/////////
 
@@ -185,6 +190,24 @@ public class Api extends AbstractFactoryAndRepository {
 		if (!person.hideSavedMatches()){
 			profileMatches.addAll(person.getSavedMatches());
 		}
+		if (!profileMatchRepo.hideCollectProfileMatches(person)){
+			profileMatches.addAll(profileMatchRepo.collectProfileMatches(person));
+		}
+		return profileMatches;
+	}
+
+	@Programmatic
+	public List<ProfileMatch> getProfileMatchesOwnedByPerson(Person person) {
+		List<ProfileMatch> profileMatches = new ArrayList<>();
+		if (!person.hideSavedMatches()){
+			profileMatches.addAll(person.getSavedMatches());
+		}
+		return profileMatches;
+	}
+
+	@Programmatic
+	public List<ProfileMatch> getProfileMatchesReferringToPerson(Person person) {
+		List<ProfileMatch> profileMatches = new ArrayList<>();
 		if (!profileMatchRepo.hideCollectProfileMatches(person)){
 			profileMatches.addAll(profileMatchRepo.collectProfileMatches(person));
 		}

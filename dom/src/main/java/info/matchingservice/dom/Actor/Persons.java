@@ -34,7 +34,6 @@ import org.joda.time.LocalDate;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.regex.Pattern;
 
 
 @DomainService(repositoryFor = Person.class, nature=NatureOfService.DOMAIN)
@@ -173,7 +172,8 @@ public class Persons extends MatchingDomainService<Person> {
             }
         }
         person.setActivated(false);
-        persist(person);
+        persistIfNotAlready(person);
+        getContainer().flush();
 
         // create first emailAddress contributed to Person copied from securityModule
         if (applicationUsers.findUserByUsername(userName) != null) {
@@ -269,19 +269,26 @@ public class Persons extends MatchingDomainService<Person> {
         return "NOT_DEACTIVATED";
     }
 
-    // Api v1
+    // for Api
     @Programmatic
-    public Person matchPersonApiId(final Integer id) {
+    public Person findPersonById(final Integer id) {
 
-        for (Person p : container.allInstances(Person.class)) {
-            String[] parts = p.getOID().split(Pattern.quote("[OID]"));
-            String part1 = parts[0];
-            if (id.toString().equals(part1)) {
-                return p;
-            }
+//        for (Person p : container.allInstances(Person.class)) {
+//            String[] parts = p.getOID().split(Pattern.quote("[OID]"));
+//            String part1 = parts[0];
+//            if (id.toString().equals(part1)) {
+//                return p;
+//            }
+//        }
+//
+//        return null;
+
+        String idString = id.toString().concat("[OID]info.matchingservice.dom.Actor.Person");
+        try {
+            return isisJdoSupport.getJdoPersistenceManager().getObjectById(Person.class, idString);
+        } catch (Exception e) {
+            return null;
         }
-
-        return null;
 
     }
 

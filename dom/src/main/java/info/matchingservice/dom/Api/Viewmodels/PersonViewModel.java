@@ -17,6 +17,8 @@ import java.util.List;
 
 /**
  * Created by jodo on 01/11/15.
+ *
+ * NOTE: In order to preserve or guard business logic all (collection) data should be retrieved via Api
  */
 @DomainObject(nature = Nature.VIEW_MODEL)
 public class PersonViewModel extends ApiAbstractViewModel {
@@ -72,10 +74,6 @@ public class PersonViewModel extends ApiAbstractViewModel {
         }
         this.personalContacts = personalContacts;
 
-        List<CommunicationChannelViewModel> addresses = new ArrayList<>();
-        List<CommunicationChannelViewModel> emailAddresses = new ArrayList<>();
-        List<CommunicationChannelViewModel> phones = new ArrayList<>();
-
         try {
             Address address = (Address) api.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.ADDRESS_MAIN).get(0);
             this.mainAddres = address.getAddress();
@@ -105,11 +103,25 @@ public class PersonViewModel extends ApiAbstractViewModel {
         }
         this.communicationChannels = communicationChannels;
 
+        // all profilematches
         List<Integer> profileMatches = new ArrayList<>();
         for (ProfileMatch profileMatch : api.getProfileMatchesForPerson(person)){
             profileMatches.add(profileMatch.getIdAsInt());
         }
         this.profileMatches = profileMatches;
+
+        List<Integer> profileMatchesOwned = new ArrayList<>();
+        for (ProfileMatch profileMatch : api.getProfileMatchesOwnedByPerson(person)){
+            profileMatchesOwned.add(profileMatch.getIdAsInt());
+        }
+        this.profileMatchesOwned = profileMatchesOwned;
+
+        List<Integer> profileMatchesReferring = new ArrayList<>();
+        for (ProfileMatch profileMatch : api.getProfileMatchesReferringToPerson(person)){
+            profileMatchesReferring.add(profileMatch.getIdAsInt());
+        }
+        this.profileMatchesReferring = profileMatchesReferring;
+
 
         this.actions = api.getActionsForPerson(person);
 
@@ -401,6 +413,32 @@ public class PersonViewModel extends ApiAbstractViewModel {
 
     public void setProfileMatches(final List<Integer> profileMatches) {
         this.profileMatches = profileMatches;
+    }
+    //endregion
+
+    //region > profileMatchesOwned (property)
+    private List<Integer> profileMatchesOwned;
+
+    @MemberOrder(sequence = "1")
+    public List<Integer> getProfileMatchesOwned() {
+        return profileMatchesOwned;
+    }
+
+    public void setProfileMatchesOwned(final List<Integer> profileMatchesOwned) {
+        this.profileMatchesOwned = profileMatchesOwned;
+    }
+    //endregion
+
+    //region > profileMatchesReferring (property)
+    private List<Integer> profileMatchesReferring;
+
+    @MemberOrder(sequence = "1")
+    public List<Integer> getProfileMatchesReferring() {
+        return profileMatchesReferring;
+    }
+
+    public void setProfileMatchesReferring(final List<Integer> profileMatchesReferring) {
+        this.profileMatchesReferring = profileMatchesReferring;
     }
     //endregion
 

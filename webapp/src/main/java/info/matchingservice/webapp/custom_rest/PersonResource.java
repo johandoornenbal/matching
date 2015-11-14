@@ -64,7 +64,7 @@ public class PersonResource extends ResourceAbstract {
 
         final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
 
-        Person activePerson = persons.matchPersonApiId(instanceId);
+        Person activePerson = persons.findPersonById(instanceId);
 
         return Response.status(200).entity(personRepresentation(activePerson).toString()).build();
     }

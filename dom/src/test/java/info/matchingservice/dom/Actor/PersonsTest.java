@@ -17,17 +17,16 @@
 
 package info.matchingservice.dom.Actor;
 
-import java.util.List;
-
+import info.matchingservice.dom.FinderInteraction;
+import org.apache.isis.applib.query.Query;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.apache.isis.applib.query.Query;
+import java.util.List;
 
-import info.matchingservice.dom.FinderInteraction;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
@@ -46,6 +45,12 @@ public class PersonsTest {
             @Override
             protected <T> T firstMatch(Query<T> query) {
                 finderInteraction = new FinderInteraction(query, FinderInteraction.FinderMethod.FIRST_MATCH);
+                return null;
+            }
+
+            @Override
+            protected <T> T uniqueMatch(Query<T> query) {
+                finderInteraction = new FinderInteraction(query, FinderInteraction.FinderMethod.UNIQUE_MATCH);
                 return null;
             }
 

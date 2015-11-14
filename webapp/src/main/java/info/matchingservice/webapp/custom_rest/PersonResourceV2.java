@@ -29,7 +29,6 @@ import info.matchingservice.dom.Assessment.*;
 import info.matchingservice.dom.CommunicationChannels.*;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Match.ProfileMatches;
 import info.matchingservice.dom.Profile.*;
 import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.applib.Identifier;
@@ -59,7 +58,6 @@ public class PersonResourceV2 extends ResourceAbstract {
     private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);
     private Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
-    private ProfileMatches profileMatches = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ProfileMatches.class);
 
     @GET
     @Path("/")
@@ -69,13 +67,17 @@ public class PersonResourceV2 extends ResourceAbstract {
         final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
 
         Person activePerson = persons.activePerson();
-        String apiNotes ="This is a deepnested presentation of activePerson (Object person connected to currentUser). Property 'profile' is added for convenience in the root. It is the active person's Supply of type PERSON_DEMANDSUPPLY which should be unique.";
+        if (activePerson == null){
+            String error = "{\"success\" : 0 , \"error\" : \"person not found. Most likely cause: for this login no Person object created.\"}";
+            return Response.status(400).entity(error).build();
+        }
 
-        ActivePersonViewModel activePersonViewModel = new ActivePersonViewModel(activePerson, communicationChannels, apiNotes);
+        JsonObject result = createPersonResult(activePerson.getIdAsInt());
 
-        JsonElement personRepresentation = gson.toJsonTree(activePersonViewModel);
-        JsonObject result = new JsonObject();
-        result.add("activePerson", personRepresentation);
+        if (result == null){
+            String error = "{\"success\" : 0 , \"error\" : \"person not found. Most likely cause: for this login no Person object created.\"}";
+            return Response.status(400).entity(error).build();
+        }
 
         return Response.status(200).entity(result.toString()).build();
     }
@@ -86,6 +88,10 @@ public class PersonResourceV2 extends ResourceAbstract {
     public Response getPersonServices(@PathParam("instanceId") Integer instanceId) {
 
         JsonObject result = createPersonResult(instanceId);
+        if (result == null){
+            String error = "{\"success\" : 0 , \"error\" : \"person not found\"}";
+            return Response.status(400).entity(error).build();
+        }
         return Response.status(200).entity(result.toString()).build();
     }
 
@@ -94,7 +100,11 @@ public class PersonResourceV2 extends ResourceAbstract {
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
     public Response putPersonServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
 
-        Person chosenPerson = persons.matchPersonApiId(instanceId);
+        Person chosenPerson = api.findPersonById(instanceId);
+        if (chosenPerson == null){
+            String error = "{\"success\" : 0 , \"error\" : \"person not found\"}";
+            return Response.status(400).entity(error).build();
+        }
 
         String objectStr = Util.asStringUtf8(object);
         JsonRepresentation argRepr = Util.readAsMap(objectStr);
@@ -196,7 +206,7 @@ public class PersonResourceV2 extends ResourceAbstract {
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
     public Response createPersonsDemandServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
 
-        Person chosenPerson = persons.matchPersonApiId(instanceId);
+        Person chosenPerson = persons.findPersonById(instanceId);
         String objectStr = Util.asStringUtf8(object);
         JsonRepresentation argRepr = Util.readAsMap(objectStr);
 
@@ -348,13 +358,18 @@ public class PersonResourceV2 extends ResourceAbstract {
      *
      * @param instanceId
      * @return  A JsonObject containing a person representation with sideloaded collections
+     *
+     * NOTE: In order to preserve or guard business logic all data should be retrieved via Api
      */
     private JsonObject createPersonResult(final Integer instanceId) {
 
         JsonObject result = new JsonObject();
 
         // person
-        Person chosenPerson = persons.matchPersonApiId(instanceId);
+        Person chosenPerson = api.findPersonById(instanceId);
+        if (chosenPerson == null) {
+            return null;
+        }
         PersonViewModel personViewModel = new PersonViewModel(chosenPerson, api);
         JsonElement personRepresentation = gson.toJsonTree(personViewModel);
         result.add("person", personRepresentation);
@@ -383,6 +398,9 @@ public class PersonResourceV2 extends ResourceAbstract {
         //sideload assessments
         result.add("communicationChannels", sideLoadCommunicationChannels(chosenPerson));
 
+        //add success
+        result.addProperty("success", 1);
+
         return result;
     }
 
@@ -407,12 +425,12 @@ public class PersonResourceV2 extends ResourceAbstract {
     private JsonElement sideLoadProfiles(final Person person){
 
         List<ProfileViewModel> profileViewModels = new ArrayList<>();
-        for (Supply supply : person.getSupplies()){
+        for (Supply supply : api.getSuppliesForPerson(person)){
             for (Profile profile : supply.getProfiles()) {
                 profileViewModels.add(new ProfileViewModel(profile));
             }
         }
-        for (Demand demand : person.getDemands()){
+        for (Demand demand : api.getDemandsForPerson(person)){
             for (Profile profile : demand.getProfiles()) {
                 profileViewModels.add(new ProfileViewModel(profile));
             }
@@ -424,14 +442,14 @@ public class PersonResourceV2 extends ResourceAbstract {
 
         // collect the elements
         List<ProfileElement> profileElementList = new ArrayList<>();
-        for (Supply supply : person.getSupplies()){
+        for (Supply supply : api.getSuppliesForPerson(person)){
             for (Profile profile : supply.getProfiles()) {
                 for (ProfileElement element : profile.getCollectProfileElements()){
                     profileElementList.add(element);
                 }
             }
         }
-        for (Demand demand : person.getDemands()){
+        for (Demand demand : api.getDemandsForPerson(person)){
             for (Profile profile : demand.getProfiles()) {
                 for (ProfileElement element : profile.getCollectProfileElements()){
                     profileElementList.add(element);
@@ -511,7 +529,7 @@ public class PersonResourceV2 extends ResourceAbstract {
 
         // collect the Tag elements
         List<ProfileElementTag> profileElementTagList = new ArrayList<>();
-        for (Supply supply : person.getSupplies()){
+        for (Supply supply : api.getSuppliesForPerson(person)){
             for (Profile profile : supply.getProfiles()) {
                 for (ProfileElement element : profile.getCollectProfileElements()){
                     if (element.getClass().equals(ProfileElementTag.class)) {
@@ -520,7 +538,7 @@ public class PersonResourceV2 extends ResourceAbstract {
                 }
             }
         }
-        for (Demand demand : person.getDemands()){
+        for (Demand demand : api.getDemandsForPerson(person)){
             for (Profile profile : demand.getProfiles()) {
                 for (ProfileElement element : profile.getCollectProfileElements()){
                     if (element.getClass().equals(ProfileElementTag.class)) {
