@@ -20,6 +20,7 @@ package info.matchingservice.integtest.dom.actor;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestRoles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
@@ -183,16 +184,19 @@ public class PersonsTest extends MatchingIntegrationTest {
             assertThat(p1.getMiddleName(), is(MIDDLE_NAME));
             assertThat(p1.getImageUrl(), is(PICTURE_LINK));
             
-//            assertThat(p1.getUniqueActorId(), is(UNIQUE_ID));
-            
             assertThat(p1.getOwnedBy(), is(OWNED_BY));
-            
-//            assertThat(p2.getUniqueActorId(), is(UNIQUE_ID));
+
             assertThat(p2.getOwnedBy(), is(OWNED_BY));
             
             assertThat(p1, is(p2));
+
+            // make sure TrustedCircleConfig is created for new person
+            assertThat(trustedCircleConfigRepo.findTrustedCircleConfigByOwner(OWNED_BY).getOwnedBy(), is(OWNED_BY));
             
         }
+
+        @Inject
+        TrustedCircleConfigRepo trustedCircleConfigRepo;
         
     }
     

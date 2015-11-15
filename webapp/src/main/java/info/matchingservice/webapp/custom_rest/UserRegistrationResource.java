@@ -17,6 +17,7 @@
 
 package info.matchingservice.webapp.custom_rest;
 
+import com.google.gson.JsonObject;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
 import info.matchingservice.dom.Howdoido.Api;
@@ -69,29 +70,63 @@ public class UserRegistrationResource extends ResourceAbstract {
         String objectStr = Util.asStringUtf8(object);
         JsonRepresentation argRepr = Util.readAsMap(objectStr);
         if(!argRepr.isMap()) {
+
             throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
+
         } else {
 
-            String id = "username";
-            JsonRepresentation propertyUsername = argRepr.getRepresentation(id, new Object[0]);
-            String userName = propertyUsername.getString("");
+            String id = "userName";
+            String userName;
+            try {
+                JsonRepresentation propertyUsername = argRepr.getRepresentation(id, new Object[0]);
+                userName = propertyUsername.getString("");
+            } catch (Exception e) {
+                JsonObject result = new JsonObject();
+                result.addProperty("success", 0);
+                result.addProperty("error", "property 'userName' is mandatory");
+                return Response.status(400).entity(result.toString()).build();
+            }
 
             String id2 = "password";
-            JsonRepresentation propertyPassword = argRepr.getRepresentation(id2, new Object[0]);
-            String passWord = propertyPassword.getString("");
+            String password;
+            try {
+                JsonRepresentation propertyPassword = argRepr.getRepresentation(id2, new Object[0]);
+                password = propertyPassword.getString("");
+            } catch (Exception e) {
+                JsonObject result = new JsonObject();
+                result.addProperty("success", 0);
+                result.addProperty("error", "property 'password' is mandatory");
+                return Response.status(400).entity(result.toString()).build();
+            }
 
             String id3 = "passwordConfirm";
-            JsonRepresentation propertyPasswordConfirm = argRepr.getRepresentation(id3, new Object[0]);
-            String passWordConfirm = propertyPasswordConfirm.getString("");
+            String passwordConfirm;
+            try {
+                JsonRepresentation propertyPasswordConfirm = argRepr.getRepresentation(id3, new Object[0]);
+                passwordConfirm = propertyPasswordConfirm.getString("");
+            } catch (Exception e) {
+                JsonObject result = new JsonObject();
+                result.addProperty("success", 0);
+                result.addProperty("error", "property 'passwordConfirm' is mandatory");
+                return Response.status(400).entity(result.toString()).build();
+            }
 
             String id4 = "email";
-            JsonRepresentation propertyEmail = argRepr.getRepresentation(id4, new Object[0]);
-            String email = propertyEmail.getString("");
+            String email;
+            try {
+                JsonRepresentation propertyEmail = argRepr.getRepresentation(id4, new Object[0]);
+                email = propertyEmail.getString("");
+            } catch (Exception e) {
+                JsonObject result = new JsonObject();
+                result.addProperty("success", 0);
+                result.addProperty("error", "property 'email' is mandatory");
+                return Response.status(400).entity(result.toString()).build();
+            }
 
             //input validation
 
             boolean error = false;
-            String errorString = new String();
+            String errorString;
             errorString = "";
             //username should be conform REGEX
             Matcher matcher = USERNAME_REGEX.matcher(userName);
@@ -99,30 +134,27 @@ public class UserRegistrationResource extends ResourceAbstract {
                 if (error) {
                     errorString = errorString.concat(", ");
                 }
-                errorString = errorString.concat("\"username\" : \"ONE_AND_WORD_LETTERS_NUMBERS_ONLY\"");
+                errorString = errorString.concat(" userName : ONE_AND_WORD_LETTERS_NUMBERS_ONLY ");
                 error = true;
-//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"username '" + userName + "' NOT allowed. Use one word using letters and numbers only.\"}").build();
             }
 
             //passwords should match
-            if (!passWord.equals(passWordConfirm)) {
+            if (!password.equals(passwordConfirm)) {
                 if (error) {
                     errorString = errorString.concat(", ");
                 }
-                errorString = errorString.concat("\"password\" : \"PASSWORD_NOT_MATCHING\"");
+                errorString = errorString.concat(" password : PASSWORD_NOT_MATCHING ");
                 error = true;
-//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"passwords do not match\"}").build();
             }
 
             //password should be conform REGEX
-            matcher = PASSWORD_REGEX.matcher(passWord);
+            matcher = PASSWORD_REGEX.matcher(password);
             if (!matcher.matches()) {
                 if (error) {
                     errorString = errorString.concat(", ");
                 }
-                errorString = errorString.concat("\"password\" : \"NO_BLANKS_IN_PASSWORD\"");
+                errorString = errorString.concat(" password : NO_BLANKS_IN_PASSWORD ");
                 error = true;
-//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"password NOT allowed. Use one word instead.\"}").build();
             }
 
             //email should be conform REGEX
@@ -131,17 +163,15 @@ public class UserRegistrationResource extends ResourceAbstract {
                 if (error) {
                     errorString = errorString.concat(", ");
                 }
-                errorString = errorString.concat("\"email\" : \"NO_VALID_EMAIL_ADDRESS\"");
+                errorString = errorString.concat(" email : NO_VALID_EMAIL_ADDRESS ");
                 error = true;
-//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"not a valid email address\"}").build();
             }
 
             if (error) {
-                String responseMessage = new String();
-                responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
-                responseMessage = responseMessage.concat(errorString);
-                responseMessage = responseMessage.concat("}}");
-                return Response.status(200).entity(responseMessage).build();
+                JsonObject result = new JsonObject();
+                result.addProperty("success", 0);
+                result.addProperty("error", errorString);
+                return Response.status(400).entity(result.toString()).build();
             }
 
             //Check for existing username / email
@@ -150,42 +180,38 @@ public class UserRegistrationResource extends ResourceAbstract {
                 if (error) {
                     errorString = errorString.concat(", ");
                 }
-                errorString = errorString.concat("\"username\" : \"ALREADY_REGISTERED_AND_HAS_PERSONRECORD\"");
+                errorString = errorString.concat(" userName : ALREADY_REGISTERED_AND_HAS_PERSONRECORD ");
                 error = true;
-//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"user with username '" + persons.findPersonUnique(userName).getOwnedBy() + "' already registered and known in Matching App\"}").build();
             }
             final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
             if (applicationUsers.findUserByUsername(userName) != null) {
                 if (error) {
                     errorString = errorString.concat(", ");
                 }
-                errorString = errorString.concat("\"username\" : \"ALREADY_REGISTERED_NO_PERSONRECORD\"");
+                errorString = errorString.concat(" userName : ALREADY_REGISTERED_NO_PERSONRECORD ");
                 error = true;
-//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"user with username '" + applicationUsers.findUserByUsername(userName).getUsername() + "' already registered but has no Person record yet\"}").build();
             }
             if (applicationUsers.findUserByEmail(email) != null) {
                 if (error) {
                     errorString = errorString.concat(", ");
                 }
-                errorString = errorString.concat("\"email\" : \"ALREADY_REGISTERED_UNDER_OTHER_USERNAME\"");
+                errorString = errorString.concat(" email : ALREADY_REGISTERED_UNDER_OTHER_USERNAME ");
                 error = true;
-//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"emailaddres '" + applicationUsers.findUserByEmail(email).getEmailAddress() + "' already registered under another username\"}").build();
             }
 
             if (error) {
-                String responseMessage = new String();
-                responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
-                responseMessage = responseMessage.concat(errorString);
-                responseMessage = responseMessage.concat("}}");
-                return Response.status(200).entity(responseMessage).build();
+                JsonObject result = new JsonObject();
+                result.addProperty("success", 0);
+                result.addProperty("error", errorString);
+                return Response.status(400).entity(result.toString()).build();
             }
 
             //Register user
 
             UserDetails userDetails = new UserDetails();
             userDetails.setUsername(userName);
-            userDetails.setPassword(passWord);
-            userDetails.setConfirmPassword(passWordConfirm);
+            userDetails.setPassword(password);
+            userDetails.setConfirmPassword(passwordConfirm);
             userDetails.setEmailAddress(email);
 
             final UserRegistrationService appUserRegistrationService =
@@ -202,14 +228,11 @@ public class UserRegistrationResource extends ResourceAbstract {
 
             } else {
 
-                errorString = errorString.concat("\"email\" : \"ALREADY_REGISTERED_UNDER_OTHER_USERNAME\"");
-                error = true;
-//                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"unkown error: user with username '" + userName + "' NOT registered\"}").build();
-                    String responseMessage = new String();
-                    responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
-                    responseMessage = responseMessage.concat(errorString);
-                    responseMessage = responseMessage.concat("}}");
-                    return Response.status(200).entity(responseMessage).build();
+                errorString = errorString.concat(" email  :  ALREADY_REGISTERED_UNDER_OTHER_USERNAME ");
+                JsonObject result = new JsonObject();
+                result.addProperty("success", 0);
+                result.addProperty("error", errorString);
+                return Response.status(400).entity(result.toString()).build();
             }
 
         }
@@ -232,7 +255,7 @@ public class UserRegistrationResource extends ResourceAbstract {
             //input validation
 
             boolean error = false;
-            String errorString = new String();
+            String errorString;
             errorString = "";
 
             //email should be conform REGEX
@@ -247,9 +270,9 @@ public class UserRegistrationResource extends ResourceAbstract {
 
             if (error) {
                 String responseMessage = new String();
-                responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
+                responseMessage = responseMessage.concat("{\"success\" : 0, \"error\" : ");
                 responseMessage = responseMessage.concat(errorString);
-                responseMessage = responseMessage.concat("}}");
+                responseMessage = responseMessage.concat("}");
                 return Response.status(200).entity(responseMessage).build();
             }
 
@@ -266,9 +289,9 @@ public class UserRegistrationResource extends ResourceAbstract {
 
             if (error) {
                 String responseMessage = new String();
-                responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
+                responseMessage = responseMessage.concat("{\"success\" : 0, \"error\" : ");
                 responseMessage = responseMessage.concat(errorString);
-                responseMessage = responseMessage.concat("}}");
+                responseMessage = responseMessage.concat("}");
                 return Response.status(200).entity(responseMessage).build();
             }
 
@@ -292,9 +315,9 @@ public class UserRegistrationResource extends ResourceAbstract {
                 error = true;
 //                return Response.status(200).entity("{\"success\" : 0, \"message\" : \"unkown error: user with username '" + userName + "' NOT registered\"}").build();
                 String responseMessage = new String();
-                responseMessage = responseMessage.concat("{\"success\" : 0, \"errors\" : {");
+                responseMessage = responseMessage.concat("{\"success\" : 0, \"error\" : ");
                 responseMessage = responseMessage.concat(errorString);
-                responseMessage = responseMessage.concat("}}");
+                responseMessage = responseMessage.concat("}");
                 return Response.status(200).entity(responseMessage).build();
             }
 

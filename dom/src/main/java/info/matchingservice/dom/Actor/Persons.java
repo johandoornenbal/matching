@@ -25,6 +25,7 @@ import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
 import info.matchingservice.dom.MatchingDomainService;
+import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.services.clock.ClockService;
@@ -178,8 +179,11 @@ public class Persons extends MatchingDomainService<Person> {
         // create first emailAddress contributed to Person copied from securityModule
         if (applicationUsers.findUserByUsername(userName) != null) {
             final String emailAddress = applicationUsers.findUserByUsername(userName).getEmailAddress();
-            communicationChannels.createEmail(emailAddress, CommunicationChannelType.EMAIL_MAIN, person);
+            communicationChannels.createEmail(emailAddress, CommunicationChannelType.EMAIL_MAIN, person, userName);
         }
+
+        // create default TrustedCircleConfig
+        trustedCircleConfigRepo.findOrCreateConfig(userName);
 
         return person;
     }
@@ -309,6 +313,9 @@ public class Persons extends MatchingDomainService<Person> {
 
     @Inject
     private ClockService clockService;
+
+    @Inject
+    private TrustedCircleConfigRepo trustedCircleConfigRepo;
 
 
 }

@@ -56,7 +56,7 @@ public class TrustedCircleConfigRepo extends MatchingDomainService<TrustedCircle
             final String className
     ){
         TrustedCircleConfig config = findTrustedCircleConfigByOwner(ownedBy);
-        return trustedCircleElementRepo.findTrustedCircleElementUnique(config,name, Identifier.Type.PROPERTY_OR_COLLECTION,className).getHideFor();
+        return trustedCircleElementRepo.findTrustedCircleElementUnique(config, name, Identifier.Type.PROPERTY_OR_COLLECTION,className).getHideFor();
     }
 
     @Inject

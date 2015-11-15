@@ -60,6 +60,8 @@ public class PersonResourceV2 extends ResourceAbstract {
     private Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
 
+    /************************** ROOT *************************************/
+
     @GET
     @Path("/")
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
@@ -82,6 +84,26 @@ public class PersonResourceV2 extends ResourceAbstract {
 
         return Response.status(200).entity(result.toString()).build();
     }
+
+    @DELETE
+    @Path("/")
+    public Response deleteServicesNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Deleting the v1 resource is not allowed.", new Object[0]);
+    }
+
+    @POST
+    @Path("/")
+    public Response postServicesNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the v1 resource is not allowed.", new Object[0]);
+    }
+
+    @PUT
+    @Path("/")
+    public Response putServicesNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the v1 resource is not allowed.", new Object[0]);
+    }
+
+    /************************** persons/{id} *************************************/
 
     @GET
     @Path("/persons/{instanceId}")
@@ -171,8 +193,64 @@ public class PersonResourceV2 extends ResourceAbstract {
                 imageUrl = chosenPerson.getImageUrl();
             }
 
+            String id6 = "mainEmail";
+            String mainEmail = null;
+            try {
+                JsonRepresentation propertyImageUrl = argRepr.getRepresentation(id6, new Object[0]);
+                mainEmail = propertyImageUrl.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
+            String id7 = "mainPhone";
+            String mainPhone = null;
+            try {
+                JsonRepresentation propertyImageUrl = argRepr.getRepresentation(id7, new Object[0]);
+                mainPhone = propertyImageUrl.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
+            String id8 = "mainAddress";
+            String mainAddress = null;
+            try {
+                JsonRepresentation propertyImageUrl = argRepr.getRepresentation(id8, new Object[0]);
+                mainAddress = propertyImageUrl.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
+            String id9 = "mainPostalCode";
+            String mainPostalCode = null;
+            try {
+                JsonRepresentation propertyImageUrl = argRepr.getRepresentation(id9, new Object[0]);
+                mainPostalCode = propertyImageUrl.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
+            String id10 = "mainTown";
+            String mainTown = null;
+            try {
+                JsonRepresentation propertyImageUrl = argRepr.getRepresentation(id10, new Object[0]);
+                mainTown = propertyImageUrl.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
             // update action through api method!
-            api.updatePerson(chosenPerson, firstName, middleName, lastName, dateOfBirth, imageUrl);
+            api.updatePerson(
+                    chosenPerson,
+                    firstName,
+                    middleName,
+                    lastName,
+                    dateOfBirth,
+                    imageUrl,
+                    mainEmail,
+                    mainPhone,
+                    mainAddress,
+                    mainPostalCode,
+                    mainTown);
 
             JsonObject result = createPersonResult(instanceId);
             JsonElement successElement = gson.toJsonTree(new Integer(1));
@@ -181,6 +259,25 @@ public class PersonResourceV2 extends ResourceAbstract {
             return Response.status(200).entity(result.toString()).build();
         }
     }
+
+    @DELETE
+    @Path("/persons/{instanceId}")
+    public Response deletePersonsIdNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed", new Object[0]);
+    }
+
+    @POST
+    @Path("/persons/{instanceId}")
+    public Response postPersonsIdNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed", new Object[0]);
+    }
+
+
+
+
+    /************************** Persons *************************************/
+
+
 
     @GET
     @Path("/persons")
@@ -201,6 +298,29 @@ public class PersonResourceV2 extends ResourceAbstract {
 
         return Response.status(200).entity(result.toString()).build();
     }
+
+
+    @PUT
+    @Path("/persons")
+    public Response putPersonsNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
+    }
+
+    @DELETE
+    @Path("/persons")
+    public Response deletePersonsNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
+    }
+
+    @POST
+    @Path("/persons")
+    public Response postPersonsNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
+    }
+
+
+    /************************** persons/{id}/actions *************************************/
+
 
     @POST
     @Path("/persons/{instanceId}/actions/createPersonDemand")
@@ -293,35 +413,7 @@ public class PersonResourceV2 extends ResourceAbstract {
         }
     }
 
-    @DELETE
-    @Path("/")
-    public Response deleteServicesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Deleting the v1 resource is not allowed.", new Object[0]);
-    }
-
-    @POST
-    @Path("/")
-    public Response postServicesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the v1 resource is not allowed.", new Object[0]);
-    }
-
-    @PUT
-    @Path("/")
-    public Response putServicesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the v1 resource is not allowed.", new Object[0]);
-    }
-
-    @DELETE
-    @Path("/people/{instanceId}")
-    public Response deletePeopleNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Deleting the people resource is not allowed.", new Object[0]);
-    }
-
-    @POST
-    @Path("/people/{instanceId}")
-    public Response postPeopleNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the people resource is not allowed.", new Object[0]);
-    }
+    /************************** apidoc *************************************/
 
     @GET
     @Path("/apidoc")
@@ -354,6 +446,7 @@ public class PersonResourceV2 extends ResourceAbstract {
 
     }
 
+    /************************** Helpers *************************************/
 
     /**
      *

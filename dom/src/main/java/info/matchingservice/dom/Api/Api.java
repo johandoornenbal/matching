@@ -3,9 +3,7 @@ package info.matchingservice.dom.Api;
 import com.google.common.base.Objects;
 import info.matchingservice.dom.Actor.*;
 import info.matchingservice.dom.Assessment.Assessment;
-import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
-import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
-import info.matchingservice.dom.CommunicationChannels.CommunicationChannels;
+import info.matchingservice.dom.CommunicationChannels.*;
 import info.matchingservice.dom.DemandSupply.*;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Match.ProfileMatches;
@@ -60,7 +58,12 @@ public class Api extends AbstractFactoryAndRepository {
 			final String middleName,
 			final String lastName,
 			final String dateOfBirth,
-			final String imageUrl){
+			final String imageUrl,
+			final String mainEmail,
+			final String mainPhone,
+			final String mainAddress,
+			final String mainPostalCode,
+			final String mainTown){
 
 		//check ownership (only owner can modify Person)
 		if (!currentUserName().equals(person.getOwnedBy())){
@@ -95,6 +98,82 @@ public class Api extends AbstractFactoryAndRepository {
 		} else {
 			// dateOfBirth is a Date
 			dateOfBirthUpdate = new LocalDate(dateOfBirth);
+		}
+
+		if (mainEmail == null) {
+			// email not present in payload
+		} else {
+			// try update email
+			try {
+				if (mainEmail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$")){
+					Email emailToUpdate = (Email) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.EMAIL_MAIN).get(0);
+					emailToUpdate.updateEmail(mainEmail);
+				} else {
+					throw new IllegalArgumentException("Not a valid emailaddress");
+				}
+			} catch (Exception e){
+				e = new IllegalArgumentException("Email could not be updated");
+			}
+		}
+
+		if (mainPhone == null) {
+			//mainPhone not present in payload
+		} else {
+
+			//update or create mainPhone
+			if (communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.PHONE_MAIN).size() > 0) {
+				try {
+					Phone phoneToUpdate = (Phone) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.PHONE_MAIN).get(0);
+					phoneToUpdate.updatePhone(CommunicationChannelType.PHONE_MAIN, mainPhone);
+				} catch (IllegalArgumentException e) {
+					e = new IllegalArgumentException("Phone could not be updated");
+				}
+			} else {
+				communicationChannels.createPhone(person, CommunicationChannelType.PHONE_MAIN, mainPhone);
+			}
+
+		}
+
+		// test if mainAddress exists: then update else create
+		if (
+				communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.ADDRESS_MAIN).size() > 0
+				&&
+				!(mainAddress==null && mainPostalCode==null && mainTown==null)
+				) {
+
+			Address addressToUpdate = (Address) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.ADDRESS_MAIN).get(0);
+			String addressUpdate;
+			String postalCodeUpdate;
+			String townUpdate;
+			//try update address
+			if (mainAddress != null) {
+				addressUpdate = mainAddress;
+			} else {
+				addressUpdate = addressToUpdate.getAddress();
+			}
+
+			//try update postalCode
+			if (mainPostalCode != null) {
+				postalCodeUpdate = mainPostalCode;
+			} else {
+				postalCodeUpdate = addressToUpdate.getPostalCode();
+			}
+
+			//try update town
+			if (mainTown != null) {
+				townUpdate = mainTown;
+			} else {
+				townUpdate = addressToUpdate.getTown();
+			}
+
+			addressToUpdate.updateAddress(CommunicationChannelType.ADDRESS_MAIN,townUpdate,addressUpdate,postalCodeUpdate);
+
+		} else {
+
+			if (mainAddress!=null && mainPostalCode!=null && mainTown!=null) {
+				communicationChannels.createAddress(person, CommunicationChannelType.ADDRESS_MAIN, mainAddress, mainPostalCode, mainTown);
+			}
+
 		}
 
 		return person.updatePerson(
@@ -223,19 +302,19 @@ public class Api extends AbstractFactoryAndRepository {
 	public List<String> getActionsForPerson(final Person person){
 		List<String> actions = new ArrayList<>();
 
-        if (currentUserName().equals(person.getOwnedBy())) {
-            String createAddres = "createAddres";
-            actions.add(createAddres);
-            String createEmail = "createEmail";
-            actions.add(createEmail);
-            String createPhone = "createPhone";
-            actions.add(createPhone);
-        }
-
-		if (currentUserName().equals(person.getOwnedBy()) && person.getIsPrincipal()) {
-			String createPersonsDemand = "createPersonDemand";
-			actions.add(createPersonsDemand);
-		}
+//        if (currentUserName().equals(person.getOwnedBy())) {
+//            String createAddres = "createAddres";
+//            actions.add(createAddres);
+//            String createEmail = "createEmail";
+//            actions.add(createEmail);
+//            String createPhone = "createPhone";
+//            actions.add(createPhone);
+//        }
+//
+//		if (currentUserName().equals(person.getOwnedBy()) && person.getIsPrincipal()) {
+//			String createPersonsDemand = "createPersonDemand";
+//			actions.add(createPersonsDemand);
+//		}
 
 		// do not show when already contacted
 		QueryDefault<PersonalContact> query =
