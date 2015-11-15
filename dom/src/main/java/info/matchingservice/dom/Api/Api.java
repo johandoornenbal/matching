@@ -302,28 +302,8 @@ public class Api extends AbstractFactoryAndRepository {
 	public List<String> getActionsForPerson(final Person person){
 		List<String> actions = new ArrayList<>();
 
-//        if (currentUserName().equals(person.getOwnedBy())) {
-//            String createAddres = "createAddres";
-//            actions.add(createAddres);
-//            String createEmail = "createEmail";
-//            actions.add(createEmail);
-//            String createPhone = "createPhone";
-//            actions.add(createPhone);
-//        }
-//
-//		if (currentUserName().equals(person.getOwnedBy()) && person.getIsPrincipal()) {
-//			String createPersonsDemand = "createPersonDemand";
-//			actions.add(createPersonsDemand);
-//		}
-
 		// do not show when already contacted
-		QueryDefault<PersonalContact> query =
-				QueryDefault.create(
-						PersonalContact.class,
-						"findPersonalContactUniqueContact",
-						"ownedBy", currentUserName(),
-						"contact", person);
-		Boolean isContact = container.firstMatch(query) != null?
+		Boolean isContact = personalcontacts.findUniquePersonalContact(currentUserName(), person) != null?
 				true  : false;
 
 		if (!currentUserName().equals(person.getOwnedBy())	&& !isContact ) {
@@ -337,6 +317,20 @@ public class Api extends AbstractFactoryAndRepository {
         }
 
 		return actions;
+	}
+
+	@Programmatic
+	public PersonalContact findOrCreatePersonalContact(final Person contact) {
+		// do not contact yourself...
+		if (contact.getOwnedBy().equals(currentUserName())){
+			return null;
+		}
+
+		if (personalcontacts.findUniquePersonalContact(currentUserName(), contact) != null) {
+			return personalcontacts.findUniquePersonalContact(currentUserName(), contact);
+		} else {
+			return personalcontacts.createPersonalContact(contact, currentUserName());
+		}
 	}
 
 	@Programmatic

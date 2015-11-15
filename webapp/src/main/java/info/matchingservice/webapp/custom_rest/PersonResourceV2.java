@@ -56,7 +56,6 @@ import java.util.List;
 public class PersonResourceV2 extends ResourceAbstract {
 
     private Gson gson = new Gson();
-    private CommunicationChannels communicationChannels = IsisContext.getPersistenceSession().getServicesInjector().lookupService(CommunicationChannels.class);
     private Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
 
@@ -322,12 +321,42 @@ public class PersonResourceV2 extends ResourceAbstract {
     /************************** persons/{id}/actions *************************************/
 
 
+
+    @POST
+    @Path("/persons/{instanceId}/actions/addAsPersonalContact")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response addAsPersonalContactServices(@PathParam("instanceId") Integer instanceId) {
+
+        Person chosenPerson = api.findPersonById(instanceId);
+        if (chosenPerson == null){
+            String error = "{\"success\" : 0 , \"error\" : \"person not found\"}";
+            return Response.status(400).entity(error).build();
+        }
+
+        PersonalContact personalContact = api.findOrCreatePersonalContact(chosenPerson);
+        if (personalContact==null) {
+            String error = "{\"success\" : 0 , \"error\" : \"Cannot contact yourself\"}";
+            return Response.status(400).entity(error).build();
+        }
+
+        PersonalContactViewModel personalContactViewModel = new PersonalContactViewModel(personalContact);
+
+        JsonObject result = new JsonObject();
+        JsonElement personalContactElement = gson.toJsonTree(personalContactViewModel);
+        result.add("personalContact", personalContactElement);
+        result.addProperty("success", 1);
+
+        return Response.status(200).entity(result.toString()).build();
+    }
+
+
+    // TODO: move to demands as POST action
     @POST
     @Path("/persons/{instanceId}/actions/createPersonDemand")
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
     public Response createPersonsDemandServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
 
-        Person chosenPerson = persons.findPersonById(instanceId);
+        Person chosenPerson = api.findPersonById(instanceId);
         String objectStr = Util.asStringUtf8(object);
         JsonRepresentation argRepr = Util.readAsMap(objectStr);
 

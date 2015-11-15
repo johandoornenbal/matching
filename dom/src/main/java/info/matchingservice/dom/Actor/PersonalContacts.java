@@ -36,6 +36,11 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
     public PersonalContacts() {
         super(PersonalContacts.class, PersonalContact.class);
     }
+
+    @Programmatic
+    public PersonalContact findUniquePersonalContact(final String username, final Person contact){
+        return uniqueMatch("findPersonalContactUniqueContact", "ownedBy", username, "contact", contact);
+    }
     
     //** CONTRIBUTED: ACTIONS **//
     @MemberOrder(name = "Personen", sequence = "10")
@@ -58,13 +63,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
             return true;
         }
         // do not show when already contacted
-        QueryDefault<PersonalContact> query = 
-                QueryDefault.create(
-                        PersonalContact.class, 
-                    "findPersonalContactUniqueContact", 
-                    "ownedBy", currentUserName(),
-                    "contact", contactPerson);
-        return container.firstMatch(query) != null?
+        return findUniquePersonalContact(currentUserName(), contactPerson) != null?
         true  : false;        
     }
     
@@ -77,14 +76,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
             return "NO_USE";
         }
-        
-        QueryDefault<PersonalContact> query = 
-                QueryDefault.create(
-                        PersonalContact.class, 
-                    "findPersonalContactUniqueContact", 
-                    "ownedBy", currentUserName(),
-                    "contact", contactPerson);
-        return container.firstMatch(query) != null?
+        return findUniquePersonalContact(currentUserName(), contactPerson) != null?
         "ONE_INSTANCE_AT_MOST"        
         :null;
     }
@@ -134,6 +126,7 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         contact.setOwner(persons.activePerson(userName));
         contact.setOwnedBy(userName);
         persist(contact);
+        getContainer().flush();
         return contact;
     }
     
@@ -149,23 +142,20 @@ public class PersonalContacts extends MatchingDomainService<PersonalContact>{
         contact.setOwnedBy(userName);
         contact.setTrustLevel(trustLevel);
         persist(contact);
+        getContainer().flush();
         return contact;
     }
-    //-- HELPERS: programmatic actions --//
-    //** HELPERS: generic service helpers **//
+
     private String currentUserName() {
         return container.getUser().getName();
     }
-    //-- HELPERS: generic service helpers --//
-    //-- HELPERS --//
-    
-    //** INJECTIONS **//
+
     @javax.inject.Inject
     private DomainObjectContainer container;
      
     @Inject
     Persons persons;
-    //-- INJECTIONS --//
+
     
  
 }

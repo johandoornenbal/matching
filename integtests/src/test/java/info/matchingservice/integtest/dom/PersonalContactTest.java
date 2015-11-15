@@ -1,18 +1,17 @@
 package info.matchingservice.integtest.dom;
 
-import javax.inject.Inject;
-
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonalContact;
+import info.matchingservice.dom.Actor.PersonalContacts;
+import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.fixture.TeardownFixture;
+import info.matchingservice.integtest.MatchingIntegrationTest;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.apache.isis.applib.fixturescripts.FixtureScript;
+import javax.inject.Inject;
 
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Actor.PersonalContacts;
-import info.matchingservice.dom.Actor.Persons;
-import info.matchingservice.fixture.actor.TestPersons;
-import info.matchingservice.integtest.MatchingIntegrationTest;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -24,19 +23,13 @@ public class PersonalContactTest extends MatchingIntegrationTest {
 	@Inject
 	PersonalContacts personalcontacts;
 	
-    @Before
-    public void setupData() {
-        runScript(new FixtureScript() {
-            @Override
-            protected void execute(ExecutionContext executionContext) {
-                executionContext.executeChild(this, new TestPersons());
-                
-            }
-        });
-    }
-	
 	public static class hideAddAsPersonalContact extends PersonalContactTest {
-		
+
+		@Before
+		public void setupData() {
+			scenarioExecution().install(new TeardownFixture());
+			scenarioExecution().install(new info.matchingservice.fixture.actor.TestPersons());
+		}
 				
 		@Test
         public void shouldBeHiddenAddAndDelete() throws Exception {
@@ -67,6 +60,33 @@ public class PersonalContactTest extends MatchingIntegrationTest {
 			assertThat(personalcontacts.allPersonalContactsOfUser().size(), is(0));
 		}
 		
+	}
+
+	public static class FindUniquePersonalContact extends PersonalContactTest {
+
+		@Before
+		public void setupData() {
+			scenarioExecution().install(new TeardownFixture());
+			scenarioExecution().install(new info.matchingservice.fixture.actor.TestPersons());
+		}
+
+		@Test
+		public void find() throws Exception {
+
+			// given
+			Person frans;
+			Person p1 = persons.createPerson("Test", "van der", "Test", new LocalDate(1962,7,16), null, null, null, "tester");
+			frans = persons.findPersons("hals").get(0);
+
+			// when
+			PersonalContact contact = personalcontacts.addAsPersonalContact(frans);
+
+			// then
+			assertThat(personalcontacts.findUniquePersonalContact("tester", frans), is(contact));
+
+
+		}
+
 	}
 
 }
