@@ -181,8 +181,54 @@ public class DemandResourceV2 extends ResourceAbstract {
 
     @DELETE
     @Path("/demands/{instanceId}")
-    public Response deleteDemandsNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Deleting the demands resource is not allowed.", new Object[0]);
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response deleteDemandService(@PathParam("instanceId") Integer instanceId, InputStream object) {
+
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+
+        if(!argRepr.isMap())
+        {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
+
+        } else {
+
+            String id1 = "confirmDelete";
+            Boolean confirmDelete;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
+                confirmDelete = property.getBoolean("");
+            } catch (Exception e) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", "property 'confirmDelete' is mandatory (and must be set to true).");
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            Demand demandToDelete = api.matchDemandApiIdForOwner(instanceId);
+
+            if (demandToDelete == null) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", "demand not found or not authorized");
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            if (demandToDelete.validateDeleteDemand(confirmDelete)!=null) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", demandToDelete.validateDeleteDemand(confirmDelete));
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            demandToDelete.deleteDemand(confirmDelete);
+
+            JsonObject result = new JsonObject();
+            result.addProperty("success", 1);
+
+            return Response.status(200).entity(result.toString()).build();
+        }
+
     }
 
     @POST
