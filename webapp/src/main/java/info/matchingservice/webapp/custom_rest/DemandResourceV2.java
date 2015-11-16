@@ -75,8 +75,108 @@ public class DemandResourceV2 extends ResourceAbstract {
         }
 
         JsonObject result = createDemandResult(activeDemand);
+        result.addProperty("success", 1);
 
         return Response.status(200).entity(result.toString()).build();
+    }
+
+    @PUT
+    @Path("/demands/{instanceId}")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response putDemandServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
+
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+
+        if(!argRepr.isMap())
+        {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
+
+        } else {
+
+            Demand demandToUpdate = api.matchDemandApiIdForOwner(instanceId);
+
+            if (demandToUpdate==null) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", "demand not found or not authorized");
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            String id1 = "description";
+            String description;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
+                description = property.getString("");
+            } catch (Exception e) {
+                description = demandToUpdate.getDescription();
+            }
+
+
+            String id2 = "summary";
+            String summary = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id2, new Object[0]);
+                summary = property.getString("");
+            } catch (Exception e) {
+                summary = demandToUpdate.getSummary();
+            }
+
+            String id3 = "story";
+            String story = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id3, new Object[0]);
+                story = property.getString("");
+            } catch (Exception e) {
+                story = demandToUpdate.getStory();
+            }
+
+            String id4 = "startDate";
+            String startDate = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
+                startDate = property.getString("");
+            } catch (Exception e) {
+                startDate = demandToUpdate.getStartDate().toString();
+            }
+
+
+            String id5 = "endDate";
+            String endDate = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
+                endDate = property.getString("");
+            } catch (Exception e) {
+                endDate = demandToUpdate.getEndDate().toString();
+            }
+
+            String id6 = "imageUrl";
+            String imageUrl = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
+                imageUrl = property.getString("");
+            } catch (Exception e) {
+                imageUrl = demandToUpdate.getImageUrl();
+            }
+
+            String id7 = "weight";
+            Integer weight;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id7, new Object[0]);
+                weight = property.getInt("");
+            } catch (Exception e) {
+                weight = demandToUpdate.getWeight();
+            }
+
+            demandToUpdate = api.updateDemand(instanceId, description, summary, story, startDate, endDate, imageUrl, weight);
+
+            JsonObject result = createDemandResult(demandToUpdate);
+            result.addProperty("success", 1);
+
+            return Response.status(200).entity(result.toString()).build();
+
+        }
+
     }
 
     @DELETE
@@ -86,12 +186,6 @@ public class DemandResourceV2 extends ResourceAbstract {
     }
 
     @POST
-    @Path("/demands/{instanceId}")
-    public Response postDemandsNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the demands resource is not allowed.", new Object[0]);
-    }
-
-    @PUT
     @Path("/demands/{instanceId}")
     public Response putDemandsNotAllowed() {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the demands resource is not allowed.", new Object[0]);
@@ -174,6 +268,15 @@ public class DemandResourceV2 extends ResourceAbstract {
                 //ignore
             }
 
+            String id6 = "imageUrl";
+            String imageUrl = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
+                imageUrl = property.getString("");
+            } catch (Exception e) {
+                //ignore
+            }
+
 
             //catch errors and return 400
             if (error){
@@ -185,7 +288,7 @@ public class DemandResourceV2 extends ResourceAbstract {
 
             Person person = api.findPersonById(ownerId);
 
-            Demand newDemand = api.createPersonDemand(person, description, summary, story, startDate, endDate);
+            Demand newDemand = api.createPersonDemand(person, description, summary, story, startDate, endDate, imageUrl);
 
             if (newDemand==null) {
                 JsonObject result = new JsonObject();

@@ -218,9 +218,10 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final LocalDate demandOrSupplyProfileEndDate,
             final Integer weight,
             final DemandSupplyType demandSupplyType,
-            final Actor demandOwner, 
+            final Actor demandOwner,
+            final String imageUrl,
             final String ownedBy){
-        return demandRepo.createDemand(demandDescription, demandSummary, demandStory, demandAttachment, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
+        return demandRepo.createDemand(demandDescription, demandSummary, demandStory, demandAttachment, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, imageUrl, ownedBy);
     }
     
     @Programmatic
@@ -234,8 +235,9 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final LocalDate demandOrSupplyProfileStartDate,
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
+            final String imageUrl,
             final String ownedBy){
-        final Demand demand = demandRepo.createDemand(demandDescription, "", "", null, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
+        final Demand demand = demandRepo.createDemand(demandDescription, "", "", null, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, imageUrl, ownedBy);
         return profiles.createDemandProfile(
         		demandProfileDescription, 
         		profileWeight, 

@@ -328,14 +328,17 @@ public class Person extends Actor {
             @ParameterLayout(named = "attachment")
             @Parameter(optionality = Optionality.OPTIONAL)
             final Blob attachment,
-            @ParameterLayout(named = "profileStartDate")
+            @ParameterLayout(named = "endDate")
             @Parameter(optionality = Optionality.OPTIONAL)
             final LocalDate profileStartDate,
-            @ParameterLayout(named = "profileStartDate")
+            @ParameterLayout(named = "endDate")
             @Parameter(optionality = Optionality.OPTIONAL)
-            final LocalDate profileEndDate
+            final LocalDate profileEndDate,
+            @ParameterLayout(named = "imageUrl")
+            @Parameter(optionality = Optionality.OPTIONAL)
+            final String imageUrl
     ){
-        return createDemand(description, summary, story, attachment, profileStartDate, profileEndDate, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, currentUserName());
+        return createDemand(description, summary, story, attachment, profileStartDate, profileEndDate, 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, imageUrl, currentUserName());
     }
     
     public boolean hideCreatePersonDemand(
@@ -344,7 +347,8 @@ public class Person extends Actor {
     		final String demandStory,
     		final Blob demandAttachment,
     		final LocalDate demandOrSupplyProfileStartDate,
-    		final LocalDate demandOrSupplyProfileEndDate
+    		final LocalDate demandOrSupplyProfileEndDate,
+            final String imageUrl
     		){
         return hideCreateDemand(demandDescription, this);
     }
@@ -355,7 +359,8 @@ public class Person extends Actor {
     		final String demandStory,
     		final Blob demandAttachment,
     		final LocalDate demandOrSupplyProfileStartDate,
-    		final LocalDate demandOrSupplyProfileEndDate
+    		final LocalDate demandOrSupplyProfileEndDate,
+            final String imageUrl
     		){
         return validateNewDemand(demandDescription, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, this);
     }

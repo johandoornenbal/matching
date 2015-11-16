@@ -56,7 +56,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
             // given
 
             // when
-            d1=demands.createDemand(DEMAND_DESCRIPTION, "", "" , null, null, null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
+            d1=demands.createDemand(DEMAND_DESCRIPTION, "", "" , null, null, null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), "linkje", OWNED_BY);
             Integer maxindex = demands.allDemands().size() - 1;
             d1 = demands.allDemands().get(maxindex);
 
@@ -136,7 +136,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
             // when
             numberOfDemandProfiles=profiles.allDemandProfiles().size();
             numberOfSupplyProfiles=profiles.allSupplyProfiles().size();
-            d1=demands.createDemand(DEMAND_DESCRIPTION, "", "", null, null, null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
+            d1=demands.createDemand(DEMAND_DESCRIPTION, "", "", null, null, null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), "linkje", OWNED_BY);
             d1.createDemandProfile(DEMAND_PROFILE_DESCRIPTION, WEIGHT, null, null, PROFILE_TYPE, d1, null, OWNED_BY);
             Integer maxindex = demands.allDemands().size() - 1;
             d1 = demands.allDemands().get(maxindex);
@@ -227,7 +227,7 @@ public class DemandSupplyTest extends MatchingIntegrationTest {
         public void deleteDemand() throws Exception {
 
             // when
-            d1=demands.createDemand(DEMAND_DESCRIPTION, "", "", null, null, null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), OWNED_BY);
+            d1=demands.createDemand(DEMAND_DESCRIPTION, "", "", null, null, null, WEIGHT, DEMAND_SUPPLY_TYPE, persons.findPersons("Hals").get(0), "linkje", OWNED_BY);
             numberOfdemands=demands.allDemands().size();
             d1.createDemandProfile(DEMAND_PROFILE_DESCRIPTION, WEIGHT, null, null, PROFILE_TYPE, d1, null, OWNED_BY);
             numberOfDemandProfiles=profiles.allDemandProfiles().size();

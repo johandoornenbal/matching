@@ -4,8 +4,6 @@ import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Demands;
-import info.matchingservice.dom.Rules.ProfileTypeMatchingRules;
-
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.joda.time.LocalDate;
 
@@ -23,10 +21,11 @@ public abstract class DemandAbstract extends FixtureScript {
             Integer weight,
             DemandSupplyType demandSupplyType,
             Actor demandOwner,
+            String imageUrl,
             String ownedBy,
             ExecutionContext executionContext
             ) {
-        Demand newDemand = demands.createDemand(demandDescription, demandSummary, demandStory, null, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, ownedBy);
+        Demand newDemand = demands.createDemand(demandDescription, demandSummary, demandStory, null, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, weight, demandSupplyType, demandOwner, imageUrl, ownedBy);
         return executionContext.add(this,newDemand);
     }
     

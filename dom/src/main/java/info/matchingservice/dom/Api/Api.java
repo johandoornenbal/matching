@@ -365,7 +365,8 @@ public class Api extends AbstractFactoryAndRepository {
             final String summary,
             final String story,
             final String startDate,
-            final String endDate){
+            final String endDate,
+			final String imageUrl){
 
 		//check if user has rights to create demand
 		if (!currentUserName().equals(person.getOwnedBy())) {
@@ -426,8 +427,88 @@ public class Api extends AbstractFactoryAndRepository {
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 person,
+				imageUrl,
                 person.getOwnedBy()
 		);
+	}
+
+	@Programmatic
+	public Demand matchDemandApiIdForOwner(final Integer instanceId) {
+		Demand demand = demands.matchDemandApiId(instanceId.toString());
+		if (demand == null) {
+			return null;
+		}
+		// check not authorized
+		if (!currentUserName().equals(demand.getOwnedBy())){
+			return null;
+		}
+		return demand;
+	}
+
+	@Programmatic
+	public Demand updateDemand(
+			final Integer ownerId,
+			final String description,
+			final String summary,
+			final String story,
+			final String startDate,
+			final String endDate,
+			final String imageUrl,
+			final Integer weight) {
+
+		Demand demand = demands.matchDemandApiId(ownerId.toString());
+
+		//check description
+		String descriptionEntry;
+		if (description.equals("")){
+			descriptionEntry = demand.getDescription();
+		} else {
+			descriptionEntry = description;
+		}
+
+		//check dates
+		LocalDate startDateEntry = null;
+
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
+		try {
+			startDateEntry = LocalDate.parse(startDate, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (startDateEntry == null) {
+			// startDate is not a valid date
+			startDateEntry=demand.getStartDate();
+		} else {
+			// startDate is a Date
+			startDateEntry = new LocalDate(startDate);
+		}
+
+		LocalDate endDateEntry = null;
+		try {
+			endDateEntry = LocalDate.parse(endDate, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (endDateEntry == null) {
+			// endDate is not a valid date
+			endDateEntry=demand.getEndDate();
+		} else {
+			// endDate is a Date
+			endDateEntry = new LocalDate(endDate);
+		}
+
+		// if invalid period [endDate before startDate] set both to original values
+		if (startDateEntry!=null && endDateEntry!=null && endDateEntry.isBefore(startDateEntry)){
+			startDateEntry=demand.getStartDate();
+			endDateEntry=demand.getEndDate();
+		}
+
+		if (weight > 1) {
+			demand.setWeight(weight);
+		}
+
+		return demand.updateDemand(descriptionEntry, summary, story, null, startDateEntry, endDateEntry, imageUrl);
+
 	}
 
     //***************************************** Collections of Demand ***********************//

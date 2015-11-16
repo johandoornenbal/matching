@@ -3,10 +3,9 @@ package info.matchingservice.fixture.demand;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.fixture.actor.TestPersons;
+import org.joda.time.LocalDate;
 
 import javax.inject.Inject;
-
-import org.joda.time.LocalDate;
 
 public class TestDemands extends DemandAbstract {
 
@@ -29,6 +28,7 @@ public class TestDemands extends DemandAbstract {
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
+                "image linkje",
                 "frans",
                 executionContext
                 );
@@ -42,6 +42,7 @@ public class TestDemands extends DemandAbstract {
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
+                "image linkje",
                 "frans",
                 executionContext
                 );
@@ -55,6 +56,7 @@ public class TestDemands extends DemandAbstract {
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Hals").get(0),
+                "image linkje",
                 "frans",
                 executionContext
                 );
@@ -70,6 +72,7 @@ public class TestDemands extends DemandAbstract {
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Rijn").get(0),
+                "image linkje",
                 "rembrandt",
                 executionContext
                 );
@@ -85,6 +88,7 @@ public class TestDemands extends DemandAbstract {
                 10,
                 DemandSupplyType.PERSON_DEMANDSUPPLY,
                 persons.findPersons("Ruyter").get(0),
+                "image linkje",
                 "michiel",
                 executionContext
                 );

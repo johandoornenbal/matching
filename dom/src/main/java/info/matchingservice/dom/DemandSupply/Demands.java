@@ -74,6 +74,7 @@ public class Demands extends MatchingDomainService<Demand> {
             final Integer weight,
             final DemandSupplyType demandSupplyType,
             final Actor demandOwner,
+            final String imageUrl,
             final String ownedBy) {
         final Demand newDemand = newTransientInstance(Demand.class);
         newDemand.setDescription(demandDescription);
@@ -87,6 +88,7 @@ public class Demands extends MatchingDomainService<Demand> {
         newDemand.setOwner(demandOwner);
         newDemand.setOwnedBy(ownedBy);
         newDemand.setTimeStamp(LocalDateTime.now());
+        newDemand.setImageUrl(imageUrl);
         persist(newDemand);
         getContainer().flush();
         return newDemand;

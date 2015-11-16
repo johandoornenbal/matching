@@ -474,7 +474,16 @@ public class PersonResource extends ResourceAbstract {
                 //
             }
 
-            Demand demand = api.createPersonDemand(chosenPerson, description, summary, story, startDate, endDate);
+            String id6 = "imageUrl";
+            String imageUrl = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
+                imageUrl = property.getString("");
+            } catch (Exception e) {
+                //ignore
+            }
+
+            Demand demand = api.createPersonDemand(chosenPerson, description, summary, story, startDate, endDate, imageUrl);
 
             if (demand==null){
                 String error = "{\"success\" : 0 , \"error\" : \"not able to create demand - please check parameters\"}";
