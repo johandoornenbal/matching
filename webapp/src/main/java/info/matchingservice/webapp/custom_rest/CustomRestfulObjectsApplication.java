@@ -28,15 +28,12 @@ public class CustomRestfulObjectsApplication extends RestfulObjectsApplication {
 
         addClass(UserRegistrationResource.class);
         addClass(UserAuthentificationResource.class);
-        addClass(_PersonResourceDepricated.class);
-        addClass(_DemandResourceDepricated.class);
-        addClass(_SupplyResourceDepricated.class);
         addClass(ProfileResource.class);
         addClass(FindResource.class);
         addClass(HowdoidoResource.class);
         addClass(PersonResource.class);
-        addClass(DemandResourceV2.class);
-
+        addClass(DemandResource.class);
+        addClass(SupplyResource.class);
     }
 
 }

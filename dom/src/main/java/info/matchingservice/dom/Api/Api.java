@@ -434,7 +434,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 	@Programmatic
 	public Demand matchDemandApiIdForOwner(final Integer instanceId) {
-		Demand demand = demands.matchDemandApiId(instanceId.toString());
+		Demand demand = demands.matchDemandApiId(instanceId);
 		if (demand == null) {
 			return null;
 		}
@@ -456,7 +456,7 @@ public class Api extends AbstractFactoryAndRepository {
 			final String imageUrl,
 			final Integer weight) {
 
-		Demand demand = demands.matchDemandApiId(ownerId.toString());
+		Demand demand = demands.matchDemandApiId(ownerId);
 
 		//check description
 		String descriptionEntry;
@@ -524,6 +524,20 @@ public class Api extends AbstractFactoryAndRepository {
 
         return new ArrayList<>(demand.getProfiles());
     }
+
+	//***************************************** Collections of Supply ***********************//
+
+	@Programmatic
+	public List<Profile> getProfilesForSupply(final Supply supply){
+		Person supplyOwner = (Person) supply.getOwner();
+
+		// apply business logic
+		if (supplyOwner.hideSupplies()){
+			return null;
+		}
+
+		return new ArrayList<>(supply.getProfiles());
+	}
 
 	//***************************************** getProfileElementByUniqueId ***********************//
 

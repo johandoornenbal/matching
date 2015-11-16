@@ -50,7 +50,7 @@ import java.util.List;
  * Created by jodo on 15/05/15.
  */
 @Path("/v2")
-public class DemandResourceV2 extends ResourceAbstract {
+public class DemandResource extends ResourceAbstract {
 
     private Gson gson = new Gson();
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
@@ -59,7 +59,7 @@ public class DemandResourceV2 extends ResourceAbstract {
     @GET
     @Path("/demands/{instanceId}")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response getDemandServices(@PathParam("instanceId") String instanceId)  {
+    public Response getDemandServices(@PathParam("instanceId") Integer instanceId)  {
 
         Demand activeDemand = demands.matchDemandApiId(instanceId);
         if (activeDemand==null){
@@ -234,8 +234,11 @@ public class DemandResourceV2 extends ResourceAbstract {
     @POST
     @Path("/demands/{instanceId}")
     public Response putDemandsNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the demands resource is not allowed.", new Object[0]);
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
     }
+
+
+    /* ****************************************** DEMANDS ************************************************************* */
 
     @POST
     @Path("/demands")
@@ -363,6 +366,11 @@ public class DemandResourceV2 extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
     }
 
+    /**
+     *
+     * @param activeDemand
+     * @return
+     */
     private JsonObject createDemandResult(final Demand activeDemand) {
 
         Gson gson = new Gson();

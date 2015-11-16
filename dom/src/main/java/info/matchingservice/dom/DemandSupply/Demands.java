@@ -96,12 +96,12 @@ public class Demands extends MatchingDomainService<Demand> {
 
     // Api v1
     @Programmatic
-    public Demand matchDemandApiId(final String id) {
+    public Demand matchDemandApiId(final Integer id) {
 
         for (Demand d : allInstances(Demand.class)) {
             String[] parts = d.getOID().split(Pattern.quote("[OID]"));
             String part1 = parts[0];
-            if (id.equals(part1)) {
+            if (id.toString().equals(part1)) {
                 return d;
             }
         }
