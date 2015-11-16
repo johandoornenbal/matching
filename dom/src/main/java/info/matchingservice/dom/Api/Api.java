@@ -312,9 +312,14 @@ public class Api extends AbstractFactoryAndRepository {
 		}
 
         if (!currentUserName().equals(person.getOwnedBy())	&& isContact ) {
-            String addAsPersonalContact = "removeAsPersonalContact (TODO)";
+            String addAsPersonalContact = "removeAsPersonalContact";
             actions.add(addAsPersonalContact);
         }
+
+		if (!person.hideCreatePersonsSupplyAndProfile()) {
+			String addCreateSupplyAndProfile = "createSupplyAndProfile";
+			actions.add(addCreateSupplyAndProfile);
+		}
 
 		return actions;
 	}
@@ -331,6 +336,26 @@ public class Api extends AbstractFactoryAndRepository {
 		} else {
 			return personalcontacts.createPersonalContact(contact, currentUserName());
 		}
+	}
+
+	@Programmatic
+	public Person removeAsPersonalContact(final Person contact) {
+
+		if (personalcontacts.findUniquePersonalContact(currentUserName(), contact) != null) {
+			personalcontacts.findUniquePersonalContact(currentUserName(), contact).deleteTrustedContact(true);
+		}
+
+		return contact;
+	}
+
+	@Programmatic
+	public Profile createSupplyAndProfile(final Person person){
+
+		if (!person.hideCreatePersonsSupplyAndProfile()) {
+			return person.createPersonsSupplyAndProfile();
+		}
+
+		return null;
 	}
 
 	@Programmatic

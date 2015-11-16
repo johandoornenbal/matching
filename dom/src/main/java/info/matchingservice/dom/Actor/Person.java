@@ -395,14 +395,7 @@ public class Person extends Actor {
             return true;
         }        
         // if there is already a personal Supply
-        //TODO: move to repo
-        QueryDefault<Supply> query = 
-                QueryDefault.create(
-                        Supply.class, 
-                    "findSupplyByOwnedByAndType", 
-                    "ownedBy", currentUserName(),
-                    "supplyType", DemandSupplyType.PERSON_DEMANDSUPPLY);
-        if (container.firstMatch(query) != null) {
+        if (supplyRepo.findSupplyByOwnedByAndType(currentUserName(), DemandSupplyType.PERSON_DEMANDSUPPLY) != null) {
             return true;
         }
         
