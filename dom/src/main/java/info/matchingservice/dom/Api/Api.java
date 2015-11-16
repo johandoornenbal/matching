@@ -366,6 +366,15 @@ public class Api extends AbstractFactoryAndRepository {
             final String story,
             final String startDate,
             final String endDate){
+
+		//check if user has rights to create demand
+		if (!currentUserName().equals(person.getOwnedBy())) {
+			return null;
+		}
+		if (!person.getIsPrincipal()){
+			return null;
+		}
+
         //check description
         if (description==null || description==""){
             return null;
