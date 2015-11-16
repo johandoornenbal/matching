@@ -50,6 +50,15 @@ public class Api extends AbstractFactoryAndRepository {
 
 	/////////
 
+	/**
+	 *
+	 * @return all persons that currentUser is allowed to see
+	 */
+	@Programmatic
+	public List<Person> allActivePersons(){
+		return persons.allActivePersons();
+	}
+
 	//***************************************** updatePerson ***********************//
 	@Programmatic
 	public Person updatePerson(
@@ -524,6 +533,94 @@ public class Api extends AbstractFactoryAndRepository {
 
         return new ArrayList<>(demand.getProfiles());
     }
+
+	//***************************************** Supply ***********************//
+
+	@Programmatic
+	public Supply matchSupplyApiIdForOwner(final Integer instanceId) {
+		Supply supply = supplies.matchSupplyApiId(instanceId);
+		if (supply == null) {
+			return null;
+		}
+		// check not authorized
+		if (!currentUserName().equals(supply.getOwnedBy())){
+			return null;
+		}
+		return supply;
+	}
+
+	/**
+	 *
+	 * @return all supplies that currentUser is allowed to see
+	 */
+	@Programmatic
+	public List<Supply> allSupplies(){
+		return supplies.allSupplies();
+	}
+
+	@Programmatic
+	public Supply updateSupply(
+			final Integer ownerId,
+			final String description,
+			final String startDate,
+			final String endDate,
+			final String imageUrl,
+			final Integer weight) {
+
+		Supply supply = supplies.matchSupplyApiId(ownerId);
+
+		//check description
+		String descriptionEntry;
+		if (description.equals("")){
+			descriptionEntry = supply.getDescription();
+		} else {
+			descriptionEntry = description;
+		}
+
+		//check dates
+		LocalDate startDateEntry = null;
+
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
+		try {
+			startDateEntry = LocalDate.parse(startDate, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (startDateEntry == null) {
+			// startDate is not a valid date
+			startDateEntry=supply.getStartDate();
+		} else {
+			// startDate is a Date
+			startDateEntry = new LocalDate(startDate);
+		}
+
+		LocalDate endDateEntry = null;
+		try {
+			endDateEntry = LocalDate.parse(endDate, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (endDateEntry == null) {
+			// endDate is not a valid date
+			endDateEntry=supply.getEndDate();
+		} else {
+			// endDate is a Date
+			endDateEntry = new LocalDate(endDate);
+		}
+
+		// if invalid period [endDate before startDate] set both to original values
+		if (startDateEntry!=null && endDateEntry!=null && endDateEntry.isBefore(startDateEntry)){
+			startDateEntry=supply.getStartDate();
+			endDateEntry=supply.getEndDate();
+		}
+
+		if (weight > 1) {
+			supply.setWeight(weight);
+		}
+
+		return supply.updateSupply(descriptionEntry, startDateEntry, endDateEntry, imageUrl);
+
+	}
 
 	//***************************************** Collections of Supply ***********************//
 

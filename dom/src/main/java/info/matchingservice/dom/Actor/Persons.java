@@ -97,6 +97,11 @@ public class Persons extends MatchingDomainService<Person> {
     public List<Person> allPersons() {
         return allInstances();
     }
+
+    @Programmatic
+    public List<Person> allActivePersons() {
+        return allMatches("findActivePersons");
+    }
     
     
     //region > otherPersons (contributed collection)

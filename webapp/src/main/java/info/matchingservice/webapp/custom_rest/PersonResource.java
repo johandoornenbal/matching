@@ -285,7 +285,7 @@ public class PersonResource extends ResourceAbstract {
 
         // persons
         List<PersonViewModel> personViewModels = new ArrayList<>();
-        for (Person person : persons.allPersons()) {
+        for (Person person : api.allActivePersons()) {
             PersonViewModel personViewModel = new PersonViewModel(person, api);
             personViewModels.add(personViewModel);
         }
@@ -294,6 +294,7 @@ public class PersonResource extends ResourceAbstract {
         // build result
         JsonObject result = new JsonObject();
         result.add("persons", personRepresentation);
+        result.addProperty("success", 1);
 
         return Response.status(200).entity(result.toString()).build();
     }

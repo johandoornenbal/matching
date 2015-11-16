@@ -63,7 +63,12 @@ import java.util.TreeSet;
             name = "matchPersonByNameContains", language = "JDOQL",
             value = "SELECT "
                     + "FROM info.matchingservice.dom.Actor.Person "
-                    + "WHERE lastName.toLowerCase().indexOf(:search) >= 0 || firstName.toLowerCase().indexOf(:search) >= 0")
+                    + "WHERE lastName.toLowerCase().indexOf(:search) >= 0 || firstName.toLowerCase().indexOf(:search) >= 0"),
+    @javax.jdo.annotations.Query(
+            name = "findActivePersons", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM info.matchingservice.dom.Actor.Person "
+                    + "WHERE activated == true")
 })
 @DomainObject(editing=Editing.DISABLED, autoCompleteRepository=Persons.class, autoCompleteAction = "autoComplete")
 public class Person extends Actor {

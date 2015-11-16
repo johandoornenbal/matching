@@ -85,4 +85,19 @@ public class PersonsTest {
         }
     }
 
+    public static class allActivePersons extends PersonsTest {
+
+        @Test
+        public void happyCase() {
+
+            persons.allActivePersons();
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
+            assertThat(finderInteraction.getResultType()).isEqualTo(info.matchingservice.dom.Actor.Person.class);
+            assertThat(finderInteraction.getQueryName(), is("findActivePersons"));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(0));
+        }
+
+    }
+
 }

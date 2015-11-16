@@ -60,6 +60,23 @@ public class PersonsTest extends MatchingIntegrationTest {
         }
 
     }
+
+    public static class allActivePersonsTest extends PersonsTest {
+
+        @Before
+        public void setupData() {
+            scenarioExecution().install(new TeardownFixture());
+            scenarioExecution().install(new info.matchingservice.fixture.actor.TestPersons());
+        }
+
+        @Test
+        public void allActivePersonsMustBe5() throws Exception {
+
+            assertThat(persons.allActivePersons().size(), is(5));
+
+        }
+
+    }
     
     public static class TestPersons extends PersonsTest {
 

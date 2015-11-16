@@ -32,15 +32,17 @@ import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.core.runtime.system.context.IsisContext;
+import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
+import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
+import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
+import org.apache.isis.viewer.restfulobjects.rendering.util.Util;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,291 +77,127 @@ public class SupplyResource extends ResourceAbstract {
         return Response.status(200).entity(result.toString()).build();
     }
 
-//    @PUT
-//    @Path("/demands/{instanceId}")
-//    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
-//    public Response putDemandServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
-//
-//        String objectStr = Util.asStringUtf8(object);
-//        JsonRepresentation argRepr = Util.readAsMap(objectStr);
-//
-//        if(!argRepr.isMap())
-//        {
-//            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
-//
-//        } else {
-//
-//            Demand demandToUpdate = api.matchDemandApiIdForOwner(instanceId);
-//
-//            if (demandToUpdate==null) {
-//                JsonObject result = new JsonObject();
-//                result.addProperty("error", "demand not found or not authorized");
-//                result.addProperty("success", 0);
-//                return Response.status(400).entity(result.toString()).build();
-//            }
-//
-//            String id1 = "description";
-//            String description;
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
-//                description = property.getString("");
-//            } catch (Exception e) {
-//                description = demandToUpdate.getDescription();
-//            }
-//
-//
-//            String id2 = "summary";
-//            String summary = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id2, new Object[0]);
-//                summary = property.getString("");
-//            } catch (Exception e) {
-//                summary = demandToUpdate.getSummary();
-//            }
-//
-//            String id3 = "story";
-//            String story = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id3, new Object[0]);
-//                story = property.getString("");
-//            } catch (Exception e) {
-//                story = demandToUpdate.getStory();
-//            }
-//
-//            String id4 = "startDate";
-//            String startDate = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
-//                startDate = property.getString("");
-//            } catch (Exception e) {
-//                startDate = demandToUpdate.getStartDate().toString();
-//            }
-//
-//
-//            String id5 = "endDate";
-//            String endDate = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
-//                endDate = property.getString("");
-//            } catch (Exception e) {
-//                endDate = demandToUpdate.getEndDate().toString();
-//            }
-//
-//            String id6 = "imageUrl";
-//            String imageUrl = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
-//                imageUrl = property.getString("");
-//            } catch (Exception e) {
-//                imageUrl = demandToUpdate.getImageUrl();
-//            }
-//
-//            String id7 = "weight";
-//            Integer weight;
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id7, new Object[0]);
-//                weight = property.getInt("");
-//            } catch (Exception e) {
-//                weight = demandToUpdate.getWeight();
-//            }
-//
-//            demandToUpdate = api.updateDemand(instanceId, description, summary, story, startDate, endDate, imageUrl, weight);
-//
-//            JsonObject result = createDemandResult(demandToUpdate);
-//            result.addProperty("success", 1);
-//
-//            return Response.status(200).entity(result.toString()).build();
-//
-//        }
-//
-//    }
-//
-//    @DELETE
-//    @Path("/demands/{instanceId}")
-//    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
-//    public Response deleteDemandService(@PathParam("instanceId") Integer instanceId, InputStream object) {
-//
-//        String objectStr = Util.asStringUtf8(object);
-//        JsonRepresentation argRepr = Util.readAsMap(objectStr);
-//
-//        if(!argRepr.isMap())
-//        {
-//            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
-//
-//        } else {
-//
-//            String id1 = "confirmDelete";
-//            Boolean confirmDelete;
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
-//                confirmDelete = property.getBoolean("");
-//            } catch (Exception e) {
-//                JsonObject result = new JsonObject();
-//                result.addProperty("error", "property 'confirmDelete' is mandatory (and must be set to true).");
-//                result.addProperty("success", 0);
-//                return Response.status(400).entity(result.toString()).build();
-//            }
-//
-//            Demand demandToDelete = api.matchDemandApiIdForOwner(instanceId);
-//
-//            if (demandToDelete == null) {
-//                JsonObject result = new JsonObject();
-//                result.addProperty("error", "demand not found or not authorized");
-//                result.addProperty("success", 0);
-//                return Response.status(400).entity(result.toString()).build();
-//            }
-//
-//            if (demandToDelete.validateDeleteDemand(confirmDelete)!=null) {
-//                JsonObject result = new JsonObject();
-//                result.addProperty("error", demandToDelete.validateDeleteDemand(confirmDelete));
-//                result.addProperty("success", 0);
-//                return Response.status(400).entity(result.toString()).build();
-//            }
-//
-//            demandToDelete.deleteDemand(confirmDelete);
-//
-//            JsonObject result = new JsonObject();
-//            result.addProperty("success", 1);
-//
-//            return Response.status(200).entity(result.toString()).build();
-//        }
-//
-//    }
-//
-//    @POST
-//    @Path("/demands/{instanceId}")
-//    public Response putDemandsNotAllowed() {
-//        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
-//    }
-//
-//
-//    /* ****************************************** DEMANDS ************************************************************* */
-//
-//    @POST
-//    @Path("/demands")
-//    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
-//    public Response postDemandServices(InputStream object) {
-//
-//        String objectStr = Util.asStringUtf8(object);
-//        JsonRepresentation argRepr = Util.readAsMap(objectStr);
-//
-//        if(!argRepr.isMap())
-//        {
-//            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
-//
-//        } else {
-//
-//            String errorMessage = "";
-//            boolean error = false;
-//
-//            String id = "ownerId";
-//            Integer ownerId;
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id, new Object[0]);
-//                ownerId = property.getInt("");
-//            } catch (Exception e) {
-//                ownerId = null;
-//                errorMessage = errorMessage.concat(" property 'ownerID' is mandatory");
-//                error = true;
-//            }
-//
-//            String id1 = "description";
-//            String description;
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
-//                description = property.getString("");
-//            } catch (Exception e) {
-//                description = null;
-//                errorMessage = errorMessage.concat(" property 'description' is mandatory");
-//                error = true;
-//            }
-//
-//
-//            String id2 = "summary";
-//            String summary = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id2, new Object[0]);
-//                summary = property.getString("");
-//            } catch (Exception e) {
-//                //ignore
-//            }
-//
-//            String id3 = "story";
-//            String story = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id3, new Object[0]);
-//                story = property.getString("");
-//            } catch (Exception e) {
-//                //ignore
-//            }
-//
-//            String id4 = "startDate";
-//            String startDate = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
-//                startDate = property.getString("");
-//            } catch (Exception e) {
-//                //ignore
-//            }
-//
-//
-//            String id5 = "endDate";
-//            String endDate = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
-//                endDate = property.getString("");
-//            } catch (Exception e) {
-//                //ignore
-//            }
-//
-//            String id6 = "imageUrl";
-//            String imageUrl = "";
-//            try {
-//                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
-//                imageUrl = property.getString("");
-//            } catch (Exception e) {
-//                //ignore
-//            }
-//
-//
-//            //catch errors and return 400
-//            if (error){
-//                JsonObject result = new JsonObject();
-//                result.addProperty("error", errorMessage);
-//                result.addProperty("success", 0);
-//                return Response.status(400).entity(result.toString()).build();
-//            }
-//
-//            Person person = api.findPersonById(ownerId);
-//
-//            Demand newDemand = api.createPersonDemand(person, description, summary, story, startDate, endDate, imageUrl);
-//
-//            if (newDemand==null) {
-//                JsonObject result = new JsonObject();
-//                result.addProperty("error", "creation of new demand not succeeded; are you sure you have the rights?");
-//                result.addProperty("success", 0);
-//                return Response.status(400).entity(result.toString()).build();
-//            }
-//
-//            JsonObject result = new JsonObject();
-//            DemandViewModel demandViewModel = new DemandViewModel(newDemand, api);
-//            JsonElement demandElement = gson.toJsonTree(demandViewModel);
-//
-//            result.add("demand", demandElement);
-//            result.addProperty("success", 1);
-//
-//            return Response.status(200).entity(result.toString()).build();
-//        }
-//
-//    }
-//
-//    @DELETE
-//    @GET
-//    @PUT
-//    @Path("/demands")
-//    public Response putgetdeleteDemandsNotAllowed() {
-//        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
-//    }
+    @PUT
+    @Path("/supplies/{instanceId}")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response putSupplyServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
+
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+
+        if(!argRepr.isMap())
+        {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
+
+        } else {
+
+            Supply supplyToUpdate = api.matchSupplyApiIdForOwner(instanceId);
+
+            if (supplyToUpdate==null) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", "supply not found or not authorized");
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            String id1 = "description";
+            String description;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
+                description = property.getString("");
+            } catch (Exception e) {
+                description = supplyToUpdate.getDescription();
+            }
+
+
+            String id4 = "startDate";
+            String startDate = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
+                startDate = property.getString("");
+            } catch (Exception e) {
+                startDate = supplyToUpdate.getStartDate().toString();
+            }
+
+
+            String id5 = "endDate";
+            String endDate = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
+                endDate = property.getString("");
+            } catch (Exception e) {
+                endDate = supplyToUpdate.getEndDate().toString();
+            }
+
+            String id6 = "imageUrl";
+            String imageUrl = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
+                imageUrl = property.getString("");
+            } catch (Exception e) {
+                imageUrl = supplyToUpdate.getImageUrl();
+            }
+
+            String id7 = "weight";
+            Integer weight;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id7, new Object[0]);
+                weight = property.getInt("");
+            } catch (Exception e) {
+                weight = supplyToUpdate.getWeight();
+            }
+
+            supplyToUpdate = api.updateSupply(instanceId, description, startDate, endDate, imageUrl, weight);
+
+            JsonObject result = createSupplyResult(supplyToUpdate);
+            result.addProperty("success", 1);
+
+            return Response.status(200).entity(result.toString()).build();
+
+        }
+
+    }
+
+    @POST
+    @DELETE
+    @Path("/supplies/{instanceId}")
+    public Response putDemandsNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
+    }
+
+
+    /* ****************************************** Supplies ************************************************************* */
+
+    @GET
+    @Path("/supplies")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response getSuppliesServices() {
+
+        // persons
+        List<SupplyViewModel> supplyViewModels = new ArrayList<>();
+        for (Supply supply : api.allSupplies()) {
+            SupplyViewModel supplyViewModel = new SupplyViewModel(supply);
+            supplyViewModels.add(supplyViewModel);
+        }
+        JsonElement supplyRepresentation = gson.toJsonTree(supplyViewModels);
+
+        // build result
+        JsonObject result = new JsonObject();
+        result.add("supplies", supplyRepresentation);
+        result.addProperty("success", 1);
+
+        return Response.status(200).entity(result.toString()).build();
+
+
+    }
+
+    @DELETE
+    @POST
+    @PUT
+    @Path("/supplies")
+    public Response putpostdeleteSuppliesNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
+    }
 
     /**
      * 
