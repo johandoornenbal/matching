@@ -634,73 +634,8 @@ public class PersonResource extends ResourceAbstract {
                 }
             }
         }
-        // generate viewmodels
-        List<ProfileElementViewModel> profileElementViewModels = new ArrayList<>();
-        for (ProfileElement element : profileElementList){
 
-            //profile element tag
-            if (element.getClass().equals(ProfileElementTag.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementTag) element);
-                profileElementViewModels.add(model);
-            }
-
-            //required profile element role
-            if (element.getClass().equals(RequiredProfileElementRole.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((RequiredProfileElementRole) element);
-                profileElementViewModels.add(model);
-            }
-
-            //profile element location
-            if (element.getClass().equals(ProfileElementLocation.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementLocation) element);
-                profileElementViewModels.add(model);
-            }
-
-            //profile element boolean
-            if (element.getClass().equals(ProfileElementBoolean.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementBoolean) element);
-                profileElementViewModels.add(model);
-            }
-
-            //profile element dropdown
-            if (element.getClass().equals(ProfileElementDropDown.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementDropDown) element);
-                profileElementViewModels.add(model);
-            }
-
-            //profile element numeric
-            if (element.getClass().equals(ProfileElementNumeric.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementNumeric) element);
-                profileElementViewModels.add(model);
-            }
-
-            //profile element text
-            if (element.getClass().equals(ProfileElementText.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementText) element);
-                profileElementViewModels.add(model);
-            }
-
-            //profile element time period
-            if (element.getClass().equals(ProfileElementTimePeriod.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementTimePeriod) element);
-                profileElementViewModels.add(model);
-            }
-
-            //profile element use predicate
-            if (element.getClass().equals(ProfileElementUsePredicate.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementUsePredicate) element);
-                profileElementViewModels.add(model);
-            }
-
-            //profile element text
-            if (element.getClass().equals(ProfileElementChoice.class)) {
-                ProfileElementViewModel model = new ProfileElementViewModel(element);
-                profileElementViewModels.add(model);
-            }
-
-        }
-
-        return gson.toJsonTree(profileElementViewModels);
+        return GenerateJsonElementService.generateProfileElements(profileElementList);
     }
 
     private JsonElement sideLoadTagHolders(final Person person){

@@ -24,9 +24,13 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Api.Viewmodels.DemandViewModel;
 import info.matchingservice.dom.Api.Viewmodels.ProfileViewModel;
+import info.matchingservice.dom.Api.Viewmodels.TagHolderViewModel;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElementTag;
+import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
@@ -58,6 +62,10 @@ public class DemandResourceV2 extends ResourceAbstract {
     public Response getDemandServices(@PathParam("instanceId") String instanceId)  {
 
         Demand activeDemand = demands.matchDemandApiId(instanceId);
+        if (activeDemand==null){
+            String error = "{\"success\" : 0 , \"error\" : \"Demand not found\"}";
+            return Response.status(400).entity(error).build();
+        }
 
         // apply business logic - check if hidden
         Person demandOwner = (Person) activeDemand.getOwner();
@@ -66,25 +74,10 @@ public class DemandResourceV2 extends ResourceAbstract {
             return Response.status(401).entity(error).build();
         }
 
-        Gson gson = new Gson();
-        JsonObject result = new JsonObject();
-
-        // demand
-        DemandViewModel demandViewModel = new DemandViewModel(activeDemand, api);
-        JsonElement demandRepresentation = gson.toJsonTree(demandViewModel);
-        result.add("demand", demandRepresentation);
-
-        // sideload profiles
-        List<ProfileViewModel> profileViewModels = new ArrayList<>();
-        for (Profile profile : api.getProfilesForDemand(activeDemand)) {
-            profileViewModels.add(new ProfileViewModel(profile));
-        }
-        JsonElement profilesRepresentation = gson.toJsonTree(profileViewModels);
-        result.add("profiles", profilesRepresentation);
+        JsonObject result = createDemandResult(activeDemand);
 
         return Response.status(200).entity(result.toString()).build();
     }
-
 
     @DELETE
     @Path("/demands/{instanceId}")
@@ -219,6 +212,56 @@ public class DemandResourceV2 extends ResourceAbstract {
     @Path("/demands")
     public Response putgetdeleteDemandsNotAllowed() {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
+    }
+
+    private JsonObject createDemandResult(final Demand activeDemand) {
+
+        Gson gson = new Gson();
+        JsonObject result = new JsonObject();
+
+        // demand
+        DemandViewModel demandViewModel = new DemandViewModel(activeDemand, api);
+        JsonElement demandRepresentation = gson.toJsonTree(demandViewModel);
+        result.add("demand", demandRepresentation);
+
+        // sideload profiles
+        List<ProfileViewModel> profileViewModels = new ArrayList<>();
+        for (Profile profile : api.getProfilesForDemand(activeDemand)) {
+            profileViewModels.add(new ProfileViewModel(profile));
+        }
+        JsonElement profilesRepresentation = gson.toJsonTree(profileViewModels);
+        result.add("profiles", profilesRepresentation);
+
+        // sideload (profile) elements
+        List<ProfileElement> profileElementList = new ArrayList<>();
+        for (Profile profile : api.getProfilesForDemand(activeDemand)) {
+            for (ProfileElement element : profile.getCollectProfileElements()){
+                profileElementList.add(element);
+            }
+        }
+        JsonElement profileElements = GenerateJsonElementService.generateProfileElements(profileElementList);
+        result.add("elements", profileElements);
+
+        // sideload tagholders
+        List<ProfileElementTag> profileElementTagList = new ArrayList<>();
+        for (Profile profile : api.getProfilesForDemand(activeDemand)) {
+            for (ProfileElement element : profile.getCollectProfileElements()){
+                if (element.getClass().equals(ProfileElementTag.class)) {
+                    profileElementTagList.add((ProfileElementTag) element);
+                }
+            }
+        }
+        List<TagHolderViewModel> tagHolderViewModels = new ArrayList<>();
+        for (ProfileElementTag element : profileElementTagList){
+            for (TagHolder tagHolder : element.getCollectTagHolders()) {
+                tagHolderViewModels.add(new TagHolderViewModel(tagHolder));
+            }
+        }
+        JsonElement tagholders = gson.toJsonTree(tagHolderViewModels);
+        result.add("tagholders", tagholders);
+
+        return result;
+
     }
 
 }
