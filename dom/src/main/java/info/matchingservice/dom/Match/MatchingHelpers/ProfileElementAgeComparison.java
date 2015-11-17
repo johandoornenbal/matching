@@ -46,7 +46,7 @@ public class ProfileElementAgeComparison {
         if (supplyProfileElementUsePredicate.getUseAge()) {
 
             // Make sure the supplyProfileElement belongs to a Person Profile of a Person with dateOfBirth property not null
-            Person supplyProfileElementPersonOwner = (Person) supplyProfileElementUsePredicate.getProfileElementOwner().getActorOwner();
+            Person supplyProfileElementPersonOwner = (Person) supplyProfileElementUsePredicate.getProfileElementOwner().getOwner();
 
 
             if (
@@ -79,7 +79,7 @@ public class ProfileElementAgeComparison {
                 demandProfileElementNumeric,
                 supplyProfileElementUsePredicate,
                 supplyProfileElementUsePredicate.getProfileElementOwner(),
-                supplyProfileElementUsePredicate.getProfileElementOwner().getActorOwner(),
+                supplyProfileElementUsePredicate.getProfileElementOwner().getOwner(),
                 matchValue,
                 demandProfileElementNumeric.getWeight()
         );

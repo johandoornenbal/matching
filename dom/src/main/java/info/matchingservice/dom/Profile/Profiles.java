@@ -141,14 +141,14 @@ public class Profiles extends MatchingDomainService<Profile> {
         return newSupplyProfile;
     }
 
-    // Api v1
+    // Api v2
     @Programmatic
-    public Profile matchProfileApiId(final String id) {
+    public Profile matchProfileApiId(final Integer id) {
 
         for (Profile p : allInstances(Profile.class)) {
             String[] parts = p.getOID().split(Pattern.quote("[OID]"));
             String part1 = parts[0];
-            if (id.equals(part1)) {
+            if (id.toString().equals(part1)) {
                 return p;
             }
         }

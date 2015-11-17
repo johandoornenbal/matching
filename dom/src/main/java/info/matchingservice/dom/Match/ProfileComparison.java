@@ -111,7 +111,7 @@ public class ProfileComparison extends MatchingDomainObject<ProfileComparison> {
         return getMatchingSupplyProfile().getSupply().getOwner();
     }
 
-    public Actor getDemandingPerson() {return getDemandProfile().getActorOwner(); }
+    public Actor getDemandingPerson() {return getDemandProfile().getOwner(); }
 
     public void delete() {
         container.removeIfNotAlready(this);

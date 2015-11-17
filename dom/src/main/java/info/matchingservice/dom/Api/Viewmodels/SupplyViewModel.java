@@ -21,7 +21,7 @@ public class SupplyViewModel extends ApiAbstractViewModel {
 
     public SupplyViewModel(final Supply supply){
         super(supply);
-        this.ownerId = supply.getOwner().getIdAsInt();
+        this.owner = supply.getOwner().getIdAsInt();
         this.ownerUri = supply.getOwner().getUri();
         this.ownerFullName = supply.getOwner().title();
         Person owner = (Person)supply.getOwner();
@@ -45,16 +45,16 @@ public class SupplyViewModel extends ApiAbstractViewModel {
         this.profiles = supplyProfiles;
     }
 
-    //region > ownerId (property)
-    private Integer ownerId;
+    //region > owner (property)
+    private Integer owner;
 
     @MemberOrder(sequence = "1")
-    public Integer getOwnerId() {
-        return ownerId;
+    public Integer getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(final Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(final Integer owner) {
+        this.owner = owner;
     }
     //endregion
 

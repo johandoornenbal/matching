@@ -22,7 +22,7 @@ public class DemandViewModel extends ApiAbstractViewModel {
 
     public DemandViewModel(final Demand demand, final Api api){
         super(demand);
-        this.ownerId = demand.getOwner().getIdAsInt();
+        this.owner = demand.getOwner().getIdAsInt();
         this.ownerUri = demand.getOwner().getUri();
         this.ownerFullName = demand.getOwner().title();
         Person owner = (Person)demand.getOwner();
@@ -48,16 +48,16 @@ public class DemandViewModel extends ApiAbstractViewModel {
         this.profiles = demandProfiles;
     }
 
-    //region > ownerId (property)
-    private Integer ownerId;
+    //region > owner (property)
+    private Integer owner;
 
     @MemberOrder(sequence = "1")
-    public Integer getOwnerId() {
-        return ownerId;
+    public Integer getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(final Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(final Integer owner) {
+        this.owner = owner;
     }
     //endregion
 

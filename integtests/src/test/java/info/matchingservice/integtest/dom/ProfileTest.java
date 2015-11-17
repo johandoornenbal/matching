@@ -79,7 +79,7 @@ public class ProfileTest extends MatchingIntegrationTest {
 //    		assertThat(p1.getFirstName(), is("TESTvn"));
 //    		assertThat(s1.getOwnedBy(), is("tester"));
 //    		assertThat(s1.getOwner().toString(), is(p1.toString()) );
-//    		assertThat(pf1.getActorOwner().toString(), is(p1.toString()) );
+//    		assertThat(pf1.getOwner().toString(), is(p1.toString()) );
 //    		assertThat(pf1.getType(), is(ProfileType.PERSON_PROFILE));
 //    		assertThat(pf1.getProfileElement().isEmpty(), is(false));
 //    	}

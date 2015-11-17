@@ -19,6 +19,7 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
 
     public ProfileElementViewModel(final ProfileElement element){
         super(element);
+        this.profile = element.getProfileElementOwner().getIdAsInt();
         this.description = element.getDescription();
         this.weight = element.getWeight();
         this.widgetType = element.getWidgetType().toString();
@@ -115,6 +116,19 @@ public class ProfileElementViewModel extends ApiAbstractViewModel {
 //    }
 
     /// Generic properties for profileElement /////////////////////////////////////////////
+
+    //region > profile (property)
+    private Integer profile;
+
+    @MemberOrder(sequence = "1")
+    public Integer getProfile() {
+        return profile;
+    }
+
+    public void setProfile(final Integer profile) {
+        this.profile = profile;
+    }
+    //endregion
 
     //region > classType (property)
     private String classType;

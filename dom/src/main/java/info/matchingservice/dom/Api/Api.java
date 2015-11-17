@@ -7,10 +7,7 @@ import info.matchingservice.dom.CommunicationChannels.*;
 import info.matchingservice.dom.DemandSupply.*;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.Match.ProfileMatches;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElements;
-import info.matchingservice.dom.Profile.Profiles;
+import info.matchingservice.dom.Profile.*;
 import info.matchingservice.dom.ProvidedServices.Service;
 import info.matchingservice.dom.ProvidedServices.Services;
 import info.matchingservice.dom.Tags.Tag;
@@ -56,6 +53,7 @@ public class Api extends AbstractFactoryAndRepository {
 	 */
 	@Programmatic
 	public List<Person> allActivePersons(){
+		// at the moment all active users
 		return persons.allActivePersons();
 	}
 
@@ -441,6 +439,20 @@ public class Api extends AbstractFactoryAndRepository {
 		);
 	}
 
+	public Demand matchDemandApiId(Integer instanceId) {
+		Demand chosenDemand = demands.matchDemandApiId(instanceId);
+
+		if (chosenDemand!=null){
+			// apply business logic
+			Person demandOwner = (Person) chosenDemand.getOwner();
+			if (chosenDemand != null && demandOwner.hideDemands()) {
+				return null;
+			}
+		}
+
+		return chosenDemand;
+	}
+
 	@Programmatic
 	public Demand matchDemandApiIdForOwner(final Integer instanceId) {
 		Demand demand = demands.matchDemandApiId(instanceId);
@@ -535,6 +547,21 @@ public class Api extends AbstractFactoryAndRepository {
     }
 
 	//***************************************** Supply ***********************//
+
+	public Supply matchSupplyApiId(Integer instanceId) {
+		Supply chosenSupply = supplies.matchSupplyApiId(instanceId);
+
+		// apply business logic
+		if (chosenSupply!=null) {
+			Person supplyOwner = (Person) chosenSupply.getOwner();
+			if (chosenSupply != null && supplyOwner.hideSupplies()) {
+				return null;
+			}
+		}
+
+		return chosenSupply;
+	}
+
 
 	@Programmatic
 	public Supply matchSupplyApiIdForOwner(final Integer instanceId) {
@@ -635,6 +662,28 @@ public class Api extends AbstractFactoryAndRepository {
 
 		return new ArrayList<>(supply.getProfiles());
 	}
+
+
+	//***************************************** Profile ***********************//
+
+	public Profile matchProfileApiId(Integer instanceId) {
+
+		Profile chosenProfile = profiles.matchProfileApiId(instanceId);
+
+		//apply business logic
+		if (chosenProfile != null){
+			Person profileOwner = (Person) chosenProfile.getOwner();
+			if (chosenProfile.getDemandOrSupply()==DemandOrSupply.DEMAND && profileOwner.hideDemands()){
+				return null;
+			}
+			if (chosenProfile.getDemandOrSupply()==DemandOrSupply.SUPPLY && profileOwner.hideSupplies()){
+				return null;
+			}
+		}
+
+		return chosenProfile;
+	}
+
 
 	//***************************************** getProfileElementByUniqueId ***********************//
 

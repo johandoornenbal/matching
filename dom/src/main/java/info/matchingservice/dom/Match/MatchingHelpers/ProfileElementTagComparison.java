@@ -86,7 +86,7 @@ public class ProfileElementTagComparison {
                 demandProfileElementTag,
                 supplyProfileElementTag,
                 supplyProfileElementTag.getProfileElementOwner(),
-                supplyProfileElementTag.getProfileElementOwner().getActorOwner(),
+                supplyProfileElementTag.getProfileElementOwner().getOwner(),
                 matchValue,
                 demandProfileElementTag.getWeight()
         );

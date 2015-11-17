@@ -70,7 +70,7 @@ public class ProfileRepresentation {
 
         //Profile Elements
         JsonRepresentation profileElements = JsonRepresentation.newArray();
-        for (ProfileElement element : profile.getCollectProfileElements()) {
+        for (ProfileElement element : profile.getElements()) {
             ProfileElementRepresentation rep = new ProfileElementRepresentation();
             profileElements.arrayAdd(rep.ObjectRepresentation(element));
         }

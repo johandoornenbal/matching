@@ -22,15 +22,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.PersonalContact;
-import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Api.Viewmodels.*;
 import info.matchingservice.dom.Assessment.*;
-import info.matchingservice.dom.CommunicationChannels.*;
+import info.matchingservice.dom.CommunicationChannels.Address;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
+import info.matchingservice.dom.CommunicationChannels.Email;
+import info.matchingservice.dom.CommunicationChannels.Phone;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Match.ProfileMatch;
-import info.matchingservice.dom.Profile.*;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.applib.Identifier;
 import org.apache.isis.core.runtime.system.context.IsisContext;
@@ -56,7 +60,6 @@ import java.util.List;
 public class PersonResource extends ResourceAbstract {
 
     private Gson gson = new Gson();
-    private Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
 
     /************************** ROOT *************************************/
@@ -66,9 +69,7 @@ public class PersonResource extends ResourceAbstract {
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
     public Response getActivePersonServices() {
 
-        final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
-
-        Person activePerson = persons.activePerson();
+        Person activePerson = api.activePerson();
         if (activePerson == null){
             String error = "{\"success\" : 0 , \"error\" : \"person not found. Most likely cause: for this login no Person object created.\"}";
             return Response.status(400).entity(error).build();
@@ -632,14 +633,14 @@ public class PersonResource extends ResourceAbstract {
         List<ProfileElement> profileElementList = new ArrayList<>();
         for (Supply supply : api.getSuppliesForPerson(person)){
             for (Profile profile : supply.getProfiles()) {
-                for (ProfileElement element : profile.getCollectProfileElements()){
+                for (ProfileElement element : profile.getElements()){
                     profileElementList.add(element);
                 }
             }
         }
         for (Demand demand : api.getDemandsForPerson(person)){
             for (Profile profile : demand.getProfiles()) {
-                for (ProfileElement element : profile.getCollectProfileElements()){
+                for (ProfileElement element : profile.getElements()){
                     profileElementList.add(element);
                 }
             }
@@ -654,7 +655,7 @@ public class PersonResource extends ResourceAbstract {
         List<ProfileElementTag> profileElementTagList = new ArrayList<>();
         for (Supply supply : api.getSuppliesForPerson(person)){
             for (Profile profile : supply.getProfiles()) {
-                for (ProfileElement element : profile.getCollectProfileElements()){
+                for (ProfileElement element : profile.getElements()){
                     if (element.getClass().equals(ProfileElementTag.class)) {
                         profileElementTagList.add((ProfileElementTag) element);
                     }
@@ -663,7 +664,7 @@ public class PersonResource extends ResourceAbstract {
         }
         for (Demand demand : api.getDemandsForPerson(person)){
             for (Profile profile : demand.getProfiles()) {
-                for (ProfileElement element : profile.getCollectProfileElements()){
+                for (ProfileElement element : profile.getElements()){
                     if (element.getClass().equals(ProfileElementTag.class)) {
                         profileElementTagList.add((ProfileElementTag) element);
                     }

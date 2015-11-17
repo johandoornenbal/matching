@@ -16,14 +16,14 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
 
     public AssessmentViewModel(final Assessment assessment){
         super(assessment);
-        this.targetOwner = assessment.getTargetOwnerActor().getUri();
+        this.targetOwnerUri = assessment.getTargetOwnerActor().getUri();
         this.targetOwnerFullName = assessment.getTargetOwnerActor().title();
-        this.targetOwnerId = assessment.getTargetOwnerActor().getIdAsInt();
+        this.targetOwner = assessment.getTargetOwnerActor().getIdAsInt();
         this.targetOwnerClassType = assessment.getTargetOwnerActor().getClass().getSimpleName();
         Person targetOwner = (Person) assessment.getTargetOwnerActor();
         this.targetOwnerImageUrl = targetOwner.getImageUrl();
-        this.owner = assessment.getAssessmentOwnerActor().getUri();
-        this.ownerId = assessment.getAssessmentOwnerActor().getIdAsInt();
+        this.ownerUri = assessment.getAssessmentOwnerActor().getUri();
+        this.owner = assessment.getAssessmentOwnerActor().getIdAsInt();
         this.ownerFullName = assessment.getAssessmentOwnerActor().title();
         this.ownerClassType = assessment.getAssessmentOwnerActor().getClass().getSimpleName();
         Person assessmentOwner = (Person) assessment.getAssessmentOwnerActor();
@@ -34,53 +34,53 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
 
     public AssessmentViewModel(final DemandAssessment assessment){
         this((Assessment) assessment);
-        this.target = assessment.getTargetOfAssessment().getUri();
+        this.targetUri = assessment.getTargetOfAssessment().getUri();
         this.targetType = assessment.getTargetOfAssessment().getClass().getSimpleName();
-        this.targetId = assessment.getTargetOfAssessment().getIdAsInt();
+        this.target = assessment.getTargetOfAssessment().getIdAsInt();
     }
 
     public AssessmentViewModel(final SupplyAssessment assessment){
         this((Assessment) assessment);
-        this.target = assessment.getTargetOfAssessment().getUri();
+        this.targetUri = assessment.getTargetOfAssessment().getUri();
         this.targetType = assessment.getTargetOfAssessment().getClass().getSimpleName();
-        this.targetId = assessment.getTargetOfAssessment().getIdAsInt();
+        this.target = assessment.getTargetOfAssessment().getIdAsInt();
     }
 
     public AssessmentViewModel(final ProfileAssessment assessment){
         this((Assessment) assessment);
-        this.target = assessment.getTargetOfAssessment().getUri();
+        this.targetUri = assessment.getTargetOfAssessment().getUri();
         this.targetType = assessment.getTargetOfAssessment().getClass().getSimpleName();
-        this.targetId = assessment.getTargetOfAssessment().getIdAsInt();
+        this.target = assessment.getTargetOfAssessment().getIdAsInt();
     }
 
     public AssessmentViewModel(final ProfileMatchAssessment assessment){
         this((Assessment) assessment);
-        this.target = assessment.getTargetOfAssessment().getUri();
+        this.targetUri = assessment.getTargetOfAssessment().getUri();
         this.targetType = assessment.getTargetOfAssessment().getClass().getSimpleName();
-        this.targetId = assessment.getTargetOfAssessment().getIdAsInt();
+        this.target = assessment.getTargetOfAssessment().getIdAsInt();
     }
 
     public AssessmentViewModel(final ProfileFeedback assessment){
         this((Assessment) assessment);
-        this.target = assessment.getTargetOfAssessment().getUri();
+        this.targetUri = assessment.getTargetOfAssessment().getUri();
         this.targetType = assessment.getTargetOfAssessment().getClass().getSimpleName();
-        this.targetId = assessment.getTargetOfAssessment().getIdAsInt();
+        this.target = assessment.getTargetOfAssessment().getIdAsInt();
         this.feedback = assessment.getFeedback();
     }
 
     public AssessmentViewModel(final DemandFeedback assessment){
         this((Assessment) assessment);
-        this.target = assessment.getTargetOfAssessment().getUri();
+        this.targetUri = assessment.getTargetOfAssessment().getUri();
         this.targetType = assessment.getTargetOfAssessment().getClass().getSimpleName();
-        this.targetId = assessment.getTargetOfAssessment().getIdAsInt();
+        this.target = assessment.getTargetOfAssessment().getIdAsInt();
         this.feedback = assessment.getFeedback();
     }
 
     public AssessmentViewModel(final SupplyFeedback assessment){
         this((Assessment) assessment);
-        this.target = assessment.getTargetOfAssessment().getUri();
+        this.targetUri = assessment.getTargetOfAssessment().getUri();
         this.targetType = assessment.getTargetOfAssessment().getClass().getSimpleName();
-        this.targetId = assessment.getTargetOfAssessment().getIdAsInt();
+        this.target = assessment.getTargetOfAssessment().getIdAsInt();
         this.feedback = assessment.getFeedback();
     }
 
@@ -111,41 +111,41 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
     //endregion
 
     //region > targetId (property)
-    private Integer targetId;
+    private Integer target;
 
     @MemberOrder(sequence = "1")
-    public Integer getTargetId() {
-        return targetId;
+    public Integer getTarget() {
+        return target;
     }
 
-    public void setTargetId(final Integer targetId) {
-        this.targetId = targetId;
+    public void setTarget(final Integer target) {
+        this.target = target;
+    }
+    //endregion
+
+    //region > targetOwnerUri (property)
+    private String targetOwnerUri;
+
+    @MemberOrder(sequence = "1")
+    public String getTargetOwnerUri() {
+        return targetOwnerUri;
+    }
+
+    public void setTargetOwnerUri(final String targetOwnerUri) {
+        this.targetOwnerUri = targetOwnerUri;
     }
     //endregion
 
     //region > targetOwner (property)
-    private String targetOwner;
+    private Integer targetOwner;
 
     @MemberOrder(sequence = "1")
-    public String getTargetOwner() {
+    public Integer getTargetOwner() {
         return targetOwner;
     }
 
-    public void setTargetOwner(final String targetOwner) {
+    public void setTargetOwner(final Integer targetOwner) {
         this.targetOwner = targetOwner;
-    }
-    //endregion
-
-    //region > targetOwnerId (property)
-    private Integer targetOwnerId;
-
-    @MemberOrder(sequence = "1")
-    public Integer getTargetOwnerId() {
-        return targetOwnerId;
-    }
-
-    public void setTargetOwnerId(final Integer targetOwnerId) {
-        this.targetOwnerId = targetOwnerId;
     }
     //endregion
 
@@ -189,28 +189,28 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
     //endregion
 
     //region > assessmentOwnerACtor (property)
-    private String owner;
+    private Integer owner;
 
     @MemberOrder(sequence = "1")
-    public String getOwner() {
+    public Integer getOwner() {
         return owner;
     }
 
-    public void setOwner(final String owner) {
+    public void Integer(final Integer owner) {
         this.owner = owner;
     }
     //endregion
 
-    //region > ownerId (property)
-    private Integer ownerId;
+    //region > ownerUri (property)
+    private String ownerUri;
 
     @MemberOrder(sequence = "1")
-    public Integer getOwnerId() {
-        return ownerId;
+    public String getOwnerUri() {
+        return ownerUri;
     }
 
-    public void setOwnerId(final Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerUri(final String ownerUri) {
+        this.ownerUri = ownerUri;
     }
     //endregion
 
@@ -267,15 +267,15 @@ public class AssessmentViewModel extends ApiAbstractViewModel {
     //endregion
 
     //region > target (property)
-    private String target;
+    private String targetUri;
 
     @MemberOrder(sequence = "1")
-    public String getTarget() {
-        return target;
+    public String getTargetUri() {
+        return targetUri;
     }
 
-    public void setTarget(final String target) {
-        this.target = target;
+    public void setTargetUri(final String targetUri) {
+        this.targetUri = targetUri;
     }
     //endregion
 

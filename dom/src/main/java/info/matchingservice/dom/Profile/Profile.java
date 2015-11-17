@@ -253,7 +253,7 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     
     //** actorOwner **//
     @PropertyLayout(hidden=Where.PARENTED_TABLES)
-    public Actor getActorOwner() {
+    public Actor getOwner() {
         if (this.getDemandOrSupply().equals(DemandOrSupply.DEMAND)){
             return getDemand().getOwner();
         } else {
@@ -325,19 +325,19 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     }
     //-- collectDemandProfileComparisons --//
     
-    //** collectProfileElements **//
-    private SortedSet<ProfileElement> collectProfileElements = new TreeSet<ProfileElement>();
+    //** elements **//
+    private SortedSet<ProfileElement> elements = new TreeSet<ProfileElement>();
 
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "profileElementOwner", dependentElement = "true")
-    public SortedSet<ProfileElement> getCollectProfileElements() {
-        return collectProfileElements;
+    public SortedSet<ProfileElement> getElements() {
+        return elements;
     }
     
-    public void setCollectProfileElements(final SortedSet<ProfileElement> vac) {
-        this.collectProfileElements = vac;
+    public void setElements(final SortedSet<ProfileElement> vac) {
+        this.elements = vac;
     }
-    //-- collectProfileElements --//
+    //-- elements --//
     
     //** collectAssessments **//
     private SortedSet<ProfileAssessment> collectAssessments = new TreeSet<ProfileAssessment>();

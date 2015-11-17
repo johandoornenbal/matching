@@ -17,16 +17,14 @@
 
 package info.matchingservice.webapp.custom_rest;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import info.matchingservice.dom.Api.Api;
+import info.matchingservice.dom.Api.Viewmodels.ProfileViewModel;
+import info.matchingservice.dom.Api.Viewmodels.TagHolderViewModel;
+import info.matchingservice.dom.Profile.*;
+import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
@@ -34,26 +32,68 @@ import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
-import info.matchingservice.dom.Profile.DemandOrSupply;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.Profiles;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jodo on 15/05/15.
  */
-@Path("/v1")
+@Path("/v2")
 public class ProfileResource extends ResourceAbstract {
 
+    private Gson gson = new Gson();
+    private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
+
     @GET
-    @Path("/demandprofiles/{instanceId}")
+    @Path("/profiles/{instanceId}")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response getProfileServices(@PathParam("instanceId") String instanceId)  {
+    public Response getProfileServices(@PathParam("instanceId") Integer instanceId)  {
 
-        final Profiles profiles = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Profiles.class);
+        Profile activeProfile = api.matchProfileApiId(instanceId);
+        if (activeProfile == null) {
+            String error = "{\"success\" : 0 , \"error\" : \"Profile not found or not authorized\"}";
+            return Response.status(400).entity(error).build();
+        }
 
-        Profile activeProfile = profiles.matchProfileApiId(instanceId);
+        JsonObject result = createProfileResult(activeProfile);
+        result.addProperty("success", 1);
 
-        return Response.status(200).entity(profileRepresentation(activeProfile).toString()).build();
+        return Response.status(200).entity(result.toString()).build();
+    }
+
+    private JsonObject createProfileResult(final Profile activeProfile) {
+        Gson gson = new Gson();
+        JsonObject result = new JsonObject();
+
+        // profile
+        ProfileViewModel profileViewModel = new ProfileViewModel(activeProfile);
+        JsonElement profileRepresentation = gson.toJsonTree(profileViewModel);
+        result.add("profile", profileRepresentation);
+
+        // sideload elements
+        JsonElement profileElements = GenerateJsonElementService.generateProfileElements(new ArrayList<>(activeProfile.getElements()));
+        result.add("elements", profileElements);
+
+        // sideload tagholders
+        List<ProfileElementTag> profileElementTagList = new ArrayList<>();
+        for (ProfileElement element : activeProfile.getElements()){
+             if (element.getClass().equals(ProfileElementTag.class)) {
+                 profileElementTagList.add((ProfileElementTag) element);
+             }
+        }
+        List<TagHolderViewModel> tagHolderViewModels = new ArrayList<>();
+        for (ProfileElementTag element : profileElementTagList){
+            for (TagHolder tagHolder : element.getCollectTagHolders()) {
+                tagHolderViewModels.add(new TagHolderViewModel(tagHolder));
+            }
+        }
+        JsonElement tagholders = gson.toJsonTree(tagHolderViewModels);
+        result.add("tagholders", tagholders);
+
+        return result;
     }
 
 
@@ -79,7 +119,7 @@ public class ProfileResource extends ResourceAbstract {
     @GET
     @Path("/supplyprofiles/{instanceId}")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response getSupplyProfileServices(@PathParam("instanceId") String instanceId)  {
+    public Response getSupplyProfileServices(@PathParam("instanceId") Integer instanceId)  {
 
         final Profiles profiles = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Profiles.class);
 

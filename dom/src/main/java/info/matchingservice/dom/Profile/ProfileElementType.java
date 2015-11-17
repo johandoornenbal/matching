@@ -108,7 +108,7 @@ public enum ProfileElementType implements TitledEnum {
                         demandProfileElement,
                         supplyProfileElement,
                         supplyProfileElement.getProfileElementOwner(),
-                        supplyProfileElement.getProfileElementOwner().getActorOwner(),
+                        supplyProfileElement.getProfileElementOwner().getOwner(),
                         matchValue,
                         demandProfileElement.getWeight()
                 );
@@ -188,7 +188,7 @@ public enum ProfileElementType implements TitledEnum {
                         demandProfileElement,
                         supplyProfileElement,
                         supplyProfileElement.getProfileElementOwner(),
-                        supplyProfileElement.getProfileElementOwner().getActorOwner(),
+                        supplyProfileElement.getProfileElementOwner().getOwner(),
                         matchValue,
                         demandProfileElement.getWeight()
                 );
@@ -290,7 +290,7 @@ public enum ProfileElementType implements TitledEnum {
                         matchValue = 0;
 
                         System.out.println("match from getProfileElementTimePeriodComparison() in ProfileMatchingService.class:");
-                        System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() + " >> start supply later than end demand");
+                        System.out.println(supplyProfileElement.getProfileElementOwner().getOwner().toString() + " >> start supply later than end demand");
 
                     }
 
@@ -310,7 +310,7 @@ public enum ProfileElementType implements TitledEnum {
                         matchValue = 0;
 
                         System.out.println("match from getProfileElementTimePeriodComparison() in ProfileMatchingService.class:");
-                        System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() + " >> end supply before start demand");
+                        System.out.println(supplyProfileElement.getProfileElementOwner().getOwner().toString() + " >> end supply before start demand");
                     }
 
                     // if supply start <= demand start and supply end <= demand end
@@ -421,7 +421,7 @@ public enum ProfileElementType implements TitledEnum {
 
                         System.out.println("value: " + value);
                         System.out.println("match from getProfileElementTimePeriodComparison() in ProfileMatchingService.class:");
-                        System.out.println(supplyProfileElement.getProfileElementOwner().getActorOwner().toString() + " >> start supply after start demand and end supply before end demand");
+                        System.out.println(supplyProfileElement.getProfileElementOwner().getOwner().toString() + " >> start supply after start demand and end supply before end demand");
                         System.out.println("matchValue:  " + matchValue);
                         System.out.println("demand:  " + demandProfileElementTimePeriod.getStartDate().toString() + " - " + demandProfileElementTimePeriod.getEndDate().toString());
                         System.out.println("supply:  " + supplyProfileElement.getProfileElementOwner().getStartDate().toString() + " - " + supplyProfileElement.getProfileElementOwner().getEndDate().toString());
@@ -436,7 +436,7 @@ public enum ProfileElementType implements TitledEnum {
                         demandProfileElement,
                         supplyProfileElement,
                         supplyProfileElement.getProfileElementOwner(),
-                        supplyProfileElement.getProfileElementOwner().getActorOwner(),
+                        supplyProfileElement.getProfileElementOwner().getOwner(),
                         matchValue,
                         demandProfileElement.getWeight()
                 );
@@ -550,7 +550,7 @@ public enum ProfileElementType implements TitledEnum {
                         demandProfileElement,
                         supplyProfileElement,
                         supplyProfileElement.getProfileElementOwner(),
-                        supplyProfileElement.getProfileElementOwner().getActorOwner(),
+                        supplyProfileElement.getProfileElementOwner().getOwner(),
                         matchValue,
                         demandProfileElement.getWeight()
                 );
@@ -590,7 +590,7 @@ public enum ProfileElementType implements TitledEnum {
                         demandProfileElement,
                         supplyProfileElement,
                         supplyProfileElement.getProfileElementOwner(),
-                        supplyProfileElement.getProfileElementOwner().getActorOwner(),
+                        supplyProfileElement.getProfileElementOwner().getOwner(),
                         matchValue,
                         demandProfileElement.getWeight()
                 );

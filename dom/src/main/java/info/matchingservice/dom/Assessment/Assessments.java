@@ -103,7 +103,7 @@ public class Assessments extends MatchingDomainService<Assessment> {
         final UUID uuid=UUID.randomUUID();
         newAs.setUniqueItemId(uuid);
         newAs.setTargetOfAssessment(targetObject);
-        newAs.setTargetOwnerActor(targetObject.getActorOwner());
+        newAs.setTargetOwnerActor(targetObject.getOwner());
         newAs.setAssessmentOwnerActor(ownerActor);
         newAs.setDescription(description);
         newAs.setFeedback(feedback);

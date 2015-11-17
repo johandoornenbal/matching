@@ -26,7 +26,6 @@ import info.matchingservice.dom.Api.Viewmodels.DemandViewModel;
 import info.matchingservice.dom.Api.Viewmodels.ProfileViewModel;
 import info.matchingservice.dom.Api.Viewmodels.TagHolderViewModel;
 import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.Demands;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileElementTag;
@@ -54,24 +53,16 @@ public class DemandResource extends ResourceAbstract {
 
     private Gson gson = new Gson();
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
-    final Demands demands = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Demands.class);
 
     @GET
     @Path("/demands/{instanceId}")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
     public Response getDemandServices(@PathParam("instanceId") Integer instanceId)  {
 
-        Demand activeDemand = demands.matchDemandApiId(instanceId);
+        Demand activeDemand = api.matchDemandApiId(instanceId);
         if (activeDemand==null){
-            String error = "{\"success\" : 0 , \"error\" : \"Demand not found\"}";
+            String error = "{\"success\" : 0 , \"error\" : \"Demand not found or not authorized\"}";
             return Response.status(400).entity(error).build();
-        }
-
-        // apply business logic - check if hidden
-        Person demandOwner = (Person) activeDemand.getOwner();
-        if (demandOwner.hideDemands()) {
-            String error = "{\"success\" : 0 , \"error\" : \"Not authorized\"}";
-            return Response.status(401).entity(error).build();
         }
 
         JsonObject result = createDemandResult(activeDemand);
@@ -392,7 +383,7 @@ public class DemandResource extends ResourceAbstract {
         // sideload (profile) elements
         List<ProfileElement> profileElementList = new ArrayList<>();
         for (Profile profile : api.getProfilesForDemand(activeDemand)) {
-            for (ProfileElement element : profile.getCollectProfileElements()){
+            for (ProfileElement element : profile.getElements()){
                 profileElementList.add(element);
             }
         }
@@ -402,7 +393,7 @@ public class DemandResource extends ResourceAbstract {
         // sideload tagholders
         List<ProfileElementTag> profileElementTagList = new ArrayList<>();
         for (Profile profile : api.getProfilesForDemand(activeDemand)) {
-            for (ProfileElement element : profile.getCollectProfileElements()){
+            for (ProfileElement element : profile.getElements()){
                 if (element.getClass().equals(ProfileElementTag.class)) {
                     profileElementTagList.add((ProfileElementTag) element);
                 }

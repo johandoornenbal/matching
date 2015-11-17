@@ -16,15 +16,15 @@ public class ProfileMatchViewModel extends ApiAbstractViewModel {
     public ProfileMatchViewModel(final ProfileMatch profileMatch){
         super(profileMatch);
 
-        this.owner = profileMatch.getOwner().getUri();
+        this.ownerUri = profileMatch.getOwner().getUri();
         this.ownerClassType = profileMatch.getOwner().getClass().getSimpleName();
-        this.ownerId = profileMatch.getOwner().getIdAsInt();
+        this.owner = profileMatch.getOwner().getIdAsInt();
         this.ownerFullName = profileMatch.getOwner().title();
         this.ownerImageUrl = profileMatch.getOwner().getImageUrl();
 
-        this.supplyCandidate = profileMatch.getSupplyCandidate().getUri();
+        this.supplyCandidateUri = profileMatch.getSupplyCandidate().getUri();
         this.supplyCandidateClassType = profileMatch.getSupplyCandidate().getClass().getSimpleName();
-        this.supplyCandidateId = profileMatch.getSupplyCandidate().getIdAsInt();
+        this.supplyCandidate = profileMatch.getSupplyCandidate().getIdAsInt();
         this.supplyCandidateFullName = profileMatch.getSupplyCandidate().title();
         this.supplyCandidateImageUrl = profileMatch.getSupplyCandidate().getImageUrl();
 
@@ -41,15 +41,15 @@ public class ProfileMatchViewModel extends ApiAbstractViewModel {
     }
 
     //region > owner (property)
-    private String owner;
+    private String ownerUri;
 
     @MemberOrder(sequence = "1")
-    public String getOwner() {
-        return owner;
+    public String getOwnerUri() {
+        return ownerUri;
     }
 
-    public void setOwner(final String owner) {
-        this.owner = owner;
+    public void setOwnerUri(final String ownerUri) {
+        this.ownerUri = ownerUri;
     }
     //endregion
 
@@ -66,16 +66,16 @@ public class ProfileMatchViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > ownerId (property)
-    private Integer ownerId;
+    //region > owner (property)
+    private Integer owner;
 
     @MemberOrder(sequence = "1")
-    public Integer getOwnerId() {
-        return ownerId;
+    public Integer getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(final Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(final Integer owner) {
+        this.owner = owner;
     }
     //endregion
 
@@ -105,16 +105,16 @@ public class ProfileMatchViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > supplyCandidate (property)
-    private String supplyCandidate;
+    //region > supplyCandidateUri (property)
+    private String supplyCandidateUri;
 
     @MemberOrder(sequence = "1")
-    public String getSupplyCandidate() {
-        return supplyCandidate;
+    public String getSupplyCandidateUri() {
+        return supplyCandidateUri;
     }
 
-    public void setSupplyCandidate(final String supplyCandidate) {
-        this.supplyCandidate = supplyCandidate;
+    public void setSupplyCandidateUri(final String supplyCandidateUri) {
+        this.supplyCandidateUri = supplyCandidateUri;
     }
     //endregion
 
@@ -131,16 +131,16 @@ public class ProfileMatchViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > supplyCandidateId (property)
-    private Integer supplyCandidateId;
+    //region > supplyCandidate (property)
+    private Integer supplyCandidate;
 
     @MemberOrder(sequence = "1")
-    public Integer getSupplyCandidateId() {
-        return supplyCandidateId;
+    public Integer getSupplyCandidate() {
+        return supplyCandidate;
     }
 
-    public void setSupplyCandidateId(final Integer supplyCandidateId) {
-        this.supplyCandidateId = supplyCandidateId;
+    public void setSupplyCandidate(final Integer supplyCandidate) {
+        this.supplyCandidate = supplyCandidate;
     }
     //endregion
 

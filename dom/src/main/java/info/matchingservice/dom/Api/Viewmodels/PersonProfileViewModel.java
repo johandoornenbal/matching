@@ -29,7 +29,7 @@ public class PersonProfileViewModel extends ApiAbstractViewModel {
         this.imageUrl = p.getImageUrl();
 
         List<ProfileElementViewModel> profileElements = new ArrayList<>();
-        for (ProfileElement element : p.getCollectProfileElements()) {
+        for (ProfileElement element : p.getElements()) {
             //profile element tag
             if (element.getClass().equals(ProfileElementTag.class)) {
                 ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementTag) element);

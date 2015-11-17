@@ -28,9 +28,16 @@ public class ProfileViewModel extends ApiAbstractViewModel {
         this.imageUrl = profile.getImageUrl();
         this.type = profile.getType().title();
         this.demandOrSupply = profile.getDemandOrSupply().toString();
+        if (profile.getDemandOrSupply() == DemandOrSupply.DEMAND) {
+            this.demand = profile.getDemand().getIdAsInt();
+        }
+        if (profile.getDemandOrSupply() == DemandOrSupply.SUPPLY) {
+            this.supply = profile.getSupply().getIdAsInt();
+        }
+        this.owner = profile.getOwner().getIdAsInt();
 
         List<Integer> profileElements = new ArrayList<>();
-        for (ProfileElement element : profile.getCollectProfileElements()) {
+        for (ProfileElement element : profile.getElements()) {
             profileElements.add(element.getIdAsInt());
         }
         this.elements = profileElements;
@@ -112,6 +119,45 @@ public class ProfileViewModel extends ApiAbstractViewModel {
 
     public void setDemandOrSupply(final String demandOrSupply) {
         this.demandOrSupply = demandOrSupply;
+    }
+    //endregion
+
+    //region > demand (property)
+    private Integer demand;
+
+    @MemberOrder(sequence = "1")
+    public Integer getDemand() {
+        return demand;
+    }
+
+    public void setDemand(final Integer demand) {
+        this.demand = demand;
+    }
+    //endregion
+
+    //region > supply (property)
+    private Integer supply;
+
+    @MemberOrder(sequence = "1")
+    public Integer getSupply() {
+        return supply;
+    }
+
+    public void setSupply(final Integer supply) {
+        this.supply = supply;
+    }
+    //endregion
+
+    //region > owner (property)
+    private Integer owner;
+
+    @MemberOrder(sequence = "1")
+    public Integer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(final Integer owner) {
+        this.owner = owner;
     }
     //endregion
 

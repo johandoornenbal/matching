@@ -85,8 +85,8 @@ public class ProfileElementTypeTest {
 		supplyProfileElement.setProfileElementType(ProfileElementType.USE_TIME_PERIOD);
 
 		assertEquals(supplyProfile.getSupply(), supply);
-		assertEquals(supplyProfile.getActorOwner(), supplier);
-		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
+		assertEquals(supplyProfile.getOwner(), supplier);
+		assertEquals(supplyProfileElement.getProfileElementOwner().getOwner(), supplier);
 
 		// wrong profile element type
 		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
@@ -189,8 +189,8 @@ public class ProfileElementTypeTest {
 		supplyProfileElement.setProfileElementType(ProfileElementType.USE_AGE);
 
 		assertEquals(supplyProfile.getSupply(), supply);
-		assertEquals(supplyProfile.getActorOwner(), supplier);
-		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
+		assertEquals(supplyProfile.getOwner(), supplier);
+		assertEquals(supplyProfileElement.getProfileElementOwner().getOwner(), supplier);
 
 		// wrong profile element type
 		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
@@ -214,7 +214,7 @@ public class ProfileElementTypeTest {
 		supplyProfileElement.setProfileElementType(ProfileElementType.USE_AGE);
 		supplyProfileElement.setUseAge(true);
 		demandProfileElement.setNumericValue(20);
-		Person person = (Person) supplyProfile.getActorOwner();
+		Person person = (Person) supplyProfile.getOwner();
 		person.setDateOfBirth(LocalDate.now().minusYears(20));
 		ProfileElementComparison comp4 = demandProfileElement.getProfileElementType().getProfileElementComparison(demandProfileElement, supplyProfileElement);
 		assertEquals(comp4.getCalculatedMatchingValue().intValue(), 100);
@@ -315,8 +315,8 @@ public class ProfileElementTypeTest {
 		supplyProfileElement.setProfileElementType(ProfileElementType.HOURLY_RATE);
 
 		assertEquals(supplyProfile.getSupply(), supply);
-		assertEquals(supplyProfile.getActorOwner(), supplier);
-		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
+		assertEquals(supplyProfile.getOwner(), supplier);
+		assertEquals(supplyProfileElement.getProfileElementOwner().getOwner(), supplier);
 
 		// wrong profile element type
 		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);
@@ -411,8 +411,8 @@ public class ProfileElementTypeTest {
 		supplyProfileElement.setProfileElementType(ProfileElementType.EDUCATION_LEVEL);
 
 		assertEquals(supplyProfile.getSupply(), supply);
-		assertEquals(supplyProfile.getActorOwner(), supplier);
-		assertEquals(supplyProfileElement.getProfileElementOwner().getActorOwner(), supplier);
+		assertEquals(supplyProfile.getOwner(), supplier);
+		assertEquals(supplyProfileElement.getProfileElementOwner().getOwner(), supplier);
 
 		// wrong profile element type
 		demandProfileElement.setProfileElementType(ProfileElementType.BRANCHE_TAGS);

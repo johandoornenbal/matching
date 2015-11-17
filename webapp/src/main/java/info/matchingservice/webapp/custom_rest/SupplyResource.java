@@ -20,12 +20,10 @@ package info.matchingservice.webapp.custom_rest;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Api.Viewmodels.ProfileViewModel;
 import info.matchingservice.dom.Api.Viewmodels.SupplyViewModel;
 import info.matchingservice.dom.Api.Viewmodels.TagHolderViewModel;
-import info.matchingservice.dom.DemandSupply.Supplies;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
@@ -51,24 +49,16 @@ public class SupplyResource extends ResourceAbstract {
 
     private Gson gson = new Gson();
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
-    final Supplies supplies = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Supplies.class);
 
     @GET
     @Path("/supplies/{instanceId}")
     @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
     public Response getSupplyServices(@PathParam("instanceId") Integer instanceId)  {
 
-        Supply activeSupply = supplies.matchSupplyApiId(instanceId);
+        Supply activeSupply = api.matchSupplyApiId(instanceId);
         if (activeSupply==null){
-            String error = "{\"success\" : 0 , \"error\" : \"Supply not found\"}";
+            String error = "{\"success\" : 0 , \"error\" : \"Supply not found or not authorized\"}";
             return Response.status(400).entity(error).build();
-        }
-
-        // apply business logic - check if hidden
-        Person supplyOwner = (Person) activeSupply.getOwner();
-        if (supplyOwner.hideSupplies()) {
-            String error = "{\"success\" : 0 , \"error\" : \"Not authorized\"}";
-            return Response.status(401).entity(error).build();
         }
 
         JsonObject result = createSupplyResult(activeSupply);
@@ -225,7 +215,7 @@ public class SupplyResource extends ResourceAbstract {
         // sideload (profile) elements
         List<ProfileElement> profileElementList = new ArrayList<>();
         for (Profile profile : api.getProfilesForSupply(activeSupply)) {
-            for (ProfileElement element : profile.getCollectProfileElements()){
+            for (ProfileElement element : profile.getElements()){
                 profileElementList.add(element);
             }
         }
@@ -235,7 +225,7 @@ public class SupplyResource extends ResourceAbstract {
         // sideload tagholders
         List<ProfileElementTag> profileElementTagList = new ArrayList<>();
         for (Profile profile : api.getProfilesForSupply(activeSupply)) {
-            for (ProfileElement element : profile.getCollectProfileElements()){
+            for (ProfileElement element : profile.getElements()){
                 if (element.getClass().equals(ProfileElementTag.class)) {
                     profileElementTagList.add((ProfileElementTag) element);
                 }

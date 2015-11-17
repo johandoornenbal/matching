@@ -187,11 +187,11 @@ public class ProfileMatchingService extends AbstractService {
 		// check the validity - if not valid: return null
 		if (
 				// filter niet active Actors uit
-				demandProfile.getActorOwner().getActivated()
+				demandProfile.getOwner().getActivated()
 
 				&&
 
-				supplyProfile.getActorOwner().getActivated()
+				supplyProfile.getOwner().getActivated()
 
 				&&
 
@@ -207,12 +207,12 @@ public class ProfileMatchingService extends AbstractService {
 				&&
 				
 				//there are elements on the demand profile
-				demandProfile.getCollectProfileElements().size() > 0
+				demandProfile.getElements().size() > 0
 				
 				&&
 				
 				//there are elements on the supply profile
-				supplyProfile.getCollectProfileElements().size() > 0
+				supplyProfile.getElements().size() > 0
 
 				)
 		{
@@ -225,13 +225,13 @@ public class ProfileMatchingService extends AbstractService {
             Integer weightCounter = 0; // keeps track of profile elements on demand profile that have a weight filled in
 			
 			// loop through profile elements on the demand profile
-			for (ProfileElement demandProfileElement: demandProfile.getCollectProfileElements()){
+			for (ProfileElement demandProfileElement: demandProfile.getElements()){
 
 				//test if demandProfileElement is active
 				if (demandProfileElement.getIsActive()) {
 
 					// loop through profile elements on the 'matching' supply profile
-					for (ProfileElement supplyProfileElement: supplyProfile.getCollectProfileElements()){
+					for (ProfileElement supplyProfileElement: supplyProfile.getElements()){
 
 						//test if supplyProfileElement is active
 						if (supplyProfileElement.getIsActive()) {
@@ -310,7 +310,7 @@ public class ProfileMatchingService extends AbstractService {
 			
 			// divide the summed calculated matching value by the [number of profile elements on the demand profile] * [average weight] 
 				
-			calculatedMatchingValue = calculatedMatchingValue / (demandProfile.getCollectProfileElements().size() * averageWeight);
+			calculatedMatchingValue = calculatedMatchingValue / (demandProfile.getElements().size() * averageWeight);
 										
 			
 			// create or update the profileComparison if value greater than threshold (0) and checkRequiredProfileElements == true
@@ -438,7 +438,7 @@ public class ProfileMatchingService extends AbstractService {
 			profileElement = (RequiredProfileElementRole) profileElements.findProfileElementByOwnerProfileAndDescription("REQUIRED_ROLE_ELEMENT", demandProfile).get(0);
 
 			Person  supplyActorOwner;
-			supplyActorOwner = (Person) supplyProfile.getActorOwner();
+			supplyActorOwner = (Person) supplyProfile.getOwner();
 
 			//case student is asked for and isStudent is found
 			if (profileElement.getStudent() && supplyActorOwner.getIsStudent()) {

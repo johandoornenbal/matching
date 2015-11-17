@@ -19,11 +19,11 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
         super(personalContact);
         this.contactUri = personalContact.getContactPerson().getUri();
         this.contactFullName = personalContact.getContactPerson().title();
-        this.contactId = personalContact.getContactPerson().getIdAsInt();
+        this.contact = personalContact.getContactPerson().getIdAsInt();
         this.contactImageUrl = personalContact.getContactPerson().getImageUrl();
-        this.owner = personalContact.getOwner().getUri();
+        this.ownerUri = personalContact.getOwner().getUri();
         this.ownerFullName = personalContact.getOwner().title();
-        this.ownerId = personalContact.getOwner().getIdAsInt();
+        this.owner = personalContact.getOwner().getIdAsInt();
         this.ownerImageUrl = personalContact.getOwner().getImageUrl();
         this.trustLevel = personalContact.getTrustLevel().toString();
     }
@@ -55,16 +55,16 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > contactId (property)
-    private Integer contactId;
+    //region > contact (property)
+    private Integer contact;
 
     @MemberOrder(sequence = "1")
-    public Integer getContactId() {
-        return contactId;
+    public Integer getContact() {
+        return contact;
     }
 
-    public void setContactId(final Integer contactId) {
-        this.contactId = contactId;
+    public void setContact(final Integer contact) {
+        this.contact = contact;
     }
     //endregion
 
@@ -83,14 +83,14 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
 
 
     //region > owner (property)
-    private String owner;
+    private Integer owner;
 
     @MemberOrder(sequence = "1")
-    public String getOwner() {
+    public Integer getOwner() {
         return owner;
     }
 
-    public void setOwner(final String owner) {
+    public void setOwner(final Integer owner) {
         this.owner = owner;
     }
     //endregion
@@ -121,16 +121,16 @@ public class PersonalContactViewModel extends ApiAbstractViewModel {
     }
     //endregion
 
-    //region > ownerId (property)
-    private Integer ownerId;
+    //region > ownerUri (property)
+    private String ownerUri;
 
     @MemberOrder(sequence = "1")
-    public Integer getOwnerId() {
-        return ownerId;
+    public String getOwnerUri() {
+        return ownerUri;
     }
 
-    public void setOwnerId(final Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerUri(final String ownerUri) {
+        this.ownerUri = ownerUri;
     }
     //endregion
 

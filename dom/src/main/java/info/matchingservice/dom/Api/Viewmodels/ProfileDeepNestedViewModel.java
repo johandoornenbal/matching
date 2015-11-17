@@ -28,7 +28,7 @@ public class ProfileDeepNestedViewModel extends ApiAbstractViewModel {
         this.imageUrl = profile.getImageUrl();
 
         List<ProfileElementViewModel> profileElements = new ArrayList<>();
-        for (ProfileElement element : profile.getCollectProfileElements()) {
+        for (ProfileElement element : profile.getElements()) {
             //profile element tag
             if (element.getClass().equals(ProfileElementTag.class)) {
                 ProfileElementViewModel model = new ProfileElementViewModel((ProfileElementTag) element);
