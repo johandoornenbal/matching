@@ -477,7 +477,7 @@ public class Api extends AbstractFactoryAndRepository {
 			final String imageUrl,
 			final Integer weight) {
 
-		Demand demand = demands.matchDemandApiId(ownerId);
+		Demand demand = matchDemandApiId(ownerId);
 
 		//check description
 		String descriptionEntry;
@@ -488,34 +488,37 @@ public class Api extends AbstractFactoryAndRepository {
 		}
 
 		//check dates
-		LocalDate startDateEntry = null;
-
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
-		try {
-			startDateEntry = LocalDate.parse(startDate, dtf);
-		} catch (Exception e) {
-			//ignore
-		}
-		if (startDateEntry == null) {
-			// startDate is not a valid date
-			startDateEntry=demand.getStartDate();
-		} else {
-			// startDate is a Date
-			startDateEntry = new LocalDate(startDate);
+		LocalDate startDateEntry = null;
+		if (!startDate.equals("")) {
+			try {
+				startDateEntry = LocalDate.parse(startDate, dtf);
+			} catch (Exception e) {
+				//ignore
+			}
+			if (startDateEntry == null) {
+				// startDate is not a valid date
+				startDateEntry = demand.getStartDate();
+			} else {
+				// startDate is a Date
+				startDateEntry = new LocalDate(startDate);
+			}
 		}
 
 		LocalDate endDateEntry = null;
-		try {
-			endDateEntry = LocalDate.parse(endDate, dtf);
-		} catch (Exception e) {
-			//ignore
-		}
-		if (endDateEntry == null) {
-			// endDate is not a valid date
-			endDateEntry=demand.getEndDate();
-		} else {
-			// endDate is a Date
-			endDateEntry = new LocalDate(endDate);
+		if (!endDate.equals("")) {
+			try {
+				endDateEntry = LocalDate.parse(endDate, dtf);
+			} catch (Exception e) {
+				//ignore
+			}
+			if (endDateEntry == null) {
+				// endDate is not a valid date
+				endDateEntry = demand.getEndDate();
+			} else {
+				// endDate is a Date
+				endDateEntry = new LocalDate(endDate);
+			}
 		}
 
 		// if invalid period [endDate before startDate] set both to original values
@@ -594,7 +597,7 @@ public class Api extends AbstractFactoryAndRepository {
 			final String imageUrl,
 			final Integer weight) {
 
-		Supply supply = supplies.matchSupplyApiId(ownerId);
+		Supply supply = matchSupplyApiId(ownerId);
 
 		//check description
 		String descriptionEntry;
@@ -605,34 +608,37 @@ public class Api extends AbstractFactoryAndRepository {
 		}
 
 		//check dates
-		LocalDate startDateEntry = null;
-
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
-		try {
-			startDateEntry = LocalDate.parse(startDate, dtf);
-		} catch (Exception e) {
-			//ignore
-		}
-		if (startDateEntry == null) {
-			// startDate is not a valid date
-			startDateEntry=supply.getStartDate();
-		} else {
-			// startDate is a Date
-			startDateEntry = new LocalDate(startDate);
+		LocalDate startDateEntry = null;
+		if (!startDate.equals("")) {
+			try {
+				startDateEntry = LocalDate.parse(startDate, dtf);
+			} catch (Exception e) {
+				//ignore
+			}
+			if (startDateEntry == null) {
+				// startDate is not a valid date
+				startDateEntry = supply.getStartDate();
+			} else {
+				// startDate is a Date
+				startDateEntry = new LocalDate(startDate);
+			}
 		}
 
 		LocalDate endDateEntry = null;
-		try {
-			endDateEntry = LocalDate.parse(endDate, dtf);
-		} catch (Exception e) {
-			//ignore
-		}
-		if (endDateEntry == null) {
-			// endDate is not a valid date
-			endDateEntry=supply.getEndDate();
-		} else {
-			// endDate is a Date
-			endDateEntry = new LocalDate(endDate);
+		if (!endDate.equals("")) {
+			try {
+				endDateEntry = LocalDate.parse(endDate, dtf);
+			} catch (Exception e) {
+				//ignore
+			}
+			if (endDateEntry == null) {
+				// endDate is not a valid date
+				endDateEntry = supply.getEndDate();
+			} else {
+				// endDate is a Date
+				endDateEntry = new LocalDate(endDate);
+			}
 		}
 
 		// if invalid period [endDate before startDate] set both to original values
@@ -682,6 +688,89 @@ public class Api extends AbstractFactoryAndRepository {
 		}
 
 		return chosenProfile;
+	}
+
+	public Profile matchProfileApiIdForOwner(Integer instanceId) {
+
+		Profile profile = profiles.matchProfileApiId(instanceId);
+		if (profile == null) {
+			return null;
+		}
+		// check not authorized
+		if (!currentUserName().equals(profile.getOwnedBy())){
+			return null;
+		}
+
+
+		return profile;
+	}
+
+	public Profile updateProfile(
+			final Integer instanceId,
+			final String name,
+			final String startDate,
+			final String endDate,
+			final String imageUrl,
+			final Integer weight) {
+
+		Profile profile = matchProfileApiId(instanceId);
+
+		String nameEntry;
+		if (name == null || name.equals("")){
+			nameEntry = profile.getName();
+		} else {
+			nameEntry = name;
+		}
+
+		//check dates
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
+		LocalDate startDateEntry = null;
+		if (!startDate.equals("")) {
+			try {
+				startDateEntry = LocalDate.parse(startDate, dtf);
+			} catch (Exception e) {
+				//ignore
+			}
+			if (startDateEntry == null) {
+				// startDate is not a valid date
+				startDateEntry = profile.getStartDate();
+			} else {
+				// startDate is a Date
+				startDateEntry = new LocalDate(startDate);
+			}
+		}
+
+		LocalDate endDateEntry = null;
+		if (!endDate.equals("")) {
+			try {
+				endDateEntry = LocalDate.parse(endDate, dtf);
+			} catch (Exception e) {
+				//ignore
+			}
+			if (endDateEntry == null) {
+				// endDate is not a valid date
+				endDateEntry = profile.getEndDate();
+			} else {
+				// endDate is a Date
+				endDateEntry = new LocalDate(endDate);
+			}
+		}
+
+		// if invalid period [endDate before startDate] set both to original values
+		if (startDateEntry!=null && endDateEntry!=null && endDateEntry.isBefore(startDateEntry)){
+			startDateEntry=profile.getStartDate();
+			endDateEntry=profile.getEndDate();
+		}
+
+
+		Integer weightEntry;
+		if (weight < 1) {
+			weightEntry = profile.getWeight();
+		} else {
+			weightEntry = weight;
+		}
+
+		return profile.updateProfile(nameEntry, weightEntry,startDateEntry, endDateEntry, imageUrl);
 	}
 
 
@@ -1152,5 +1241,6 @@ public class Api extends AbstractFactoryAndRepository {
 
 	@Inject
 	private ProfileMatches profileMatchRepo;
+
 
 }

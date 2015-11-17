@@ -106,7 +106,9 @@ public class SupplyResource extends ResourceAbstract {
                 JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
                 startDate = property.getString("");
             } catch (Exception e) {
-                startDate = supplyToUpdate.getStartDate().toString();
+                if (supplyToUpdate.getStartDate()!=null) {
+                    startDate = supplyToUpdate.getStartDate().toString();
+                }
             }
 
 
@@ -116,7 +118,9 @@ public class SupplyResource extends ResourceAbstract {
                 JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
                 endDate = property.getString("");
             } catch (Exception e) {
-                endDate = supplyToUpdate.getEndDate().toString();
+                if (supplyToUpdate.getEndDate()!=null) {
+                    endDate = supplyToUpdate.getEndDate().toString();
+                }
             }
 
             String id6 = "imageUrl";

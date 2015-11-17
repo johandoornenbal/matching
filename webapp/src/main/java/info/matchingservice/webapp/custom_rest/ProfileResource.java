@@ -30,11 +30,13 @@ import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
 import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
 import org.apache.isis.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
+import org.apache.isis.viewer.restfulobjects.rendering.util.Util;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,23 +98,138 @@ public class ProfileResource extends ResourceAbstract {
         return result;
     }
 
+    @PUT
+    @Path("/profiles/{instanceId}")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response putProfilesServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
+
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+
+        if(!argRepr.isMap())
+        {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
+
+        } else {
+
+            Profile profileToUpdate = api.matchProfileApiIdForOwner(instanceId);
+
+            if (profileToUpdate == null) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", "profile not found or not authorized");
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            String id1 = "name";
+            String name;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
+                name = property.getString("");
+            } catch (Exception e) {
+                name = profileToUpdate.getName();
+            }
+
+
+            String id4 = "startDate";
+            String startDate = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
+                startDate = property.getString("");
+            } catch (Exception e) {
+                if (profileToUpdate.getStartDate()!=null) {
+                    startDate = profileToUpdate.getStartDate().toString();
+                }
+            }
+
+
+            String id5 = "endDate";
+            String endDate = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
+                endDate = property.getString("");
+            } catch (Exception e) {
+                if (profileToUpdate.getEndDate()!=null) {
+                    endDate = profileToUpdate.getEndDate().toString();
+                }
+            }
+
+            String id6 = "imageUrl";
+            String imageUrl = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
+                imageUrl = property.getString("");
+            } catch (Exception e) {
+                imageUrl = profileToUpdate.getImageUrl();
+            }
+
+            String id7 = "weight";
+            Integer weight;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id7, new Object[0]);
+                weight = property.getInt("");
+            } catch (Exception e) {
+                weight = profileToUpdate.getWeight();
+            }
+
+            profileToUpdate = api.updateProfile(instanceId, name, startDate, endDate, imageUrl, weight);
+
+            JsonObject result = createProfileResult(profileToUpdate);
+            result.addProperty("success", 1);
+
+            return Response.status(200).entity(result.toString()).build();
+        }
+    }
 
     @DELETE
-    @Path("/demandprofiles/{instanceId}")
-    public Response deleteProfilesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Deleting the demandprofiles resource is not allowed.", new Object[0]);
+    @Path("/profiles/{instanceId}")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response deleteProfilesServices(@PathParam("instanceId") Integer instanceId, InputStream object) {
+
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+
+        if(!argRepr.isMap())
+        {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
+
+        } else {
+
+            String id1 = "confirmDelete";
+            Boolean confirmDelete;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
+                confirmDelete = property.getBoolean("");
+            } catch (Exception e) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", "property 'confirmDelete' is mandatory (and must be set to true).");
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            Profile profileToDelete = api.matchProfileApiIdForOwner(instanceId);
+
+            if (profileToDelete == null) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", "profile not found or not authorized");
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            profileToDelete.deleteProfile(confirmDelete);
+
+            JsonObject result = new JsonObject();
+            result.addProperty("success", 1);
+
+            return Response.status(200).entity(result.toString()).build();
+
+        }
     }
 
     @POST
-    @Path("/demandprofiles/{instanceId}")
+    @Path("/profiles/{instanceId}")
     public Response postProfilesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the demandprofiles resource is not allowed.", new Object[0]);
-    }
-
-    @PUT
-    @Path("/demandprofiles/{instanceId}")
-    public Response putProfilesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the demandprofiles resource is not allowed.", new Object[0]);
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
     }
 
 

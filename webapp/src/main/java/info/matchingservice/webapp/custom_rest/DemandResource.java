@@ -128,7 +128,9 @@ public class DemandResource extends ResourceAbstract {
                 JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
                 startDate = property.getString("");
             } catch (Exception e) {
-                startDate = demandToUpdate.getStartDate().toString();
+                if (demandToUpdate.getStartDate()!=null) {
+                    startDate = demandToUpdate.getStartDate().toString();
+                }
             }
 
 
@@ -138,7 +140,9 @@ public class DemandResource extends ResourceAbstract {
                 JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
                 endDate = property.getString("");
             } catch (Exception e) {
-                endDate = demandToUpdate.getEndDate().toString();
+                if (demandToUpdate.getEndDate()!=null) {
+                    endDate = demandToUpdate.getEndDate().toString();
+                }
             }
 
             String id6 = "imageUrl";

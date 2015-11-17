@@ -26,6 +26,7 @@ public class ProfileViewModel extends ApiAbstractViewModel {
             this.endDate = profile.getEndDate().toString();
         }
         this.imageUrl = profile.getImageUrl();
+        this.weight = profile.getWeight();
         this.type = profile.getType().title();
         this.demandOrSupply = profile.getDemandOrSupply().toString();
         if (profile.getDemandOrSupply() == DemandOrSupply.DEMAND) {
@@ -93,6 +94,19 @@ public class ProfileViewModel extends ApiAbstractViewModel {
 
     public void setImageUrl(final String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+    //endregion
+
+    //region > weight (property)
+    private Integer weight;
+
+    @MemberOrder(sequence = "1")
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(final Integer weight) {
+        this.weight = weight;
     }
     //endregion
 
