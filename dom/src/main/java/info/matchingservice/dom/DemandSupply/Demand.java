@@ -468,7 +468,7 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
             final Demand demandProfileOwner,
             final ProfileTypeMatchingRule profileTypeMatchingRule,
             final String ownedBy) {
-        return profilesRepo.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, demandProfileOwner, ownedBy);
+        return profilesRepo.createDemandProfile(demandProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, null, demandProfileOwner, ownedBy);
     }
 	//-- HELPERS: programmatic actions --// 
 	//-- HELPERS --//

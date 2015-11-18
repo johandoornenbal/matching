@@ -672,6 +672,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 	//***************************************** Profile ***********************//
 
+	@Programmatic
 	public Profile matchProfileApiId(Integer instanceId) {
 
 		Profile chosenProfile = profiles.matchProfileApiId(instanceId);
@@ -690,21 +691,95 @@ public class Api extends AbstractFactoryAndRepository {
 		return chosenProfile;
 	}
 
+	@Programmatic
 	public Profile matchProfileApiIdForOwner(Integer instanceId) {
 
 		Profile profile = profiles.matchProfileApiId(instanceId);
 		if (profile == null) {
 			return null;
 		}
+
 		// check not authorized
 		if (!currentUserName().equals(profile.getOwnedBy())){
 			return null;
 		}
 
+		// check if type is not supply and personprofile: personal profile cannot be deleted
+		if (profile.getDemandOrSupply()==(DemandOrSupply.SUPPLY) && profile.getType() == ProfileType.PERSON_PROFILE ){
+			return null;
+		}
 
 		return profile;
 	}
 
+	@Programmatic
+	public Profile createPersonProfile(
+			final String name,
+			final Integer weight,
+			final String startDate,
+			final String endDate,
+			final Integer demandId,
+			final Integer supplyId,
+			final String imageUrl,
+			final Person person
+	){
+
+		if (name==null || name.equals("")){
+			return null;
+		}
+
+		//check dates
+		LocalDate startDateEntry = null;
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
+		try {
+			startDateEntry = LocalDate.parse(startDate, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (startDateEntry == null) {
+			// startDate is not a valid date
+			startDateEntry=null;
+		} else {
+			// startDate is a Date
+			startDateEntry = new LocalDate(startDate);
+		}
+
+		LocalDate endDateEntry = null;
+		try {
+			endDateEntry = LocalDate.parse(endDate, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (endDateEntry == null) {
+			// endDate is not a valid date
+			endDateEntry=null;
+		} else {
+			// endDate is a Date
+			endDateEntry = new LocalDate(endDate);
+		}
+
+		// if invalid period [endDate before startDate] set both to null
+		if (startDateEntry!=null && endDateEntry!=null && endDateEntry.isBefore(startDateEntry)){
+			startDateEntry=null;
+			endDateEntry=null;
+		}
+
+		if (demandId != null) {
+			Demand demand = matchDemandApiIdForOwner(demandId);
+			if (demand != null) {
+				return profiles.createDemandProfile(name, weight, startDateEntry, endDateEntry, ProfileType.PERSON_PROFILE, imageUrl, demand, currentUserName());
+			}
+		}
+		if (supplyId != null) {
+			Supply supply = matchSupplyApiIdForOwner(supplyId);
+			if (supply != null && !person.hideCreatePersonsSupplyAndProfile()) {
+				return profiles.createSupplyProfile(name, weight, startDateEntry, endDateEntry, ProfileType.PERSON_PROFILE, imageUrl, supply, currentUserName());
+			}
+		}
+		return null;
+	}
+
+	@Programmatic
 	public Profile updateProfile(
 			final Integer instanceId,
 			final String name,

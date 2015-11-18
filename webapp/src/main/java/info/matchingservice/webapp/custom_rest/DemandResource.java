@@ -209,6 +209,7 @@ public class DemandResource extends ResourceAbstract {
                 return Response.status(400).entity(result.toString()).build();
             }
 
+            //TODO: logic should move to API or use wrapper (?)
             if (demandToDelete.validateDeleteDemand(confirmDelete)!=null) {
                 JsonObject result = new JsonObject();
                 result.addProperty("error", demandToDelete.validateDeleteDemand(confirmDelete));
@@ -251,17 +252,6 @@ public class DemandResource extends ResourceAbstract {
 
             String errorMessage = "";
             boolean error = false;
-
-            String id = "ownerId";
-            Integer ownerId;
-            try {
-                JsonRepresentation property = argRepr.getRepresentation(id, new Object[0]);
-                ownerId = property.getInt("");
-            } catch (Exception e) {
-                ownerId = null;
-                errorMessage = errorMessage.concat(" property 'ownerID' is mandatory");
-                error = true;
-            }
 
             String id1 = "description";
             String description;
@@ -330,7 +320,7 @@ public class DemandResource extends ResourceAbstract {
                 return Response.status(400).entity(result.toString()).build();
             }
 
-            Person person = api.findPersonById(ownerId);
+            Person person = api.activePerson();
 
             Demand newDemand = api.createPersonDemand(person, description, summary, story, startDate, endDate, imageUrl);
 

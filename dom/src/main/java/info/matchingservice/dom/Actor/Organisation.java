@@ -99,7 +99,7 @@ public class Organisation extends Actor {
     
     //** createOrganisationSupply **//
     public Profile createOrganisationSupply(){
-        return createSupplyAndProfile("ORGANISATION_SUPPLY_OF " + this.title(), 10, DemandSupplyType.ORGANISATION_DEMANDSUPPLY, this, "ORGANISATION_PROFILE", 10, null, null, ProfileType.ORGANISATION_PROFILE, currentUserName());
+        return createSupplyAndProfile("ORGANISATION_SUPPLY_OF " + this.title(), 10, DemandSupplyType.ORGANISATION_DEMANDSUPPLY, this, "ORGANISATION_PROFILE", 10, null, null, ProfileType.ORGANISATION_PROFILE, null, currentUserName());
     }
     
     // Business rule:

@@ -95,25 +95,28 @@ public class Profiles extends MatchingDomainService<Profile> {
     
     @Programmatic
     public Profile createDemandProfile(
-            final String demandProfileDescription,
+            final String name,
             final Integer weight,
             final LocalDate demandOrSupplyProfileStartDate,
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
+            final String imageUrl,
             final Demand demandProfileOwner,
             final String ownedBy
             ){
         final Profile newDemandProfile = newTransientInstance(Profile.class);
-        newDemandProfile.setName(demandProfileDescription);
+        newDemandProfile.setName(name);
         newDemandProfile.setWeight(weight);
         newDemandProfile.setStartDate(demandOrSupplyProfileStartDate);
         newDemandProfile.setEndDate(demandOrSupplyProfileEndDate);
         newDemandProfile.setDemandOrSupply(DemandOrSupply.DEMAND);
         newDemandProfile.setType(profileType);
+        newDemandProfile.setImageUrl(imageUrl);
         newDemandProfile.setDemand(demandProfileOwner);
         newDemandProfile.setOwnedBy(ownedBy);
         newDemandProfile.setTimeStamp(LocalDateTime.now());
         persist(newDemandProfile);
+        getContainer().flush();
         return newDemandProfile;
     }
     
@@ -124,6 +127,7 @@ public class Profiles extends MatchingDomainService<Profile> {
             final LocalDate demandOrSupplyProfileStartDate,
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
+            final String imageUrl,
             final Supply supplyProfileOwner,
             final String ownedBy
             ){
@@ -134,10 +138,12 @@ public class Profiles extends MatchingDomainService<Profile> {
         newSupplyProfile.setEndDate(demandOrSupplyProfileEndDate);
         newSupplyProfile.setDemandOrSupply(DemandOrSupply.SUPPLY);
         newSupplyProfile.setType(profileType);
+        newSupplyProfile.setImageUrl(imageUrl);
         newSupplyProfile.setSupply(supplyProfileOwner);
         newSupplyProfile.setOwnedBy(ownedBy);
         newSupplyProfile.setTimeStamp(LocalDateTime.now());
         persist(newSupplyProfile);
+        getContainer().flush();
         return newSupplyProfile;
     }
 

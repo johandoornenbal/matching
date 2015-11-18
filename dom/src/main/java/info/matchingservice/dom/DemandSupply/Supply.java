@@ -348,7 +348,7 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
             final ProfileType profileType,
             final Supply supplyProfileOwner, 
             final String ownedBy) {
-        return allSupplyProfiles.createSupplyProfile(supplyProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, supplyProfileOwner, ownedBy);
+        return allSupplyProfiles.createSupplyProfile(supplyProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, null, supplyProfileOwner, ownedBy);
     }
 
     //** supplyType **//

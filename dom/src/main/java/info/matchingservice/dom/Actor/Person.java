@@ -300,7 +300,7 @@ public class Person extends Actor {
     //** newPersonsSupplyAndProfile **//
     @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
     public Profile createPersonsSupplyAndProfile(){
-        return createSupplyAndProfile("PERSON_SUPPLY_OF " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "PERSON_PROFILE_OF", 10, null, null, ProfileType.PERSON_PROFILE, currentUserName());
+        return createSupplyAndProfile("PERSON_SUPPLY_OF " + this.title(), 10, DemandSupplyType.PERSON_DEMANDSUPPLY, this, "PERSON_PROFILE_OF", 10, null, null, ProfileType.PERSON_PROFILE, null, currentUserName());
     }
     
     // Business rule: 

@@ -243,7 +243,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         		profileWeight, 
         		demandOrSupplyProfileStartDate, 
         		demandOrSupplyProfileEndDate, 
-        		profileType, 
+        		profileType,
+                imageUrl,
         		demand,
         		ownedBy
         		);
@@ -272,6 +273,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
             final LocalDate demandOrSupplyProfileStartDate,
             final LocalDate demandOrSupplyProfileEndDate,
             final ProfileType profileType,
+            final String imageUrl,
             final String ownedBy){
         final Supply supply = supplyRepo.createSupply(
         		supplyDescription, 
@@ -286,7 +288,8 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         		profileWeight, 
         		demandOrSupplyProfileStartDate, 
         		demandOrSupplyProfileEndDate, 
-        		profileType, 
+        		profileType,
+                imageUrl,
         		supply, 
         		ownedBy);
         

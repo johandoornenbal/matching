@@ -20,10 +20,13 @@ package info.matchingservice.webapp.custom_rest;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Api.Viewmodels.ProfileViewModel;
 import info.matchingservice.dom.Api.Viewmodels.TagHolderViewModel;
-import info.matchingservice.dom.Profile.*;
+import info.matchingservice.dom.Profile.Profile;
+import info.matchingservice.dom.Profile.ProfileElement;
+import info.matchingservice.dom.Profile.ProfileElementTag;
 import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
@@ -216,6 +219,14 @@ public class ProfileResource extends ResourceAbstract {
                 return Response.status(400).entity(result.toString()).build();
             }
 
+            //TODO: logic should move to API or use wrapper (?)
+            if (profileToDelete.validateDeleteProfile(confirmDelete)!=null) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", profileToDelete.validateDeleteProfile(confirmDelete));
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
             profileToDelete.deleteProfile(confirmDelete);
 
             JsonObject result = new JsonObject();
@@ -232,53 +243,127 @@ public class ProfileResource extends ResourceAbstract {
         throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
     }
 
-
-    @GET
-    @Path("/supplyprofiles/{instanceId}")
-    @Produces({ MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response getSupplyProfileServices(@PathParam("instanceId") Integer instanceId)  {
-
-        final Profiles profiles = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Profiles.class);
-
-        Profile activeProfile = profiles.matchProfileApiId(instanceId);
-
-        return Response.status(200).entity(profileRepresentation(activeProfile).toString()).build();
-    }
-
-
-    @DELETE
-    @Path("/supplyprofiles/{instanceId}")
-    public Response deleteSupplyProfilesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Deleting the supplyprofiles resource is not allowed.", new Object[0]);
-    }
-
     @POST
-    @Path("/supplyprofiles/{instanceId}")
-    public Response postSupplyProfilesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Posting to the supplyprofiles resource is not allowed.", new Object[0]);
-    }
+    @Path("/profiles")
+    @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
+    public Response postProfileServices(InputStream object){
 
-    @PUT
-    @Path("/supplyprofiles/{instanceId}")
-    public Response putSupplyProfilesNotAllowed() {
-        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Putting to the supplyprofiles resource is not allowed.", new Object[0]);
-    }
+        String objectStr = Util.asStringUtf8(object);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
 
+        if(!argRepr.isMap())
+        {
+            throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
 
-    private JsonRepresentation profileRepresentation(Profile activeProfile){
-
-        JsonRepresentation all = JsonRepresentation.newMap();
-
-        ProfileRepresentation rep = new ProfileRepresentation();
-
-        if (activeProfile.getDemandOrSupply() == DemandOrSupply.DEMAND) {
-            all.mapPut("demandprofile", rep.ObjectRepresentation(activeProfile));
         } else {
-            all.mapPut("supplyprofile", rep.ObjectRepresentation(activeProfile));
+
+            String errorMessage = "";
+            boolean error = false;
+
+            String id1 = "name";
+            String name;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
+                name = property.getString("");
+            } catch (Exception e) {
+                name = null;
+                errorMessage = errorMessage.concat(" property 'name' is mandatory");
+                error = true;
+            }
+
+            String id2 = "demand";
+            Integer demand;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id2, new Object[0]);
+                demand = property.getInt("");
+            } catch (Exception e) {
+                demand = null;
+            }
+
+            String id3 = "supply";
+            Integer supply;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id3, new Object[0]);
+                supply = property.getInt("");
+            } catch (Exception e) {
+                supply = null;
+            }
+
+
+            String id4 = "startDate";
+            String startDate = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
+                startDate = property.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
+
+            String id5 = "endDate";
+            String endDate = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
+                endDate = property.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
+            String id6 = "imageUrl";
+            String imageUrl = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
+                imageUrl = property.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
+            String id7 = "weight";
+            Integer weight;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id7, new Object[0]);
+                weight = property.getInt("");
+            } catch (Exception e) {
+                weight = 10;
+            }
+
+            //catch errors and return 400
+            if (error){
+                JsonObject result = new JsonObject();
+                result.addProperty("error", errorMessage);
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            Person person = api.activePerson();
+
+            Profile profile = api.createPersonProfile(name, weight, startDate, endDate, demand, supply, imageUrl, person);
+
+            if (profile == null) {
+                JsonObject result = new JsonObject();
+                result.addProperty("error", "creation of new profile not succeeded; are you sure you have the rights and the right params?");
+                result.addProperty("success", 0);
+                return Response.status(400).entity(result.toString()).build();
+            }
+
+            JsonObject result = createProfileResult(profile);
+            result.addProperty("success", 1);
+
+            return Response.status(200).entity(result.toString()).build();
         }
 
-        return all;
+
 
     }
+
+
+    @GET
+    @PUT
+    @DELETE
+    @Path("/profiles")
+    public Response getputdeleteProfilesNotAllowed() {
+        throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.METHOD_NOT_ALLOWED, "Not allowed.", new Object[0]);
+    }
+
 
 }
