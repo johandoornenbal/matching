@@ -18,6 +18,9 @@
 package info.matchingservice.webapp.custom_rest;
 
 import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
+import java.util.List;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
 import info.matchingservice.dom.Howdoido.Api;
@@ -55,9 +58,9 @@ import java.util.regex.Pattern;
 /**
  * Created by jodo on 15/05/15.
  */
-@Path("/register")
+@Path("/v2/action/")
 public class UserRegistrationResource extends ResourceAbstract {
-
+    
     private static Pattern USERNAME_REGEX = Pattern.compile("^[a-zA-Z0-9_]+$");
     private static Pattern PASSWORD_REGEX = Pattern.compile("^([^\\s]+)");
 //    private static Pattern EMAIL_REGEX = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
@@ -75,16 +78,17 @@ public class UserRegistrationResource extends ResourceAbstract {
 
         } else {
 
-            String id = "userName";
-            String userName;
+
+            List<String> errors = new ArrayList<>();
+
+            String id1 = "email";
+            String email;
             try {
-                JsonRepresentation propertyUsername = argRepr.getRepresentation(id, new Object[0]);
-                userName = propertyUsername.getString("");
+                JsonRepresentation propertyEmail = argRepr.getRepresentation(id1, new Object[0]);
+                email = propertyEmail.getString("");
             } catch (Exception e) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", "property 'userName' is mandatory");
-                return Response.status(400).entity(result.toString()).build();
+                email=null;
+                errors.add("property 'email' is mandatory");
             }
 
             String id2 = "password";
@@ -93,10 +97,8 @@ public class UserRegistrationResource extends ResourceAbstract {
                 JsonRepresentation propertyPassword = argRepr.getRepresentation(id2, new Object[0]);
                 password = propertyPassword.getString("");
             } catch (Exception e) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", "property 'password' is mandatory");
-                return Response.status(400).entity(result.toString()).build();
+                password=null;
+                errors.add("property 'password' is mandatory");
             }
 
             String id3 = "passwordConfirm";
@@ -105,72 +107,31 @@ public class UserRegistrationResource extends ResourceAbstract {
                 JsonRepresentation propertyPasswordConfirm = argRepr.getRepresentation(id3, new Object[0]);
                 passwordConfirm = propertyPasswordConfirm.getString("");
             } catch (Exception e) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", "property 'passwordConfirm' is mandatory");
-                return Response.status(400).entity(result.toString()).build();
-            }
-
-            String id4 = "email";
-            String email;
-            try {
-                JsonRepresentation propertyEmail = argRepr.getRepresentation(id4, new Object[0]);
-                email = propertyEmail.getString("");
-            } catch (Exception e) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", "property 'email' is mandatory");
-                return Response.status(400).entity(result.toString()).build();
-            }
-
-            //input validation
-
-            boolean error = false;
-            String errorString;
-            errorString = "";
-            //username should be conform REGEX
-            Matcher matcher = USERNAME_REGEX.matcher(userName);
-            if (!matcher.matches()) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" userName : ONE_AND_WORD_LETTERS_NUMBERS_ONLY ");
-                error = true;
+                passwordConfirm=null;
+                errors.add("property 'passwordConfirm' is mandatory");
             }
 
             //passwords should match
             if (!password.equals(passwordConfirm)) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" password : PASSWORD_NOT_MATCHING ");
-                error = true;
+                errors.add(" passwords not matching ");
             }
 
             //password should be conform REGEX
-            matcher = PASSWORD_REGEX.matcher(password);
+            Matcher matcher = PASSWORD_REGEX.matcher(password);
             if (!matcher.matches()) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" password : NO_BLANKS_IN_PASSWORD ");
-                error = true;
+                errors.add(" password : NO_BLANKS_IN_PASSWORD ");
             }
 
             //email should be conform REGEX
             matcher = EMAIL_REGEX.matcher(email);
             if (!matcher.matches()) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" email : NO_VALID_EMAIL_ADDRESS ");
-                error = true;
+                errors.add(" email : NO_VALID_EMAIL_ADDRESS ");
             }
 
-            if (error) {
+            if (errors.size() > 0) {
                 JsonObject result = new JsonObject();
                 result.addProperty("success", 0);
-                result.addProperty("error", errorString);
+                result.add("error", errorString);
                 return Response.status(400).entity(result.toString()).build();
             }
 
