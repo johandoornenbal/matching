@@ -547,7 +547,7 @@ public class PersonResource extends ResourceAbstract {
      *
      * NOTE: In order to preserve or guard business logic all data should be retrieved via Api
      */
-    private JsonObject createPersonResult(final Integer instanceId) {
+    public JsonObject createPersonResult(final Integer instanceId) {
 
         JsonObject result = new JsonObject();
 

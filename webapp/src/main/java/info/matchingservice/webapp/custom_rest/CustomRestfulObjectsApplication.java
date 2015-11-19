@@ -34,6 +34,7 @@ public class CustomRestfulObjectsApplication extends RestfulObjectsApplication {
         addClass(PersonResource.class);
         addClass(DemandResource.class);
         addClass(SupplyResource.class);
+        addClass(LoginResource.class);
     }
 
 }
