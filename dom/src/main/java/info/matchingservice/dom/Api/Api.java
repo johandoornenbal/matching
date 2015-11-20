@@ -17,6 +17,8 @@ import org.apache.isis.applib.AbstractFactoryAndRepository;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.query.QueryDefault;
+import org.apache.isis.applib.services.wrapper.InteractionException;
+import org.apache.isis.applib.services.wrapper.WrapperFactory;
 import org.apache.isis.applib.value.Blob;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -72,26 +74,6 @@ public class Api extends AbstractFactoryAndRepository {
 			final String mainPostalCode,
 			final String mainTown){
 
-		//check ownership (only owner can modify Person)
-		if (!currentUserName().equals(person.getOwnedBy())){
-			return person;
-		}
-
-		//validate and replace values by their originals if not valid
-		String firstNameUpdate;
-		if (firstName.length()<1){
-			firstNameUpdate = person.getFirstName();
-		} else {
-			firstNameUpdate = firstName;
-		}
-
-		String lastNameUpdate;
-		if (lastName.length()<1){
-			lastNameUpdate = person.getLastName();
-		} else {
-			lastNameUpdate = lastName;
-		}
-
 		LocalDate dateOfBirthUpdate = null;
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
 		try {
@@ -119,7 +101,7 @@ public class Api extends AbstractFactoryAndRepository {
 					throw new IllegalArgumentException("Not a valid emailaddress");
 				}
 			} catch (Exception e){
-				e = new IllegalArgumentException("Email could not be updated");
+				container.raiseError(e.getMessage());
 			}
 		}
 
@@ -133,7 +115,7 @@ public class Api extends AbstractFactoryAndRepository {
 					Phone phoneToUpdate = (Phone) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.PHONE_MAIN).get(0);
 					phoneToUpdate.updatePhone(CommunicationChannelType.PHONE_MAIN, mainPhone);
 				} catch (IllegalArgumentException e) {
-					e = new IllegalArgumentException("Phone could not be updated");
+					container.raiseError(e.getMessage());
 				}
 			} else {
 				communicationChannels.createPhone(person, CommunicationChannelType.PHONE_MAIN, mainPhone);
@@ -183,13 +165,25 @@ public class Api extends AbstractFactoryAndRepository {
 
 		}
 
-		return person.updatePerson(
-				firstNameUpdate,
-				middleName,
-				lastNameUpdate,
-				dateOfBirthUpdate,
-				null,
-				imageUrl);
+		Person wrappedPerson = wrapperFactory.wrap(person);
+
+		try {
+			wrappedPerson = wrappedPerson.updatePerson(
+					firstName,
+					middleName,
+					lastName,
+					dateOfBirthUpdate,
+					null,
+					imageUrl
+			);
+		} catch (InteractionException e) {
+			container.raiseError(e.getMessage());
+			return null;
+		}
+
+		return wrappedPerson;
+
+
 	}
 
 	///////////
@@ -1317,5 +1311,7 @@ public class Api extends AbstractFactoryAndRepository {
 	@Inject
 	private ProfileMatches profileMatchRepo;
 
+	@Inject
+	WrapperFactory wrapperFactory;
 
 }

@@ -53,14 +53,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jodo on 15/05/15.
+ *
+ * NOTE: All data collection should happen through api
+ * In order to guard business logic - simulate wicket UI - wrapperfactory is used in api. Exceptions thrown this way are routed to
+ * the endpoint by adding the exception message to the errors array
+ *
  */
-
 @Path("/v2")
 public class PersonResource extends ResourceAbstract {
 
     private Gson gson = new Gson();
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
+    private List<String> errors = new ArrayList<>();
 
     /************************** ROOT *************************************/
 
@@ -70,16 +74,17 @@ public class PersonResource extends ResourceAbstract {
     public Response getActivePersonServices() {
 
         Person activePerson = api.activePerson();
+
         if (activePerson == null){
-            String error = "{\"success\" : 0 , \"error\" : \"person not found. Most likely cause: for this login no Person object created.\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("person not found. Most likely cause: for this login no Person object created.");
+            return ErrorMessages.getError400Response(errors);
         }
 
         JsonObject result = createPersonResult(activePerson.getIdAsInt());
 
         if (result == null){
-            String error = "{\"success\" : 0 , \"error\" : \"person not found. Most likely cause: for this login no Person object created.\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("person not found. Most likely cause: for this login no Person object created.");
+            return ErrorMessages.getError400Response(errors);
         }
 
         return Response.status(200).entity(result.toString()).build();
@@ -112,8 +117,8 @@ public class PersonResource extends ResourceAbstract {
 
         JsonObject result = createPersonResult(instanceId);
         if (result == null){
-            String error = "{\"success\" : 0 , \"error\" : \"person not found\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("person not found");
+            return ErrorMessages.getError400Response(errors);
         }
         return Response.status(200).entity(result.toString()).build();
     }
@@ -125,8 +130,8 @@ public class PersonResource extends ResourceAbstract {
 
         Person chosenPerson = api.findPersonById(instanceId);
         if (chosenPerson == null){
-            String error = "{\"success\" : 0 , \"error\" : \"person not found\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("person not found");
+            return ErrorMessages.getError400Response(errors);
         }
 
         String objectStr = Util.asStringUtf8(object);
@@ -137,15 +142,6 @@ public class PersonResource extends ResourceAbstract {
             throw RestfulObjectsApplicationException.createWithMessage(RestfulResponse.HttpStatusCode.BAD_REQUEST, "Body is not a map; got %s", new Object[]{argRepr});
 
         } else {
-
-            // apply business logic: only owner can modify
-            if (chosenPerson.disabled(Identifier.Type.ACTION) != null) {
-                String disabledMsg = chosenPerson.disabled(Identifier.Type.ACTION);
-                String error = "{\"success\" : 0 , \"error\" : \"";
-                error = error.concat(disabledMsg);
-                error = error.concat("\"}");
-                return Response.status(401).entity(error).build();
-            }
 
             // try and see if properties are present; if not replace by original
             String id = "firstName";
@@ -239,26 +235,30 @@ public class PersonResource extends ResourceAbstract {
             }
 
             // update action through api method!
-            api.updatePerson(
-                    chosenPerson,
-                    firstName,
-                    middleName,
-                    lastName,
-                    dateOfBirth,
-                    imageUrl,
-                    mainEmail,
-                    mainPhone,
-                    mainAddress,
-                    mainPostalCode,
-                    mainTown);
-
+            try {
+                api.updatePerson(
+                        chosenPerson,
+                        firstName,
+                        middleName,
+                        lastName,
+                        dateOfBirth,
+                        imageUrl,
+                        mainEmail,
+                        mainPhone,
+                        mainAddress,
+                        mainPostalCode,
+                        mainTown);
+            } catch (Exception e) {
+                errors.add(e.getMessage());
+                return ErrorMessages.getError400Response(errors);
+            }
             JsonObject result = createPersonResult(instanceId);
-            JsonElement successElement = gson.toJsonTree(new Integer(1));
-            result.add("success", successElement);
+            result.addProperty("success", 1);
 
             return Response.status(200).entity(result.toString()).build();
         }
     }
+
 
     @DELETE
     @Path("/persons/{instanceId}")
@@ -331,14 +331,14 @@ public class PersonResource extends ResourceAbstract {
 
         Person chosenPerson = api.findPersonById(instanceId);
         if (chosenPerson == null){
-            String error = "{\"success\" : 0 , \"error\" : \"person not found\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("person not found");
+            return ErrorMessages.getError400Response(errors);
         }
 
         PersonalContact personalContact = api.findOrCreatePersonalContact(chosenPerson);
         if (personalContact==null) {
-            String error = "{\"success\" : 0 , \"error\" : \"Cannot contact yourself\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("cannot contact yourself");
+            return ErrorMessages.getError400Response(errors);
         }
 
         PersonalContactViewModel personalContactViewModel = new PersonalContactViewModel(personalContact);
@@ -359,8 +359,8 @@ public class PersonResource extends ResourceAbstract {
 
         Person chosenPerson = api.findPersonById(instanceId);
         if (chosenPerson == null){
-            String error = "{\"success\" : 0 , \"error\" : \"person not found\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("person not found");
+            return ErrorMessages.getError400Response(errors);
         }
 
         Person personResult = api.removeAsPersonalContact(chosenPerson);
@@ -383,14 +383,14 @@ public class PersonResource extends ResourceAbstract {
 
         Person chosenPerson = api.findPersonById(instanceId);
         if (chosenPerson == null){
-            String error = "{\"success\" : 0 , \"error\" : \"person not found\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("person not found");
+            return ErrorMessages.getError400Response(errors);
         }
 
         Profile profileResult = api.createSupplyAndProfile(chosenPerson);
         if (profileResult==null){
-            String error = "{\"success\" : 0 , \"error\" : \"supply and profile could not be created\"}";
-            return Response.status(400).entity(error).build();
+            errors.add("supply and profile could not be created");
+            return ErrorMessages.getError400Response(errors);
         }
 
         ProfileViewModel profileViewModel = new ProfileViewModel(profileResult);
@@ -404,7 +404,6 @@ public class PersonResource extends ResourceAbstract {
     }
 
 
-    // TODO: move to demands as POST action
     @POST
     @Path("/persons/{instanceId}/actions/createPersonDemand")
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
@@ -423,10 +422,8 @@ public class PersonResource extends ResourceAbstract {
             // apply business logic: only owner can modify
             if (chosenPerson.disabled(Identifier.Type.ACTION) != null) {
                 String disabledMsg = chosenPerson.disabled(Identifier.Type.ACTION);
-                String error = "{\"success\" : 0 , \"error\" : \"";
-                error = error.concat(disabledMsg);
-                error = error.concat("\"}");
-                return Response.status(401).entity(error).build();
+                errors.add(disabledMsg);
+                return ErrorMessages.getError400Response(errors);
             }
 
             // try and see if properties are present; if not replace by original
@@ -436,8 +433,8 @@ public class PersonResource extends ResourceAbstract {
                 JsonRepresentation propertyDescription = argRepr.getRepresentation(id, new Object[0]);
                 description = propertyDescription.getString("");
             } catch (Exception e) {
-                String error = "{\"success\" : 0 , \"error\" : \"parameter 'description' is required\"}";
-                return Response.status(400).entity(error).build();
+                errors.add("parameter 'description' is required");
+                return ErrorMessages.getError400Response(errors);
             }
 
             String id2 = "summary";
@@ -488,8 +485,8 @@ public class PersonResource extends ResourceAbstract {
             Demand demand = api.createPersonDemand(chosenPerson, description, summary, story, startDate, endDate, imageUrl);
 
             if (demand==null){
-                String error = "{\"success\" : 0 , \"error\" : \"not able to create demand - please check parameters\"}";
-                return Response.status(400).entity(error).build();
+                errors.add("not able to create demand - please check parameters");
+                return ErrorMessages.getError400Response(errors);
             }
 
             JsonObject result = new JsonObject();

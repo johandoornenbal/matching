@@ -44,6 +44,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * NOTE: All data collection should happen through api
+ * In order to guard business logic - simulate wicket UI - wrapperfactory is used in api. Exceptions thrown this way are routed to
+ * the endpoint by adding the exception message to the errors array
+ *
+ */
 @Path("/v2")
 public class SupplyResource extends ResourceAbstract {
 
