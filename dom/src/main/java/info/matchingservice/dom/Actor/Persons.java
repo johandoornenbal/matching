@@ -168,13 +168,13 @@ public class Persons extends MatchingDomainService<Person> {
         person.setImageUrl(pictureLink);
         if (personRoleType!=null) {
             if (personRoleType.equals(PersonRoleType.STUDENT)) {
-                person.addRoleStudent();
+                person.addRoleStudent(userName);
             }
             if (personRoleType.equals(PersonRoleType.PROFESSIONAL)) {
-                person.addRoleProfessional();
+                person.addRoleProfessional(userName);
             }
             if (personRoleType.equals(PersonRoleType.PRINCIPAL)) {
-                person.addRolePrincipal();
+                person.addRolePrincipal(userName);
             }
         }
         person.setActivated(false);

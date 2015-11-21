@@ -177,8 +177,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         );
     }    
     //-- assessmentsGiven --//
-
-
         
     //** ownedBy - Override for secure object **//
     private String ownedBy;
@@ -194,8 +192,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     public void setOwnedBy(final String owner) {
         this.ownedBy = owner;
     }
-    
-    //** HELPERS **//
+
     //** HELPERS: generic object helpers **//
     public String title() {
         String string = "Actor ownedBy ";

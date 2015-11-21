@@ -16,15 +16,6 @@
  */
 package info.matchingservice.integtest.dom.api;
 
-import javax.inject.Inject;
-
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import org.apache.isis.applib.fixturescripts.FixtureScript;
-
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Api.Api;
@@ -32,10 +23,16 @@ import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.actor.TestRoles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
+import org.apache.isis.applib.fixturescripts.FixtureScript;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import javax.inject.Inject;
+
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ApiTest extends MatchingIntegrationTest {
     
@@ -164,6 +161,11 @@ public class ApiTest extends MatchingIntegrationTest {
 
         }
     }
-    
+
+    public static class CreateNewPersonTest extends ApiTest {
+
+        //TODO: finish
+
+    }
 
 }

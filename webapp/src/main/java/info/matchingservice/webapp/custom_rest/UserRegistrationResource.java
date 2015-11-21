@@ -17,13 +17,17 @@
 
 package info.matchingservice.webapp.custom_rest;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonRoleType;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.AppUserRegistrationService;
 import info.matchingservice.dom.Howdoido.Api;
 import info.matchingservice.dom.IsisPropertiesLookUpService;
 import info.matchingservice.dom.TestFacebookObjects.FbTokens;
 import info.matchingservice.dom.TestLinkedInObjects.LinkedInTokens;
+import info.matchingservice.dom.Utils.Utils;
 import org.apache.isis.applib.services.userreg.UserDetails;
 import org.apache.isis.applib.services.userreg.UserRegistrationService;
 import org.apache.isis.core.runtime.system.context.IsisContext;
@@ -49,6 +53,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,10 +64,15 @@ import java.util.regex.Pattern;
 @Path("/register")
 public class UserRegistrationResource extends ResourceAbstract {
 
-    private static Pattern USERNAME_REGEX = Pattern.compile("^[a-zA-Z0-9_]+$");
+//    private static Pattern USERNAME_REGEX = Pattern.compile("^[a-zA-Z0-9_]+$");
     private static Pattern PASSWORD_REGEX = Pattern.compile("^([^\\s]+)");
 //    private static Pattern EMAIL_REGEX = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
     private static Pattern EMAIL_REGEX = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$");
+
+
+    private Gson gson = new Gson();
+    private info.matchingservice.dom.Api.Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(info.matchingservice.dom.Api.Api.class);
+    private List<String> errors = new ArrayList<>();
 
     @POST
     @Path("/")
@@ -75,135 +86,198 @@ public class UserRegistrationResource extends ResourceAbstract {
 
         } else {
 
-            String id = "userName";
-            String userName;
+            String id1 = "mainEmail";
+            String mainEmail = "";
             try {
-                JsonRepresentation propertyUsername = argRepr.getRepresentation(id, new Object[0]);
-                userName = propertyUsername.getString("");
+                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
+                mainEmail = property.getString("");
             } catch (Exception e) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", "property 'userName' is mandatory");
-                return Response.status(400).entity(result.toString()).build();
+                errors.add("property 'mainEmail' is mandatory");
             }
 
             String id2 = "password";
-            String password;
+            String password = null;
             try {
-                JsonRepresentation propertyPassword = argRepr.getRepresentation(id2, new Object[0]);
-                password = propertyPassword.getString("");
+                JsonRepresentation property = argRepr.getRepresentation(id2, new Object[0]);
+                password = property.getString("");
             } catch (Exception e) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", "property 'password' is mandatory");
-                return Response.status(400).entity(result.toString()).build();
+                errors.add("property 'password' is mandatory");
             }
 
             String id3 = "passwordConfirm";
-            String passwordConfirm;
+            String passwordConfirm = null;
             try {
-                JsonRepresentation propertyPasswordConfirm = argRepr.getRepresentation(id3, new Object[0]);
-                passwordConfirm = propertyPasswordConfirm.getString("");
+                JsonRepresentation property = argRepr.getRepresentation(id3, new Object[0]);
+                passwordConfirm = property.getString("");
             } catch (Exception e) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", "property 'passwordConfirm' is mandatory");
-                return Response.status(400).entity(result.toString()).build();
+                errors.add("property 'passwordConfirm' is mandatory");
             }
 
-            String id4 = "email";
-            String email;
+            String id4 = "firstName";
+            String firstName ="";
             try {
-                JsonRepresentation propertyEmail = argRepr.getRepresentation(id4, new Object[0]);
-                email = propertyEmail.getString("");
+                JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
+                firstName = property.getString("");
             } catch (Exception e) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", "property 'email' is mandatory");
-                return Response.status(400).entity(result.toString()).build();
+                errors.add("property 'firstName' is mandatory");
             }
 
-            //input validation
+            String id5 = "middleName";
+            String middleName = null;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
+                middleName = property.getString("");
+            } catch (Exception e) {
+                //ignore
+            }
 
-            boolean error = false;
-            String errorString;
-            errorString = "";
-            //username should be conform REGEX
-            Matcher matcher = USERNAME_REGEX.matcher(userName);
-            if (!matcher.matches()) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" userName : ONE_AND_WORD_LETTERS_NUMBERS_ONLY ");
-                error = true;
+            String id6 = "lastName";
+            String lastName="";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
+                lastName = property.getString("");
+            } catch (Exception e) {
+                errors.add("property 'lastName' is mandatory");
+            }
+
+            String id7 = "dateOfBirth";
+            String dateOfBirth = "";
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id7, new Object[0]);
+                dateOfBirth = property.getString("");
+            } catch (Exception e) {
+                errors.add("property 'dateOfBirth' is mandatory");
+            }
+
+            String id8 = "imageUrl";
+            String imageUrl = null;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id8, new Object[0]);
+                imageUrl = property.getString("");
+            } catch (Exception e) {
+                // ignore
+            }
+
+            String id9 = "mainPhone";
+            String mainPhone = null;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id9, new Object[0]);
+                mainPhone = property.getString("");
+            } catch (Exception e) {
+                errors.add("property 'mainPhone' is mandatory");
+            }
+
+            String id10 = "mainAddress";
+            String mainAddress = null;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id10, new Object[0]);
+                mainAddress = property.getString("");
+            } catch (Exception e) {
+                errors.add("property 'mainAddress' is mandatory");
+            }
+
+            String id11 = "mainPostalCode";
+            String mainPostalCode = null;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id11, new Object[0]);
+                mainPostalCode = property.getString("");
+            } catch (Exception e) {
+                errors.add("property 'mainPostalCode' is mandatory");
+            }
+
+            String id12 = "mainTown";
+            String mainTown = null;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id12, new Object[0]);
+                mainTown = property.getString("");
+            } catch (Exception e) {
+                errors.add("property 'mainTown' is mandatory");
+            }
+
+            String id13 = "role";
+            String role = null;
+            try {
+                JsonRepresentation property = argRepr.getRepresentation(id13, new Object[0]);
+                role = property.getString("");
+            } catch (Exception e) {
+                errors.add("property 'role' is mandatory");
             }
 
             //passwords should match
             if (!password.equals(passwordConfirm)) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" password : PASSWORD_NOT_MATCHING ");
-                error = true;
+                errors.add("passwords should match");
             }
 
             //password should be conform REGEX
-            matcher = PASSWORD_REGEX.matcher(password);
+            Matcher matcher = PASSWORD_REGEX.matcher(password);
             if (!matcher.matches()) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" password : NO_BLANKS_IN_PASSWORD ");
-                error = true;
+                errors.add("password");
             }
 
             //email should be conform REGEX
-            matcher = EMAIL_REGEX.matcher(email);
+            matcher = EMAIL_REGEX.matcher(mainEmail);
             if (!matcher.matches()) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" email : NO_VALID_EMAIL_ADDRESS ");
-                error = true;
+                errors.add("no valid email");
             }
 
-            if (error) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", errorString);
-                return Response.status(400).entity(result.toString()).build();
+            //firstName and lastName not an empty string
+            if (firstName.length()<2){
+                errors.add("no valid firstName");
             }
 
-            //Check for existing username / email
+            if (lastName.length()<2){
+                errors.add("no valid lastName");
+            }
+
+            //date should be valid
+            if (!Utils.isValidDate(dateOfBirth)) {
+                errors.add("no valid date");
+            }
+
+            final PersonRoleType roleType;
+            switch (role)  {
+
+                case "STUDENT": roleType = PersonRoleType.STUDENT;
+                    break;
+
+                case "PRINCIPAL": roleType = PersonRoleType.PRINCIPAL;
+                    break;
+
+                case "PROFESSIONAL": roleType = PersonRoleType.PROFESSIONAL;
+                    break;
+
+                default:    roleType = null;
+            }
+
+            if (roleType==null){
+                errors.add("no valid roletype: choose 'STUDENT', 'PROFESSIONAL' or 'PRINCIPAL'");
+            }
+
+            if (errors.size()>0) {
+                return ErrorMessages.getError400Response(errors);
+            }
+
+
+            //mainEmail becomes userName
+            final String userName = mainEmail;
+
+            // Check for existing username / email
             final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
             if (persons.activePerson(userName) != null) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" userName : ALREADY_REGISTERED_AND_HAS_PERSONRECORD ");
-                error = true;
-            }
-            final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
-            if (applicationUsers.findUserByUsername(userName) != null) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" userName : ALREADY_REGISTERED_NO_PERSONRECORD ");
-                error = true;
-            }
-            if (applicationUsers.findUserByEmail(email) != null) {
-                if (error) {
-                    errorString = errorString.concat(", ");
-                }
-                errorString = errorString.concat(" email : ALREADY_REGISTERED_UNDER_OTHER_USERNAME ");
-                error = true;
+                errors.add("username already registered and person object already made");
             }
 
-            if (error) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", errorString);
-                return Response.status(400).entity(result.toString()).build();
+            final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
+            if (applicationUsers.findUserByUsername(userName) != null) {
+                errors.add("username already registered; no person object made");
+            }
+
+            if (applicationUsers.findUserByEmail(mainEmail) != null) {
+                errors.add("email already registered");
+            }
+
+            if (errors.size()>0) {
+                return ErrorMessages.getError400Response(errors);
             }
 
             //Register user
@@ -212,7 +286,7 @@ public class UserRegistrationResource extends ResourceAbstract {
             userDetails.setUsername(userName);
             userDetails.setPassword(password);
             userDetails.setConfirmPassword(passwordConfirm);
-            userDetails.setEmailAddress(email);
+            userDetails.setEmailAddress(mainEmail);
 
             final UserRegistrationService appUserRegistrationService =
                     IsisContext.getPersistenceSession().getServicesInjector().lookupService(AppUserRegistrationService.class);
@@ -222,18 +296,38 @@ public class UserRegistrationResource extends ResourceAbstract {
             if (applicationUsers.findUserByUsername(userName) != null
                     &&
                     applicationUsers.findUserByUsername(userName).getStatus().equals(ApplicationUserStatus.ENABLED)
-                    ) {
-
-                return Response.status(200).entity("{\"success\" : 1}").build();
-
+                    )
+            {
+                //OK
             } else {
-
-                errorString = errorString.concat(" email  :  ALREADY_REGISTERED_UNDER_OTHER_USERNAME ");
-                JsonObject result = new JsonObject();
-                result.addProperty("success", 0);
-                result.addProperty("error", errorString);
-                return Response.status(400).entity(result.toString()).build();
+                errors.add("registration failure");
+                return ErrorMessages.getError400Response(errors);
             }
+
+            Person newPerson = null;
+            try {
+                newPerson = api.createNewPerson(
+                        firstName,
+                        middleName,
+                        lastName,
+                        dateOfBirth,
+                        imageUrl,
+                        roleType,
+                        userName,
+                        mainAddress,
+                        mainPostalCode,
+                        mainTown,
+                        mainPhone
+                );
+            } catch (Exception e) {
+                    errors.add("failure creating Person object");
+                    errors.add(e.getMessage());
+                    return ErrorMessages.getError400Response(errors);
+            }
+
+            JsonObject result = PersonResource.createPersonResult(newPerson.getIdAsInt(), api, gson);
+            result.addProperty("success", 1);
+            return Response.status(200).entity(result.toString()).build();
 
         }
     }
@@ -439,6 +533,5 @@ public class UserRegistrationResource extends ResourceAbstract {
 
         return Response.status(200).entity("<h1>You can close this window</h1>").build();
     }
-
 
 }

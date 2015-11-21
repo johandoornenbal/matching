@@ -59,6 +59,70 @@ public class Api extends AbstractFactoryAndRepository {
 		return persons.allActivePersons();
 	}
 
+	public Person createNewPerson(
+			final String firstName,
+			final String middleName,
+			final String lastName,
+			final String dateOfBirth,
+			final String imageUrl,
+			final PersonRoleType roleType,
+			final String userName,
+			final String mainAddress,
+			final String mainPostalCode,
+			final String mainTown,
+			final String mainPhone) {
+
+		final Person person = persons.createPerson(
+				firstName,
+				middleName,
+				lastName,
+				new LocalDate(dateOfBirth),
+				null,
+				imageUrl,
+				roleType,
+				userName);
+
+		final String fullName;
+
+		if (person.getMiddleName()==null || person.getMiddleName().equals("")) {
+			fullName = person.getFirstName() + " " + person.getLastName();
+		} else {
+			fullName = person.getFirstName() + " " + person.getMiddleName() + " " + person.getLastName();
+		}
+
+		person.createSupplyAndProfile(
+				"PERSON_SUPPLY_OF " + fullName,
+				10,
+				DemandSupplyType.PERSON_DEMANDSUPPLY,
+				person,
+				"PERSON_PROFILE_OF",
+				10,
+				null,
+				null,
+				ProfileType.PERSON_PROFILE,
+				imageUrl,
+				userName
+		);
+
+		communicationChannels.createAddress(
+				person,
+				CommunicationChannelType.ADDRESS_MAIN,
+				mainAddress,
+				mainPostalCode,
+				mainTown,
+				userName
+		);
+
+		communicationChannels.createPhone(
+				person,
+				CommunicationChannelType.PHONE_MAIN,
+				mainPhone,
+				userName
+		);
+
+		return person;
+	}
+
 	//***************************************** updatePerson ***********************//
 	@Programmatic
 	public Person updatePerson(
@@ -363,6 +427,31 @@ public class Api extends AbstractFactoryAndRepository {
 		}
 
 		return null;
+	}
+
+	@Programmatic
+	public Profile createSupplyAndProfileAtRegistration(final Person person, final String userName){
+
+		final String fullName;
+		if (person.getMiddleName()==null || person.getMiddleName().equals("")) {
+			fullName = person.getFirstName() + " " + person.getLastName();
+		} else {
+			fullName = person.getFirstName() + " " + person.getMiddleName() + " " + person.getLastName();
+		}
+
+		return person.createSupplyAndProfile(
+				"PERSON_SUPPLY_OF " + fullName,
+				10,
+				DemandSupplyType.PERSON_DEMANDSUPPLY,
+				person,
+				"PERSON_PROFILE_OF",
+				10,
+				null,
+				null,
+				ProfileType.PERSON_PROFILE,
+				null,
+				userName);
+
 	}
 
 	@Programmatic
@@ -921,6 +1010,30 @@ public class Api extends AbstractFactoryAndRepository {
 
 
 	//------------------------------------ END getProfileByUniqueId ---------------------------//
+
+
+	@Programmatic
+	public Phone createPhone(final Person person, final String phone, final CommunicationChannelType communicationChannelType, final String userName){
+		return communicationChannels.createPhone(person, communicationChannelType, phone, userName);
+	}
+
+	@Programmatic
+	public Address createAddress(
+			final Person person,
+			final String address,
+			final String postalCode,
+			final String town,
+			final CommunicationChannelType communicationChannelType,
+			final String userName) {
+		return communicationChannels.createAddress(
+				person,
+				communicationChannelType,
+				address,
+				postalCode,
+				town,
+				userName
+		);
+	}
 	
 	//***************************************** createPerson ***********************//
 	
@@ -1346,5 +1459,6 @@ public class Api extends AbstractFactoryAndRepository {
 
 	@Inject
 	WrapperFactory wrapperFactory;
+
 
 }

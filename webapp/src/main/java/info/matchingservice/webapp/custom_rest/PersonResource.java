@@ -130,7 +130,7 @@ public class PersonResource extends ResourceAbstract {
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR})
     public Response getPersonServices(@PathParam("instanceId") Integer instanceId) {
 
-        JsonObject result = createPersonResult(instanceId);
+        JsonObject result = createPersonResult(instanceId, api, gson);
         if (result == null){
             errors.add("person not found");
             return ErrorMessages.getError400Response(errors);
@@ -267,7 +267,7 @@ public class PersonResource extends ResourceAbstract {
                 errors.add(e.getMessage());
                 return ErrorMessages.getError400Response(errors);
             }
-            JsonObject result = createPersonResult(instanceId);
+            JsonObject result = createPersonResult(instanceId, api, gson);
             result.addProperty("success", 1);
 
             return Response.status(200).entity(result.toString()).build();
@@ -559,7 +559,7 @@ public class PersonResource extends ResourceAbstract {
      *
      * NOTE: In order to preserve or guard business logic all data should be retrieved via Api
      */
-    public JsonObject createPersonResult(final Integer instanceId) {
+    public static JsonObject createPersonResult(final Integer instanceId, final Api api, final Gson gson) {
 
         JsonObject result = new JsonObject();
 

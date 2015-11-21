@@ -122,11 +122,11 @@ public class PersonViewModel extends ApiAbstractViewModel {
         }
         this.profileMatchesReferring = profileMatchesReferring;
 
-
         this.actions = api.getActionsForPerson(person);
 
-    }
+        this.activated = person.getActivated();
 
+    }
 
 
     //region > firstName (property)
@@ -453,6 +453,19 @@ public class PersonViewModel extends ApiAbstractViewModel {
 
     public void setActions(final List<String> actions) {
         this.actions = actions;
+    }
+    //endregion
+
+    //region > activated (property)
+    private Boolean activated;
+
+    @MemberOrder(sequence = "1")
+    public Boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(final Boolean activated) {
+        this.activated = activated;
     }
     //endregion
 

@@ -1,14 +1,13 @@
 package info.matchingservice.dom.CommunicationChannels;
 
-import java.util.List;
-
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.MatchingDomainService;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.query.QueryDefault;
 
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.MatchingDomainService;
+import java.util.List;
 
 /**
  * Created by jonathan on 3-4-15.
@@ -64,6 +63,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         phone.setOwnedBy(ownedBy);
 
         persistIfNotAlready(phone);
+        getContainer().flush();
         return phone;
 
 
@@ -103,6 +103,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         email.setOwnedBy(ownedBy);
 
         persistIfNotAlready(email);
+        getContainer().flush();
         return email;
 
     }
@@ -147,6 +148,7 @@ public class CommunicationChannels extends MatchingDomainService<CommunicationCh
         newAddress.setOwnedBy(ownedBy);
 
         persistIfNotAlready(newAddress);
+        getContainer().flush();
         return newAddress;
     }
 

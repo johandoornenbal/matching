@@ -53,9 +53,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @DomainObject(autoCompleteRepository=Organisations.class, autoCompleteAction="autoComplete")
 public class Organisation extends Actor {
- 
-	//** API: PROPERTIES **//
-	
+
 	//** organisationName **//
     private String organisationName;
     
@@ -84,18 +82,10 @@ public class Organisation extends Actor {
     }
     //-- roles --//
     
-	//-- API: PROPERTIES --//
-    
-	//** API: COLLECTIONS **//
-    
     // method CollectDemands() is on Actor
     public boolean hideDemands() {
         return !getIsPrincipal();
     }
-    
-	//-- API: COLLECTIONS --//
-    
-	//** API: ACTIONS **//
     
     //** createOrganisationSupply **//
     public Profile createOrganisationSupply(){
@@ -114,13 +104,6 @@ public class Organisation extends Actor {
         return validateCreateOrganisationSupply("", this);
     }
     //-- createOrganisationSupply --//
-
-	//-- API: ACTIONS --//
-
-    
-	//** HELPERS **//
-    
-    //** HELPERS: generic object helpers **//
     
     @Override
     public String title() {
@@ -130,10 +113,7 @@ public class Organisation extends Actor {
     public String toString() {
         return organisationName;
     }
-	
-    //-- HELPERS: generic object helpers --//
-	
-    //** HELPERS: programmatic actions **//
+
     
     @Programmatic // now values can be set by fixtures
     public Boolean getIsPrincipal(Organisation ownerOrganisation) {
@@ -225,23 +205,13 @@ public class Organisation extends Actor {
         
         return null;
     }
-    
-    
-	//-- HELPERS: programmatic actions --// 
-	//-- HELPERS --//
-	//** INJECTIONS **//
-	//-- INJECTIONS --//
-    
-	//** HIDDEN: PROPERTIES **//
+
     
     @PropertyLayout(hidden=Where.EVERYWHERE)
     public Boolean getIsPrincipal() {
         return getIsPrincipal(this);
     }
-	
-    //-- HIDDEN: PROPERTIES --//
-	
-    //** HIDDEN: ACTIONS **//
+
     
     @MemberOrder(sequence = "60")
     @ActionLayout(hidden=Where.ANYWHERE)
@@ -265,21 +235,6 @@ public class Organisation extends Actor {
         return hideDeleteRolePrincipal(this, currentUserName());
     }
 
-	//-- HIDDEN: ACTIONS --//
-
-//    @MemberOrder(sequence = "100")
-//    @CollectionLayout(hidden=Where.EVERYWHERE, render=RenderType.EAGERLY)
-//    public List<OrganisationRole> getAllMyRoles() {
-//        QueryDefault<OrganisationRole> query =
-//                QueryDefault.create(
-//                        OrganisationRole.class,
-//                        "findMyRoles",
-//                        "roleOwner", this);
-//        return container.allMatches(query);
-//    }
-    
-
-    
     private String currentUserName() {
         return container.getUser().getName();
     }
