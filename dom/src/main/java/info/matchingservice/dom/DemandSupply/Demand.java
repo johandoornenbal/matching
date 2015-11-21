@@ -20,7 +20,7 @@
 package info.matchingservice.dom.DemandSupply;
 
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Assessment.DemandAssessment;
+import info.matchingservice.dom.Assessment.DemandFeedback;
 import info.matchingservice.dom.HasImageUrl;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
@@ -231,15 +231,15 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
     //-- profiles --//
     
     //** demandAssessments **//
-    private SortedSet<DemandAssessment> assessments = new TreeSet<DemandAssessment>();
+    private SortedSet<DemandFeedback> assessments = new TreeSet<DemandFeedback>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
-    public SortedSet<DemandAssessment> getAssessments() {
+    public SortedSet<DemandFeedback> getAssessments() {
         return assessments;
     }
    
-    public void setAssessments(final SortedSet<DemandAssessment> demandAssessment) {
+    public void setAssessments(final SortedSet<DemandFeedback> demandAssessment) {
         this.assessments = demandAssessment;
     }
     

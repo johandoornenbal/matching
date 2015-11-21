@@ -21,7 +21,7 @@ package info.matchingservice.dom.DemandSupply;
 
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Assessment.SupplyAssessment;
+import info.matchingservice.dom.Assessment.SupplyFeedback;
 import info.matchingservice.dom.HasImageUrl;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
@@ -162,21 +162,21 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
     //-- supplyProfiles --//
     
     //** supplyAssessments **//
-    private SortedSet<SupplyAssessment> collectSupplyAssessments = new TreeSet<SupplyAssessment>();
+    private SortedSet<SupplyFeedback> assessments = new TreeSet<SupplyFeedback>();
     
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
-    public SortedSet<SupplyAssessment> getCollectSupplyAssessments() {
-        return collectSupplyAssessments;
+    public SortedSet<SupplyFeedback> getAssessments() {
+        return assessments;
     }
    
-    public void setCollectSupplyAssessments(final SortedSet<SupplyAssessment> assessment) {
-        this.collectSupplyAssessments = assessment;
+    public void setAssessments(final SortedSet<SupplyFeedback> assessment) {
+        this.assessments = assessment;
     }
     
     // Business rule: 
     // only visible for inner-circle
-    public boolean hideCollectSupplyAssessments() {
+    public boolean hideAssessments() {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     //-- supplyAssessments --//

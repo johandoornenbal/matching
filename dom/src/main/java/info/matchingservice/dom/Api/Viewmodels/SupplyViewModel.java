@@ -1,6 +1,8 @@
 package info.matchingservice.dom.Api.Viewmodels;
 
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Api.Api;
+import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import org.apache.isis.applib.annotation.DomainObject;
@@ -19,7 +21,7 @@ public class SupplyViewModel extends ApiAbstractViewModel {
     public SupplyViewModel(){
     }
 
-    public SupplyViewModel(final Supply supply){
+    public SupplyViewModel(final Supply supply, final Api api){
         super(supply);
         this.owner = supply.getOwner().getIdAsInt();
         this.ownerUri = supply.getOwner().getUri();
@@ -43,6 +45,11 @@ public class SupplyViewModel extends ApiAbstractViewModel {
             supplyProfiles.add(profile.getIdAsInt());
         }
         this.profiles = supplyProfiles;
+        List<Integer> assessments = new ArrayList<>();
+        for (Assessment assessment : api.getAllAssessments(supply)){
+            assessments.add(assessment.getIdAsInt());
+        }
+        this.assessments = assessments;
     }
 
     //region > owner (property)
@@ -184,6 +191,19 @@ public class SupplyViewModel extends ApiAbstractViewModel {
 
     public void setProfiles(final List<Integer> profiles) {
         this.profiles = profiles;
+    }
+    //endregion
+
+    //region > assessments (property)
+    private List<Integer> assessments;
+
+    @MemberOrder(sequence = "1")
+    public List<Integer> getAssessments() {
+        return assessments;
+    }
+
+    public void setAssessments(final List<Integer> assessments) {
+        this.assessments = assessments;
     }
     //endregion
 

@@ -20,7 +20,7 @@
 package info.matchingservice.dom.Profile;
 
 import info.matchingservice.dom.Actor.Actor;
-import info.matchingservice.dom.Assessment.ProfileAssessment;
+import info.matchingservice.dom.Assessment.ProfileFeedback;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Dropdown.DropDownForProfileElement;
@@ -41,7 +41,10 @@ import org.joda.time.LocalDateTime;
 import javax.inject.Inject;
 import javax.jdo.JDOHelper;
 import javax.jdo.annotations.*;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -340,15 +343,15 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     //-- elements --//
     
     //** collectAssessments **//
-    private SortedSet<ProfileAssessment> collectAssessments = new TreeSet<ProfileAssessment>();
+    private SortedSet<ProfileFeedback> collectAssessments = new TreeSet<ProfileFeedback>();
 
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "targetOfAssessment", dependentElement = "true")
-    public SortedSet<ProfileAssessment> getCollectAssessments() {
+    public SortedSet<ProfileFeedback> getCollectAssessments() {
         return collectAssessments;
     }
 
-    public void setCollectAssessments(final SortedSet<ProfileAssessment> assessment) {
+    public void setCollectAssessments(final SortedSet<ProfileFeedback> assessment) {
         this.collectAssessments = assessment;
     }
 

@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class GenerateJsonElementService {
 
-    private static Gson gson = new Gson();
+//    private static Gson gson = new Gson();
 
-    public static JsonElement generateProfileElements(final List<ProfileElement> profileElementList) {
+    public static JsonElement generateProfileElements(final List<ProfileElement> profileElementList, final Gson gson) {
 
         List<ProfileElementViewModel> profileElementViewModels = new ArrayList<>();
 

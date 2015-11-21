@@ -21,14 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import info.matchingservice.dom.Api.Api;
-import info.matchingservice.dom.Api.Viewmodels.ProfileViewModel;
 import info.matchingservice.dom.Api.Viewmodels.SupplyViewModel;
-import info.matchingservice.dom.Api.Viewmodels.TagHolderViewModel;
 import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElementTag;
-import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
@@ -177,7 +171,7 @@ public class SupplyResource extends ResourceAbstract {
         // persons
         List<SupplyViewModel> supplyViewModels = new ArrayList<>();
         for (Supply supply : api.allSupplies()) {
-            SupplyViewModel supplyViewModel = new SupplyViewModel(supply);
+            SupplyViewModel supplyViewModel = new SupplyViewModel(supply, api);
             supplyViewModels.add(supplyViewModel);
         }
         JsonElement supplyRepresentation = gson.toJsonTree(supplyViewModels);
@@ -211,45 +205,16 @@ public class SupplyResource extends ResourceAbstract {
         JsonObject result = new JsonObject();
 
         // supply
-        SupplyViewModel supplyViewModel = new SupplyViewModel(activeSupply);
+        SupplyViewModel supplyViewModel = new SupplyViewModel(activeSupply, api);
         JsonElement supplyRepresentation = gson.toJsonTree(supplyViewModel);
         result.add("supply", supplyRepresentation);
 
-        // sideload profiles
-        List<ProfileViewModel> profileViewModels = new ArrayList<>();
-        for (Profile profile : api.getProfilesForSupply(activeSupply)) {
-            profileViewModels.add(new ProfileViewModel(profile));
-        }
-        JsonElement profilesRepresentation = gson.toJsonTree(profileViewModels);
-        result.add("profiles", profilesRepresentation);
+        // sideloads
+        result.add("profiles", Sideloads.profiles(activeSupply, api, gson));
+        result.add("elements", Sideloads.profileElements(activeSupply, api, gson));
+        result.add("tagholders", Sideloads.tagHolders(activeSupply, api, gson));
+        result.add("assessments", Sideloads.assessments(activeSupply, api, gson));
 
-        // sideload (profile) elements
-        List<ProfileElement> profileElementList = new ArrayList<>();
-        for (Profile profile : api.getProfilesForSupply(activeSupply)) {
-            for (ProfileElement element : profile.getElements()){
-                profileElementList.add(element);
-            }
-        }
-        JsonElement profileElements = GenerateJsonElementService.generateProfileElements(profileElementList);
-        result.add("elements", profileElements);
-
-        // sideload tagholders
-        List<ProfileElementTag> profileElementTagList = new ArrayList<>();
-        for (Profile profile : api.getProfilesForSupply(activeSupply)) {
-            for (ProfileElement element : profile.getElements()){
-                if (element.getClass().equals(ProfileElementTag.class)) {
-                    profileElementTagList.add((ProfileElementTag) element);
-                }
-            }
-        }
-        List<TagHolderViewModel> tagHolderViewModels = new ArrayList<>();
-        for (ProfileElementTag element : profileElementTagList){
-            for (TagHolder tagHolder : element.getCollectTagHolders()) {
-                tagHolderViewModels.add(new TagHolderViewModel(tagHolder));
-            }
-        }
-        JsonElement tagholders = gson.toJsonTree(tagHolderViewModels);
-        result.add("tagholders", tagholders);
 
         return result;
 

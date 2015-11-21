@@ -193,10 +193,16 @@ public class Api extends AbstractFactoryAndRepository {
 	@Programmatic
 	public List<Demand> getDemandsForPerson(final Person person){
 
-		// apply business logic
+		// apply business logic until way to wrap
 		if (person.hideDemands()){
 			return new ArrayList<>();
 		}
+		//TODO: find out how to wrap
+		// wrappedPerson.getDemands() does not work
+//		Person wrappedPerson = wrapperFactory.wrap(person);
+//		for (Demand demand : wrappedPerson.getDemands()){
+//			System.out.println(demand.getIdAsInt());
+//		}
 
 		return new ArrayList<>(person.getDemands());
 
@@ -307,20 +313,20 @@ public class Api extends AbstractFactoryAndRepository {
 		Boolean isContact = personalcontacts.findUniquePersonalContact(currentUserName(), person) != null?
 				true  : false;
 
-		if (!currentUserName().equals(person.getOwnedBy())	&& !isContact ) {
+//		if (!currentUserName().equals(person.getOwnedBy())	&& !isContact ) {
 			String addAsPersonalContact = "addAsPersonalContact";
 			actions.add(addAsPersonalContact);
-		}
+//		}
 
-        if (!currentUserName().equals(person.getOwnedBy())	&& isContact ) {
-            String addAsPersonalContact = "removeAsPersonalContact";
-            actions.add(addAsPersonalContact);
-        }
+//        if (!currentUserName().equals(person.getOwnedBy())	&& isContact ) {
+            String removeAsPersonalContact = "removeAsPersonalContact";
+            actions.add(removeAsPersonalContact);
+//        }
 
-		if (!person.hideCreatePersonsSupplyAndProfile()) {
+//		if (!person.hideCreatePersonsSupplyAndProfile()) {
 			String addCreateSupplyAndProfile = "createSupplyAndProfile";
 			actions.add(addCreateSupplyAndProfile);
-		}
+//		}
 
 		return actions;
 	}
@@ -381,6 +387,7 @@ public class Api extends AbstractFactoryAndRepository {
         if (description==null || description==""){
             return null;
         }
+
         //check dates
         LocalDate startDateEntry = null;
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
@@ -543,6 +550,15 @@ public class Api extends AbstractFactoryAndRepository {
         return new ArrayList<>(demand.getProfiles());
     }
 
+	@Programmatic
+	public List<Assessment> getAllAssessments(final Demand demand){
+		List<Assessment> result = new ArrayList<>();
+		if (!demand.hideAssessments()) {
+			result.addAll(demand.getAssessments());
+		}
+		return result;
+	}
+
 	//***************************************** Supply ***********************//
 
 	public Supply matchSupplyApiId(Integer instanceId) {
@@ -661,6 +677,15 @@ public class Api extends AbstractFactoryAndRepository {
 		}
 
 		return new ArrayList<>(supply.getProfiles());
+	}
+
+	@Programmatic
+	public List<Assessment> getAllAssessments(final Supply supply){
+		List<Assessment> result = new ArrayList<>();
+		if (!supply.hideAssessments()) {
+			result.addAll(supply.getAssessments());
+		}
+		return result;
 	}
 
 
@@ -842,6 +867,14 @@ public class Api extends AbstractFactoryAndRepository {
 		return profile.updateProfile(nameEntry, weightEntry,startDateEntry, endDateEntry, imageUrl);
 	}
 
+	@Programmatic
+	public List<Assessment> getAllAssessments(final Profile profile){
+		List<Assessment> result = new ArrayList<>();
+		if (!profile.hideCollectAssessments()) {
+			result.addAll(profile.getCollectAssessments());
+		}
+		return result;
+	}
 
 	//***************************************** getProfileElementByUniqueId ***********************//
 

@@ -2,6 +2,7 @@ package info.matchingservice.dom.Api.Viewmodels;
 
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
+import info.matchingservice.dom.Assessment.Assessment;
 import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.Profile.Profile;
 import org.apache.isis.applib.annotation.DomainObject;
@@ -46,6 +47,11 @@ public class DemandViewModel extends ApiAbstractViewModel {
             demandProfiles.add(profile.getIdAsInt());
         }
         this.profiles = demandProfiles;
+        List<Integer> assessments = new ArrayList<>();
+        for (Assessment assessment : api.getAllAssessments(demand)){
+            assessments.add(assessment.getIdAsInt());
+        }
+        this.assessments = assessments;
     }
 
     //region > owner (property)
@@ -214,6 +220,19 @@ public class DemandViewModel extends ApiAbstractViewModel {
 
     public void setProfiles(final List<Integer> profiles) {
         this.profiles = profiles;
+    }
+    //endregion
+
+    //region > assessments (property)
+    private List<Integer> assessments;
+
+    @MemberOrder(sequence = "1")
+    public List<Integer> getAssessments() {
+        return assessments;
+    }
+
+    public void setAssessments(final List<Integer> assessments) {
+        this.assessments = assessments;
     }
     //endregion
 

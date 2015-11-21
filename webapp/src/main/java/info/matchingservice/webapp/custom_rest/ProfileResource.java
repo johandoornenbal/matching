@@ -23,11 +23,7 @@ import com.google.gson.JsonObject;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.Api.Viewmodels.ProfileViewModel;
-import info.matchingservice.dom.Api.Viewmodels.TagHolderViewModel;
 import info.matchingservice.dom.Profile.Profile;
-import info.matchingservice.dom.Profile.ProfileElement;
-import info.matchingservice.dom.Profile.ProfileElementTag;
-import info.matchingservice.dom.Tags.TagHolder;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.RestfulMediaType;
@@ -40,8 +36,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -78,29 +72,15 @@ public class ProfileResource extends ResourceAbstract {
         JsonObject result = new JsonObject();
 
         // profile
-        ProfileViewModel profileViewModel = new ProfileViewModel(activeProfile);
+        ProfileViewModel profileViewModel = new ProfileViewModel(activeProfile, api);
         JsonElement profileRepresentation = gson.toJsonTree(profileViewModel);
         result.add("profile", profileRepresentation);
 
-        // sideload elements
-        JsonElement profileElements = GenerateJsonElementService.generateProfileElements(new ArrayList<>(activeProfile.getElements()));
-        result.add("elements", profileElements);
+        // sideloads
+        result.add("elements", Sideloads.profileElements(activeProfile, api, gson));
+        result.add("tagholders", Sideloads.tagHolders(activeProfile, api, gson));
+        result.add("assessments", Sideloads.assessments(activeProfile, api, gson));
 
-        // sideload tagholders
-        List<ProfileElementTag> profileElementTagList = new ArrayList<>();
-        for (ProfileElement element : activeProfile.getElements()){
-             if (element.getClass().equals(ProfileElementTag.class)) {
-                 profileElementTagList.add((ProfileElementTag) element);
-             }
-        }
-        List<TagHolderViewModel> tagHolderViewModels = new ArrayList<>();
-        for (ProfileElementTag element : profileElementTagList){
-            for (TagHolder tagHolder : element.getCollectTagHolders()) {
-                tagHolderViewModels.add(new TagHolderViewModel(tagHolder));
-            }
-        }
-        JsonElement tagholders = gson.toJsonTree(tagHolderViewModels);
-        result.add("tagholders", tagholders);
 
         return result;
     }
