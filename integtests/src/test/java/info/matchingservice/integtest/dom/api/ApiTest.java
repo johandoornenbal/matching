@@ -17,8 +17,12 @@
 package info.matchingservice.integtest.dom.api;
 
 import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonRoleType;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.Api.Api;
+import info.matchingservice.dom.CommunicationChannels.*;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestPersons;
 import info.matchingservice.fixture.actor.TestRoles;
@@ -41,6 +45,18 @@ public class ApiTest extends MatchingIntegrationTest {
 
     @Inject
     Persons persons;
+
+    private static final String LAST_NAME = "Test1";
+    private static final String MIDDLE_NAME = "van der";
+    private static final String FIRST_NAME = "T.";
+    private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962, 7, 16);
+    private static final String PICTURE_LINK = "picturelink";
+    private static final String USERNAME = "username";
+    private static final String MAIN_ADDRES = "address";
+    private static final String MAIN_POSTALCODE = "1234AB";
+    private static final String MAIN_TOWN = "Town";
+    private static final String MAIN_PHONE = "0123456789";
+    private static final String DATE_OF_BIRTH_STRING = "2000-12-31";
     
     @BeforeClass
     public static void setupTransactionalData() throws Exception {
@@ -60,13 +76,7 @@ public class ApiTest extends MatchingIntegrationTest {
 
 
     public static class CreateStudent extends ApiTest {
-        
-        private static final String LAST_NAME = "Test1";
-        private static final String MIDDLE_NAME = "van der";
-        private static final String FIRST_NAME = "T.";
-        private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
-        private static final String PICTURE_LINK = "picturelink";
-        
+
         Person p1;
         Person p2;
         
@@ -95,12 +105,6 @@ public class ApiTest extends MatchingIntegrationTest {
     }
 
     public static class CreateProfessional extends ApiTest {
-
-        private static final String LAST_NAME = "Test1";
-        private static final String MIDDLE_NAME = "van der";
-        private static final String FIRST_NAME = "T.";
-        private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962,7,16);
-        private static final String PICTURE_LINK = "picturelink";
 
         Person p1;
         Person p2;
@@ -131,12 +135,6 @@ public class ApiTest extends MatchingIntegrationTest {
 
     public static class CreatePrincipal extends ApiTest {
 
-        private static final String LAST_NAME = "Test1";
-        private static final String MIDDLE_NAME = "van der";
-        private static final String FIRST_NAME = "T.";
-        private static final LocalDate DATE_OF_BIRTH = new LocalDate(1962, 7, 16);
-        private static final String PICTURE_LINK = "picturelink";
-
         Person p1;
         Person p2;
 
@@ -164,8 +162,66 @@ public class ApiTest extends MatchingIntegrationTest {
 
     public static class CreateNewPersonTest extends ApiTest {
 
-        //TODO: finish
+        Person newPerson;
+
+        @Test
+        public void create() throws Exception {
+
+            newPerson = api.createNewPerson(
+                FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH_STRING, PICTURE_LINK,
+                    PersonRoleType.STUDENT, USERNAME, MAIN_ADDRES, MAIN_POSTALCODE, MAIN_TOWN, MAIN_PHONE
+            );
+
+            // person created
+            assertThat(newPerson.getFirstName(), is(FIRST_NAME));
+            assertThat(newPerson.getLastName(), is(LAST_NAME));
+            assertThat(newPerson.getMiddleName(), is(MIDDLE_NAME));
+            assertThat(newPerson.getDateOfBirth().toString(), is(DATE_OF_BIRTH_STRING));
+            assertThat(newPerson.getImageUrl(), is(PICTURE_LINK));
+            assertThat(newPerson.getOwnedBy(), is(USERNAME));
+            assertFalse(newPerson.getIsPrincipal());
+            assertTrue(newPerson.getIsStudent());
+            assertFalse(newPerson.getIsProfessional());
+
+            // personsupply and profile created
+            assertThat(newPerson.getSupplies().size(), is(1));
+            assertThat(newPerson.getSupplies().first().getSupplyType(), is(DemandSupplyType.PERSON_DEMANDSUPPLY));
+            assertThat(newPerson.getSupplies().first().getProfiles().size(), is(1));
+            assertThat(newPerson.getSupplies().first().getProfiles().first().getType(), is(ProfileType.PERSON_PROFILE));
+
+            // phone and address created
+            assertThat(communicationChannelsRepo.
+                    findCommunicationChannelByPersonAndType(
+                            newPerson,
+                            CommunicationChannelType.ADDRESS_MAIN).size(),
+                    is(1));
+            assertThat(communicationChannelsRepo.
+                            findCommunicationChannelByPersonAndType(
+                                    newPerson,
+                                    CommunicationChannelType.PHONE_MAIN).size(),
+                    is(1));
+
+            Address address = (Address) communicationChannelsRepo.findCommunicationChannelByPersonAndType(
+                    newPerson,
+                    CommunicationChannelType.ADDRESS_MAIN)
+                    .get(0);
+            assertThat(address.getAddress(), is(MAIN_ADDRES));
+            assertThat(address.getPostalCode(), is(MAIN_POSTALCODE));
+            assertThat(address.getTown(), is(MAIN_TOWN));
+
+            Phone phone = (Phone) communicationChannelsRepo.findCommunicationChannelByPersonAndType(
+                            newPerson,
+                            CommunicationChannelType.PHONE_MAIN)
+                    .get(0);
+            assertThat(phone.getPhoneNumber(), is(MAIN_PHONE));
+
+        }
+
+        @Inject
+        private CommunicationChannels communicationChannelsRepo;
 
     }
+
+
 
 }

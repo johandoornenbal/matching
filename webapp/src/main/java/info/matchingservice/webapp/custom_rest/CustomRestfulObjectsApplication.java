@@ -27,6 +27,7 @@ public class CustomRestfulObjectsApplication extends RestfulObjectsApplication {
     public CustomRestfulObjectsApplication() {
 
         addClass(UserRegistrationResource.class);
+        addClass(UserRegistrationLegacyResource.class);
         addClass(UserAuthentificationResource.class);
         addClass(ProfileResource.class);
         addClass(FindResource.class);

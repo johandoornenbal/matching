@@ -48,11 +48,16 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
 
         /********** ADAPT THESE ACCORDING TO DEPLOY ****************************************/
 
-                String compareUriTo = "/simple/restful/register";
-                String compareUriTo2 = "/simple/restful/authenticate";
+//        String compareUriTo = "/simple/restful/v2/action/register";
+//        String compareUriTo2 = "/simple/restful/v2/action/authenticate";
+//        String compareUriToLegacy = "/simple/restful/register";
+//        String compareUriToLegacy2 = "/simple/restful/authenticate";
 
-//        String compareUriTo = "/restful/register";
-//        String compareUriTo2 = "/restful/authenticate";
+
+        String compareUriTo = "/restful/v2/action/register";
+        String compareUriTo2 = "/restful/v2/action/authenticate";
+        String compareUriToLegacy = "/restful/register";
+        String compareUriToLegacy2 = "/restful/authenticate";
 
         /********** ADAPT THESE ACCORDING TO DEPLOY ****************************************/
 
@@ -74,6 +79,26 @@ public class CustomAuthenticationSessionStrategyBasicAuth extends Authentication
             uriSubstring2 = uri.substring(0, compareUriTo2.length());
         }
         if (uriSubstring2.equals(compareUriTo2)) {
+            requestType = RequestType.AUTHENTICATE;
+        }
+        /********** AUTHENTICATE USER ****************************************/
+
+        /********** REGISTER USER LEGACY****************************************/
+        String uriSubstringL = uri;
+        if (uri.length() > compareUriToLegacy.length()) {
+            uriSubstringL = uri.substring(0, compareUriToLegacy.length());
+        }
+        if (uriSubstringL.equals(compareUriToLegacy)) {
+            requestType = RequestType.REGISTER;
+        }
+        /********** REGISTER USER ****************************************/
+
+        /********** AUTHENTICATE USER LEGACY ****************************************/
+        String uriSubstringL2 = uri;
+        if (uri.length() > compareUriToLegacy2.length()) {
+            uriSubstringL2 = uri.substring(0, compareUriToLegacy2.length());
+        }
+        if (uriSubstringL2.equals(compareUriToLegacy2)) {
             requestType = RequestType.AUTHENTICATE;
         }
         /********** AUTHENTICATE USER ****************************************/
