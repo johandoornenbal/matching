@@ -435,6 +435,7 @@ public class PersonsTest extends MatchingIntegrationTest {
             assertThat(p1.getActivated(), is(false));
 
             //when
+            //TODO ERROR
             assertThat(persons.activatePerson(OWNED_BY), is("ACTIVATED"));
 
             //then

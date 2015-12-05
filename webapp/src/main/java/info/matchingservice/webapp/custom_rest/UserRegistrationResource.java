@@ -18,6 +18,7 @@
 package info.matchingservice.webapp.custom_rest;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.PersonRoleType;
@@ -27,6 +28,19 @@ import info.matchingservice.dom.IsisPropertiesLookUpService;
 import info.matchingservice.dom.TestFacebookObjects.FbTokens;
 import info.matchingservice.dom.TestLinkedInObjects.LinkedInTokens;
 import info.matchingservice.dom.Utils.Utils;
+import jdk.internal.util.xml.impl.Pair;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.HttpEntityWrapper;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.services.userreg.UserDetails;
 import org.apache.isis.applib.services.userreg.UserRegistrationService;
 import org.apache.isis.core.runtime.system.context.IsisContext;
@@ -45,22 +59,27 @@ import org.apache.oltu.oauth2.common.OAuthProviderType;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
+import org.isisaddons.module.security.dom.user.ApplicationUser;
 import org.isisaddons.module.security.dom.user.ApplicationUserStatus;
 import org.isisaddons.module.security.dom.user.ApplicationUsers;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by jodo on 15/05/15.
  */
-@Path("/v2/action/register")
+@Path("/v2/actions/register")
 public class UserRegistrationResource extends ResourceAbstract {
 
     private static Pattern PASSWORD_REGEX = Pattern.compile("^([^\\s]+)");
@@ -70,13 +89,90 @@ public class UserRegistrationResource extends ResourceAbstract {
 
     private Gson gson = new Gson();
     private info.matchingservice.dom.Api.Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(info.matchingservice.dom.Api.Api.class);
-    private List<String> errors = new ArrayList<>();
 
+
+    /**sends a post to the email server so the admin gets notified when a new user is registered
+     *
+     * @param postObject
+     * @return
+     */
+    private boolean sendNewUserEmail(final String firstName, final String middleName, final String lastName,
+                                     final String email, final String subject){
+
+        final String mailEndpoint = "http://dev.xtalus.nl/api/mail/confirm/activation";
+        //final String mailEndpoint = "localhost";
+        // create data
+
+        JsonObject data = new JsonObject();
+        data.addProperty("firstName", firstName);
+        data.addProperty("middleName", middleName);
+        data.addProperty("lastName", lastName);
+        data.addProperty("email", email);
+        data.addProperty("subject", subject);
+
+        JsonObject jsonBody = new JsonObject();
+        jsonBody.add("data", data);
+
+        //System.out.println(" DATA : " + data.toString());
+
+        // setup client
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        HttpHost host = new HttpHost(mailEndpoint);
+        HttpPost request = new HttpPost();
+
+
+        try {
+            StringEntity body = new StringEntity(jsonBody.toString(), ContentType.APPLICATION_JSON);
+
+            //System.out.println(" BODY : " + body.toString());
+            request.setEntity(body);
+            httpClient.execute(host, request);
+
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return false;
+
+
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            return false;
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+
+
+        return true;
+
+    }
+
+
+    /**registers a user
+     * input
+     *firstName
+     *middleName
+     *lastName
+     *email
+     * phone
+     *postal
+     * city
+     * entity
+     * password
+     * passwordConfirm
+     *
+     *http://docs.xtalus.apiary.io/#reference/0/actions/registration
+     *
+     * @param object
+     * @return
+     */
     @POST
-    @PUT
     @Path("/")
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
-    public Response object(InputStream object) {
+    public Response registerUser(InputStream object) {
         String objectStr = Util.asStringUtf8(object);
         JsonRepresentation argRepr = Util.readAsMap(objectStr);
         if(!argRepr.isMap()) {
@@ -85,171 +181,122 @@ public class UserRegistrationResource extends ResourceAbstract {
 
         } else {
 
-            String id1 = "mainEmail";
-            String mainEmail = "";
+            String firstName= "", middleName = "", lastName= "", email= null, phone= "", postal= "", city= "", entity= "", password= "a", passwordConfirm= "";
+
+            TreeMap<String, String> errors = new TreeMap<>();
+
+            // GET PARAMETERS
             try {
-                JsonRepresentation property = argRepr.getRepresentation(id1, new Object[0]);
-                mainEmail = property.getString("");
+                firstName = getParameterValue("firstName", argRepr);
             } catch (Exception e) {
-                errors.add("property 'mainEmail' is mandatory");
+                errors.put("firstname" ,"required'");
             }
 
-            String id2 = "password";
-            String password = null;
             try {
-                JsonRepresentation property = argRepr.getRepresentation(id2, new Object[0]);
-                password = property.getString("");
-            } catch (Exception e) {
-                errors.add("property 'password' is mandatory");
-            }
-
-            String id3 = "passwordConfirm";
-            String passwordConfirm = null;
-            try {
-                JsonRepresentation property = argRepr.getRepresentation(id3, new Object[0]);
-                passwordConfirm = property.getString("");
-            } catch (Exception e) {
-                errors.add("property 'passwordConfirm' is mandatory");
-            }
-
-            String id4 = "firstName";
-            String firstName ="";
-            try {
-                JsonRepresentation property = argRepr.getRepresentation(id4, new Object[0]);
-                firstName = property.getString("");
-            } catch (Exception e) {
-                errors.add("property 'firstName' is mandatory");
-            }
-
-            String id5 = "middleName";
-            String middleName = null;
-            try {
-                JsonRepresentation property = argRepr.getRepresentation(id5, new Object[0]);
-                middleName = property.getString("");
+                middleName = getParameterValue("middleName", argRepr);
             } catch (Exception e) {
                 //ignore
             }
-
-            String id6 = "lastName";
-            String lastName="";
             try {
-                JsonRepresentation property = argRepr.getRepresentation(id6, new Object[0]);
-                lastName = property.getString("");
+                lastName = getParameterValue("lastName", argRepr);
             } catch (Exception e) {
-                errors.add("property 'lastName' is mandatory");
+                errors.put("lastName", "required");
+            }
+            try {
+                email  = getParameterValue("email", argRepr);
+            } catch (Exception e) {
+                errors.put("email", "required");
             }
 
-            String id7 = "dateOfBirth";
-            String dateOfBirth = "";
             try {
-                JsonRepresentation property = argRepr.getRepresentation(id7, new Object[0]);
-                dateOfBirth = property.getString("");
+                postal = getParameterValue("postal", argRepr);
             } catch (Exception e) {
-                errors.add("property 'dateOfBirth' is mandatory");
+                errors.put("postal", "required");
+            }
+            try {
+                city = getParameterValue("city", argRepr);
+            } catch (Exception e) {
+                errors.put("city", "required");
             }
 
-            String id8 = "imageUrl";
-            String imageUrl = null;
             try {
-                JsonRepresentation property = argRepr.getRepresentation(id8, new Object[0]);
-                imageUrl = property.getString("");
+                entity = getParameterValue("entity", argRepr);
             } catch (Exception e) {
-                // ignore
+                errors.put("entity", "required");
+            }
+            try {
+                password = getParameterValue("password", argRepr);
+            } catch (Exception e) {
+                errors.put("password", "required");
+            }
+            try {
+                passwordConfirm = getParameterValue("passwordConfirm", argRepr);
+            } catch (Exception e) {
+                errors.put("passwordConfirm", "required");
             }
 
-            String id9 = "mainPhone";
-            String mainPhone = null;
             try {
-                JsonRepresentation property = argRepr.getRepresentation(id9, new Object[0]);
-                mainPhone = property.getString("");
+                phone = getParameterValue("phone", argRepr);
             } catch (Exception e) {
-                errors.add("property 'mainPhone' is mandatory");
+                errors.put("phone" , "required");
             }
 
-            String id10 = "mainAddress";
-            String mainAddress = null;
-            try {
-                JsonRepresentation property = argRepr.getRepresentation(id10, new Object[0]);
-                mainAddress = property.getString("");
-            } catch (Exception e) {
-                errors.add("property 'mainAddress' is mandatory");
+
+
+            if (errors.size()>0) {
+                return ErrorMessages.getError400Response(errors);
             }
 
-            String id11 = "mainPostalCode";
-            String mainPostalCode = null;
-            try {
-                JsonRepresentation property = argRepr.getRepresentation(id11, new Object[0]);
-                mainPostalCode = property.getString("");
-            } catch (Exception e) {
-                errors.add("property 'mainPostalCode' is mandatory");
-            }
 
-            String id12 = "mainTown";
-            String mainTown = null;
-            try {
-                JsonRepresentation property = argRepr.getRepresentation(id12, new Object[0]);
-                mainTown = property.getString("");
-            } catch (Exception e) {
-                errors.add("property 'mainTown' is mandatory");
-            }
-
-            String id13 = "role";
-            String role = null;
-            try {
-                JsonRepresentation property = argRepr.getRepresentation(id13, new Object[0]);
-                role = property.getString("");
-            } catch (Exception e) {
-                errors.add("property 'role' is mandatory");
-            }
+            // CHECK PARAMETERS
 
             //passwords should match
             if (!password.equals(passwordConfirm)) {
-                errors.add("passwords should match");
+                errors.put("password", "match");
             }
 
             //password should be conform REGEX
             Matcher matcher = PASSWORD_REGEX.matcher(password);
             if (!matcher.matches()) {
-                errors.add("password");
+                errors.put("password", "invalid:regex");
             }
 
             //email should be conform REGEX
-            matcher = EMAIL_REGEX.matcher(mainEmail);
+            matcher = EMAIL_REGEX.matcher(email);
             if (!matcher.matches()) {
-                errors.add("no valid email");
+                errors.put("email", "invalid:format");
             }
 
             //firstName and lastName not an empty string
             if (firstName.length()<2){
-                errors.add("no valid firstName");
+                errors.put("firstName", "invalid:length");
             }
 
             if (lastName.length()<2){
-                errors.add("no valid lastName");
+                errors.put("lastname", "invalid:length");
             }
 
-            //date should be valid
-            if (!Utils.isValidDate(dateOfBirth)) {
-                errors.add("no valid date");
-            }
+
+
+
 
             final PersonRoleType roleType;
-            switch (role)  {
+            switch (entity)  {
 
                 case "STUDENT": roleType = PersonRoleType.STUDENT;
                     break;
 
-                case "PRINCIPAL": roleType = PersonRoleType.PRINCIPAL;
+                case "ZPER": roleType = PersonRoleType.PROFESSIONAL;
                     break;
 
-                case "PROFESSIONAL": roleType = PersonRoleType.PROFESSIONAL;
+                case "MKBER": roleType = PersonRoleType.PRINCIPAL;
                     break;
 
                 default:    roleType = null;
             }
 
             if (roleType==null){
-                errors.add("no valid roletype: choose 'STUDENT', 'PROFESSIONAL' or 'PRINCIPAL'");
+                errors.put("entity", "invalid:type choose: 'STUDENT', 'ZPER' or 'MKBER'");
             }
 
             if (errors.size()>0) {
@@ -257,22 +304,26 @@ public class UserRegistrationResource extends ResourceAbstract {
             }
 
 
+            // CHECK EXISTING USER
+
             //mainEmail becomes userName
-            final String userName = mainEmail;
+            final String userName = email;
 
             // Check for existing username / email
             final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
             if (persons.activePerson(userName) != null) {
-                errors.add("username already registered and person object already made");
+//                errors.put("user", "username already registered and person object already made");
+                errors.put("user", "already registered");
             }
 
             final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
             if (applicationUsers.findUserByUsername(userName) != null) {
-                errors.add("username already registered; no person object made");
+                errors.put("user", "already registered and active");
+                //errors.add("username already registered; no person object made");
             }
 
-            if (applicationUsers.findUserByEmail(mainEmail) != null) {
-                errors.add("email already registered");
+            if (applicationUsers.findUserByEmail(email) != null) {
+                errors.put("email", "exists");
             }
 
             if (errors.size()>0) {
@@ -285,52 +336,88 @@ public class UserRegistrationResource extends ResourceAbstract {
             userDetails.setUsername(userName);
             userDetails.setPassword(password);
             userDetails.setConfirmPassword(passwordConfirm);
-            userDetails.setEmailAddress(mainEmail);
+            userDetails.setEmailAddress(email);
 
             final UserRegistrationService appUserRegistrationService =
                     IsisContext.getPersistenceSession().getServicesInjector().lookupService(AppUserRegistrationService.class);
             appUserRegistrationService.registerUser(userDetails);
 
-            // Check if the user is registered correctly and enabled
-            if (applicationUsers.findUserByUsername(userName) != null
-                    &&
-                    applicationUsers.findUserByUsername(userName).getStatus().equals(ApplicationUserStatus.ENABLED)
-                    )
-            {
-                //OK
-            } else {
-                errors.add("registration failure");
+            ApplicationUser registeredUser = applicationUsers.findUserByUsername(userName);
+            if (registeredUser == null || registeredUser.getStatus() == ApplicationUserStatus.DISABLED ){
+                errors.put("server", "registration failure");
                 return ErrorMessages.getError400Response(errors);
             }
 
+
+            final String fakeDateOfBirth = "2000-1-01";
+            final String standardImageUrl = "#";
+            final String fakeAddress = "Adress";
+            // create user
             Person newPerson = null;
             try {
                 newPerson = api.createNewPerson(
                         firstName,
                         middleName,
                         lastName,
-                        dateOfBirth,
-                        imageUrl,
+                        fakeDateOfBirth,
+                        standardImageUrl,
                         roleType,
                         userName,
-                        mainAddress,
-                        mainPostalCode,
-                        mainTown,
-                        mainPhone
+                        fakeAddress,
+                        postal,
+                        city,
+                        phone
                 );
+
+                // admin needs to do this
+                newPerson.setActivated(false);
             } catch (Exception e) {
-                    errors.add("failure creating Person object");
-                    errors.add(e.getMessage());
+                    errors.put("server", "failure creating person");
                     return ErrorMessages.getError400Response(errors);
             }
 
+
+            //SEND MAIL TO ADMIN
+            //TODO async
+
+            if(!sendNewUserEmail(firstName, middleName, lastName, email, "account geactiveerd")){
+                errors.put("admin", "email not send to admin");
+                //TODO EN WAT NU ?
+            }
+
+
+
             JsonObject result = PersonResource.createPersonResult(newPerson.getIdAsInt(), api, gson);
             result.addProperty("success", 1);
+
             return Response.status(200).entity(result.toString()).build();
 
         }
     }
 
+
+    /**returns the parameter for the given name
+     * if the parameter is not present throws an exception
+     *
+     * @param parameterName
+     * @param argumentMap
+     * @return
+     */
+    @Programmatic
+    private String getParameterValue(final String parameterName, JsonRepresentation argumentMap) throws Exception {
+        assert parameterName != null;
+        assert  argumentMap != null;
+        String value;
+        try {
+            JsonRepresentation property = argumentMap.getRepresentation(parameterName);
+            value = property.getString("");
+        }catch (Exception e){
+            throw new Exception("cant get value with value name");
+        }
+        return value;
+
+
+    }
 
 
     @DELETE

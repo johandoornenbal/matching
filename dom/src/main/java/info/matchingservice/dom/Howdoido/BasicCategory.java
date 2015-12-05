@@ -302,6 +302,7 @@ public class BasicCategory extends MatchingDomainObject implements Category {
     }
 
     @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout
     public AverageRatingForCategory getAverageRatingForUser(
             @ParameterLayout(named = "user")
             final BasicUser basicUser) {

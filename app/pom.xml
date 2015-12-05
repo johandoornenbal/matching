@@ -96,6 +96,21 @@
             <groupId>org.apache.isis.core</groupId>
             <artifactId>isis-core-viewer-restfulobjects-server</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.isis.core</groupId>
+            <artifactId>isis-core-viewer-restfulobjects-rendering</artifactId>
+            <version>1.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.isis.core</groupId>
+            <artifactId>isis-core-viewer-restfulobjects-rendering</artifactId>
+            <version>1.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.isis.core</groupId>
+            <artifactId>isis-core-viewer-restfulobjects-rendering</artifactId>
+            <version>1.9.0</version>
+        </dependency>
 
 
     </dependencies>
