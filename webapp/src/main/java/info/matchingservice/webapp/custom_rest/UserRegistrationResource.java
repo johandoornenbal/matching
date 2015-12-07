@@ -312,12 +312,12 @@ public class UserRegistrationResource extends ResourceAbstract {
             final Persons persons = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Persons.class);
             if (persons.activePerson(userName) != null) {
 //                errors.put("user", "username already registered and person object already made");
-                errors.put("user", "already registered");
+                errors.put("user", "exists");
             }
 
             final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
             if (applicationUsers.findUserByUsername(userName) != null) {
-                errors.put("user", "already registered and active");
+                errors.put("user", "exists");
                 //errors.add("username already registered; no person object made");
             }
 
