@@ -75,6 +75,8 @@ public class UserRegistrationResource extends ResourceAbstract {
     private static Pattern PASSWORD_REGEX = Pattern.compile("^([^\\s]+)");
 //    private static Pattern EMAIL_REGEX = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
     private static Pattern EMAIL_REGEX = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$");
+    private static Pattern PHONE_REGEX = Pattern.compile("(^(((0)[1-9]{2}[0-9][-| ]?[1-9]( ?[0-9]){5})|((\\+31|0|0031)[-| ]?[1-9][0-9][1-9]( ?[0-9]){6}))$)"
+            + "|(^(((\\\\+31|0|0031)6){1}[-| ]?[1-9]{1}( ?[0-9]){7})$)");
 
 
     private Gson gson = new Gson();
@@ -256,6 +258,13 @@ public class UserRegistrationResource extends ResourceAbstract {
             if (!matcher.matches()) {
                 errors.put("email", "invalid:format");
             }
+
+            //phone should be conform REGEX
+            matcher = PHONE_REGEX.matcher(phone);
+            if (!matcher.matches()) {
+                errors.put("phone", "invalid:format");
+            }
+
 
             //firstName and lastName not an empty string
             if (firstName.length()<2){
