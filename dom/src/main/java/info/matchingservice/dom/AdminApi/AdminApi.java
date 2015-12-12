@@ -17,11 +17,14 @@
 
 package info.matchingservice.dom.AdminApi;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import com.google.gson.JsonObject;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
@@ -47,6 +50,12 @@ import info.matchingservice.dom.Profile.ProfileElementWidgetType;
  */
 @DomainService(nature = NatureOfService.VIEW_MENU_ONLY)
 public class AdminApi {
+
+
+    public RegistrationPanel registrationPanel(){
+        return new RegistrationPanel();
+
+    }
 
     public Person activatePerson(
             final @ParameterLayout(named = "Person") Person person
@@ -145,6 +154,9 @@ public class AdminApi {
         person.deleteRolePrincipal(person.getOwnedBy());
         return person;
     }
+
+
+
 
     @Inject
     private Persons persons;

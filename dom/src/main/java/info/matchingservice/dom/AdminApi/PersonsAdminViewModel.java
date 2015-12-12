@@ -19,6 +19,7 @@ package info.matchingservice.dom.AdminApi;
 
 import javax.inject.Inject;
 
+import info.matchingservice.dom.Actor.Person;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.MemberOrder;
@@ -36,9 +37,9 @@ public class PersonsAdminViewModel {
 
     PersonsAdminViewModel(){}
 
-    PersonsAdminViewModel(String lastName, LocalDate dateCreated){
-        this.lastName = lastName;
-        this.dateCreated = dateCreated;
+    PersonsAdminViewModel(final Person person){
+        this.lastName = person.getLastName();
+        this.dateCreated = person.getDateCreated();
     }
 
     //region > lastName (property)

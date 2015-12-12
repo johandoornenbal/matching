@@ -252,6 +252,9 @@ public class Persons extends MatchingDomainService<Person> {
         for (CommunicationChannel channel : channels){
             channel.deleteCommunicationChannel(true);
         }
+        //REMOVE FROM APPLICATIN USERS
+        applicationUsers.findUserByUsername(ownedBy).delete(true);
+
         container.removeIfNotAlready(personToDelete);
     }
 

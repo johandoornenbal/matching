@@ -302,7 +302,6 @@ public class BasicCategory extends MatchingDomainObject implements Category {
     }
 
     @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout
     public AverageRatingForCategory getAverageRatingForUser(
             @ParameterLayout(named = "user")
             final BasicUser basicUser) {
@@ -325,12 +324,12 @@ public class BasicCategory extends MatchingDomainObject implements Category {
 
     }
 
-    public List<BasicUser> autoComplete0GetAverageRatingForUser(final String search) {
-        List<BasicUser> list = new ArrayList<>();
-        list.addAll(basicUsers.findBasicUserByNameContains(search));
-        list.addAll(basicUsers.findBasicUserByEmailContains(search));
-        return list;
-    }
+//    public List<BasicUser> autoComplete0GetAverageRatingForUser(final String search) {
+//        List<BasicUser> list = new ArrayList<>();
+//        list.addAll(basicUsers.findBasicUserByNameContains(search));
+//        list.addAll(basicUsers.findBasicUserByEmailContains(search));
+//        return list;
+//    }
 
     @Inject
     private BasicCategories basicCategories;
