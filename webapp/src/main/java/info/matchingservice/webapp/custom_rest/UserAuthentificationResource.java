@@ -36,7 +36,7 @@ import java.io.InputStream;
 /**
  * Created by jodo on 15/05/15.
  */
-@Path("/v2/action/authenticate")
+@Path("/v2/actions/login")
 public class UserAuthentificationResource extends ResourceAbstract {
 
     @POST

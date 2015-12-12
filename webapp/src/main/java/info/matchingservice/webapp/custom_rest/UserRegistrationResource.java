@@ -249,6 +249,10 @@ public class UserRegistrationResource extends ResourceAbstract {
                 errors.put("password", "match");
             }
 
+            if(password.length() < 10){
+                errors.put("password", "invalid:length.min");
+            }
+
             //password should be conform REGEX
             Matcher matcher = PASSWORD_REGEX.matcher(password);
             if (!matcher.matches()) {
