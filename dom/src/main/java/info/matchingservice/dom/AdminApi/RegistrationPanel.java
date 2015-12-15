@@ -14,12 +14,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.annotation.Collection;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -37,8 +37,8 @@ public class RegistrationPanel {
 
     @Collection(notPersisted = true)
     @CollectionLayout(named = "Niet geactiveerde gebruikers", render = RenderType.EAGERLY)
-    public List<PersonsAdminViewModel> getNonActiveUsers(){
-        return persons.allPersons().stream().filter(nonActivePerson -> !nonActivePerson.getActivated()).map(PersonsAdminViewModel::new).collect(Collectors.toList());
+    public List<PersonRegistrationViewModel> getNonActiveUsers(){
+        return persons.allPersons().stream().filter(nonActivePerson -> !nonActivePerson.getActivated()).map(PersonRegistrationViewModel::new).collect(Collectors.toList());
     }
 
 
@@ -46,8 +46,8 @@ public class RegistrationPanel {
 
     @Collection(notPersisted = true)
     @CollectionLayout(named = "Geactiveerde gebruikers", render = RenderType.EAGERLY)
-    public List<Person> getActivatedUsers(){
-        return persons.allPersons().stream().filter(Actor::getActivated).collect(Collectors.toList());
+    public List<PersonRegistrationViewModel> getActivatedUsers(){
+        return persons.allPersons().stream().filter(Actor::getActivated).map(PersonRegistrationViewModel::new).collect(Collectors.toList());
     }
 
 
@@ -55,7 +55,7 @@ public class RegistrationPanel {
     public RegistrationPanel acceptUser(Person p){
 
         final String mailEndpoint = "/api/mail/confirm/activation-accepted";
-        if(!sendMail(mailEndpoint, "Uw Xtalus account is geactiveerd")){
+        if(!sendMail(p.getFirstName(), p.getMiddleName(), p.getLastName(), p.getOwnedBy(),"Uw Xtalus account is geactiveerd", mailEndpoint)){
             container.informUser("Er is geen mail verstuurd naar de gebruiker, probeer opnieuw");
             //GEBRUIKER IS NIET GEINFORMEERD
         }else{
@@ -67,37 +67,73 @@ public class RegistrationPanel {
     }
 
 
-    public List<Person> autoComplete0AcceptUser(final String search) {
-        return persons.findPersonsByName(search);
-    }
 
     @ActionLayout(named = "Weiger gebruiker")
     public RegistrationPanel declineUser(Person p){
 
         final String mailEndpoint = "/api/mail/confirm/activation-declined";
-        if(!sendMail(mailEndpoint, "Uw Xtalus account is geweigerd")){
+        if(!sendMail(p.getFirstName(), p.getMiddleName(), p.getLastName(), p.getOwnedBy(),"Uw Xtalus account is geweigerd", mailEndpoint)){
             container.informUser("Er is geen mail verstuurd naar de gebruiker, probeer opnieuw");
             //GEBRUIKER IS NIET GEINFORMEERD
         }else{
             persons.deletePerson(p.getOwnedBy());
-            container.informUser("Account is verwijderd");
+            container.informUser("Gebruiker verwijderd");
             container.informUser("Er is een mail verstuurd naar de gebruiker.");
         }
         return this;
     }
 
-    public List<Person> autoComplete0DeclineUser(final String search) {
-        return persons.findPersonsByName(search);
+
+
+    //AUTO COMPLETE
+    public List<Person> choices0DeclineUser() {
+        return persons.allPersons().stream().filter(nonActivePerson -> !nonActivePerson.getActivated()).collect(Collectors.toList());
+    }
+
+    public List<Person> choices0AcceptUser() {
+        return persons.allPersons().stream().filter(nonActivePerson -> !nonActivePerson.getActivated()).collect(Collectors.toList());
     }
 
 
-    private boolean sendMail(final String mailEndpoint, final String subject){
+    @ActionLayout(named = "Verwijder/Activeer snel")
+    public RegistrationPanel processUser(@ParameterLayout(named = "achternaam") final Person person, @ParameterLayout(named = "weigeren?")@Parameter(optionality = Optionality.MANDATORY)final boolean reject){
+        if(reject){
+            declineUser(person);
+            return this;
+        }
+
+        acceptUser(person);
+        return this;
+    }
+
+    public List<Person> autoComplete0ProcessUser(final String search) {
+        return persons.autoComplete(search);
+    }
+
+
+
+
+
+
+
+
+    /**sends a post to the email server so the user gets notified if he is accepted or rejected
+     *
+     * @param
+     * @return
+     */
+    private boolean sendMail(final String firstName, final String middleName, final String lastName,
+                             final String email, final String subject, final String mailEndpoint){
 
         final String mailHost = "dev.xtalus.nl";
         //final String mailEndpoint = "localhost";
         // create data
 
         JsonObject data = new JsonObject();
+        data.addProperty("firstname", firstName);
+        data.addProperty("middlename", middleName);
+        data.addProperty("lastname", lastName);
+        data.addProperty("email", email);
         data.addProperty("subject", subject);
 
         JsonObject jsonBody = new JsonObject();
@@ -139,6 +175,7 @@ public class RegistrationPanel {
         return true;
 
     }
+
 
 
 

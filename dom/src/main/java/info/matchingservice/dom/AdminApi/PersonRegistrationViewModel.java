@@ -20,6 +20,7 @@ package info.matchingservice.dom.AdminApi;
 import javax.inject.Inject;
 
 import info.matchingservice.dom.Actor.Person;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.MemberOrder;
@@ -30,22 +31,57 @@ import info.matchingservice.dom.Actor.Persons;
 /**
  * Created by jodo on 13/06/15.
  */
-//TODO: NOT IN USE; HOW TO GET THIS WORKING?
-
 @ViewModel
-public class PersonsAdminViewModel {
+public class PersonRegistrationViewModel {
 
-    PersonsAdminViewModel(){}
 
-    PersonsAdminViewModel(final Person person){
+
+    PersonRegistrationViewModel(){}
+
+    PersonRegistrationViewModel(final Person person){
+
+        this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
+        this.email = person.getOwnedBy();
         this.dateCreated = person.getDateCreated();
+        this.person = person;
     }
 
+
+    //region > person (property)
+    private Person person;
+
+    @MemberOrder(sequence = "1")
+    @PropertyLayout(named = "Profiel")
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(final Person person) {
+        this.person = person;
+    }
+    //endregion
+
+
+    //region > firstName (property)
+    private String firstName;
+
+    @MemberOrder(sequence = "2")
+    @PropertyLayout(named = "Voornaam")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
+
+    //endregion
     //region > lastName (property)
     private String lastName;
 
-    @MemberOrder(sequence = "1")
+    @MemberOrder(sequence = "3")
+    @PropertyLayout(named = "Achternaam")
     public String getLastname() {
         return lastName;
     }
@@ -55,10 +91,25 @@ public class PersonsAdminViewModel {
     }
     //endregion
 
+
+    //region > email (property)
+    private String email;
+
+    @MemberOrder(sequence = "4")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+    //endregion
+
     //region > dateCreated (property)
     private LocalDate dateCreated;
 
-    @MemberOrder(sequence = "2")
+    @MemberOrder(sequence = "5")
+    @PropertyLayout(named = "Registratie Datum")
     public LocalDate getDateCreated() {
         return dateCreated;
     }

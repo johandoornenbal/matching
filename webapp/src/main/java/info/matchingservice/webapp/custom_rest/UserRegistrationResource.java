@@ -383,7 +383,6 @@ public class UserRegistrationResource extends ResourceAbstract {
 
 
             //SEND MAIL TO ADMIN
-            //TODO async
 
             if(!sendNewUserEmail(firstName, middleName, lastName, email, "account geactiveerd")){
                 errors.put("admin", "email not send to admin");
@@ -393,7 +392,7 @@ public class UserRegistrationResource extends ResourceAbstract {
 
 
 
-            JsonObject result = PersonResource.createPersonResult(newPerson.getIdAsInt(), api, gson);
+            JsonObject result = new JsonObject();
             result.addProperty("success", 1);
 
             return Response.status(200).entity(result.toString()).build();
