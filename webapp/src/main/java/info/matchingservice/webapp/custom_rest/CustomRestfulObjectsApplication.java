@@ -17,6 +17,7 @@
 
 package info.matchingservice.webapp.custom_rest;
 
+import info.matchingservice.webapp.custom_rest.v2.PersonResource;
 import org.apache.isis.viewer.restfulobjects.server.RestfulObjectsApplication;
 
 /**

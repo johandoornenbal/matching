@@ -52,8 +52,8 @@ import java.util.List;
  * the endpoint by adding the exception message to the errors array
  *
  */
-@Path("/v2")
-public class PersonResource extends ResourceAbstract {
+@Path("/v1")
+public class PersonResourceLegacy extends ResourceAbstract {
 
     private Gson gson = new Gson();
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
