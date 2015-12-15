@@ -84,65 +84,6 @@ public class UserRegistrationResource extends ResourceAbstract {
 
 
 
-    /**sends a post to the email server so the admin gets notified when a new user is registered
-     *
-     * @param postObject
-     * @return
-     */
-    private boolean sendNewUserEmail(final String firstName, final String middleName, final String lastName,
-                                     final String email, final String subject){
-
-        final String mailHost = "dev.xtalus.nl";
-        final String mailEndpoint = "/api/mail/confirm/activation";
-        //final String mailEndpoint = "localhost";
-        // create data
-
-        JsonObject data = new JsonObject();
-        data.addProperty("firstname", firstName);
-        data.addProperty("middlename", middleName);
-        data.addProperty("lastname", lastName);
-        data.addProperty("email", email);
-        data.addProperty("subject", subject);
-
-        JsonObject jsonBody = new JsonObject();
-        jsonBody.add("data", data);
-
-        System.out.println(" DATA : " + jsonBody.toString());
-
-        // setup client
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        HttpHost host = new HttpHost(mailHost);
-        HttpPost request = new HttpPost(mailEndpoint);
-
-
-        try {
-            StringEntity body = new StringEntity(jsonBody.toString(), ContentType.APPLICATION_JSON);
-
-            System.out.println(" BODY : " + body.toString());
-            request.setEntity(body);
-            httpClient.execute(host, request);
-
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return false;
-
-
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            return false;
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-
-
-        return true;
-
-    }
 
 
     /**registers a user
@@ -382,13 +323,6 @@ public class UserRegistrationResource extends ResourceAbstract {
             }
 
 
-            //SEND MAIL TO ADMIN
-
-            if(!sendNewUserEmail(firstName, middleName, lastName, email, "account geactiveerd")){
-                errors.put("admin", "email not send to admin");
-                return ErrorMessages.getError400Response(errors);
-                //TODO EN WAT NU ?
-            }
 
 
 
