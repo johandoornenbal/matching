@@ -1,6 +1,5 @@
 package info.matchingservice.dom.AdminApi;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import info.matchingservice.dom.Actor.Actor;
 import info.matchingservice.dom.Actor.Person;
