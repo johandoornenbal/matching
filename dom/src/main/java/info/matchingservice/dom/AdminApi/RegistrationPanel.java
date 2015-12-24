@@ -112,6 +112,10 @@ public class RegistrationPanel {
 
 
 
+    public Person findPersonUnique(final String ownedBy){
+
+        return persons.findPersonUnique(ownedBy);
+    }
 
 
 

@@ -30,7 +30,7 @@ public class MatchingPhoneFixture extends FixtureScript {
     @Override
     protected void execute(ExecutionContext executionContext) {
         // prereqs
-//        executeChild(new TeardownFixture(), executionContext);
+        executeChild(new TeardownFixture(), executionContext);
         
         // create
         executeChild(new TestPhone(), executionContext);

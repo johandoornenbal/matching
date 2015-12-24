@@ -18,6 +18,8 @@
 package info.matchingservice.webapp.custom_rest;
 
 import info.matchingservice.webapp.custom_rest.v2.PersonResource;
+import info.matchingservice.webapp.custom_rest.v2.UserAuthentificationResource;
+import info.matchingservice.webapp.custom_rest.v2.UserRegistrationResource;
 import org.apache.isis.viewer.restfulobjects.server.RestfulObjectsApplication;
 
 /**
@@ -37,6 +39,7 @@ public class CustomRestfulObjectsApplication extends RestfulObjectsApplication {
         addClass(DemandResource.class);
         addClass(SupplyResource.class);
         addClass(LoginResource.class);
+
     }
 
 }

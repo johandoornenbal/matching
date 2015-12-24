@@ -268,4 +268,9 @@ public class UserRegistrationLegacyResource extends ResourceAbstract {
         return Response.status(200).entity("<h1>You can close this window</h1>").build();
     }
 
+
+
+
+
+
 }

@@ -33,7 +33,12 @@ import java.util.regex.Pattern;
 @DomainService()
 @DomainServiceLayout()
 public class Api extends AbstractFactoryAndRepository {
-	
+
+
+
+
+
+
 	//***************************************** activePerson ***********************//
 	
 	@Action(semantics=SemanticsOf.SAFE)
@@ -44,9 +49,16 @@ public class Api extends AbstractFactoryAndRepository {
 	@Programmatic
 	public Person findPersonById(Integer instanceId) {
 		return persons.findPersonById(instanceId);
+
 	}
 
 
+
+	@Programmatic
+	public Person findPersonUnique(final String ownedBy){
+		return persons.findPersonUnique(ownedBy);
+
+	}
 	/////////
 
 	/**

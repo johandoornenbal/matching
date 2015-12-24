@@ -26,6 +26,7 @@ import info.matchingservice.fixture.actor.TestRoles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -37,11 +38,16 @@ import static org.junit.Assert.*;
 public class PersonsTest extends MatchingIntegrationTest {
     
     //TODO: ThisIsYou test and AllOtherPersons test
+
+
     
     @Inject
     Persons persons;
 
     public static class FindPersonByIdTest extends PersonsTest {
+
+
+
 
         @Before
         public void setupData() {

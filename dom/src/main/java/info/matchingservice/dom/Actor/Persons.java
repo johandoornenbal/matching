@@ -141,6 +141,11 @@ public class Persons extends MatchingDomainService<Person> {
         return allMatches("matchPersonByNameContains", "search", search.toLowerCase());
     }
 
+    @Programmatic
+    public Person findPersonUnique(final String ownedBy){
+        return uniqueMatch("findPersonUnique", "ownedBy", ownedBy.toLowerCase());
+    }
+
     // Region>helpers ////////////////////////////
     
     private String currentUserName() {
