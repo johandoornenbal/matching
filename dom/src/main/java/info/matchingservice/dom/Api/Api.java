@@ -13,6 +13,8 @@ import info.matchingservice.dom.ProvidedServices.Services;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.Tags;
 import info.matchingservice.dom.TrustLevel;
+import info.matchingservice.dom.Xtalus.Education;
+import info.matchingservice.dom.Xtalus.XtalusProfile;
 import org.apache.isis.applib.AbstractFactoryAndRepository;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
@@ -37,6 +39,25 @@ public class Api extends AbstractFactoryAndRepository {
 
 
 
+	@Programmatic
+	public List<Education> getEducationsByProfile(XtalusProfile xtalusProfile){
+		QueryDefault<Education> query =
+				QueryDefault.create(
+						Education.class,
+						"findEducationByXtalusProfile",
+						"xtalusProfile", xtalusProfile);
+		return allMatches(query);
+	}
+
+	@Programmatic
+	public XtalusProfile getXtalusProfileByPerson(Person person){
+		QueryDefault<XtalusProfile> query =
+				QueryDefault.create(
+						XtalusProfile.class,
+						"findXtalusProfileByPerson",
+						"person", person);
+		return firstMatch(query);
+	}
 
 
 	//***************************************** activePerson ***********************//

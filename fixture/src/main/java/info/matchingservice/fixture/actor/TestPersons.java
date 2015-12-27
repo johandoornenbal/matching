@@ -1,5 +1,6 @@
 package info.matchingservice.fixture.actor;
 
+import info.matchingservice.dom.Actor.PersonRoleType;
 import org.joda.time.LocalDate;
 
 import info.matchingservice.fixture.security.antoniUser;
@@ -38,7 +39,8 @@ public class TestPersons extends PersonAbstract {
                 null,
                 "frans",
                 true,
-                executionContext);
+                PersonRoleType.STUDENT,
+                executionContext, "Dit is een verhaaltje over mijzelf");
         
         createPerson( 
                 "Gerard", 

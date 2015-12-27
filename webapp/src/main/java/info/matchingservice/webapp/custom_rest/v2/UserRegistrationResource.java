@@ -233,13 +233,13 @@ public class UserRegistrationResource extends ResourceAbstract {
             final PersonRoleType roleType;
             switch (entity)  {
 
-                case "student": roleType = PersonRoleType.STUDENT;
+                case "STUDENT": roleType = PersonRoleType.STUDENT;
                     break;
 
-                case "zp": roleType = PersonRoleType.PROFESSIONAL;
+                case "ZPER": roleType = PersonRoleType.PROFESSIONAL;
                     break;
 
-                case "mk": roleType = PersonRoleType.PRINCIPAL;
+                case "MKBER": roleType = PersonRoleType.PRINCIPAL;
                     break;
 
                 default:    roleType = null;

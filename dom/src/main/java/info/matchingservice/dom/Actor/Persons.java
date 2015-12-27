@@ -197,6 +197,57 @@ public class Persons extends MatchingDomainService<Person> {
 
         return person;
     }
+
+    @Programmatic //userName can now also be set by fixtures
+         public Person createPerson(
+            final String firstName,
+            final String middleName,
+            final String lastName,
+            final LocalDate dateOfBirth,
+            final Blob picture,
+            final String pictureLink,
+            final PersonRoleType personRoleType,
+            final String userName,
+            final String story) {
+        final Person person = newTransientInstance(Person.class);
+        person.setFirstName(firstName);
+        person.setMiddleName(middleName);
+        person.setLastName(lastName);
+        person.setDateOfBirth(dateOfBirth);
+        person.setDateCreated(clockService.now());
+        person.setOwnedBy(userName);
+        person.setPicture(picture);
+        person.setImageUrl(pictureLink);
+        //TODO
+
+
+//        person.setStory(story);
+        if (personRoleType!=null) {
+            if (personRoleType.equals(PersonRoleType.STUDENT)) {
+                person.addRoleStudent(userName);
+            }
+            if (personRoleType.equals(PersonRoleType.PROFESSIONAL)) {
+                person.addRoleProfessional(userName);
+            }
+            if (personRoleType.equals(PersonRoleType.PRINCIPAL)) {
+                person.addRolePrincipal(userName);
+            }
+        }
+        person.setActivated(false);
+        persistIfNotAlready(person);
+        getContainer().flush();
+
+        // create first emailAddress contributed to Person copied from securityModule
+        if (applicationUsers.findUserByUsername(userName) != null) {
+            final String emailAddress = applicationUsers.findUserByUsername(userName).getEmailAddress();
+            communicationChannels.createEmail(emailAddress, CommunicationChannelType.EMAIL_MAIN, person, userName);
+        }
+
+        // create default TrustedCircleConfig
+        trustedCircleConfigRepo.findOrCreateConfig(userName);
+
+        return person;
+    }
     
     @Programmatic //userName can now also be set by fixtures
     public boolean hideCreatePerson(String userName) {

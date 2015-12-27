@@ -74,6 +74,8 @@ import java.util.TreeSet;
 public class Person extends Actor {
 
 
+
+
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
         return JDOHelper.getObjectId(this).toString();
@@ -169,28 +171,7 @@ public class Person extends Actor {
     public void setPicture(final Blob picture) {
         this.picture = picture;
     }
-    
-    //Region> roles /////////////////////////////////////////////////
-    @PropertyLayout(multiLine=2)
-    public String getRoles() {
-        TitleBuffer tb = new TitleBuffer();
-        if (getIsStudent()) {
-            tb.append(PersonRoleType.STUDENT.title());
-        }
-        if (getIsProfessional()) {
-            if (!tb.toString().equals("")){
-                tb.append(",");
-            }
-            tb.append(PersonRoleType.PROFESSIONAL.title());
-        }
-        if (getIsPrincipal()) {
-            if (!tb.toString().equals("")){
-                tb.append(",");
-            }
-            tb.append(PersonRoleType.PRINCIPAL.title());
-        }
-        return tb.toString();
-    }
+
 	
 	//-- API: PROPERTIES --//
     
@@ -221,18 +202,18 @@ public class Person extends Actor {
     //-- personalContacts --//
 
     
-    //** suppliesOfActor **//
-    // Business rule:
-    // - hide if not role student or professional
+//    //** suppliesOfActor **//
+//    // Business rule:
+//    // - hide if not role student or professional
     public boolean hideSupplies(){
-        
-        if (!(getIsStudent() || getIsProfessional() )){
+
+        if (!(getIsStudent()|| getIsProfessional() )){
             return true;
         }
-        
+
         return false;
     }
-    //-- suppliesOfActor --//
+//    //-- suppliesOfActor --//
     
     //** demandsOfActor **//
     public boolean hideDemands() {

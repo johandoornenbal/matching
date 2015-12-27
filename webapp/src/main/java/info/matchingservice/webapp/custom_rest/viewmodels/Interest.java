@@ -1,5 +1,6 @@
 package info.matchingservice.webapp.custom_rest.viewmodels;
 
+import info.matchingservice.dom.DemandSupply.Demand;
 import org.joda.time.LocalDate;
 
 import java.util.HashMap;
@@ -10,16 +11,23 @@ import java.util.HashMap;
 public class Interest {
 
     private final String name;
-    private final HashMap<String, LocalDate> period = new HashMap<>(2);
+    private final HashMap<String, String> period = new HashMap<>(2);
     private final int timeAvailable;
 
     public Interest(String name, final LocalDate from, final LocalDate till, final int timeAvailable) {
         this.name = name;
-        period.put("from", from);
-        period.put("till", till);
+        period.put("from", from.toString("dd-MM-yyyy"));
+        period.put("till", till.toString("dd-MM-yyyy"));
         this.timeAvailable = timeAvailable;
 
     }
+
+
+    public Interest(Demand demand){
+        this(demand.getDescription(), demand.getStartDate(), demand.getEndDate(), demand.getTimeAvailable());
+    }
+
+
 
 
 

@@ -1,6 +1,7 @@
 package info.matchingservice.fixture.actor;
 
 import info.matchingservice.dom.Actor.Actor;
+import info.matchingservice.dom.Actor.PersonRoleType;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
@@ -30,8 +31,28 @@ public abstract class PersonAbstract extends FixtureScript {
                        
         return executionContext.add(this, newPerson);
     }
-    
-    
+
+    protected Actor createPerson (
+            String firstName,
+            String middleName,
+            String lastName,
+            LocalDate dateOfBirth,
+            Blob picture,
+            String user,
+            boolean activated,
+            PersonRoleType personRoleType,
+            ExecutionContext executionContext,
+            final String story
+    ) {
+        Actor newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, "link", personRoleType, user, story);
+        newPerson.setActivated(activated);
+        trustedCircleConfigRepo.findOrCreateConfig(user);
+
+        return executionContext.add(this, newPerson);
+    }
+
+
+
     //region > injected services
     @javax.inject.Inject
     private Persons persons;

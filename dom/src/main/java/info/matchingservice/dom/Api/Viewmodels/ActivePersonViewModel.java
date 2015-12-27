@@ -31,7 +31,7 @@ public class ActivePersonViewModel extends ApiAbstractViewModel {
         this.lastName = person.getLastName();
         this.middleName = person.getMiddleName();
         this.dateOfBirth = person.getDateOfBirth().toString();
-        this.roles = person.getRoles();
+//        this.roles = person.getRoles();
         this.imageUrl = person.getImageUrl();
         this.profile = new PersonProfileViewModel(person);
         List<DemandDeepNestedViewModel> demands = new ArrayList<>();

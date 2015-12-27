@@ -35,7 +35,8 @@ public class PersonViewModel extends ApiAbstractViewModel {
         this.lastName = person.getLastName();
         this.middleName = person.getMiddleName();
         this.dateOfBirth = person.getDateOfBirth().toString();
-        this.roles = person.getRoles();
+
+//        this.roles = person.getRoles();
         this.imageUrl = person.getImageUrl();
 
         List<Integer> demands = new ArrayList<>();

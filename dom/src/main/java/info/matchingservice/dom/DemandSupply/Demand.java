@@ -74,6 +74,22 @@ public class Demand extends MatchingSecureMutableObject<Demand> implements HasIm
         super("ownedBy, description, timeStamp");
     }
 
+
+    //region > timeAvailable (property)
+    private int timeAvailable;
+
+    @MemberOrder(sequence = "1")
+    @Column(allowsNull = "true")
+    public int getTimeAvailable() {
+        return timeAvailable;
+    }
+
+    public void setTimeAvailable(final int timeAvailable) {
+        this.timeAvailable = timeAvailable;
+    }
+    //endregion
+
+
     @Action(semantics = SemanticsOf.SAFE)
     public String getOID() {
         return JDOHelper.getObjectId(this).toString();
