@@ -24,6 +24,7 @@ import info.matchingservice.fixture.supply.TestSupplies;
 import info.matchingservice.fixture.supply.TestSupplyProfileElementsPersonProfiles;
 import info.matchingservice.fixture.supply.TestSupplyProfiles;
 import info.matchingservice.fixture.tag.*;
+import info.matchingservice.fixture.xtalus.ProfileFixtures;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 public class MatchingDemoFixture extends FixtureScript {
@@ -106,6 +107,8 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new ProfileElementChoicesForSupply(), executionContext);
         executeChild(new ServicesForTesting(), executionContext);
         executeChild(new ServicesOccurrencesForTesting(), executionContext);
+
+        executeChild(new ProfileFixtures(), executionContext);
 
     }
 

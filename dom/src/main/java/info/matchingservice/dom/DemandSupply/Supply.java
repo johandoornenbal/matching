@@ -68,6 +68,8 @@ import java.util.TreeSet;
 @DomainObject(editing=Editing.DISABLED)
 public class Supply extends MatchingSecureMutableObject<Supply> implements HasImageUrl {
 
+
+
     public Supply() {
         super("owner, supplyType, description, weight, startDate, endDate, ownedBy");
     }

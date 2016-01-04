@@ -9,8 +9,15 @@ public class Quality {
 
 //    private ProfileElementText wrappedProfileElement;
 //
-//    private final int weight;
-//    private final String value;
+
+
+    public Quality(int weight, String value) {
+        this.weight = weight;
+        this.value = value;
+    }
+
+    private final int weight;
+    private final String value;
 //
 //
 

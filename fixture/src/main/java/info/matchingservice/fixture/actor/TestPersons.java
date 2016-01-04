@@ -50,7 +50,9 @@ public class TestPersons extends PersonAbstract {
                 null,
                 "gerard",
                 true,
-                executionContext);
+                PersonRoleType.PRINCIPAL,
+                executionContext,
+                "Dit is een verhaal over gerard");
         
         createPerson( 
                 "Rembrandt", 
@@ -60,7 +62,8 @@ public class TestPersons extends PersonAbstract {
                 null,
                 "rembrandt",
                 true,
-                executionContext);
+                PersonRoleType.PROFESSIONAL,
+                executionContext, "Dit is een verhaaltje over mijzelf, Rembrandt");
         
         createPerson( 
                 "Michiel", 
@@ -69,8 +72,8 @@ public class TestPersons extends PersonAbstract {
                 new LocalDate(1980, 8, 12),
                 null,
                 "michiel",
-                true,
-                executionContext);
+                true,PersonRoleType.STUDENT,
+                executionContext, "Dit is een verhaaltje over mijzelf, Michiel");
     	
         createPerson(
                 "Antoni", 
@@ -80,7 +83,8 @@ public class TestPersons extends PersonAbstract {
                 null,
                 "antoni",
                 true,
-                executionContext);
+                PersonRoleType.PROFESSIONAL,
+                executionContext, "Dit is een verhaaltje over mijzelf, Antoni");
 
             createPerson(
                     "Jeanne",

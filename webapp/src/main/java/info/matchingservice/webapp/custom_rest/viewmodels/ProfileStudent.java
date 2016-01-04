@@ -25,9 +25,10 @@ public class ProfileStudent extends ProfileBasic {
         this.interests = interests;
     }
 
-    public ProfileStudent(ProfileBasic profileBasic, List<Interest> interests, List<Education> educations){
+    public ProfileStudent(ProfileBasic profileBasic, List<Interest> interests, List<Education> educations, List<Quality> qualities){
         super(profileBasic);
         this.interests = interests;
+        this.qualities = qualities;
 
 
     }

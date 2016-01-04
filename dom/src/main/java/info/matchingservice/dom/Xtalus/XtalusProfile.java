@@ -35,6 +35,7 @@ public class XtalusProfile {
     private Person person;
 
     @MemberOrder(sequence = "1")
+    @Column(allowsNull = "false")
     public Person getPerson() {
         return person;
     }
@@ -70,6 +71,21 @@ public class XtalusProfile {
 
     public void setBackgroundImage(final String backgroundImage) {
         this.backgroundImage = backgroundImage;
+    }
+    //endregion
+
+
+    //region > profileImage (property)
+    private String profileImage;
+
+    @MemberOrder(sequence = "1")
+    @Column(allowsNull = "true")
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(final String profileImage) {
+        this.profileImage = profileImage;
     }
     //endregion
 

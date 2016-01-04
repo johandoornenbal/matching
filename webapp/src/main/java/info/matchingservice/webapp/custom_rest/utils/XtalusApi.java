@@ -4,11 +4,16 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.CommunicationChannels.Address;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Profile.*;
+import info.matchingservice.dom.Tags.TagHolder;
 import info.matchingservice.dom.Xtalus.XtalusProfile;
 import info.matchingservice.webapp.custom_rest.viewmodels.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +33,29 @@ public class XtalusApi {
     }
 
 
+    public List<Quality> getQualities(Person student){
+
+
+        Optional<Supply> supplySearchResult = wrappedApi.getSuppliesForPerson(student).stream().filter(supply1 -> supply1.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst();
+        if(!supplySearchResult.isPresent()){
+            // no profile supply for student
+            return new ArrayList<>();
+        }
+        Supply profileSupply = supplySearchResult.get();
+
+        List<Profile> supplyProfiles = wrappedApi.getProfilesForSupply(profileSupply).stream().filter(profile -> profile.getType() == ProfileType.PERSON_PROFILE).collect(Collectors.toList());
+        List<ProfileElement> qualityElements = new ArrayList<>();
+
+        supplyProfiles.forEach(profile -> qualityElements.addAll(profile.getElements().stream().filter(profileElement -> profileElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS).collect(Collectors.toList())));
+
+        List<TagHolder> qualityTagHolders = new ArrayList<>();
+
+        qualityElements.stream().filter(profileElement1 -> profileElement1 instanceof  ProfileElementTag).forEach(profileElement2 -> qualityTagHolders.addAll(((ProfileElementTag)profileElement2).getCollectTagHolders()));
+        List<Quality> qualities = new ArrayList<>();
+        qualityTagHolders.forEach(tagHolder -> qualities.add(new Quality(tagHolder.getOwnerElement().getWeight(), tagHolder.getTag().getTagDescription())));
+
+        return qualities;
+    }
 
 
     public ProfileBasic getProfileByPerson(Person person){
@@ -38,14 +66,11 @@ public class XtalusApi {
         if(person.getIsStudent()){
             roles.add("opdrachtnemer");
             entity = "student";
-        }
-        if(person.getIsProfessional()){
+        }else if(person.getIsProfessional()){
             roles.add("opdrachtgever");
             entity ="zzp'er";
-        }
-        if(person.getIsPrincipal()){
+        } else if(person.getIsPrincipal()){
             roles.add("opdrachtgever");
-
             entity = "mkb'er";
         }
 
@@ -68,12 +93,14 @@ public class XtalusApi {
         if(person.getIsStudent()){
             List<Interest> interests = getInterestsByPerson(person);
             List<Education> educations = wrappedApi.getEducationsByProfile(xtalusProfile).stream().map(Education::new).collect(Collectors.toList());
+            List<Quality> qualities = getQualities(person);
 
-            return new ProfileStudent(profileBasic, interests, educations);
+            return new ProfileStudent(profileBasic, interests, educations, qualities);
 
 
         }
 
+        getQualities(person);
 
 //        STUDENT("student"),
 //                PROFESSIONAL("zp'er"),
