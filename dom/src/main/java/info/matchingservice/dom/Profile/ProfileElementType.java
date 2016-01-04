@@ -599,6 +599,14 @@ public enum ProfileElementType implements TitledEnum {
 
             return null;
         }
+    },
+    TIME_AVAILABLE("time_available"){
+        @Override
+        public ProfileElementComparison getProfileElementComparison(ProfileElement demandProfileElement, ProfileElement supplyProfileElement) {
+
+            //TODO
+            return null;
+        }
     }
     ;
 

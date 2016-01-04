@@ -23,10 +23,6 @@ public class Interest {
     }
 
 
-    public Interest(Demand demand){
-        this(demand.getDescription(), demand.getStartDate(), demand.getEndDate(), demand.getTimeAvailable());
-    }
-
 
 
 

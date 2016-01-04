@@ -104,6 +104,9 @@ import java.util.TreeSet;
 @DomainObject(editing = Editing.DISABLED)
 public class Profile extends MatchingSecureMutableObject<Profile> implements HasImageUrl {
 
+
+
+
     public Profile() {
         super("name, type, ownedBy, timeStamp");
     }
@@ -1279,6 +1282,19 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     }
     //-- createUseTimePeriodElement --//
 
+
+
+    /// CREATE TIME AVAILABLE ELEMENT
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createTimeAvailableElement(
+            @ParameterLayout(named = "weight")
+            final Integer weight,
+            @ParameterLayout(named = "timeavailable")
+            final int  timeAvailable
+    ){
+        profileElementNumerics.createProfileElementNumeric("TIME_AVAILABLE", weight, timeAvailable, ProfileElementType.TIME_AVAILABLE, this);
+        return this;
+    }
 
     //** createEducationLevelElement **//
     // Business rule:

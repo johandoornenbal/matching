@@ -4,6 +4,7 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.CommunicationChannels.Address;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
+import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.*;
@@ -28,25 +29,47 @@ public class XtalusApi {
         this.wrappedApi = wrappedApi;
     }
 
-    public List<Interest> getInterestsByPerson(Person person) {
-        return wrappedApi.getDemandsForPerson(person).stream().map(Interest::new).collect(Collectors.toList());
+
+
+    public Profile getPersonProfile(Person person){
+        Supply personSupply = wrappedApi.getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
+        return personSupply.getProfiles().stream().filter(profile -> profile.getType() == ProfileType.PERSON_PROFILE).findFirst().get();
     }
 
+    public Supply getPersonalSupply(Person person){
+       return wrappedApi.getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
+    }
+
+
+
+    public List<Interest> getInterests(Person person){
+
+
+        Supply personSupply = getPersonalSupply(person);
+        List<Profile> jobProfiles = personSupply.getProfiles().stream().filter(profile -> profile.getType()== ProfileType.INTEREST_PROFILE).collect(Collectors.toList());
+
+        List<Interest> interests = new ArrayList<>();
+        for(Profile d: jobProfiles){
+
+            ProfileElementNumeric availableElement = (ProfileElementNumeric) d.getElements().stream().filter(profileElement -> profileElement.getProfileElementType() == ProfileElementType.TIME_AVAILABLE && profileElement instanceof ProfileElementNumeric)
+                    .findFirst().get();
+            int timeAvailable = availableElement.getNumericValue();
+            Interest i = new Interest(d.getName(), d.getStartDate(), d.getEndDate(), timeAvailable);
+            interests.add(i);
+
+        }
+        return interests;
+
+
+    }
 
     public List<Quality> getQualities(Person student){
 
 
-        Optional<Supply> supplySearchResult = wrappedApi.getSuppliesForPerson(student).stream().filter(supply1 -> supply1.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst();
-        if(!supplySearchResult.isPresent()){
-            // no profile supply for student
-            return new ArrayList<>();
-        }
-        Supply profileSupply = supplySearchResult.get();
+        Profile personProfile = getPersonProfile(student);
 
-        List<Profile> supplyProfiles = wrappedApi.getProfilesForSupply(profileSupply).stream().filter(profile -> profile.getType() == ProfileType.PERSON_PROFILE).collect(Collectors.toList());
-        List<ProfileElement> qualityElements = new ArrayList<>();
-
-        supplyProfiles.forEach(profile -> qualityElements.addAll(profile.getElements().stream().filter(profileElement -> profileElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS).collect(Collectors.toList())));
+        List<ProfileElementTag> qualityElements = new ArrayList<>();
+        personProfile.getElements().stream().filter(profileElement -> profileElement instanceof ProfileElementTag && profileElement.getProfileElementType() == ProfileElementType.QUALITY_TAGS).forEach(profileElement1 -> qualityElements.add((ProfileElementTag) profileElement1));
 
         List<TagHolder> qualityTagHolders = new ArrayList<>();
 
@@ -91,7 +114,7 @@ public class XtalusApi {
 
 
         if(person.getIsStudent()){
-            List<Interest> interests = getInterestsByPerson(person);
+            List<Interest> interests = getInterests(person);
             List<Education> educations = wrappedApi.getEducationsByProfile(xtalusProfile).stream().map(Education::new).collect(Collectors.toList());
             List<Quality> qualities = getQualities(person);
 

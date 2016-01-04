@@ -37,7 +37,26 @@ import java.util.regex.Pattern;
 public class Api extends AbstractFactoryAndRepository {
 
 
+	/**get profile of the persons supply profile
+	 *
+	 * @param person
+	 * @return
+	 */
+	@Programmatic
+	public Profile getPersonProfile(Person person){
+		Supply personSupply = getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
+		return personSupply.getProfiles().stream().filter(profile -> profile.getType() == ProfileType.PERSON_PROFILE).findFirst().get();
+	}
 
+	/**Get the profilesupply from the user
+	 *
+	 * @param person
+	 * @return
+	 */
+	@Programmatic
+	public Supply getPersonalSupply(Person person){
+		return getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
+	}
 
 	@Programmatic
 	public List<Education> getEducationsByProfile(XtalusProfile xtalusProfile){
