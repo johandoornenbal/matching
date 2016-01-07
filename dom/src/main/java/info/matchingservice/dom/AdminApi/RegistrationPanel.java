@@ -133,9 +133,9 @@ public class RegistrationPanel {
         // create data
 
         JsonObject data = new JsonObject();
-        data.addProperty("firstname", firstName);
-        data.addProperty("middlename", middleName);
-        data.addProperty("lastname", lastName);
+        data.addProperty("firstName", firstName);
+        data.addProperty("middleName", middleName);
+        data.addProperty("lastName", lastName);
         data.addProperty("email", email);
         data.addProperty("subject", subject);
 

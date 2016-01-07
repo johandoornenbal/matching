@@ -607,8 +607,28 @@ public enum ProfileElementType implements TitledEnum {
             //TODO
             return null;
         }
+    },
+
+    STORY("story"){
+        @Override
+        public ProfileElementComparison getProfileElementComparison(ProfileElement demandProfileElement, ProfileElement supplyProfileElement) {
+            return null;
+        }
+    },
+    URL_PROFILE_BACKGROUND("profile_background"){
+        @Override
+        public ProfileElementComparison getProfileElementComparison(ProfileElement demandProfileElement, ProfileElement supplyProfileElement) {
+            return null;
+        }
+    },
+    EDUCATION_BRANCHE("Education_branche"){
+        @Override
+        public ProfileElementComparison getProfileElementComparison(ProfileElement demandProfileElement, ProfileElement supplyProfileElement) {
+            return null;
+        }
     }
     ;
+
 
     private String title;
     

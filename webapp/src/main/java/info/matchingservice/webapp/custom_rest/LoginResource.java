@@ -57,7 +57,7 @@ public class LoginResource extends ResourceAbstract {
     @POST
     @PUT
     @GET
-    @Path("/action/login")
+    @Path("/actions/login")
     @Produces({MediaType.APPLICATION_JSON, RestfulMediaType.APPLICATION_JSON_OBJECT, RestfulMediaType.APPLICATION_JSON_ERROR })
     public Response loginServices(InputStream object) {
 

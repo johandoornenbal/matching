@@ -29,6 +29,7 @@ public class ProfileStudent extends ProfileBasic {
         super(profileBasic);
         this.interests = interests;
         this.qualities = qualities;
+        this.educations = educations;
 
 
     }

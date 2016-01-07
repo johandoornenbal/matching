@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -103,6 +104,20 @@ import java.util.TreeSet;
 })
 @DomainObject(editing = Editing.DISABLED)
 public class Profile extends MatchingSecureMutableObject<Profile> implements HasImageUrl {
+
+
+
+    @Programmatic
+    public  List<ProfileElement> getElementsOfType(ProfileElementType type){
+        return getElements().stream().filter(profileElement -> profileElement.getProfileElementType() == type).collect(Collectors.toList());
+
+    }
+
+    @Programmatic
+    public  java.util.Optional<ProfileElement> getElementOfType(ProfileElementType type){
+        return getElements().stream().filter(profileElement -> profileElement.getProfileElementType() == type).findFirst();
+
+    }
 
 
 
@@ -1126,9 +1141,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     	
     	QueryDefault<ProfileElementTimePeriod> query = 
                 QueryDefault.create(
-                		ProfileElementTimePeriod.class, 
-                    "findProfileElementOfType",
-                    "profileElementOwner", this, "profileElementType", ProfileElementType.TIME_PERIOD);
+                        ProfileElementTimePeriod.class,
+                        "findProfileElementOfType",
+                        "profileElementOwner", this, "profileElementType", ProfileElementType.TIME_PERIOD);
     	
     	if (
     			// alleen op ProfileType.PERSON_PROFILE en ORGANISATION_PROFILE
@@ -1365,6 +1380,22 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
         }
 
         return null;
+
+    }
+
+
+
+
+    @Programmatic
+    public ProfileElementText createBackgroundImgElement(final String backgroundImg){
+
+        return profileElementTexts.createProfileElementText("background_image", 10, backgroundImg, ProfileElementType.URL_PROFILE_BACKGROUND, this);
+
+    }
+    @Programmatic
+    public ProfileElementText createStoryElement(final String story){
+
+        return profileElementTexts.createProfileElementText("story_element", 10, story, ProfileElementType.STORY, this);
 
     }
 

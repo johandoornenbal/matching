@@ -17,6 +17,7 @@
 
 package info.matchingservice.webapp.custom_rest;
 
+import info.matchingservice.webapp.custom_rest.v2.ActivePersonResource;
 import info.matchingservice.webapp.custom_rest.v2.PersonResource;
 import info.matchingservice.webapp.custom_rest.v2.UserAuthentificationResource;
 import info.matchingservice.webapp.custom_rest.v2.UserRegistrationResource;
@@ -38,7 +39,8 @@ public class CustomRestfulObjectsApplication extends RestfulObjectsApplication {
         addClass(PersonResource.class);
         addClass(DemandResource.class);
         addClass(SupplyResource.class);
-        addClass(LoginResource.class);
+        addClass(ActivePersonResource.class);
+//        addClass(LoginResource.class);
 
     }
 

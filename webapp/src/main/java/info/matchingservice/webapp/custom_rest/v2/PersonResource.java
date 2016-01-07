@@ -10,13 +10,11 @@ import info.matchingservice.webapp.custom_rest.viewmodels.ProfileBasic;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +26,9 @@ public class PersonResource extends ResourceAbstract implements RepositoryResour
 
     private Api wrappedApi = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
     private XtalusApi api = new XtalusApi(wrappedApi);
+
+
+
 
     @GET
     @Override
@@ -46,32 +47,41 @@ public class PersonResource extends ResourceAbstract implements RepositoryResour
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@PathParam("id")int id) {
 
-
-
-
-        List<Person> persons = wrappedApi.allActivePersons().stream().filter(person -> person.getIdAsInt() == id).collect(Collectors.toList());
-
-
-        JsonObject root = new JsonObject();
-
-
-//        List<JsonElement> profiles = wrappedApi.allActivePersons().stream().filter(person -> person.getIdAsInt() == id).map(person -> ProfileBasic.fromPerson(person).asJsonElement()).collect(Collectors.toList());
-        assert persons.size() == 1;
-
-        if(persons.size() != 1){
-            return Response.noContent().build();
+        Person ap = wrappedApi.activePerson();
+        if(ap == null){
+            return Response.status(404).build();
         }
 
-
-        Person p = persons.get(0);
-
-
-        JsonElement responseElement = api.getProfileByPerson(p).asJsonElement();
-
-
-
-
+        Optional<Person> person = wrappedApi.getPersonById(id);
+        if (!person.isPresent()){
+            return Response.noContent().build();
+        }
+        JsonObject root = new JsonObject();
+        JsonElement responseElement = api.getProfileByPerson(person.get()).asJsonElement();
         return Response.ok(responseElement.toString()).build();
+    }
+
+
+    @PUT
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id")int id, JsonObject personJson) {
+
+        Person ap = wrappedApi.activePerson();
+        if(ap == null){
+            return Response.status(404).build();
+        }
+
+//        Optional<Person> person = wrappedApi.getPersonById(id);
+//        if (!person.isPresent()){
+//            return Response.status(404).build();
+//        }
+
+        System.out.println("JOOOOOOOOOOOO" + personJson.toString());
+
+
+        return Response.ok().build();
 
     }
+
 }

@@ -13,8 +13,7 @@ import info.matchingservice.dom.ProvidedServices.Services;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.Tags;
 import info.matchingservice.dom.TrustLevel;
-import info.matchingservice.dom.Xtalus.Education;
-import info.matchingservice.dom.Xtalus.XtalusProfile;
+import info.matchingservice.dom.Xtalus.*;
 import org.apache.isis.applib.AbstractFactoryAndRepository;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
@@ -27,9 +26,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @DomainService()
@@ -37,13 +34,33 @@ import java.util.regex.Pattern;
 public class Api extends AbstractFactoryAndRepository {
 
 
+	@Programmatic
+	public java.util.Optional<info.matchingservice.dom.Actor.Person> getPersonById(int id){
+		return allActivePersons().stream().filter(person -> person.getIdAsInt() == id).findFirst();
+	}
+
+
+	public List<Education> getEducationsByPerson(Person person){
+
+		if(!person.getIsStudent()){
+			return new ArrayList<>();
+		}
+		QueryDefault<info.matchingservice.dom.Xtalus.Education> query =
+				QueryDefault.create(
+						info.matchingservice.dom.Xtalus.Education.class,
+						"findEducationByPerson",
+						"person", person);
+		return allMatches(query);
+
+	}
+
 	/**get profile of the persons supply profile
 	 *
 	 * @param person
 	 * @return
 	 */
 	@Programmatic
-	public Profile getPersonProfile(Person person){
+	public Profile getPersonProfile(info.matchingservice.dom.Actor.Person person){
 		Supply personSupply = getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
 		return personSupply.getProfiles().stream().filter(profile -> profile.getType() == ProfileType.PERSON_PROFILE).findFirst().get();
 	}
@@ -54,40 +71,40 @@ public class Api extends AbstractFactoryAndRepository {
 	 * @return
 	 */
 	@Programmatic
-	public Supply getPersonalSupply(Person person){
+	public Supply getPersonalSupply(info.matchingservice.dom.Actor.Person person){
 		return getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
 	}
 
-	@Programmatic
-	public List<Education> getEducationsByProfile(XtalusProfile xtalusProfile){
-		QueryDefault<Education> query =
-				QueryDefault.create(
-						Education.class,
-						"findEducationByXtalusProfile",
-						"xtalusProfile", xtalusProfile);
-		return allMatches(query);
-	}
-
-	@Programmatic
-	public XtalusProfile getXtalusProfileByPerson(Person person){
-		QueryDefault<XtalusProfile> query =
-				QueryDefault.create(
-						XtalusProfile.class,
-						"findXtalusProfileByPerson",
-						"person", person);
-		return firstMatch(query);
-	}
+//	@Programmatic
+//	public List<Education> getEducationsByProfile(info.matchingservice.dom.Xtalus.Person person){
+//		QueryDefault<Education> query =
+//				QueryDefault.create(
+//						Education.class,
+//						"findEducationByXtalusProfile",
+//						"person", person);
+//		return allMatches(query);
+//	}
+//
+//	@Programmatic
+//	public info.matchingservice.dom.Xtalus.Person getXtalusProfileByPerson(info.matchingservice.dom.Actor.Person person){
+//		QueryDefault<info.matchingservice.dom.Xtalus.Person> query =
+//				QueryDefault.create(
+//						info.matchingservice.dom.Xtalus.Person.class,
+//						"findXtalusProfileByPerson",
+//						"person", person);
+//		return firstMatch(query);
+//	}
 
 
 	//***************************************** activePerson ***********************//
-	
+
 	@Action(semantics=SemanticsOf.SAFE)
-	public Person activePerson(){
+	public info.matchingservice.dom.Actor.Person activePerson(){
 		return persons.activePerson();
 	}
 
 	@Programmatic
-	public Person findPersonById(Integer instanceId) {
+	public info.matchingservice.dom.Actor.Person findPersonById(Integer instanceId) {
 		return persons.findPersonById(instanceId);
 
 	}
@@ -95,7 +112,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 
 	@Programmatic
-	public Person findPersonUnique(final String ownedBy){
+	public info.matchingservice.dom.Actor.Person findPersonUnique(final String ownedBy){
 		return persons.findPersonUnique(ownedBy);
 
 	}
@@ -106,12 +123,12 @@ public class Api extends AbstractFactoryAndRepository {
 	 * @return all persons that currentUser is allowed to see
 	 */
 	@Programmatic
-	public List<Person> allActivePersons(){
+	public List<info.matchingservice.dom.Actor.Person> allActivePersons(){
 		// at the moment all active users
 		return persons.allActivePersons();
 	}
 
-	public Person createNewPerson(
+	public info.matchingservice.dom.Actor.Person createNewPerson(
 			final String firstName,
 			final String middleName,
 			final String lastName,
@@ -124,7 +141,7 @@ public class Api extends AbstractFactoryAndRepository {
 			final String mainTown,
 			final String mainPhone) {
 
-		final Person person = persons.createPerson(
+		final info.matchingservice.dom.Actor.Person person = persons.createPerson(
 				firstName,
 				middleName,
 				lastName,
@@ -176,10 +193,10 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 
-								  //***************************************** updatePerson ***********************//
+	//***************************************** updatePerson ***********************//
 	@Programmatic
-	public Person updatePerson(
-			final Person person,
+	public info.matchingservice.dom.Actor.Person updatePerson(
+			final info.matchingservice.dom.Actor.Person person,
 			final String firstName,
 			final String middleName,
 			final String lastName,
@@ -243,8 +260,8 @@ public class Api extends AbstractFactoryAndRepository {
 		// test if mainAddress exists: then update else create
 		if (
 				communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.ADDRESS_MAIN).size() > 0
-				&&
-				!(mainAddress==null && mainPostalCode==null && mainTown==null)
+						&&
+						!(mainAddress==null && mainPostalCode==null && mainTown==null)
 				) {
 
 			Address addressToUpdate = (Address) communicationChannels.findCommunicationChannelByPersonAndType(person, CommunicationChannelType.ADDRESS_MAIN).get(0);
@@ -282,7 +299,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 		}
 
-		Person wrappedPerson = wrapperFactory.wrap(person);
+		info.matchingservice.dom.Actor.Person wrappedPerson = wrapperFactory.wrap(person);
 
 		try {
 			wrappedPerson = wrappedPerson.updatePerson(
@@ -308,7 +325,7 @@ public class Api extends AbstractFactoryAndRepository {
 	//***************************************** Collections of Person ***********************//
 
 	@Programmatic
-	public List<Demand> getDemandsForPerson(final Person person){
+	public List<Demand> getDemandsForPerson(final info.matchingservice.dom.Actor.Person person){
 
 		// apply business logic until way to wrap
 		if (person.hideDemands()){
@@ -326,7 +343,7 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public List<Supply> getSuppliesForPerson(final Person person){
+	public List<Supply> getSuppliesForPerson(final info.matchingservice.dom.Actor.Person person){
 
 		// apply business logic
 		if (person.hideSupplies()){
@@ -338,12 +355,12 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public List<CommunicationChannel> findCommunicationChannelByPersonAndType(Person person, CommunicationChannelType addressMain) {
+	public List<CommunicationChannel> findCommunicationChannelByPersonAndType(info.matchingservice.dom.Actor.Person person, CommunicationChannelType addressMain) {
 		return communicationChannels.findCommunicationChannelByPersonAndType(person,addressMain);
 	}
 
 	@Programmatic
-	public List<Assessment> getAllAssessments(final Person person){
+	public List<Assessment> getAllAssessments(final info.matchingservice.dom.Actor.Person person){
 		List<Assessment> result = new ArrayList<>();
 		if (!person.hideAssessmentsReceived()) {
 			result.addAll(person.getAssessmentsReceived());
@@ -355,40 +372,40 @@ public class Api extends AbstractFactoryAndRepository {
 		return result;
 	}
 
-    @Programmatic
-    public List<Assessment> getAssessmentsReceived(final Person person){
-        // apply business logic
-        if (person.hideAssessmentsReceived()){
-            return new ArrayList<>();
-        }
-        return new ArrayList<>(person.getAssessmentsReceived());
-    }
-
-    @Programmatic
-    public List<Assessment> getAssessmentsGiven(final Person person){
-        // apply business logic
-        if (person.hideAssessmentsGiven()){
-            return new ArrayList<>();
-        }
-        return new ArrayList<>(person.getAssessmentsGiven());
-    }
-
-    @Programmatic
-    public List<PersonalContact> getPersonalContacts(final Person person){
-        // apply business logic
-        if (person.hidePersonalContacts()){
-            return new ArrayList<>();
-        }
-        return new ArrayList<>(person.getPersonalContacts());
-    }
+	@Programmatic
+	public List<Assessment> getAssessmentsReceived(final info.matchingservice.dom.Actor.Person person){
+		// apply business logic
+		if (person.hideAssessmentsReceived()){
+			return new ArrayList<>();
+		}
+		return new ArrayList<>(person.getAssessmentsReceived());
+	}
 
 	@Programmatic
-	public List<CommunicationChannel> getCommunicationchannelsForPerson(Person person) {
+	public List<Assessment> getAssessmentsGiven(final info.matchingservice.dom.Actor.Person person){
+		// apply business logic
+		if (person.hideAssessmentsGiven()){
+			return new ArrayList<>();
+		}
+		return new ArrayList<>(person.getAssessmentsGiven());
+	}
+
+	@Programmatic
+	public List<PersonalContact> getPersonalContacts(final info.matchingservice.dom.Actor.Person person){
+		// apply business logic
+		if (person.hidePersonalContacts()){
+			return new ArrayList<>();
+		}
+		return new ArrayList<>(person.getPersonalContacts());
+	}
+
+	@Programmatic
+	public List<CommunicationChannel> getCommunicationchannelsForPerson(info.matchingservice.dom.Actor.Person person) {
 		return communicationChannels.findCommunicationChannelByPerson(person);
 	}
 
 	@Programmatic
-	public List<ProfileMatch> getProfileMatchesForPerson(Person person) {
+	public List<ProfileMatch> getProfileMatchesForPerson(info.matchingservice.dom.Actor.Person person) {
 		List<ProfileMatch> profileMatches = new ArrayList<>();
 		if (!person.hideSavedMatches()){
 			profileMatches.addAll(person.getSavedMatches());
@@ -400,7 +417,7 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public List<ProfileMatch> getProfileMatchesOwnedByPerson(Person person) {
+	public List<ProfileMatch> getProfileMatchesOwnedByPerson(info.matchingservice.dom.Actor.Person person) {
 		List<ProfileMatch> profileMatches = new ArrayList<>();
 		if (!person.hideSavedMatches()){
 			profileMatches.addAll(person.getSavedMatches());
@@ -409,7 +426,7 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public List<ProfileMatch> getProfileMatchesReferringToPerson(Person person) {
+	public List<ProfileMatch> getProfileMatchesReferringToPerson(info.matchingservice.dom.Actor.Person person) {
 		List<ProfileMatch> profileMatches = new ArrayList<>();
 		if (!profileMatchRepo.hideCollectProfileMatches(person)){
 			profileMatches.addAll(profileMatchRepo.collectProfileMatches(person));
@@ -423,7 +440,7 @@ public class Api extends AbstractFactoryAndRepository {
 	//***************************************** Actions of Person ***********************//
 
 	@Programmatic
-	public List<String> getActionsForPerson(final Person person){
+	public List<String> getActionsForPerson(final info.matchingservice.dom.Actor.Person person){
 		List<String> actions = new ArrayList<>();
 
 		// do not show when already contacted
@@ -431,25 +448,25 @@ public class Api extends AbstractFactoryAndRepository {
 				true  : false;
 
 //		if (!currentUserName().equals(person.getOwnedBy())	&& !isContact ) {
-			String addAsPersonalContact = "addAsPersonalContact";
-			actions.add(addAsPersonalContact);
+		String addAsPersonalContact = "addAsPersonalContact";
+		actions.add(addAsPersonalContact);
 //		}
 
 //        if (!currentUserName().equals(person.getOwnedBy())	&& isContact ) {
-            String removeAsPersonalContact = "removeAsPersonalContact";
-            actions.add(removeAsPersonalContact);
+		String removeAsPersonalContact = "removeAsPersonalContact";
+		actions.add(removeAsPersonalContact);
 //        }
 
 //		if (!person.hideCreatePersonsSupplyAndProfile()) {
-			String addCreateSupplyAndProfile = "createSupplyAndProfile";
-			actions.add(addCreateSupplyAndProfile);
+		String addCreateSupplyAndProfile = "createSupplyAndProfile";
+		actions.add(addCreateSupplyAndProfile);
 //		}
 
 		return actions;
 	}
 
 	@Programmatic
-	public PersonalContact findOrCreatePersonalContact(final Person contact) {
+	public PersonalContact findOrCreatePersonalContact(final info.matchingservice.dom.Actor.Person contact) {
 		// do not contact yourself...
 		if (contact.getOwnedBy().equals(currentUserName())){
 			return null;
@@ -463,7 +480,7 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public Person removeAsPersonalContact(final Person contact) {
+	public info.matchingservice.dom.Actor.Person removeAsPersonalContact(final info.matchingservice.dom.Actor.Person contact) {
 
 		if (personalcontacts.findUniquePersonalContact(currentUserName(), contact) != null) {
 			personalcontacts.findUniquePersonalContact(currentUserName(), contact).deleteTrustedContact(true);
@@ -473,7 +490,7 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public Profile createSupplyAndProfile(final Person person){
+	public Profile createSupplyAndProfile(final info.matchingservice.dom.Actor.Person person){
 
 		if (!person.hideCreatePersonsSupplyAndProfile()) {
 			return person.createPersonsSupplyAndProfile();
@@ -483,7 +500,7 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public Profile createSupplyAndProfileAtRegistration(final Person person, final String userName){
+	public Profile createSupplyAndProfileAtRegistration(final info.matchingservice.dom.Actor.Person person, final String userName){
 
 		final String fullName;
 		if (person.getMiddleName()==null || person.getMiddleName().equals("")) {
@@ -509,12 +526,12 @@ public class Api extends AbstractFactoryAndRepository {
 
 	@Programmatic
 	public Demand createPersonDemand(
-			final Person person,
+			final info.matchingservice.dom.Actor.Person person,
 			final String description,
-            final String summary,
-            final String story,
-            final String startDate,
-            final String endDate,
+			final String summary,
+			final String story,
+			final String startDate,
+			final String endDate,
 			final String imageUrl){
 
 		//check if user has rights to create demand
@@ -525,60 +542,60 @@ public class Api extends AbstractFactoryAndRepository {
 			return null;
 		}
 
-        //check description
-        if (description==null || description==""){
-            return null;
-        }
+		//check description
+		if (description==null || description==""){
+			return null;
+		}
 
-        //check dates
-        LocalDate startDateEntry = null;
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
-        try {
-            startDateEntry = LocalDate.parse(startDate, dtf);
-        } catch (Exception e) {
-            //ignore
-        }
-        if (startDateEntry == null) {
-            // startDate is not a valid date
-            startDateEntry=null;
-        } else {
-            // startDate is a Date
-            startDateEntry = new LocalDate(startDate);
-        }
+		//check dates
+		LocalDate startDateEntry = null;
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-mm-dd");
+		try {
+			startDateEntry = LocalDate.parse(startDate, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (startDateEntry == null) {
+			// startDate is not a valid date
+			startDateEntry=null;
+		} else {
+			// startDate is a Date
+			startDateEntry = new LocalDate(startDate);
+		}
 
-        LocalDate endDateEntry = null;
-        try {
-            endDateEntry = LocalDate.parse(endDate, dtf);
-        } catch (Exception e) {
-            //ignore
-        }
-        if (endDateEntry == null) {
-            // endDate is not a valid date
-            endDateEntry=null;
-        } else {
-            // endDate is a Date
-            endDateEntry = new LocalDate(endDate);
-        }
+		LocalDate endDateEntry = null;
+		try {
+			endDateEntry = LocalDate.parse(endDate, dtf);
+		} catch (Exception e) {
+			//ignore
+		}
+		if (endDateEntry == null) {
+			// endDate is not a valid date
+			endDateEntry=null;
+		} else {
+			// endDate is a Date
+			endDateEntry = new LocalDate(endDate);
+		}
 
-        // if invalid period [endDate before startDate] set both to null
-        if (startDateEntry!=null && endDateEntry!=null && endDateEntry.isBefore(startDateEntry)){
-            startDateEntry=null;
-            endDateEntry=null;
-        }
+		// if invalid period [endDate before startDate] set both to null
+		if (startDateEntry!=null && endDateEntry!=null && endDateEntry.isBefore(startDateEntry)){
+			startDateEntry=null;
+			endDateEntry=null;
+		}
 
 
 		return demands.createDemand(
 				description,
-                summary,
-                story,
-                null,
-                startDateEntry,
-                endDateEntry,
-                10,
-                DemandSupplyType.PERSON_DEMANDSUPPLY,
-                person,
+				summary,
+				story,
+				null,
+				startDateEntry,
+				endDateEntry,
+				10,
+				DemandSupplyType.PERSON_DEMANDSUPPLY,
+				person,
 				imageUrl,
-                person.getOwnedBy()
+				person.getOwnedBy()
 		);
 	}
 
@@ -587,7 +604,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 		if (chosenDemand!=null){
 			// apply business logic
-			Person demandOwner = (Person) chosenDemand.getOwner();
+			info.matchingservice.dom.Actor.Person demandOwner = (info.matchingservice.dom.Actor.Person) chosenDemand.getOwner();
 			if (chosenDemand != null && demandOwner.hideDemands()) {
 				return null;
 			}
@@ -678,19 +695,19 @@ public class Api extends AbstractFactoryAndRepository {
 
 	}
 
-    //***************************************** Collections of Demand ***********************//
+	//***************************************** Collections of Demand ***********************//
 
-    @Programmatic
-    public List<Profile> getProfilesForDemand(final Demand demand){
-        Person demandOwner = (Person) demand.getOwner();
+	@Programmatic
+	public List<Profile> getProfilesForDemand(final Demand demand){
+		info.matchingservice.dom.Actor.Person demandOwner = (info.matchingservice.dom.Actor.Person) demand.getOwner();
 
-        // apply business logic
-        if (demandOwner.hideDemands()){
-            return null;
-        }
+		// apply business logic
+		if (demandOwner.hideDemands()){
+			return null;
+		}
 
-        return new ArrayList<>(demand.getProfiles());
-    }
+		return new ArrayList<>(demand.getProfiles());
+	}
 
 	@Programmatic
 	public List<Assessment> getAllAssessments(final Demand demand){
@@ -708,7 +725,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 		// apply business logic
 		if (chosenSupply!=null) {
-			Person supplyOwner = (Person) chosenSupply.getOwner();
+			info.matchingservice.dom.Actor.Person supplyOwner = (info.matchingservice.dom.Actor.Person) chosenSupply.getOwner();
 			if (chosenSupply != null && supplyOwner.hideSupplies()) {
 				return null;
 			}
@@ -811,7 +828,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 	@Programmatic
 	public List<Profile> getProfilesForSupply(final Supply supply){
-		Person supplyOwner = (Person) supply.getOwner();
+		info.matchingservice.dom.Actor.Person supplyOwner = (info.matchingservice.dom.Actor.Person) supply.getOwner();
 
 		// apply business logic
 		if (supplyOwner.hideSupplies()){
@@ -840,7 +857,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 		//apply business logic
 		if (chosenProfile != null){
-			Person profileOwner = (Person) chosenProfile.getOwner();
+			info.matchingservice.dom.Actor.Person profileOwner = (info.matchingservice.dom.Actor.Person) chosenProfile.getOwner();
 			if (chosenProfile.getDemandOrSupply()==DemandOrSupply.DEMAND && profileOwner.hideDemands()){
 				return null;
 			}
@@ -882,7 +899,7 @@ public class Api extends AbstractFactoryAndRepository {
 			final Integer demandId,
 			final Integer supplyId,
 			final String imageUrl,
-			final Person person
+			final info.matchingservice.dom.Actor.Person person
 	){
 
 		if (name==null || name.equals("")){
@@ -1066,13 +1083,13 @@ public class Api extends AbstractFactoryAndRepository {
 
 
 	@Programmatic
-	public Phone createPhone(final Person person, final String phone, final CommunicationChannelType communicationChannelType, final String userName){
+	public Phone createPhone(final info.matchingservice.dom.Actor.Person person, final String phone, final CommunicationChannelType communicationChannelType, final String userName){
 		return communicationChannels.createPhone(person, communicationChannelType, phone, userName);
 	}
 
 	@Programmatic
 	public Address createAddress(
-			final Person person,
+			final info.matchingservice.dom.Actor.Person person,
 			final String address,
 			final String postalCode,
 			final String town,
@@ -1087,54 +1104,54 @@ public class Api extends AbstractFactoryAndRepository {
 				userName
 		);
 	}
-	
+
 	//***************************************** createPerson ***********************//
-	
+
 	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-	public Person createPerson(
-            @ParameterLayout(named="firstName")
-            final String firstName,
-            @ParameterLayout(named="middleName")
-            @Parameter(optionality=Optionality.OPTIONAL)
-            final String middleName,
-            @ParameterLayout(named="lastName")
-            final String lastName,
-            @ParameterLayout(named="dateOfBirth")
-            final LocalDate dateOfBirth,
-            @ParameterLayout(named="picture")
-            @Parameter(optionality=Optionality.OPTIONAL)
-            final Blob picture,
+	public info.matchingservice.dom.Actor.Person createPerson(
+			@ParameterLayout(named="firstName")
+			final String firstName,
+			@ParameterLayout(named="middleName")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final String middleName,
+			@ParameterLayout(named="lastName")
+			final String lastName,
+			@ParameterLayout(named="dateOfBirth")
+			final LocalDate dateOfBirth,
+			@ParameterLayout(named="picture")
+			@Parameter(optionality=Optionality.OPTIONAL)
+			final Blob picture,
 			@ParameterLayout(named="pictureLink")
 			@Parameter(optionality=Optionality.OPTIONAL)
 			final String pictureLink,
 			@ParameterLayout(named="personRole")
 			final PersonRoleType personRoleType
-			){
+	){
 		return persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, personRoleType);
 	}
-	
-    @Programmatic //userName can now also be set by fixtures
-    public String validateCreatePerson(
-            final String firstName,
-            final String middleName,
-            final String lastName,
-            final LocalDate dateOfBirth,
-            final Blob picture,
+
+	@Programmatic //userName can now also be set by fixtures
+	public String validateCreatePerson(
+			final String firstName,
+			final String middleName,
+			final String lastName,
+			final LocalDate dateOfBirth,
+			final Blob picture,
 			final String pictureLink,
 			final PersonRoleType personRoleType) {
-        
-        QueryDefault<Person> query = 
-                QueryDefault.create(
-                        Person.class, 
-                    "findPersonUnique", 
-                    "ownedBy", currentUserName());        
-        return container.firstMatch(query) != null?
-        "ONE_INSTANCE_AT_MOST"        
-        :null;
-        
-    }
-    
-    //------------------------------------ END createPerson ---------------------------//
+
+		QueryDefault<info.matchingservice.dom.Actor.Person> query =
+				QueryDefault.create(
+						info.matchingservice.dom.Actor.Person.class,
+						"findPersonUnique",
+						"ownedBy", currentUserName());
+		return container.firstMatch(query) != null?
+				"ONE_INSTANCE_AT_MOST"
+				:null;
+
+	}
+
+	//------------------------------------ END createPerson ---------------------------//
 
 	//***************************************** createStudent ***********************//
 
@@ -1156,7 +1173,7 @@ public class Api extends AbstractFactoryAndRepository {
 			@Parameter(optionality=Optionality.OPTIONAL)
 			final String pictureLink
 	){
-		Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.STUDENT);
+		info.matchingservice.dom.Actor.Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.STUDENT);
 		return toApiID(newPerson.getOID());
 	}
 
@@ -1169,9 +1186,9 @@ public class Api extends AbstractFactoryAndRepository {
 			final Blob picture,
 			final String pictureLink) {
 
-		QueryDefault<Person> query =
+		QueryDefault<info.matchingservice.dom.Actor.Person> query =
 				QueryDefault.create(
-						Person.class,
+						info.matchingservice.dom.Actor.Person.class,
 						"findPersonUnique",
 						"ownedBy", currentUserName());
 		return container.firstMatch(query) != null?
@@ -1181,7 +1198,7 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public Person createStudentApi(
+	public info.matchingservice.dom.Actor.Person createStudentApi(
 			@ParameterLayout(named="firstName")
 			final String firstName,
 			@ParameterLayout(named="middleName")
@@ -1223,7 +1240,7 @@ public class Api extends AbstractFactoryAndRepository {
 			@Parameter(optionality=Optionality.OPTIONAL)
 			final String pictureLink
 	){
-		Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.PROFESSIONAL);
+		info.matchingservice.dom.Actor.Person newPerson = persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.PROFESSIONAL);
 		return toApiID(newPerson.getOID());
 	}
 
@@ -1236,9 +1253,9 @@ public class Api extends AbstractFactoryAndRepository {
 			final Blob picture,
 			final String pictureLink) {
 
-		QueryDefault<Person> query =
+		QueryDefault<info.matchingservice.dom.Actor.Person> query =
 				QueryDefault.create(
-						Person.class,
+						info.matchingservice.dom.Actor.Person.class,
 						"findPersonUnique",
 						"ownedBy", currentUserName());
 		return container.firstMatch(query) != null?
@@ -1248,7 +1265,7 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	@Programmatic
-	public Person createProfessionalApi(
+	public info.matchingservice.dom.Actor.Person createProfessionalApi(
 			@ParameterLayout(named="firstName")
 			final String firstName,
 			@ParameterLayout(named="middleName")
@@ -1290,7 +1307,7 @@ public class Api extends AbstractFactoryAndRepository {
 			@Parameter(optionality=Optionality.OPTIONAL)
 			final String pictureLink
 	){
-		Person newPerson =  persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.PRINCIPAL);
+		info.matchingservice.dom.Actor.Person newPerson =  persons.createPerson(firstName, middleName, lastName, dateOfBirth, picture, pictureLink, PersonRoleType.PRINCIPAL);
 		return toApiID(newPerson.getOID());
 	}
 
@@ -1303,9 +1320,9 @@ public class Api extends AbstractFactoryAndRepository {
 			final Blob picture,
 			final String pictureLink) {
 
-		QueryDefault<Person> query =
+		QueryDefault<info.matchingservice.dom.Actor.Person> query =
 				QueryDefault.create(
-						Person.class,
+						info.matchingservice.dom.Actor.Person.class,
 						"findPersonUnique",
 						"ownedBy", currentUserName());
 		return container.firstMatch(query) != null?
@@ -1314,7 +1331,7 @@ public class Api extends AbstractFactoryAndRepository {
 
 	}
 
-	public Person createPrincipalApi(
+	public info.matchingservice.dom.Actor.Person createPrincipalApi(
 			@ParameterLayout(named="firstName")
 			final String firstName,
 			@ParameterLayout(named="middleName")
@@ -1335,21 +1352,21 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	//------------------------------------ END createPrincipal ---------------------------//
-    
-    //***************************************** findPersons **************************************//
-    
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public List<Person> findPersons(
-    		@ParameterLayout(named="searchInLastName")
-            final String lastName
-            ){
+
+	//***************************************** findPersons **************************************//
+
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	public List<info.matchingservice.dom.Actor.Person> findPersons(
+			@ParameterLayout(named="searchInLastName")
+			final String lastName
+	){
 		return persons.findPersons(lastName);
 	}
 
 	//Business Rule: Person of login has to be activated
 	public boolean hideFindPersons(
 			final String lastName
-		){
+	){
 		if (persons.activePerson(currentUserName())!=null &&
 				persons.activePerson(currentUserName()).getActivated()
 				){
@@ -1369,61 +1386,61 @@ public class Api extends AbstractFactoryAndRepository {
 		}
 		return "PERSON_NOT_ACTIVATED";
 	}
-    
-    //------------------------------------ END findPersons ---------------------------//
-    
-    //***************************************** findTagsUsedMoreThanThreshold ***********************//
-    
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    public List<Tag> findTagsUsedMoreThanThreshold(
-    		@ParameterLayout(named="searchString")
-    		final String tagDescription,
-    		@ParameterLayout(named="tagCategoryDescription")
-    		final String tagCategoryDescription,
-    		@ParameterLayout(named="threshold")
-    		final Integer threshold
-    		){
-    	return tags.findTagsUsedMoreThanThreshold(tagDescription, tagCategoryDescription, threshold);
-    }
-    
-    //------------------------------------ END findTagsUsedMoreThanThreshold ---------------------------//
-    
-    //***************************************** createPersonalContact ***********************//
-    
-    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
-    @ActionLayout(contributed=Contributed.AS_NEITHER)
-    public PersonalContact createPersonalContact(
-            @ParameterLayout(named="contactPerson")
-            final Person contactPerson) {
-        return personalcontacts.createPersonalContact(contactPerson, currentUserName());
-    }
-    
-    public List<Person> autoComplete0CreatePersonalContact(final String search) {
-        return persons.findPersons(search);
-    }
-    
-    /**
-     * There should be at most 1 instance for each owner - contact combination.
-     * 
-     */
-    public String validateCreatePersonalContact(final Person contactPerson) {
-        
-        if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
-            return "NO_USE";
-        }
-        
-        QueryDefault<PersonalContact> query = 
-                QueryDefault.create(
-                        PersonalContact.class, 
-                    "findPersonalContactUniqueContact", 
-                    "ownedBy", currentUserName(),
-                    "contact", contactPerson);
-        return container.firstMatch(query) != null?
-        "ONE_INSTANCE_AT_MOST"        
-        :null;
-    }
-    
-    //----------------------------------------- END createPersonalContact -------------------//
+
+	//------------------------------------ END findPersons ---------------------------//
+
+	//***************************************** findTagsUsedMoreThanThreshold ***********************//
+
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	public List<Tag> findTagsUsedMoreThanThreshold(
+			@ParameterLayout(named="searchString")
+			final String tagDescription,
+			@ParameterLayout(named="tagCategoryDescription")
+			final String tagCategoryDescription,
+			@ParameterLayout(named="threshold")
+			final Integer threshold
+	){
+		return tags.findTagsUsedMoreThanThreshold(tagDescription, tagCategoryDescription, threshold);
+	}
+
+	//------------------------------------ END findTagsUsedMoreThanThreshold ---------------------------//
+
+	//***************************************** createPersonalContact ***********************//
+
+	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+	@ActionLayout(contributed=Contributed.AS_NEITHER)
+	public PersonalContact createPersonalContact(
+			@ParameterLayout(named="contactPerson")
+			final info.matchingservice.dom.Actor.Person contactPerson) {
+		return personalcontacts.createPersonalContact(contactPerson, currentUserName());
+	}
+
+	public List<info.matchingservice.dom.Actor.Person> autoComplete0CreatePersonalContact(final String search) {
+		return persons.findPersons(search);
+	}
+
+	/**
+	 * There should be at most 1 instance for each owner - contact combination.
+	 *
+	 */
+	public String validateCreatePersonalContact(final info.matchingservice.dom.Actor.Person contactPerson) {
+
+		if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
+			return "NO_USE";
+		}
+
+		QueryDefault<PersonalContact> query =
+				QueryDefault.create(
+						PersonalContact.class,
+						"findPersonalContactUniqueContact",
+						"ownedBy", currentUserName(),
+						"contact", contactPerson);
+		return container.firstMatch(query) != null?
+				"ONE_INSTANCE_AT_MOST"
+				:null;
+	}
+
+	//----------------------------------------- END createPersonalContact -------------------//
 
 
 	//***************************************** activatePersonOwnedBy ***********************//
@@ -1464,37 +1481,37 @@ public class Api extends AbstractFactoryAndRepository {
 	}
 
 	//----------------------------------------- END allProvidedServices -------------------//
-    
-    //Helpers
-    private String currentUserName() {
-        return container.getUser().getName();
-    }
+
+	//Helpers
+	private String currentUserName() {
+		return container.getUser().getName();
+	}
 
 	private String toApiID(final String OID){
 		String[] parts = OID.split(Pattern.quote("[OID]"));
 		String part1 = parts[0];
 		return part1;
 	}
-	
-    //Injections
+
+	//Injections
 	@Inject
 	private Persons persons;
-	
+
 	@Inject
 	private Demands demands;
-	
+
 	@Inject
 	private Supplies supplies;
-	
+
 	@Inject
 	private Profiles profiles;
-	
+
 	@Inject
 	private Tags tags;
-	
+
 	@Inject
 	private DomainObjectContainer container;
-	
+
 	@Inject
 	private PersonalContacts personalcontacts;
 

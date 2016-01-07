@@ -125,7 +125,7 @@ public class UserRegistrationResource extends ResourceAbstract {
             try {
                 firstName = getParameterValue("firstName", argRepr);
             } catch (Exception e) {
-                errors.put("firstname" ,"required'");
+                errors.put("firstname" ,"required");
             }
 
             try {

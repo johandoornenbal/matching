@@ -78,6 +78,7 @@ public class TestSupplyProfiles extends SupplyProfileAbstract {
                 "antoni",
                 executionContext
                 );
+
     }
     
     @Inject

@@ -4,12 +4,10 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.dom.CommunicationChannels.Address;
 import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
-import info.matchingservice.dom.DemandSupply.Demand;
 import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.*;
 import info.matchingservice.dom.Tags.TagHolder;
-import info.matchingservice.dom.Xtalus.XtalusProfile;
 import info.matchingservice.webapp.custom_rest.viewmodels.*;
 
 import java.util.ArrayList;
@@ -63,6 +61,8 @@ public class XtalusApi {
 
     }
 
+
+
     public List<Quality> getQualities(Person student){
 
 
@@ -81,6 +81,7 @@ public class XtalusApi {
     }
 
 
+
     public ProfileBasic getProfileByPerson(Person person){
 
 
@@ -97,13 +98,24 @@ public class XtalusApi {
             entity = "mkb'er";
         }
 
-        XtalusProfile xtalusProfile = wrappedApi.getXtalusProfileByPerson(person);
+
+        Profile userProfile = wrappedApi.getPersonProfile(person);
+
+
+        Optional<ProfileElement> storyOpt = userProfile.getElementOfType(ProfileElementType.STORY);
+        Optional<ProfileElement> urlBackgroundOpt = userProfile.getElementOfType(ProfileElementType.URL_PROFILE_BACKGROUND);
+
+
+
 
         String story = "";
         String backgroundImgUrl = "";
-        if(xtalusProfile != null){
-            story = xtalusProfile.getStory();
-            backgroundImgUrl = xtalusProfile.getBackgroundImage();
+
+        if(storyOpt.isPresent()){
+            story = ((ProfileElementText)storyOpt.get()).getTextValue();
+        }
+        if(urlBackgroundOpt.isPresent()){
+            backgroundImgUrl = ((ProfileElementText)urlBackgroundOpt.get()).getTextValue();
         }
 
         //ADDRESS
@@ -115,7 +127,13 @@ public class XtalusApi {
 
         if(person.getIsStudent()){
             List<Interest> interests = getInterests(person);
-            List<Education> educations = wrappedApi.getEducationsByProfile(xtalusProfile).stream().map(Education::new).collect(Collectors.toList());
+            List<Education> educations = new ArrayList<>();
+
+
+
+
+            wrappedApi.getEducationsByPerson(person).forEach(education -> educations.add(new Education(education)));
+//                    wrappedApi.getEducationsByProfile(xtalusProfile).stream().map(Education::new).collect(Collectors.toList());
             List<Quality> qualities = getQualities(person);
 
             return new ProfileStudent(profileBasic, interests, educations, qualities);

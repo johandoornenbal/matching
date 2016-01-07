@@ -1,5 +1,6 @@
 package info.matchingservice.dom.Xtalus;
 
+import info.matchingservice.dom.Actor.Person;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
 
@@ -21,10 +22,10 @@ import javax.jdo.annotations.*;
         column = "discriminator")
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
-                name = "findEducationByXtalusProfile", language = "JDOQL",
+                name = "findEducationByPerson", language = "JDOQL",
                 value = "SELECT "
                         + "FROM info.matchingservice.dom.Xtalus.Education "
-                        + "WHERE xtalusProfile == :xtalusProfile")
+                        + "WHERE person == :person")
 })
 @DomainObject
 public class Education {
@@ -32,20 +33,22 @@ public class Education {
     private String title, institute, location, honoursProgramm;
 
 
-    //region > xtalusProfile (property)
-    private XtalusProfile xtalusProfile;
+    //region > person (property)
+    private Person person;
 
     @MemberOrder(sequence = "1")
-    public XtalusProfile getXtalusProfile() {
-        return xtalusProfile;
+
+    @Column(allowsNull = "false")
+    public Person getPerson() {
+        return person;
     }
 
-    public void setXtalusProfile(final XtalusProfile xtalusProfile) {
-        this.xtalusProfile = xtalusProfile;
+    public void setPerson(final Person person) {
+        this.person = person;
     }
     //endregion
 
-
+    @Column(allowsNull = "false")
     public String getTitle() {
         return title;
     }
@@ -54,6 +57,7 @@ public class Education {
         this.title = title;
     }
 
+    @Column(allowsNull = "false")
     public String getInstitute() {
         return institute;
     }
@@ -62,13 +66,6 @@ public class Education {
         this.institute = institute;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
     @Column(allowsNull = "true")
     public String getHonoursProgramm() {

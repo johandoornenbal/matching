@@ -9,9 +9,10 @@ public class TeardownFixture extends FixtureScript {
     protected void execute(ExecutionContext executionContext) {
 
 
-        
-    	isisJdoSupport.executeUpdate("delete from \"Config\"");
+//        isisJdoSupport.executeUpdate("drop database xtalus");
 
+    	isisJdoSupport.executeUpdate("delete from \"Config\"");
+//
         isisJdoSupport.executeUpdate("delete from \"BasicCategorySuggestion\"");
         isisJdoSupport.executeUpdate("delete from \"BasicRating\"");
         isisJdoSupport.executeUpdate("delete from \"BasicCategoryRelationshipTuple\"");
@@ -59,8 +60,8 @@ public class TeardownFixture extends FixtureScript {
 
 
 
-        isisJdoSupport.executeUpdate("delete from \"Organisation\""); 
-        isisJdoSupport.executeUpdate("delete from \"System\""); 
+        isisJdoSupport.executeUpdate("delete from \"Organisation\"");
+        isisJdoSupport.executeUpdate("delete from \"System\"");
         isisJdoSupport.executeUpdate("delete from \"Actor\"");
     }
     
