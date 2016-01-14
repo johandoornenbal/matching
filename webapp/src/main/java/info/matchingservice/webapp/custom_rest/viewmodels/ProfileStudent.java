@@ -15,7 +15,7 @@ public class ProfileStudent extends ProfileBasic {
 
     private List<Education> educations = new ArrayList<>();
     private List<Interest> interests = new ArrayList<>();
-    private List<Quality> qualities = new ArrayList<>();
+    private List<String> qualities = new ArrayList<>();
     //private final String institute, education;
 
 
@@ -25,7 +25,7 @@ public class ProfileStudent extends ProfileBasic {
         this.interests = interests;
     }
 
-    public ProfileStudent(ProfileBasic profileBasic, List<Interest> interests, List<Education> educations, List<Quality> qualities){
+    public ProfileStudent(ProfileBasic profileBasic, List<Interest> interests, List<Education> educations, List<String> qualities){
         super(profileBasic);
         this.interests = interests;
         this.qualities = qualities;

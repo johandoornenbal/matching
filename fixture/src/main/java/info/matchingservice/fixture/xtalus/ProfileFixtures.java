@@ -10,6 +10,7 @@ import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileElement;
 import info.matchingservice.dom.Profile.ProfileType;
+import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.Xtalus.Education;
 import info.matchingservice.dom.Xtalus.XtalusService;
 import info.matchingservice.fixture.actor.TestPersons;
@@ -35,6 +36,28 @@ import java.util.stream.Collectors;
 public class ProfileFixtures extends FixtureScript {
 
 
+
+
+    @Inject
+    Profiles profiles;
+
+
+
+    protected void createCompany(final String name, final String description, final Person person, final String postal, final String city, final String branche, ExecutionContext executionContext, Supply s){
+
+
+        Profile p = profiles.createSupplyProfile(name, 10, null, null, ProfileType.COMPANY_PROFILE, null, s, s.getOwnedBy());
+        p.createStoryElement(description);
+        p.createLocationElement(postal, 10);
+        p.createCityElement(city, 10);
+        p.createBrancheElement(branche, 10);
+
+        executionContext.add(this, p);
+
+
+
+    }
+
     @Inject
     private Api api;
 
@@ -55,15 +78,8 @@ public class ProfileFixtures extends FixtureScript {
     protected void execute(ExecutionContext executionContext) {
 
         executeChild(new TestPersons(), executionContext);
-        executeChild(new TestRoles(), executionContext);
-        executeChild(new TestDemands(), executionContext);
-        executeChild(new TestDemandProfiles(), executionContext);
-        executeChild(new DemandProfileElementsForFrans(), executionContext);
-        executeChild(new DemandProfileElementsForRembrandt(), executionContext);
-        executeChild(new DemandProfileElementsForMichiel(), executionContext);
         executeChild(new TestSupplies(), executionContext);
-        executeChild(new TestSupplyProfiles(), executionContext);
-        executeChild(new TestSupplyProfileElementsPersonProfiles(), executionContext);
+
 
         String imgUrl = "https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fehsjournal.org%2Fwp-content%2Fuploads%2F2010%2F03%2FJana-Kollarova-Red-Background1.jpg&f=1";
         String story = "Dit is een verhaal over mijzelf.";
@@ -77,8 +93,14 @@ public class ProfileFixtures extends FixtureScript {
 
             Education e = service.createEducation(p, "saxion", "natural leadershio", "informatica");
             executionContext.add(this, e);
+            p.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/KevinSpaceyApr09.jpg/220px-KevinSpaceyApr09.jpg");
+
+
+
+
 
         }
+
 
 
 
@@ -88,6 +110,15 @@ public class ProfileFixtures extends FixtureScript {
 
 
             if(s.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY){
+
+                if(s.getOwner() instanceof Person){
+
+                    Person p = (Person) s.getOwner();
+                    if(!p.getIsStudent()){
+                        createCompany("Code Rehab", "It's time for an intervention", p, "7521BE" , "Enschede", "Webdevelopment", executionContext, s);
+                    }
+                }
+
 
                 for(Profile p: s.getProfiles()){
 

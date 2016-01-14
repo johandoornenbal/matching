@@ -2,7 +2,6 @@ package info.matchingservice.webapp.custom_rest.viewmodels.interfaces;
 
 import info.matchingservice.webapp.custom_rest.viewmodels.Company;
 import info.matchingservice.webapp.custom_rest.viewmodels.Interest;
-import info.matchingservice.webapp.custom_rest.viewmodels.Quality;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ public interface API {
 
 
 
-    List<Quality> getQualitiesByPerson();
 
     Company getCompanyByPerson();
 

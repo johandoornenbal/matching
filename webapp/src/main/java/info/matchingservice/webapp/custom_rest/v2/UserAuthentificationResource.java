@@ -78,7 +78,7 @@ public class UserAuthentificationResource extends ResourceAbstract {
 
         // GET PARAMETERS
         try {
-            email = getParameterValue("email", argRepr);
+            email = getParameterValue("email", argRepr).toLowerCase();
         } catch (Exception e) {
             errors.put("email", "required'");
         }

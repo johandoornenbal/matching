@@ -1,13 +1,19 @@
 package info.matchingservice.fixture.supply;
 
+import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
 import info.matchingservice.dom.DemandSupply.Supplies;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Profile.Profile;
 import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.fixture.actor.TestPersons;
 
 import javax.inject.Inject;
 
 import org.joda.time.LocalDate;
+
+import java.util.Optional;
 
 public class TestSupplyProfiles extends SupplyProfileAbstract {
 
@@ -79,8 +85,13 @@ public class TestSupplyProfiles extends SupplyProfileAbstract {
                 executionContext
                 );
 
+
     }
-    
+
+    @Inject
+    Persons persons;
+
+
     @Inject
     private Supplies supplies;
 }

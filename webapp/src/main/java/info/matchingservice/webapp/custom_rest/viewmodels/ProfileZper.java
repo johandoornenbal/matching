@@ -8,20 +8,18 @@ import java.util.List;
  */
 public class ProfileZper extends ProfileBasic {
 
-    private final Company company;
     private List<Interest> interests = new ArrayList<>();
+    private List<Company> companies = new ArrayList<>();
 
-
-    public ProfileZper(int id, String firstName, String middleName, String lastName, String picture, String entity, List<String> roles, String story, String pictureBackground, String city, Company company, List<Interest> interests) {
+    public ProfileZper(int id, String firstName, String middleName, String lastName, String picture, String entity, List<String> roles, String story, String pictureBackground, String city, List<Company> companies, List<Interest> interests) {
         super(id, firstName, middleName, lastName, picture, entity, roles, story, pictureBackground, city);
-        this.company = company;
         this.interests = interests;
     }
 
-    public ProfileZper(ProfileBasic profileBasic, List<Interest> interests, Company company){
+    public ProfileZper(ProfileBasic profileBasic, List<Interest> interests, List<Company> companies){
         super(profileBasic);
         this.interests = interests;
-        this.company = company;
+        this.companies = companies;
 
 
     }

@@ -107,6 +107,9 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
 
 
 
+
+
+
     @Programmatic
     public  List<ProfileElement> getElementsOfType(ProfileElementType type){
         return getElements().stream().filter(profileElement -> profileElement.getProfileElementType() == type).collect(Collectors.toList());
@@ -668,6 +671,21 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
                 ProfileElementType.BRANCHE_TAGS, 
                 this);
     }
+
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    @ActionLayout()
+    public ProfileElementText createBrancheElement(
+            final String branche,
+            @ParameterLayout(named="weight")
+            final Integer weight
+    ){
+        return profileElementTexts.createProfileElementText(
+                "BRANCHE_ELEMENT",
+                weight,
+                branche,
+                ProfileElementType.BRANCHE,
+                this);
+    }
     
     public boolean hideCreateBrancheTagElement(final Integer weight){
         // only on profile of type PERSON and ORGANSATION
@@ -861,6 +879,17 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     	profileElementLocations.createProfileElementLocation("LOCATION_ELEMENT", weight, textValue, ProfileElementType.LOCATION, this);
     	return this;
     }
+
+    @Action(semantics=SemanticsOf.NON_IDEMPOTENT)
+    public Profile createCityElement(
+            final String city,
+            @ParameterLayout(named="weight")
+            final Integer weight
+    ){
+        profileElementTexts.createProfileElementText("CITY_ELEMENT", weight, city, ProfileElementType.CITY, this);
+        return this;
+    }
+
     
     public boolean hideCreateLocationElement(final String textValue, final Integer weight){
     	

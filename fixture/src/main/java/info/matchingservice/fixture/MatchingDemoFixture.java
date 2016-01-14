@@ -110,7 +110,7 @@ public class MatchingDemoFixture extends FixtureScript {
         executeChild(new ServicesForTesting(), executionContext);
         executeChild(new ServicesOccurrencesForTesting(), executionContext);
 
-        executeChild(new ProfileFixtures(), executionContext);
+        executionContext.executeChild(this, new ProfileFixtures());
 
     }
 

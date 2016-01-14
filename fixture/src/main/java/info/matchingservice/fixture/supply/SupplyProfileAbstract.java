@@ -28,7 +28,11 @@ public abstract class SupplyProfileAbstract extends FixtureScript {
         return executionContext.add(this,newSupplyProfile);
     }
     
-    
+
+
+
+
+
     //region > injected services
     @javax.inject.Inject
     Profiles profiles;

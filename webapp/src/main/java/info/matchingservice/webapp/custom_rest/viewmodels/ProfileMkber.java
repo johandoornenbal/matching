@@ -1,5 +1,6 @@
 package info.matchingservice.webapp.custom_rest.viewmodels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,15 +8,15 @@ import java.util.List;
  */
 public class ProfileMkber extends ProfileBasic {
 
-    private final Company company;
+    private List<Company> companies = new ArrayList<>();
 
-    public ProfileMkber(int id, String firstName, String middleName, String lastName, String picture, String entity, List<String> roles, String story, String pictureBackground, String city, Company company) {
+    public ProfileMkber(int id, String firstName, String middleName, String lastName, String picture, String entity, List<String> roles, String story, String pictureBackground, String city, List<Company> companies) {
         super(id, firstName, middleName, lastName, picture, entity, roles, story, pictureBackground, city);
-        this.company = company;
+        this.companies = companies;
     }
 
-    public ProfileMkber(ProfileBasic p, Company company) {
+    public ProfileMkber(ProfileBasic p, List<Company> companies) {
         super(p);
-        this.company = company;
+        this.companies = companies;
     }
 }

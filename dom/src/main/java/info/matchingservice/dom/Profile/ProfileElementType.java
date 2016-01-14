@@ -621,7 +621,14 @@ public enum ProfileElementType implements TitledEnum {
             return null;
         }
     },
-    EDUCATION_BRANCHE("Education_branche"){
+    BRANCHE("Branche"){
+        @Override
+        public ProfileElementComparison getProfileElementComparison(ProfileElement demandProfileElement, ProfileElement supplyProfileElement) {
+            return null;
+        }
+    },
+
+    CITY("City"){
         @Override
         public ProfileElementComparison getProfileElementComparison(ProfileElement demandProfileElement, ProfileElement supplyProfileElement) {
             return null;

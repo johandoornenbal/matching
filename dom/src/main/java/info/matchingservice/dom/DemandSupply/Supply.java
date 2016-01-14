@@ -36,8 +36,10 @@ import org.joda.time.LocalDate;
 import javax.inject.Inject;
 import javax.jdo.JDOHelper;
 import javax.jdo.annotations.*;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -67,6 +69,20 @@ import java.util.TreeSet;
 })
 @DomainObject(editing=Editing.DISABLED)
 public class Supply extends MatchingSecureMutableObject<Supply> implements HasImageUrl {
+
+
+
+    @Programmatic
+    public List<Profile> getProfilesOfType(ProfileType type){
+        return getProfiles().stream().filter(profile -> profile.getType() == type).collect(Collectors.toList());
+
+    }
+
+    @Programmatic
+    public java.util.Optional<Profile> getProfileOfType(ProfileType type){
+        return getProfiles().stream().filter(profile -> profile.getType() == type).findFirst();
+
+    }
 
 
 
@@ -350,6 +366,8 @@ public class Supply extends MatchingSecureMutableObject<Supply> implements HasIm
             final ProfileType profileType,
             final Supply supplyProfileOwner, 
             final String ownedBy) {
+
+
         return allSupplyProfiles.createSupplyProfile(supplyProfileDescription, weight, demandOrSupplyProfileStartDate, demandOrSupplyProfileEndDate, profileType, null, supplyProfileOwner, ownedBy);
     }
 

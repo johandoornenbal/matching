@@ -67,6 +67,9 @@ public class RegistrationPanel {
 
 
 
+
+
+
     @ActionLayout(named = "Weiger gebruiker")
     public RegistrationPanel declineUser(Person p){
 

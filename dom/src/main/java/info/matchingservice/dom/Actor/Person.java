@@ -36,9 +36,10 @@ import javax.jdo.JDOHelper;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
+import javax.swing.text.html.Option;
+import java.util.*;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -74,6 +75,56 @@ import java.util.TreeSet;
 public class Person extends Actor {
 
 
+    @Programmatic
+    public List<Supply> getSuppliesOfType(DemandSupplyType type){
+        return getSupplies().stream().filter(supply -> supply.getSupplyType() == type).collect(Collectors.toList());
+    }
+    @Programmatic
+    public java.util.Optional<Supply> getSupplyOfType(DemandSupplyType type){
+        return getSupplies().stream().filter(supply -> supply.getSupplyType() == type).findFirst();
+    }
+
+    @Programmatic
+    public List<Demand> getDemandsOfType(DemandSupplyType type){
+        return getDemands().stream().filter(demand -> demand.getDemandType() == type).collect(Collectors.toList());
+    }
+    @Programmatic
+    public java.util.Optional<Demand> getDemandOfType(DemandSupplyType type){
+        return getDemands().stream().filter(demand -> demand.getDemandType() == type).findFirst();
+    }
+
+    /**Returns the supply of the person its self.
+     * This supply contains his profile, and his company profile too
+     *
+     * @return
+     */
+    public Supply getPersonalSupply(){
+        Optional<Supply> supply = getSupplyOfType(DemandSupplyType.PERSON_DEMANDSUPPLY);
+        if(supply.isPresent()){
+            return supply.get();
+        }
+        return null;
+
+    }
+
+
+
+
+
+    @Programmatic
+    public Profile getPersonalProfile(){
+        Optional<Supply> supply = getSupplyOfType(DemandSupplyType.PERSON_DEMANDSUPPLY);
+
+        if(supply.isPresent()){
+            Optional<Profile> profile = supply.get().getProfileOfType(ProfileType.PERSON_PROFILE);
+
+            if(profile.isPresent()){
+                return profile.get();
+            }
+        }
+       return null;
+
+    }
 
 
     @Action(semantics = SemanticsOf.SAFE)

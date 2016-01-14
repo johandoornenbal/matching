@@ -29,6 +29,47 @@ public class XtalusApi {
 
 
 
+
+    private Company createCompany(Profile companyProfile){
+        String name= null, description= null, branche= null, postal= null, city = null;
+        name = companyProfile.getName();
+
+        Optional<ProfileElement> pdescription = companyProfile.getElementOfType(ProfileElementType.STORY);
+        if(pdescription.isPresent()){
+            description = ((ProfileElementText)pdescription.get()).getTextValue();
+        }
+        Optional<ProfileElement> pbranche = companyProfile.getElementOfType(ProfileElementType.BRANCHE);
+        if(pbranche.isPresent()){
+            branche = ((ProfileElementText)pbranche.get()).getTextValue();
+        }
+
+        Optional<ProfileElement> pcity = companyProfile.getElementOfType(ProfileElementType.CITY);
+        if(pcity.isPresent()){
+            city = ((ProfileElementText)pcity.get()).getTextValue();
+        }
+
+        Optional<ProfileElement> ppostal = companyProfile.getElementOfType(ProfileElementType.LOCATION);
+        if(pcity.isPresent()){
+            postal = ((ProfileElementLocation)ppostal.get()).getPostcode();
+        }
+
+
+        Location l = new Location(city, postal);
+
+        Company company  = new Company(name, branche, description, l);
+        return company;
+
+    }
+
+    public List<Company> getCompaniesOfPerson(Person person){
+        List<Company> companies = new ArrayList<>();
+        List<Profile> profiles = person.getPersonalSupply().getProfilesOfType(ProfileType.COMPANY_PROFILE);
+        profiles.forEach(profile -> companies.add(createCompany(profile)));
+        return companies;
+    }
+
+
+
     public Profile getPersonProfile(Person person){
         Supply personSupply = wrappedApi.getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
         return personSupply.getProfiles().stream().filter(profile -> profile.getType() == ProfileType.PERSON_PROFILE).findFirst().get();
@@ -63,7 +104,7 @@ public class XtalusApi {
 
 
 
-    public List<Quality> getQualities(Person student){
+    public List<String> getQualities(Person student){
 
 
         Profile personProfile = getPersonProfile(student);
@@ -74,8 +115,8 @@ public class XtalusApi {
         List<TagHolder> qualityTagHolders = new ArrayList<>();
 
         qualityElements.stream().filter(profileElement1 -> profileElement1 instanceof  ProfileElementTag).forEach(profileElement2 -> qualityTagHolders.addAll(((ProfileElementTag)profileElement2).getCollectTagHolders()));
-        List<Quality> qualities = new ArrayList<>();
-        qualityTagHolders.forEach(tagHolder -> qualities.add(new Quality(tagHolder.getOwnerElement().getWeight(), tagHolder.getTag().getTagDescription())));
+        List<String> qualities = new ArrayList<>();
+        qualityTagHolders.forEach(tagHolder -> qualities.add(tagHolder.getTag().getTagDescription()));
 
         return qualities;
     }
@@ -129,32 +170,27 @@ public class XtalusApi {
             List<Interest> interests = getInterests(person);
             List<Education> educations = new ArrayList<>();
 
-
-
-
             wrappedApi.getEducationsByPerson(person).forEach(education -> educations.add(new Education(education)));
-//                    wrappedApi.getEducationsByProfile(xtalusProfile).stream().map(Education::new).collect(Collectors.toList());
-            List<Quality> qualities = getQualities(person);
+            List<String> qualities = getQualities(person);
 
             return new ProfileStudent(profileBasic, interests, educations, qualities);
 
 
         }
 
-        getQualities(person);
 
+        List<Company> companies = getCompaniesOfPerson(person);
 //        STUDENT("student"),
 //                PROFESSIONAL("zp'er"),
 //                PRINCIPAL("mkb'er");
 
         if(person.getIsProfessional()){
-
+            List<Interest> interests = getInterests(person);
+            return new ProfileZper(profileBasic, interests, companies);
 
         }
 
-        //TODO
-
-        return profileBasic;
+        return new ProfileMkber(profileBasic, companies);
 
 
         
