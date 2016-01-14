@@ -12,24 +12,23 @@ import java.util.List;
  */
 public class ProfileStudent extends ProfileBasic {
 
-
-    private List<Education> educations = new ArrayList<>();
+    private Education education;
     private List<Interest> interests = new ArrayList<>();
     private List<String> qualities = new ArrayList<>();
     //private final String institute, education;
 
 
-    public ProfileStudent(int id, String firstName, String middleName, String lastName, String picture, String entity, List<String> roles, String story, String pictureBackground, String city, List<Education> educations, List<Interest> interests) {
+    public ProfileStudent(int id, String firstName, String middleName, String lastName, String picture, String entity, List<String> roles, String story, String pictureBackground, String city, Education educations, List<Interest> interests) {
         super(id, firstName, middleName, lastName, picture, entity, roles, story, pictureBackground, city);
-        this.educations = educations;
+        this.education = educations;
         this.interests = interests;
     }
 
-    public ProfileStudent(ProfileBasic profileBasic, List<Interest> interests, List<Education> educations, List<String> qualities){
+    public ProfileStudent(ProfileBasic profileBasic, List<Interest> interests, Education education, List<String> qualities){
         super(profileBasic);
         this.interests = interests;
         this.qualities = qualities;
-        this.educations = educations;
+        this.education = education;
 
 
     }

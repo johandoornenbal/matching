@@ -58,6 +58,21 @@ public class ProfileFixtures extends FixtureScript {
 
     }
 
+
+    protected void createEducation(final String institute, final Person person, final String postal, final String city, final String education, ExecutionContext executionContext, Supply s){
+
+
+        Profile p = profiles.createSupplyProfile(institute, 10, null, null, ProfileType.EDUCATION_PROFILE, null, s, s.getOwnedBy());
+        p.createLocationElement(postal, 10);
+        p.createCityElement(city, 10);
+        p.createBrancheElement(education, 10);
+
+        executionContext.add(this, p);
+
+
+
+    }
+
     @Inject
     private Api api;
 
@@ -116,6 +131,11 @@ public class ProfileFixtures extends FixtureScript {
                     Person p = (Person) s.getOwner();
                     if(!p.getIsStudent()){
                         createCompany("Code Rehab", "It's time for an intervention", p, "7521BE" , "Enschede", "Webdevelopment", executionContext, s);
+                    }else{
+
+                        // create education
+                        createEducation("Saxion", p, "7513AB", "Enschede", "Informatica", executionContext, s);
+
                     }
                 }
 

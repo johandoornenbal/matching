@@ -31,7 +31,8 @@ public enum ProfileType implements TitledEnum {
     COURSE_PROFILE("Course"),
     GENERIC_PROFILE("Generic"),
     INTEREST_PROFILE("Job"),
-    COMPANY_PROFILE("Company");
+    COMPANY_PROFILE("Company"),
+    EDUCATION_PROFILE("Education");
 
     private String title;
     

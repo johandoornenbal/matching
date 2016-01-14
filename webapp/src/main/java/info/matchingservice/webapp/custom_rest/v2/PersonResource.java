@@ -60,6 +60,7 @@ public class PersonResource extends ResourceAbstract implements RepositoryResour
             return Response.status(404).build();
         }
 
+
         Optional<Person> person = wrappedApi.getPersonById(id);
         if (!person.isPresent()){
             return Response.noContent().build();
@@ -81,6 +82,7 @@ public class PersonResource extends ResourceAbstract implements RepositoryResour
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(InputStream is) {
 
+        
         JsonElement personJson = null;
         try {
             String objectStr = Util.asStringUtf8(is);
@@ -91,25 +93,15 @@ public class PersonResource extends ResourceAbstract implements RepositoryResour
         }catch (Exception e){
             return Response.status(400).build();
         }
-
-
-
-
         Person ap = wrappedApi.activePerson();
         if(ap == null){
             return Response.status(404).build();
         }
-
-//        Optional<Person> person = wrappedApi.getPersonById(id);
-//        if (!person.isPresent()){
-//            return Response.status(404).build();
-//        }
-
-        System.out.println("JOOOOOOOOOOOO" + personJson.toString());
-
-
         return Response.ok().build();
 
     }
+
+
+
 
 }

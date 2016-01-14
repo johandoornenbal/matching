@@ -7,18 +7,13 @@ import info.matchingservice.webapp.custom_rest.utils.JsonConvertable;
  */
 public class Education implements JsonConvertable {
 
-    private final String title, institute, honoursProgram;
 
-    public Education(String title, String institute, String honoursProgram) {
-        this.title = title;
-        this.institute = institute;
-        this.honoursProgram = honoursProgram;
-    }
+    private final String name, education;
+    private final Location location;
 
-    public Education(info.matchingservice.dom.Xtalus.Education e){
-        this.honoursProgram = e.getHonoursProgramm();
-        this.institute = e.getInstitute();
-        this.title = e.getTitle();
-
+    public Education(String name, String education, Location location) {
+        this.name = name;
+        this.education = education;
+        this.location = location;
     }
 }

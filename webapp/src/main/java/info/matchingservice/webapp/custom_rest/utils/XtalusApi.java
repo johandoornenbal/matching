@@ -28,6 +28,46 @@ public class XtalusApi {
     }
 
 
+    private Education createEducation(Profile educationProfile){
+        String name= null, education= null, postal= null, city = null;
+        name = educationProfile.getName();
+
+
+        Optional<ProfileElement> peducation = educationProfile.getElementOfType(ProfileElementType.BRANCHE);
+        if(peducation.isPresent()){
+            education = ((ProfileElementText)peducation.get()).getTextValue();
+        }
+
+        Optional<ProfileElement> pcity = educationProfile.getElementOfType(ProfileElementType.CITY);
+        if(pcity.isPresent()){
+            city = ((ProfileElementText)pcity.get()).getTextValue();
+        }
+
+        Optional<ProfileElement> ppostal = educationProfile.getElementOfType(ProfileElementType.LOCATION);
+        if(pcity.isPresent()){
+            postal = ((ProfileElementLocation)ppostal.get()).getPostcode();
+        }
+
+
+        Location l = new Location(city, postal);
+
+        Education ed  = new Education(name, education, l);
+        return ed;
+
+    }
+
+
+
+    private Education getEducationByPerson(Person person){
+
+        List<Profile> profiles = person.getPersonalSupply().getProfilesOfType(ProfileType.EDUCATION_PROFILE);
+        if(profiles.size() == 0){
+            return null;
+        }
+        return createEducation(profiles.get(0));
+
+
+    }
 
 
     private Company createCompany(Profile companyProfile){
@@ -168,12 +208,9 @@ public class XtalusApi {
 
         if(person.getIsStudent()){
             List<Interest> interests = getInterests(person);
-            List<Education> educations = new ArrayList<>();
-
-            wrappedApi.getEducationsByPerson(person).forEach(education -> educations.add(new Education(education)));
             List<String> qualities = getQualities(person);
 
-            return new ProfileStudent(profileBasic, interests, educations, qualities);
+            return new ProfileStudent(profileBasic, interests, getEducationByPerson(person), qualities);
 
 
         }
@@ -195,6 +232,9 @@ public class XtalusApi {
 
         
     }
+
+
+
 
 
 
