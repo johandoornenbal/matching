@@ -13,7 +13,6 @@ import info.matchingservice.dom.ProvidedServices.Services;
 import info.matchingservice.dom.Tags.Tag;
 import info.matchingservice.dom.Tags.Tags;
 import info.matchingservice.dom.TrustLevel;
-import info.matchingservice.dom.Xtalus.*;
 import org.apache.isis.applib.AbstractFactoryAndRepository;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.*;
@@ -26,12 +25,14 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
+import java.lang.System;
 import java.util.*;
 import java.util.regex.Pattern;
 
 @DomainService()
 @DomainServiceLayout()
 public class Api extends AbstractFactoryAndRepository {
+
 
 
 
@@ -58,7 +59,9 @@ public class Api extends AbstractFactoryAndRepository {
 	 * @return
 	 */
 	@Programmatic
-	public Profile getPersonProfile(info.matchingservice.dom.Actor.Person person){
+	public Profile getPersonProfile(Person person){
+
+		System.out.println("JOOOOOOOOO" + person.toString());
 		Supply personSupply = getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
 		return personSupply.getProfiles().stream().filter(profile -> profile.getType() == ProfileType.PERSON_PROFILE).findFirst().get();
 	}
@@ -69,7 +72,7 @@ public class Api extends AbstractFactoryAndRepository {
 	 * @return
 	 */
 	@Programmatic
-	public Supply getPersonalSupply(info.matchingservice.dom.Actor.Person person){
+	public Supply getPersonalSupply(Person person){
 		return getSuppliesForPerson(person).stream().filter(supply -> supply.getSupplyType() == DemandSupplyType.PERSON_DEMANDSUPPLY).findFirst().get();
 	}
 
@@ -121,7 +124,7 @@ public class Api extends AbstractFactoryAndRepository {
 	 * @return all persons that currentUser is allowed to see
 	 */
 	@Programmatic
-	public List<info.matchingservice.dom.Actor.Person> allActivePersons(){
+	public List<Person> allActivePersons(){
 		// at the moment all active users
 		return persons.allActivePersons();
 	}
@@ -138,6 +141,8 @@ public class Api extends AbstractFactoryAndRepository {
 			final String mainPostalCode,
 			final String mainTown,
 			final String mainPhone) {
+
+
 
 		final info.matchingservice.dom.Actor.Person person = persons.createPerson(
 				firstName,

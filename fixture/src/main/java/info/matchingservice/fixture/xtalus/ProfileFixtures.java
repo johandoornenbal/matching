@@ -101,9 +101,6 @@ public class ProfileFixtures extends FixtureScript {
 
 
         for(Person p: persons.allPersons()){
-
-
-
             p.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/KevinSpaceyApr09.jpg/220px-KevinSpaceyApr09.jpg");
 
 

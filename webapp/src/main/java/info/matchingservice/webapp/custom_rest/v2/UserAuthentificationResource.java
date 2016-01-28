@@ -108,7 +108,7 @@ public class UserAuthentificationResource extends ResourceAbstract {
         final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
         ApplicationUser applicationUser = applicationUsers.findUserByUsername(email);
         if (applicationUser == null) {
-            errors.put("username", "not found");
+            errors.put("message", "not:match.credentials");
             return ErrorMessages.getError400Response(errors);
 
         }

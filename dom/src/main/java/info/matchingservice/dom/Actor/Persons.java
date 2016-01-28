@@ -186,6 +186,9 @@ public class Persons extends MatchingDomainService<Person> {
         persistIfNotAlready(person);
         getContainer().flush();
 
+
+
+
         // create first emailAddress contributed to Person copied from securityModule
         if (applicationUsers.findUserByUsername(userName) != null) {
             final String emailAddress = applicationUsers.findUserByUsername(userName).getEmailAddress();

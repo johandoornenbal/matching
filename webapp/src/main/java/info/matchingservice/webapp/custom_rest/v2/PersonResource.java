@@ -7,7 +7,7 @@ import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Api.Api;
 import info.matchingservice.webapp.custom_rest.utils.RepositoryResource;
 import info.matchingservice.webapp.custom_rest.utils.XtalusApi;
-import info.matchingservice.webapp.custom_rest.viewmodels.ProfileBasic;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.isis.viewer.restfulobjects.applib.client.RestfulResponse;
@@ -18,9 +18,8 @@ import org.apache.isis.viewer.restfulobjects.server.resources.ResourceAbstract;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,7 +41,15 @@ public class PersonResource extends ResourceAbstract implements RepositoryResour
     @Override
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        List<JsonElement> profiles = wrappedApi.allActivePersons().stream().map(person -> api.getProfileByPerson(person).asJsonElement()).collect(Collectors.toList());
+
+
+        List<JsonElement> profiles = new ArrayList<>();
+        for(Person p : wrappedApi.allActivePersons()){
+            try{
+                profiles.add(api.getProfileByPerson(p).asJsonElement());
+            }catch (Exception e){
+            }
+        }
         System.out.println(profiles.toString());
 
 
@@ -78,21 +85,31 @@ public class PersonResource extends ResourceAbstract implements RepositoryResour
 
 
     @PUT
-    @Path("/")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(InputStream is) {
+    public Response updatePerson(InputStream is, @PathParam("id")int id) {
+
+        String objectStr = Util.asStringUtf8(is);
+        JsonRepresentation argRepr = Util.readAsMap(objectStr);
+        if (!argRepr.isMap()) {
+            return Response.status(400).build();}
+
+
+        // name
+        //
+
+        String firstName , middleName , lastName , picture,  pictureBackground;
+
+        firstName = getParameterValue("firstName", argRepr);
+        middleName = getParameterValue("middleName", argRepr);
+        lastName = getParameterValue("lastName", argRepr);
+        picture = getParameterValue("picture", argRepr);
+        pictureBackground = getParameterValue("pictureBackground", argRepr);
+
 
         
-        JsonElement personJson = null;
-        try {
-            String objectStr = Util.asStringUtf8(is);
-            personJson = new Gson().toJsonTree(objectStr);
-            if(personJson == null){
-                throw new Exception();
-            }
-        }catch (Exception e){
-            return Response.status(400).build();
-        }
+        System.out.println("JOOOOOOOOOOO" + argRepr.toString());
+
         Person ap = wrappedApi.activePerson();
         if(ap == null){
             return Response.status(404).build();
@@ -102,6 +119,41 @@ public class PersonResource extends ResourceAbstract implements RepositoryResour
     }
 
 
+
+    /**
+     * returns the parameter for the given name
+     * if the parameter is not present throws an exception
+     *
+     * @param parameterName
+     * @param argumentMap
+     * @return
+     */
+    private String getParameterValue(final String parameterName, JsonRepresentation argumentMap) {
+        assert parameterName != null;
+        assert argumentMap != null;
+        String value;
+        try {
+            JsonRepresentation property = argumentMap.getRepresentation(parameterName);
+            value = property.getString("");
+        } catch (Exception e) {
+            return null;
+        }
+        return value;
+    }
+
+
+    private Integer getParameterValueInt(final String parameterName, JsonRepresentation argumentMap) {
+        assert parameterName != null;
+        assert argumentMap != null;
+        int value;
+        try {
+            JsonRepresentation property = argumentMap.getRepresentation(parameterName);
+            value = property.getInt("");
+        } catch (Exception e) {
+            return null;
+        }
+        return value;
+    }
 
 
 }

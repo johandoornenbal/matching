@@ -178,7 +178,7 @@ public class XtalusApi {
             entity = "student";
         }else if(person.getIsProfessional()){
             roles.add("opdrachtgever");
-            entity ="zzp'er";
+            entity ="zp'er";
         } else if(person.getIsPrincipal()){
             roles.add("opdrachtgever");
             entity = "mkb'er";
@@ -214,10 +214,7 @@ public class XtalusApi {
         if(person.getIsStudent()){
             List<Interest> interests = getInterests(person);
             List<String> qualities = getQualities(person);
-
             return new ProfileStudent(profileBasic, interests, getEducationByPerson(person), qualities);
-
-
         }
 
 
