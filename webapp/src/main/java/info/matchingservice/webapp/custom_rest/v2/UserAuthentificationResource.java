@@ -44,6 +44,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by jodo on 15/05/15.
@@ -54,7 +56,7 @@ public class UserAuthentificationResource extends ResourceAbstract {
     private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(Api.class);
 //    private Api api = IsisContext.getPersistenceSession().getServicesInjector().lookupService(info.matchingservice.dom.Api.Api.class);
 
-
+    private static Pattern EMAIL_REGEX = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$");
 
 
 
@@ -93,6 +95,16 @@ public class UserAuthentificationResource extends ResourceAbstract {
         }
 
 
+        // email regex
+//        Matcher matcher = EMAIL_REGEX.matcher(email);
+//        if (!matcher.matches()) {
+//            errors.put("email", "invalid:chars");
+//        }
+//
+//        if (errors.size() > 0) {
+//            return ErrorMessages.getError400Response(errors);
+//        }
+
         final ApplicationUsers applicationUsers = IsisContext.getPersistenceSession().getServicesInjector().lookupService(ApplicationUsers.class);
         ApplicationUser applicationUser = applicationUsers.findUserByUsername(email);
         if (applicationUser == null) {
@@ -104,7 +116,7 @@ public class UserAuthentificationResource extends ResourceAbstract {
         };
 
         if (!passwordEncryptionService.matches(password, applicationUser.getEncryptedPassword())) {
-            errors.put("error", "username and pass dont match");
+            errors.put("message", "not:match.credentials");
             return ErrorMessages.getError400Response(errors);
         }
 
@@ -120,7 +132,7 @@ public class UserAuthentificationResource extends ResourceAbstract {
         if (!person.getActivated()) {
 
             //user not activated yet
-            errors.put("activation", "not activated");
+            errors.put("message", "not:active");
             return ErrorMessages.getError400Response(errors);
         }
         //LOGIN is ok. build response

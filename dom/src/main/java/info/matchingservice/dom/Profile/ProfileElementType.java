@@ -633,6 +633,12 @@ public enum ProfileElementType implements TitledEnum {
         public ProfileElementComparison getProfileElementComparison(ProfileElement demandProfileElement, ProfileElement supplyProfileElement) {
             return null;
         }
+    },
+    HONOURSPROGRAM("HonoursProgram"){
+        @Override
+        public ProfileElementComparison getProfileElementComparison(ProfileElement demandProfileElement, ProfileElement supplyProfileElement) {
+            return null;
+        }
     }
     ;
 

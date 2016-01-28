@@ -36,6 +36,8 @@ public abstract class TagsAbstract extends FixtureScript {
             String ownedBy,
             ExecutionContext executionContext 
             ){
+
+
         ProfileElement newHolder = tagHolders.createTagHolder(ownerElement, tagProposal, "kwaliteit", ownedBy);
         return newHolder;
     }

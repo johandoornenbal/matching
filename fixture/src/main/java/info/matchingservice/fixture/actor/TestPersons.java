@@ -19,6 +19,9 @@ public class TestPersons extends PersonAbstract {
     @Override
     protected void execute(ExecutionContext executionContext) {
 
+
+            final String lorumIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.";
+
             //preqs
             executeChild(new antoniUser(), executionContext);
             executeChild(new fransUser(), executionContext);
@@ -40,7 +43,7 @@ public class TestPersons extends PersonAbstract {
                 "frans",
                 true,
                 PersonRoleType.STUDENT,
-                executionContext, "Dit is een verhaaltje over mijzelf");
+                executionContext, lorumIpsum);
         
         createPerson( 
                 "Gerard", 
@@ -52,7 +55,7 @@ public class TestPersons extends PersonAbstract {
                 true,
                 PersonRoleType.PRINCIPAL,
                 executionContext,
-                "Dit is een verhaal over gerard");
+                lorumIpsum);
         
         createPerson( 
                 "Rembrandt", 
@@ -63,7 +66,7 @@ public class TestPersons extends PersonAbstract {
                 "rembrandt",
                 true,
                 PersonRoleType.PROFESSIONAL,
-                executionContext, "Dit is een verhaaltje over mijzelf, Rembrandt");
+                executionContext, lorumIpsum);
         
         createPerson( 
                 "Michiel", 
@@ -72,8 +75,8 @@ public class TestPersons extends PersonAbstract {
                 new LocalDate(1980, 8, 12),
                 null,
                 "michiel",
-                true,PersonRoleType.STUDENT,
-                executionContext, "Dit is een verhaaltje over mijzelf, Michiel");
+                true,PersonRoleType.PRINCIPAL,
+                executionContext, lorumIpsum);
     	
         createPerson(
                 "Antoni", 
@@ -84,7 +87,7 @@ public class TestPersons extends PersonAbstract {
                 "antoni",
                 true,
                 PersonRoleType.PROFESSIONAL,
-                executionContext, "Dit is een verhaaltje over mijzelf, Antoni");
+                executionContext, lorumIpsum);
 
             createPerson(
                     "Jeanne",

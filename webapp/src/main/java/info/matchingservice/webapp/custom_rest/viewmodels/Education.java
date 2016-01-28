@@ -8,12 +8,16 @@ import info.matchingservice.webapp.custom_rest.utils.JsonConvertable;
 public class Education implements JsonConvertable {
 
 
-    private final String name, education;
+    private final String institute, name, honoursProgram;
     private final Location location;
 
-    public Education(String name, String education, Location location) {
+
+
+    public Education(String institute, String name, Location location, String honoursProgram) {
+        this.institute = institute;
         this.name = name;
-        this.education = education;
         this.location = location;
+        this.honoursProgram = honoursProgram;
     }
+
 }

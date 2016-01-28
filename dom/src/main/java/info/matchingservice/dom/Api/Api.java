@@ -34,25 +34,23 @@ import java.util.regex.Pattern;
 public class Api extends AbstractFactoryAndRepository {
 
 
+
+	@Programmatic
+	public Profile createInterestProfile(final Person person, final String description, LocalDate from, final LocalDate till, final int timeAvailable, int weight){
+		Supply personSupply = getPersonalSupply(person);
+		Profile p = profiles.createSupplyProfile(description, 10, from, till, ProfileType.INTEREST_PROFILE, "", personSupply, person.getOwnedBy());
+		p.createTimeAvailableElement(weight, timeAvailable);
+		return p;
+
+	}
+
+
 	@Programmatic
 	public java.util.Optional<info.matchingservice.dom.Actor.Person> getPersonById(int id){
 		return allActivePersons().stream().filter(person -> person.getIdAsInt() == id).findFirst();
 	}
 
 
-	public List<Education> getEducationsByPerson(Person person){
-
-		if(!person.getIsStudent()){
-			return new ArrayList<>();
-		}
-		QueryDefault<info.matchingservice.dom.Xtalus.Education> query =
-				QueryDefault.create(
-						info.matchingservice.dom.Xtalus.Education.class,
-						"findEducationByPerson",
-						"person", person);
-		return allMatches(query);
-
-	}
 
 	/**get profile of the persons supply profile
 	 *

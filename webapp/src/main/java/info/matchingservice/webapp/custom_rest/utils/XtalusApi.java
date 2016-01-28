@@ -29,13 +29,18 @@ public class XtalusApi {
 
 
     private Education createEducation(Profile educationProfile){
-        String name= null, education= null, postal= null, city = null;
+        String name= null, education= null, postal= null, city = null, honoursProgramm = null;
         name = educationProfile.getName();
 
 
-        Optional<ProfileElement> peducation = educationProfile.getElementOfType(ProfileElementType.BRANCHE);
-        if(peducation.isPresent()){
-            education = ((ProfileElementText)peducation.get()).getTextValue();
+        Optional<ProfileElement> optBranche = educationProfile.getElementOfType(ProfileElementType.BRANCHE);
+        if(optBranche.isPresent()){
+            education = ((ProfileElementText)optBranche.get()).getTextValue();
+        }
+
+        Optional<ProfileElement> optHonours = educationProfile.getElementOfType(ProfileElementType.HONOURSPROGRAM);
+        if(optHonours.isPresent()){
+            honoursProgramm = ((ProfileElementText)optHonours.get()).getTextValue();
         }
 
         Optional<ProfileElement> pcity = educationProfile.getElementOfType(ProfileElementType.CITY);
@@ -51,7 +56,7 @@ public class XtalusApi {
 
         Location l = new Location(city, postal);
 
-        Education ed  = new Education(name, education, l);
+        Education ed  = new Education(name, education, l, honoursProgramm);
         return ed;
 
     }

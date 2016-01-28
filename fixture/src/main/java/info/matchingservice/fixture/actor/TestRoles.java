@@ -12,12 +12,12 @@ public class TestRoles extends RoleAbstract {
                 "frans",
                 executionContext
                 );
-        
-        createRole(
-                PersonRoleType.PRINCIPAL, 
-                "frans",
-                executionContext
-                );
+//
+//        createRole(
+//                PersonRoleType.PRINCIPAL,
+//                "frans",
+//                executionContext
+//                );
         
         createRole(
                 PersonRoleType.STUDENT, 

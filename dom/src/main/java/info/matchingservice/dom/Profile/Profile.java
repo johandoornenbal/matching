@@ -542,6 +542,13 @@ public class Profile extends MatchingSecureMutableObject<Profile> implements Has
     			this);
     	return this;
     }
+
+
+    public Profile createHonoursProgramElement(final String honoursProgramm, final Integer weight){
+
+        profileElementTexts.createProfileElementText("HONOURSPROGRAM", weight, honoursProgramm, ProfileElementType.HONOURSPROGRAM, this);
+        return this;
+    }
     
     
     public boolean hideCreatePassionElement(
