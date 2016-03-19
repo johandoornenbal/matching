@@ -18,21 +18,23 @@
  */
 package info.matchingservice.integtest.dom.actor;
 
+import javax.inject.Inject;
+
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import info.matchingservice.dom.Actor.Person;
 import info.matchingservice.dom.Actor.Persons;
 import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
 import info.matchingservice.fixture.TeardownFixture;
 import info.matchingservice.fixture.actor.TestRoles;
 import info.matchingservice.integtest.MatchingIntegrationTest;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import javax.inject.Inject;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class PersonsTest extends MatchingIntegrationTest {
     

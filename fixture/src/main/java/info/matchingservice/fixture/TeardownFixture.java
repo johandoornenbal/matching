@@ -19,7 +19,7 @@ public class TeardownFixture extends FixtureScript {
         isisJdoSupport.executeUpdate("delete from \"BasicAnswer\"");
         isisJdoSupport.executeUpdate("delete from \"BasicForm\"");
         isisJdoSupport.executeUpdate("delete from \"BasicQuestion\"");
-        isisJdoSupport.executeUpdate("delete from \"BasicFeedback\"");
+//        isisJdoSupport.executeUpdate("delete from \"BasicFeedback\"");
         isisJdoSupport.executeUpdate("delete from \"BasicContact\"");
         isisJdoSupport.executeUpdate("delete from \"BasicRequest\"");
         isisJdoSupport.executeUpdate("delete from \"BasicTemplate\"");

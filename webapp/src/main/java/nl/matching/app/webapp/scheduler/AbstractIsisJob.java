@@ -46,22 +46,10 @@ public abstract class AbstractIsisJob implements Job {
             persistenceSession.getServicesInjector().injectInto(this);
             IsisTransactionManager transactionManager = persistenceSession.getTransactionManager();
             transactionManager.executeWithinTransaction(new TransactionalClosure() {
-                
-                @Override
-                public void preExecute() {
-                }
-                
+
                 @Override
                 public void execute() {
                     doExecute(context);
-                }
-                
-                @Override
-                public void onSuccess() {
-                }
-                
-                @Override
-                public void onFailure() {
                 }
             });
         } finally {
@@ -77,7 +65,7 @@ public abstract class AbstractIsisJob implements Job {
         return new SimpleSession(user, roles);
     }
 
-    
+
     /**
      * Mandatory hook.
      */

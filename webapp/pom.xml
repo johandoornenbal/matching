@@ -138,7 +138,7 @@
     	<dependency>
         	<groupId>org.isisaddons.module.security</groupId>
         	<artifactId>isis-module-security-dom</artifactId>
-        	<version>1.9.0</version>
+        	<version>${isis-module-security.version}</version>
    		</dependency>
    		<dependency>
         	<groupId>org.mindrot</groupId>
@@ -263,6 +263,15 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.6</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4.1208</version>
+        </dependency>
+
+
+
 
         <!--Reverse proxy-->
         <dependency>
