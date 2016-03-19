@@ -434,19 +434,19 @@ public class PersonsTest extends MatchingIntegrationTest {
 
         @Test
         public void activationAndDeactivation() throws Exception {
-            assertThat(p1.getActivated(), is(false));
+            assertThat(p1.isActivated(), is(false));
 
             //when
             assertThat(persons.activatePerson(OWNED_BY), is("ACTIVATED"));
 
             //then
-            assertThat(p1.getActivated(), is(true));
+            assertThat(p1.isActivated(), is(true));
 
             //when
             assertThat(persons.deActivatePerson(OWNED_BY), is("DEACTIVATED"));
 
             //then
-            assertThat(p1.getActivated(), is(false));
+            assertThat(p1.isActivated(), is(false));
 
         }
 

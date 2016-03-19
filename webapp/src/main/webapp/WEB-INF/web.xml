@@ -278,10 +278,18 @@
             <param-value>info.matchingservice.webapp.custom_rest.CustomAuthenticationSessionStrategyBasicAuth</param-value>
              <!--<param-value>org.apache.isis.viewer.restfulobjects.server.authentication.AuthenticationSessionStrategyTrusted</param-value> -->
         </init-param>
+        <!--<init-param>-->
+            <!--&lt;!&ndash; what to do if no session was found; we indicate to issue a 401 basic authentication challenge &ndash;&gt;-->
+            <!--<param-name>whenNoSession</param-name>-->
+            <!--<param-value>basicAuthChallenge</param-value>-->
+        <!--</init-param>-->
         <init-param>
-            <!-- what to do if no session was found; we indicate to issue a 401 basic authentication challenge -->
             <param-name>whenNoSession</param-name>
-            <param-value>basicAuthChallenge</param-value>
+            <param-value>auto</param-value>
+        </init-param>
+        <init-param>
+            <param-name>passThru</param-name>
+            <param-value>/restful/swagger</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -310,6 +318,19 @@
         <url-pattern>/restful/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>WebjarsServlet</servlet-name>
+        <servlet-class>org.webjars.servlet.WebjarsServlet</servlet-class>
+        <init-param>
+            <param-name>disableCache</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WebjarsServlet</servlet-name>
+        <url-pattern>/webjars/*</url-pattern>
+    </servlet-mapping>
 
     <!-- 
     uncomment to use container-managed datasource;

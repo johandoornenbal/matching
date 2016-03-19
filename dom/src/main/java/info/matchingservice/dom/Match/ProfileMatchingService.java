@@ -187,11 +187,11 @@ public class ProfileMatchingService extends AbstractService {
 		// check the validity - if not valid: return null
 		if (
 				// filter niet active Actors uit
-				demandProfile.getOwner().getActivated()
+				demandProfile.getOwner().isActivated()
 
 				&&
 
-				supplyProfile.getOwner().getActivated()
+				supplyProfile.getOwner().isActivated()
 
 				&&
 

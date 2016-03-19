@@ -28,6 +28,9 @@ import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A Domain object that is secure checks who is the owner of an instance. Only
  * the owner and an admin of the app can edit the instance. Only an admin can
@@ -86,21 +89,10 @@ public abstract class MatchingSecureMutableObject<T extends MatchingDomainObject
         return "Not allowed to modify / Niet toegestaan te wijzigen";
     }
 
+    @PropertyLayout(hidden = Where.EVERYWHERE)
+    @Property(editing = Editing.DISABLED)
+    @Getter @Setter
     private String ownedBy;
-
-    @PropertyLayout(
-            hidden = Where.EVERYWHERE
-            )
-    @Property(
-            editing = Editing.DISABLED
-            )
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(final String owner) {
-        this.ownedBy = owner;
-    }
 
     public void changeOwner(final String owner) {
         this.setOwnedBy(owner);

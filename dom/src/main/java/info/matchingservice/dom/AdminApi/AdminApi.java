@@ -74,7 +74,7 @@ public class AdminApi {
     public List<Person> findPersonsNotActive() {
         List<Person> foundPersons = new ArrayList<Person>();
         for (Person nonActivePerson : persons.allPersons()) {
-            if (!nonActivePerson.getActivated()){
+            if (!nonActivePerson.isActivated()){
                 foundPersons.add(nonActivePerson);
             }
         }

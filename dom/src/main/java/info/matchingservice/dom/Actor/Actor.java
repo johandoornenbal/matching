@@ -18,8 +18,35 @@
  */
 package info.matchingservice.dom.Actor;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.inject.Inject;
+import javax.jdo.annotations.DiscriminatorStrategy;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.VersionStrategy;
+
+import org.joda.time.LocalDate;
+
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.value.Blob;
+
 import info.matchingservice.dom.Assessment.Assessment;
-import info.matchingservice.dom.DemandSupply.*;
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.DemandSupplyType;
+import info.matchingservice.dom.DemandSupply.Demands;
+import info.matchingservice.dom.DemandSupply.Supplies;
+import info.matchingservice.dom.DemandSupply.Supply;
 import info.matchingservice.dom.Match.ProfileMatch;
 import info.matchingservice.dom.MatchingSecureMutableObject;
 import info.matchingservice.dom.Profile.Profile;
@@ -27,15 +54,8 @@ import info.matchingservice.dom.Profile.ProfileType;
 import info.matchingservice.dom.Profile.Profiles;
 import info.matchingservice.dom.TrustLevel;
 import info.matchingservice.dom.TrustedCircles.TrustedCircleConfigRepo;
-import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.*;
-import org.apache.isis.applib.value.Blob;
-import org.joda.time.LocalDate;
-
-import javax.inject.Inject;
-import javax.jdo.annotations.*;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import lombok.Getter;
+import lombok.Setter;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -54,94 +74,44 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         super("ownedBy, dateCreated");
     }
 
-    //region > activated (property)
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Property(editing=Editing.DISABLED)
+    @Getter @Setter
     private boolean activated;
 
+
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Property(editing=Editing.DISABLED)
-    public boolean getActivated() {
-        return activated;
-    }
-
-    public void setActivated(final boolean activated) {
-        this.activated = activated;
-    }
-    //endregion
-
-    //region > dateCreated (property)
+    @Getter @Setter
     private LocalDate dateCreated;
 
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    @Property(editing=Editing.DISABLED)
-    public LocalDate getDateCreated() {
-        return dateCreated;
-    }
 
-    public void setDateCreated(final LocalDate dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-    //endregion
-
-	//** demands **//
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Persistent(mappedBy = "owner", dependentElement = "true")
+    @Getter @Setter
     private SortedSet<Demand> demands = new TreeSet<Demand>();
-    
+
     @CollectionLayout(render=RenderType.EAGERLY)
     @Persistent(mappedBy = "owner", dependentElement = "true")
-    public SortedSet<Demand> getDemands() {
-        return demands;
-    }
-   
-    public void setDemands(final SortedSet<Demand> demandsOfActor) {
-        this.demands = demandsOfActor;
-    }   
-    //-- demands --//
-    
-    //** supplies **//
+    @Getter @Setter
     private SortedSet<Supply> supplies = new TreeSet<Supply>();
-    
-    @CollectionLayout(render=RenderType.EAGERLY)
+
+
     @Persistent(mappedBy = "owner", dependentElement = "true")
-    public SortedSet<Supply> getSupplies() {
-        return supplies;
-    }
-   
-    public void setSupplies(final SortedSet<Supply> suppliesOfActor) {
-        this.supplies = suppliesOfActor;
-    }
-    //-- supplies --//
-    
-    //** savedMatches **//
+    @CollectionLayout(render=RenderType.EAGERLY)
+    @Getter @Setter
     private SortedSet<ProfileMatch> savedMatches = new TreeSet<ProfileMatch>();
-    
-    @Persistent(mappedBy = "owner", dependentElement = "true")
-    @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<ProfileMatch> getSavedMatches() {
-        return savedMatches;
-    }
-    
-    public void setSavedMatches(final SortedSet<ProfileMatch> savedMatchesOfActor){
-        this.savedMatches = savedMatchesOfActor;
-    }
-    
+
     //Business rule: 
     //only visible for inner-circle
     public boolean hideSavedMatches(){
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
-    //-- savedMatches --//
-    
-    //** assessmentsGiven **//
-    private SortedSet<Assessment> assessmentsGiven = new TreeSet<Assessment>();
-    
+
     @Persistent(mappedBy = "assessmentOwnerActor", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<Assessment> getAssessmentsGiven() {
-        return assessmentsGiven;
-    }
-    
-    public void setAssessmentsGiven(final SortedSet<Assessment> assessmentsGiven){
-        this.assessmentsGiven = assessmentsGiven;
-    }
+    @Getter @Setter
+    private SortedSet<Assessment> assessmentsGiven = new TreeSet<Assessment>();
 
     // business logic
     public boolean hideAssessmentsGiven(){
@@ -152,21 +122,12 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
                         "Actor")
         );
     }
-    //-- assessmentsGiven --//
-    
-    //** assessmentsGiven **//
-    private SortedSet<Assessment> assessmentsReceived = new TreeSet<Assessment>();
-    
+
     @Persistent(mappedBy = "targetOwnerActor", dependentElement = "true")
     @CollectionLayout(render=RenderType.EAGERLY)
-    public SortedSet<Assessment> getAssessmentsReceived() {
-        return assessmentsReceived;
-    }
+    @Getter @Setter
+    private SortedSet<Assessment> assessmentsReceived = new TreeSet<Assessment>();
     
-    public void setAssessmentsReceived(final SortedSet<Assessment> assessmentsReceivedByActor){
-        this.assessmentsReceived = assessmentsReceivedByActor;
-    }
-
     // business logic
     public boolean hideAssessmentsReceived(){
         return super.allowedTrustLevel(
@@ -176,8 +137,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
                         "Actor")
         );
     }    
-    //-- assessmentsGiven --//
-        
+
     //** ownedBy - Override for secure object **//
     private String ownedBy;
     
@@ -193,7 +153,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         this.ownedBy = owner;
     }
 
-    //** HELPERS: generic object helpers **//
     public String title() {
         String string = "Actor ownedBy ";
         return string.concat(getOwnedBy());
@@ -202,9 +161,7 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     private String currentUserName() {
         return container.getUser().getName();
     }
-    //-- HELPERS: generic object helpers --//
-    
-    //** HELPERS: programmatic actions **//   
+
     @Programmatic
     public Demand createDemand(
             final String demandDescription,
@@ -296,11 +253,6 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
         
         return newProfile;
     }
-    //-- HELPERS: programmatic actions --//
-    
-    //-- HELPERS --//
-
-    //** INJECTIONS **//
 
     @javax.inject.Inject
     private DomainObjectContainer container;
@@ -317,7 +269,4 @@ public abstract class Actor extends MatchingSecureMutableObject<Actor> {
     @Inject
     private TrustedCircleConfigRepo trustedCircleConfigRepo;
 
-    
-
-    
 }

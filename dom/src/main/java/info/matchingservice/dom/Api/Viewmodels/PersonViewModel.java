@@ -1,19 +1,24 @@
 package info.matchingservice.dom.Api.Viewmodels;
 
-import info.matchingservice.dom.Actor.Person;
-import info.matchingservice.dom.Actor.PersonalContact;
-import info.matchingservice.dom.Api.Api;
-import info.matchingservice.dom.Assessment.Assessment;
-import info.matchingservice.dom.CommunicationChannels.*;
-import info.matchingservice.dom.DemandSupply.Demand;
-import info.matchingservice.dom.DemandSupply.Supply;
-import info.matchingservice.dom.Match.ProfileMatch;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Nature;
 
-import java.util.ArrayList;
-import java.util.List;
+import info.matchingservice.dom.Actor.Person;
+import info.matchingservice.dom.Actor.PersonalContact;
+import info.matchingservice.dom.Api.Api;
+import info.matchingservice.dom.Assessment.Assessment;
+import info.matchingservice.dom.CommunicationChannels.Address;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannel;
+import info.matchingservice.dom.CommunicationChannels.CommunicationChannelType;
+import info.matchingservice.dom.CommunicationChannels.Email;
+import info.matchingservice.dom.CommunicationChannels.Phone;
+import info.matchingservice.dom.DemandSupply.Demand;
+import info.matchingservice.dom.DemandSupply.Supply;
+import info.matchingservice.dom.Match.ProfileMatch;
 
 /**
  * Created by jodo on 01/11/15.
@@ -124,7 +129,7 @@ public class PersonViewModel extends ApiAbstractViewModel {
 
         this.actions = api.getActionsForPerson(person);
 
-        this.activated = person.getActivated();
+        this.activated = person.isActivated();
 
     }
 
